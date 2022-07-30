@@ -1,10 +1,15 @@
 {
-  "name": "rescript-project-template",
+  "name": "eko",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "build": "rescript",
+    "build:deps": "rescript build -with-deps",
+    "build:watch": "rescript build -w",
     "clean": "rescript clean -with-deps",
-    "start": "rescript build -w"
+    "start": "vite",
+    "preview": "vite preview",
+    "release": "vite build"
   },
   "keywords": [
     "rescript"
@@ -13,6 +18,12 @@
   "license": "MIT",
   "dependencies": {
     "@rescript/react": "^0.10.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rescript": "*"
+  },
+  "packageManager": "yarn@3.2.2",
+  "devDependencies": {
+    "vite": "^3.0.4"
   }
 }

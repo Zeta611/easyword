@@ -1,7 +1,8 @@
 .bsb.lock
 .merlin
-# Created by https://www.toptal.com/developers/gitignore/api/macOS,React,ReasonML,Emacs
-# Edit at https://www.toptal.com/developers/gitignore?templates=macOS,React,ReasonML,Emacs
+
+# Created by https://www.toptal.com/developers/gitignore/api/macOS,React,ReasonML,Emacs,yarn
+# Edit at https://www.toptal.com/developers/gitignore?templates=macOS,React,ReasonML,Emacs,yarn
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
@@ -105,5 +106,22 @@ sketch
 ### Reasonml ###
 /lib
 
-# End of https://www.toptal.com/developers/gitignore/api/macOS,React,ReasonML,Emacs
+### yarn ###
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+!.yarn/cache
+
+# and uncomment the following lines
+# .pnp.*
+
+# End of https://www.toptal.com/developers/gitignore/api/macOS,React,ReasonML,Emacs,yarn
 n

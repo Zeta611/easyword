@@ -6,11 +6,11 @@
     "subdirs" : true
   },
   "package-specs": {
-    "module": "commonjs",
+    "module": "es6-global",
     "in-source": true
   },
-  "suffix": ".bs.js",
-    "reason": { "react-jsx": 3},
+  "suffix": ".mjs",
+  "reason": { "react-jsx": 3 },
   "bs-dependencies": [
     "@rescript/react"
   ],
