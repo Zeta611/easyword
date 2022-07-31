@@ -2,11 +2,11 @@
 
 import * as React from "react";
 
-function Demo(Props) {
-  return React.createElement("div", undefined, "Hello world, this is EKO!");
+function Home(Props) {
+  return React.createElement("h1", undefined, "Hello world, this is EKO!");
 }
 
-var make = Demo;
+var make = Home;
 
 export {
   make ,
