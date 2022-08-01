@@ -1,21 +1,21 @@
-# ReScript Project Template
+# EKO
 
-The only official ReScript starter template.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a2dde827-b91c-4c09-a42b-30e55db69cad/deploy-status)](https://app.netlify.com/sites/easykoreanjargon/deploys)
 
 ## Installation
 
 ```sh
-npm install
+yarn install
 ```
 
 ## Build
 
-- Build: `npm run build`
-- Clean: `npm run clean`
-- Build & watch: `npm run start`
+- Build: `yarn build:deps`
+- Clean: `yarn clean`
+- Build & watch: `yarn build:watch`
 
 ## Run
 
 ```sh
-node src/Demo.bs.js
+yarn start
 ```
