@@ -322,17 +322,13 @@ module Dictionary = {
   }
 
   @react.component
-  let make = (~query: option<string>=?) => {
+  let make = (~query: string) => {
     let regex = {
       let matchAll = %re("/.*/")
-      switch query {
-      | None => matchAll
-      | Some(query) =>
-        try Js.Re.fromString(query) catch {
-        | Js.Exn.Error(obj) => {
-            obj->Js.Exn.message->Option.forEach(Js.log)
-            matchAll
-          }
+      try Js.Re.fromString(query) catch {
+      | Js.Exn.Error(obj) => {
+          obj->Js.Exn.message->Option.forEach(Js.log)
+          matchAll
         }
       }
     }
@@ -349,10 +345,10 @@ module Dictionary = {
 
 module InputForm = {
   @react.component
-  let make = (~query: option<string>=?, ~onChange) => {
+  let make = (~query: string, ~onChange) => {
     <form>
       <label> {React.string(`검색 (정규식)`)} </label>
-      <input type_="text" value={query->Option.getWithDefault("")} onChange />
+      <input type_="text" value=query onChange />
     </form>
   }
 }

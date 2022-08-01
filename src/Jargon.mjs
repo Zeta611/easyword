@@ -1067,24 +1067,20 @@ function Jargon$Dictionary(Props) {
   var query = Props.query;
   var matchAll = /.*/;
   var regex;
-  if (query !== undefined) {
-    try {
-      regex = new RegExp(query);
+  try {
+    regex = new RegExp(query);
+  }
+  catch (raw_obj){
+    var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
+    if (obj.RE_EXN_ID === Js_exn.$$Error) {
+      Belt_Option.forEach(obj._1.message, (function (prim) {
+              console.log(prim);
+              
+            }));
+      regex = matchAll;
+    } else {
+      throw obj;
     }
-    catch (raw_obj){
-      var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);
-      if (obj.RE_EXN_ID === Js_exn.$$Error) {
-        Belt_Option.forEach(obj._1.message, (function (prim) {
-                console.log(prim);
-                
-              }));
-        regex = matchAll;
-      } else {
-        throw obj;
-      }
-    }
-  } else {
-    regex = matchAll;
   }
   var rows = Belt_Array.keepMap(dict, (function (pair) {
           var english = pair[1];
@@ -1110,7 +1106,7 @@ function Jargon$InputForm(Props) {
   var onChange = Props.onChange;
   return React.createElement("form", undefined, React.createElement("label", undefined, "검색 (정규식)"), React.createElement("input", {
                   type: "text",
-                  value: Belt_Option.getWithDefault(query, ""),
+                  value: query,
                   onChange: onChange
                 }));
 }
