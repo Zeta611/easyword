@@ -311,16 +311,60 @@ let dict = [
   //  ("속내용 감추기", `속내용을 신경쓰지 않게하기`),
 ]
 
-let rows = React.array(
-  // Or Js.Array2.map?
-  Belt.Array.map(dict, pair => {
-    let (english, korean) = pair
-    <tr> <td> {React.string(english)} </td> <td> {React.string(korean)} </td> </tr>
-  }),
-)
+module Dictionary = {
+  let header =
+    <thead>
+      <tr> <th> {React.string(`영어`)} </th> <th> {React.string(`한국어`)} </th> </tr>
+    </thead>
+
+  let makeRow = (english, korean) => {
+    <tr key={english}> <td> {React.string(english)} </td> <td> {React.string(korean)} </td> </tr>
+  }
+
+  @react.component
+  let make = (~query: option<string>=?) => {
+    let regex = {
+      let matchAll = %re("/.*/")
+      switch query {
+      | None => matchAll
+      | Some(query) =>
+        try Js.Re.fromString(query) catch {
+        | Js.Exn.Error(obj) => {
+            obj->Js.Exn.message->Option.forEach(Js.log)
+            matchAll
+          }
+        }
+      }
+    }
+    let rows = dict->Array.keepMap(pair => {
+      let (korean, english) = pair
+      switch (korean->Js.String2.match_(regex), english->Js.String2.match_(regex)) {
+      | (None, None) => None
+      | _ => Some(makeRow(korean, english))
+      }
+    })
+    <table> header <tbody> {React.array(rows)} </tbody> </table>
+  }
+}
+
+module InputForm = {
+  @react.component
+  let make = (~query: option<string>=?, ~onChange) => {
+    <form>
+      <label> {React.string(`검색 (정규식)`)} </label>
+      <input type_="text" value={query->Option.getWithDefault("")} onChange />
+    </form>
+  }
+}
 
 @react.component
 let make = () => {
-  let header = <tr> <th> {React.string(`영어`)} </th> <th> {React.string(`한국어`)} </th> </tr>
-  <table> header rows </table>
+  // query is set from InputForm via onChange and passed into Dictionary
+  let (query, setQuery) = React.useState(() => "")
+  let onChange = event => {
+    let value = (event->ReactEvent.Form.currentTarget)["value"]
+    setQuery(_ => value)
+  }
+
+  <div> <InputForm query onChange /> <Dictionary query /> </div>
 }

@@ -3,7 +3,9 @@
 import * as React from "react";
 
 function Home(Props) {
-  return React.createElement("h1", undefined, "Hello world, this is EKO!");
+  return React.createElement("div", undefined, React.createElement("h1", undefined, "Hello world, this is EKO!"), React.createElement("a", {
+                  href: "/jargon"
+                }, "사전 열기"));
 }
 
 var make = Home;
