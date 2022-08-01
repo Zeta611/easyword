@@ -339,7 +339,7 @@ module Dictionary = {
       | _ => Some(makeRow(korean, english))
       }
     })
-    <table> header <tbody> {React.array(rows)} </tbody> </table>
+    <table className="content-table"> header <tbody> {React.array(rows)} </tbody> </table>
   }
 }
 
@@ -362,5 +362,5 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div> <InputForm query onChange /> <Dictionary query /> </div>
+  <div className="container"> <InputForm query onChange /> <Dictionary query /> </div>
 }

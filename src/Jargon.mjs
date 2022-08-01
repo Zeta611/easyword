@@ -1092,7 +1092,9 @@ function Jargon$Dictionary(Props) {
           }
           
         }));
-  return React.createElement("table", undefined, header, React.createElement("tbody", undefined, rows));
+  return React.createElement("table", {
+              className: "content-table"
+            }, header, React.createElement("tbody", undefined, rows));
 }
 
 var Dictionary = {
@@ -1127,7 +1129,9 @@ function Jargon(Props) {
                   return value;
                 }));
   };
-  return React.createElement("div", undefined, React.createElement(Jargon$InputForm, {
+  return React.createElement("div", {
+              className: "container"
+            }, React.createElement(Jargon$InputForm, {
                   query: query,
                   onChange: onChange
                 }), React.createElement(Jargon$Dictionary, {
