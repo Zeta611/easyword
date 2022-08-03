@@ -232,6 +232,7 @@ __metadata:
     "@rescript/react": ^0.10.3
     react: ^18.2.0
     react-dom: ^18.2.0
+    reanalyze: "*"
     rescript: "*"
     vite: ^3.0.4
   languageName: unknown
@@ -1031,6 +1032,15 @@ __metadata:
     string_decoder: ^1.1.1
     util-deprecate: ^1.0.1
   checksum: d4ea81502d3799439bb955a3a5d1d808592cf3133350ed352aeaa499647858b27b1c4013984900238b0873ec8d0d8defce72469fb7a83e61d53f5ad61cb80dc8
+  languageName: node
+  linkType: hard
+
+"reanalyze@npm:*":
+  version: 2.23.0
+  resolution: "reanalyze@npm:2.23.0"
+  bin:
+    reanalyze: reanalyze.exe
+  checksum: 7571efb05d2fdadfc7d29bfbed81213e7fc5fab837c5070a6d4e09f5dcba7886a5d9001eb013957ddbed6810f645697758c25f09575980fc638989a2dc5650c4
   languageName: node
   linkType: hard
 

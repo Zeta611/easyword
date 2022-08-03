@@ -318,11 +318,11 @@ module Dictionary = {
     </thead>
 
   let makeRow = (english, korean) => {
-    <tr key={english}> <td> {React.string(english)} </td> <td> {React.string(korean)} </td> </tr>
+    <tr key=english> <td> {React.string(english)} </td> <td> {React.string(korean)} </td> </tr>
   }
 
   @react.component
-  let make = (~query: string) => {
+  let make = (~query) => {
     let regex = {
       let matchAll = %re("/.*/")
       try Js.Re.fromString(query) catch {
@@ -345,7 +345,7 @@ module Dictionary = {
 
 module InputForm = {
   @react.component
-  let make = (~query: string, ~onChange) => {
+  let make = (~query, ~onChange) => {
     <form>
       <label> {React.string(`검색 (정규식)`)} </label>
       <input type_="text" value=query onChange />
