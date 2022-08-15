@@ -1,7 +1,29 @@
-// TODO: Refine types
-@module("./firestore.js") external streamJargons: unit => 'stream = "streamJargons"
-@module("./firestore.js") external addJargon: (string, string) => 'a = "addJargon"
 type jargon = {id: string, english: string, korean: string}
+type jargonStream = (array<jargon> => unit) => Firebase.unsubscribe
+
+let streamJargons = () => {
+  open Firebase
+  let {firestore} = getFirebase()
+  let jargonsCol = collection(firestore, ~path="jargons")
+  let jargonsQuery = query(jargonsCol, orderBy("english"))
+  callback =>
+    onSnapshot(jargonsQuery, snapshot => {
+      let jargons =
+        snapshot
+        ->QuerySnapshot.docs
+        ->Array.map(doc => {
+          open DocSnapshot
+          {...doc->data(), id: doc->id}
+        })
+      callback(jargons)
+    })
+}
+
+let addJargon = (english, korean) => {
+  open Firebase
+  let {firestore} = getFirebase()
+  addDoc(collection(firestore, ~path="jargons"), {"english": english, "korean": korean})
+}
 
 module Dictionary = {
   let header =

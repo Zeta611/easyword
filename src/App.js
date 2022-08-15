@@ -3,7 +3,7 @@
 import * as Home from "./Home.js";
 import * as React from "react";
 import * as Jargon from "./Jargon.js";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.mjs";
+import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
 function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);

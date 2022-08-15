@@ -18,14 +18,14 @@
     "error" : "+101"
   },
   "bsc-flags": ["-open Belt"],
-  // "gentypeconfig": {
-  //   "language": "untyped",
-  //   "generatedFileExtension": ".gen.js",
-  //   "module": "es6",
-  //   "shims": {},
-  //   "debug": {
-  //     "all": false,
-  //     "basic": false
-  //   }
-  // },
+  "gentypeconfig": {
+    "language": "untyped",
+    "generatedFileExtension": ".gen.js",
+    "module": "es6",
+    "shims": {},
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+  },
 }
