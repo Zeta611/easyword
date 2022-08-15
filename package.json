@@ -28,5 +28,8 @@
   "devDependencies": {
     "reanalyze": "*",
     "vite": "^3.0.4"
+  },
+  "resolutions": {
+    "gentype@4.5.0": "patch:gentype@npm:4.5.0#.yarn/patches/gentype-npm-4.5.0-63ecd6ea92.patch"
   }
 }
