@@ -1,0 +1,71 @@
+diff --git a/postinstall.js b/postinstall.js
+index 2c29d18ffd10c9d356ef98ac976efe6321fc5c06..2ef4998307eb47df08031ec48ddf31d01ecb471d 100644
+--- a/postinstall.js
++++ b/postinstall.js
+@@ -17,11 +17,22 @@ function getPlatformBinaryPath(platform) {
+ function movePlatformBinary(platform) {
+   const sourcePath = getPlatformBinaryPath(platform);
+ 
+-  if(!fs.existsSync(sourcePath)) {
++  // if(!fs.existsSync(sourcePath)) {
++  //     return fail("error: executable not found: " + sourcePath);
++  if (fs.existsSync(sourcePath)) {
++    fs.renameSync(sourcePath, targetPath);
++    fs.chmodSync(targetPath, 0777);
++    return;
++  }
++
++  if (fs.existsSync(targetPath)) {
++    const text = fs.readFileSync(targetPath, { encoding: "utf8" });
++    if (/gentype was not installed correctly/.test(text)) {
+       return fail("error: executable not found: " + sourcePath);
++    }
+   }
+-  fs.renameSync(sourcePath, targetPath);
+-  fs.chmodSync(targetPath, 0777);
++  // fs.renameSync(sourcePath, targetPath);
++  // fs.chmodSync(targetPath, 0777);
+ }
+ 
+ switch (platform) {
+diff --git a/postinstall.js~ b/postinstall.js~
+new file mode 100644
+index 0000000000000000000000000000000000000000..2c29d18ffd10c9d356ef98ac976efe6321fc5c06
+--- /dev/null
++++ b/postinstall.js~
+@@ -0,0 +1,35 @@
++var path = require("path");
++var fs = require("fs");
++var platform = process.platform;
++
++/* We always use the .exe extension, no matter if unix / win32 */
++const targetPath = path.join(__dirname, "gentype.exe");
++
++function fail(msg) {
++    console.warn(msg);
++    process.exit(1);
++}
++
++function getPlatformBinaryPath(platform) {
++  return path.join(__dirname, "vendor-" + platform, "gentype.exe");
++}
++
++function movePlatformBinary(platform) {
++  const sourcePath = getPlatformBinaryPath(platform);
++
++  if(!fs.existsSync(sourcePath)) {
++      return fail("error: executable not found: " + sourcePath);
++  }
++  fs.renameSync(sourcePath, targetPath);
++  fs.chmodSync(targetPath, 0777);
++}
++
++switch (platform) {
++  case "win32":
++  case "linux":
++  case "darwin":
++    movePlatformBinary(platform);
++    break;
++  default:
++    fail("error: no release built for the " + platform + " platform");
++}

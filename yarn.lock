@@ -931,6 +931,7 @@ __metadata:
   dependencies:
     "@rescript/react": ^0.10.3
     firebase: ^9.9.2
+    gentype: ^4.5.0
     react: ^18.2.0
     react-dom: ^18.2.0
     reanalyze: ^2.23.0
@@ -1286,6 +1287,24 @@ __metadata:
     strip-ansi: ^6.0.1
     wide-align: ^1.1.5
   checksum: 788b6bfe52f1dd8e263cda800c26ac0ca2ff6de0b6eee2fe0d9e3abf15e149b651bd27bf5226be10e6e3edb5c4e5d5985a5a1a98137e7a892f75eff76467ad2d
+  languageName: node
+  linkType: hard
+
+"gentype@npm:4.5.0":
+  version: 4.5.0
+  resolution: "gentype@npm:4.5.0"
+  bin:
+    gentype: gentype.exe
+  checksum: 982241d3046cb681db6e3196019059d2d450d902a94255bcc18dceff7f27f422839aaddf6605c851337b61aeda8afa534049e68e60213012c4bd05954129d34d
+  languageName: node
+  linkType: hard
+
+"gentype@patch:gentype@npm:4.5.0#.yarn/patches/gentype-npm-4.5.0-63ecd6ea92.patch::locator=eko%40workspace%3A.":
+  version: 4.5.0
+  resolution: "gentype@patch:gentype@npm%3A4.5.0#.yarn/patches/gentype-npm-4.5.0-63ecd6ea92.patch::version=4.5.0&hash=a61ee9&locator=eko%40workspace%3A."
+  bin:
+    gentype: gentype.exe
+  checksum: 20bca486ef1f87150706c249f198f7d8aa0c3049fb1e17b89939e6ef7de6c7778e72fb8341962e779823249411e24ec200d37eb1e561aa27d36a7283e70b14f2
   languageName: node
   linkType: hard
 
