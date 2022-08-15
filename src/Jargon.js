@@ -6,6 +6,7 @@ import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as FirestoreJs from "./firestore.js";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 
 var dict = [
@@ -1055,16 +1056,39 @@ var dict = [
   ]
 ];
 
+function streamJargons(prim) {
+  return FirestoreJs.streamJargons();
+}
+
+function addJargon(prim0, prim1) {
+  return FirestoreJs.addJargon(prim0, prim1);
+}
+
 var header = React.createElement("thead", undefined, React.createElement("tr", undefined, React.createElement("th", undefined, "영어"), React.createElement("th", undefined, "한국어")));
 
-function makeRow(english, korean) {
+function makeRow(param) {
   return React.createElement("tr", {
-              key: english
-            }, React.createElement("td", undefined, english), React.createElement("td", undefined, korean));
+              key: param.id
+            }, React.createElement("td", undefined, param.english), React.createElement("td", undefined, param.korean));
 }
 
 function Jargon$Dictionary(Props) {
   var query = Props.query;
+  var match = React.useState(function () {
+        return [];
+      });
+  var setJargons = match[1];
+  React.useEffect((function () {
+          var stream = FirestoreJs.streamJargons();
+          var unsubscribe = Curry._1(stream, (function (jargons) {
+                  return Curry._1(setJargons, (function (param) {
+                                return jargons;
+                              }));
+                }));
+          return (function (param) {
+                    return Curry._1(unsubscribe, undefined);
+                  });
+        }), []);
   var matchAll = /.*/;
   var regex;
   try {
@@ -1082,13 +1106,11 @@ function Jargon$Dictionary(Props) {
       throw obj;
     }
   }
-  var rows = Belt_Array.keepMap(dict, (function (pair) {
-          var english = pair[1];
-          var korean = pair[0];
-          var match = korean.match(regex);
-          var match$1 = english.match(regex);
+  var rows = Belt_Array.keepMap(match[0], (function (jargon) {
+          var match = jargon.english.match(regex);
+          var match$1 = jargon.korean.match(regex);
           if (match !== null || match$1 !== null) {
-            return Caml_option.some(makeRow(korean, english));
+            return Caml_option.some(makeRow(jargon));
           }
           
         }));
@@ -1143,6 +1165,8 @@ var make = Jargon;
 
 export {
   dict ,
+  streamJargons ,
+  addJargon ,
   Dictionary ,
   InputForm ,
   make ,
