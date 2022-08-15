@@ -933,8 +933,7 @@ __metadata:
     firebase: ^9.9.2
     react: ^18.2.0
     react-dom: ^18.2.0
-    reanalyze: "*"
-    rescript: "*"
+    rescript: ^9.1.4
     vite: ^3.0.4
   languageName: unknown
   linkType: soft
@@ -1959,15 +1958,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reanalyze@npm:*":
-  version: 2.23.0
-  resolution: "reanalyze@npm:2.23.0"
-  bin:
-    reanalyze: reanalyze.exe
-  checksum: 7571efb05d2fdadfc7d29bfbed81213e7fc5fab837c5070a6d4e09f5dcba7886a5d9001eb013957ddbed6810f645697758c25f09575980fc638989a2dc5650c4
-  languageName: node
-  linkType: hard
-
 "require-directory@npm:^2.1.1":
   version: 2.1.1
   resolution: "require-directory@npm:2.1.1"
@@ -1975,7 +1965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rescript@npm:*":
+"rescript@npm:^9.1.4":
   version: 9.1.4
   resolution: "rescript@npm:9.1.4"
   bin:
