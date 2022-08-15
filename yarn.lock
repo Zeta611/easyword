@@ -933,6 +933,7 @@ __metadata:
     firebase: ^9.9.2
     react: ^18.2.0
     react-dom: ^18.2.0
+    reanalyze: ^2.23.0
     rescript: ^9.1.4
     vite: ^3.0.4
   languageName: unknown
@@ -1955,6 +1956,24 @@ __metadata:
     string_decoder: ~1.1.1
     util-deprecate: ~1.0.1
   checksum: e4920cf7549a60f8aaf694d483a0e61b2a878b969d224f89b3bc788b8d920075132c4b55a7494ee944c7b6a9a0eada28a7f6220d80b0312ece70bbf08eeca755
+  languageName: node
+  linkType: hard
+
+"reanalyze@npm:2.23.0":
+  version: 2.23.0
+  resolution: "reanalyze@npm:2.23.0"
+  bin:
+    reanalyze: reanalyze.exe
+  checksum: 7571efb05d2fdadfc7d29bfbed81213e7fc5fab837c5070a6d4e09f5dcba7886a5d9001eb013957ddbed6810f645697758c25f09575980fc638989a2dc5650c4
+  languageName: node
+  linkType: hard
+
+"reanalyze@patch:reanalyze@npm:2.23.0#.yarn/patches/reanalyze-npm-2.23.0-ffd66894f7.patch::locator=eko%40workspace%3A.":
+  version: 2.23.0
+  resolution: "reanalyze@patch:reanalyze@npm%3A2.23.0#.yarn/patches/reanalyze-npm-2.23.0-ffd66894f7.patch::version=2.23.0&hash=caf03f&locator=eko%40workspace%3A."
+  bin:
+    reanalyze: reanalyze.exe
+  checksum: d3d638fc1685de39dc047bfaa3fb6e1673ad20cfb65f3bc6655180bbd7abe67aa20afad37acf16afb6ac314368152259d0fd1a4510ecafca8ae937178135efde
   languageName: node
   linkType: hard
 

@@ -24,7 +24,11 @@
   "packageManager": "yarn@3.2.2",
   "devDependencies": {
     "@rescript/react": "^0.10.3",
+    "reanalyze": "^2.23.0",
     "rescript": "^9.1.4",
     "vite": "^3.0.4"
+  },
+  "resolutions": {
+    "reanalyze@^2.23.0": "patch:reanalyze@npm:2.23.0#.yarn/patches/reanalyze-npm-2.23.0-ffd66894f7.patch"
   }
 }
