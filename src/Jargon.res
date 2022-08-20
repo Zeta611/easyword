@@ -1,11 +1,20 @@
 type jargon = {id: string, english: string, korean: string}
 type jargonStream = (array<jargon> => unit) => Firebase.unsubscribe
 
-let streamJargons = () => {
+type direction = Ascending | Descending
+type order = English(direction) | Korean(direction)
+
+let streamJargons = (~order) => {
   open Firebase
   let {firestore} = getFirebase()
   let jargonsCol = collection(firestore, ~path="jargons")
-  let jargonsQuery = query(jargonsCol, orderBy("english"))
+  let queryConstraint = switch order {
+  | English(Ascending) => orderBy("english", ())
+  | English(Descending) => orderBy("english", ~order="desc", ())
+  | Korean(Ascending) => orderBy("korean", ())
+  | Korean(Descending) => orderBy("korean", ~order="desc", ())
+  }
+  let jargonsQuery = query(jargonsCol, queryConstraint)
   callback =>
     onSnapshot(jargonsQuery, snapshot => {
       let jargons =
@@ -38,9 +47,10 @@ module Dictionary = {
   @react.component
   let make = (~query) => {
     let (jargons, setJargons) = React.useState(_ => [])
+    let (order, setOrder) = React.useState(_ => English(Ascending))
 
     React.useEffect0(() => {
-      let stream = streamJargons()
+      let stream = streamJargons(~order)
       let unsubscribe = stream(jargons => {
         setJargons(_ => jargons)
       })

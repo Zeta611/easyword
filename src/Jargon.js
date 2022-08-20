@@ -10,10 +10,16 @@ import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
 
-function streamJargons(param) {
+function streamJargons(order) {
   var match = Firebase.getFirebase(undefined);
   var jargonsCol = Firestore.collection(match.firestore, "jargons");
-  var jargonsQuery = Firestore.query(jargonsCol, Firestore.orderBy("english"));
+  var queryConstraint;
+  queryConstraint = order.TAG === /* English */0 ? (
+      order._0 ? Firestore.orderBy("english", "desc") : Firestore.orderBy("english", undefined)
+    ) : (
+      order._0 ? Firestore.orderBy("korean", "desc") : Firestore.orderBy("korean", undefined)
+    );
+  var jargonsQuery = Firestore.query(jargonsCol, queryConstraint);
   return function (callback) {
     return Firestore.onSnapshot(jargonsQuery, (function (snapshot) {
                   return Curry._1(callback, Belt_Array.map(snapshot.docs, (function (doc) {
@@ -50,8 +56,15 @@ function Jargon$Dictionary(Props) {
         return [];
       });
   var setJargons = match[1];
+  var match$1 = React.useState(function () {
+        return {
+                TAG: /* English */0,
+                _0: /* Ascending */0
+              };
+      });
+  var order = match$1[0];
   React.useEffect((function () {
-          var stream = streamJargons(undefined);
+          var stream = streamJargons(order);
           var unsubscribe = Curry._1(stream, (function (jargons) {
                   return Curry._1(setJargons, (function (param) {
                                 return jargons;

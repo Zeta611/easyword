@@ -24,7 +24,7 @@ type queryConstraint
 external query: (collectionReference, queryConstraint) => query = "query"
 
 @module("firebase/firestore")
-external orderBy: string => queryConstraint = "orderBy"
+external orderBy: (string, ~order: string=?, unit) => queryConstraint = "orderBy"
 
 module DocSnapshot = {
   type t
