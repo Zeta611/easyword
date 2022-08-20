@@ -923,6 +923,7 @@ __metadata:
     gentype: ^4.5.0
     react: ^18.2.0
     react-dom: ^18.2.0
+    reactfire: ^4.2.2
     reanalyze: ^2.23.0
     rescript: ^9.1.4
     vite: ^3.0.4
@@ -1936,6 +1937,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"reactfire@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "reactfire@npm:4.2.2"
+  dependencies:
+    rxfire: ^6.0.3
+    rxjs: ^6.6.3 || ^7.0.1
+  peerDependencies:
+    firebase: ^9.0.0
+    react: "*"
+  checksum: a6311df3e564e1364141a83ab053a29e1faa98223235d61439854dd36f976f8a214f5af370a7d40d02351a8039a769df496548b0501c0ff74a9d44b73eabad51
+  languageName: node
+  linkType: hard
+
 "readable-stream@npm:^3.6.0":
   version: 3.6.0
   resolution: "readable-stream@npm:3.6.0"
@@ -2054,6 +2068,27 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: b179c68249584565ddb5664a241e8e48c293b2207718d885b08ee25797d98857a383f06b544bb89819407da5a71557f4713309a278f61c4778bb32b1d3321a1c
+  languageName: node
+  linkType: hard
+
+"rxfire@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "rxfire@npm:6.0.3"
+  dependencies:
+    tslib: ^1.9.0 || ~2.1.0
+  peerDependencies:
+    firebase: ^9.0.0
+    rxjs: ^6.0.0 || ^7.0.0
+  checksum: 418ccf6ee9553fca2e6b0d65099903d82b45a0b1eb4487211dcf5319caf26454f84e9c8834bc932289c7e09e14fc39385188f046568a7c2364735a3135c320fb
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^6.6.3 || ^7.0.1":
+  version: 7.5.6
+  resolution: "rxjs@npm:7.5.6"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: fc05f01364a74dac57490fb3e07ea63b422af04017fae1db641a009073f902ef69f285c5daac31359620dc8d9aee7d81e42b370ca2a8573d1feae0b04329383b
   languageName: node
   linkType: hard
 
@@ -2246,6 +2281,13 @@ __metadata:
   version: 0.0.3
   resolution: "tr46@npm:0.0.3"
   checksum: 726321c5eaf41b5002e17ffbd1fb7245999a073e8979085dacd47c4b4e8068ff5777142fc6726d6ca1fd2ff16921b48788b87225cbc57c72636f6efa8efbffe3
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^1.9.0 || ~2.1.0":
+  version: 2.1.0
+  resolution: "tslib@npm:2.1.0"
+  checksum: aa189c8179de0427b0906da30926fd53c59d96ec239dff87d6e6bc831f608df0cbd6f77c61dabc074408bd0aa0b9ae4ec35cb2c15f729e32f37274db5730cb78
   languageName: node
   linkType: hard
 

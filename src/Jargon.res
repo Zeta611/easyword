@@ -1,38 +1,8 @@
 type jargon = {id: string, english: string, korean: string}
-type jargonStream = (array<jargon> => unit) => Firebase.unsubscribe
 
+type language = English | Korean
 type direction = Ascending | Descending
-type order = English(direction) | Korean(direction)
-
-let streamJargons = (~order) => {
-  open Firebase
-  let {firestore} = getFirebase()
-  let jargonsCol = collection(firestore, ~path="jargons")
-  let queryConstraint = switch order {
-  | English(Ascending) => orderBy("english", ())
-  | English(Descending) => orderBy("english", ~order="desc", ())
-  | Korean(Ascending) => orderBy("korean", ())
-  | Korean(Descending) => orderBy("korean", ~order="desc", ())
-  }
-  let jargonsQuery = query(jargonsCol, queryConstraint)
-  callback =>
-    onSnapshot(jargonsQuery, snapshot => {
-      let jargons =
-        snapshot
-        ->QuerySnapshot.docs
-        ->Array.map(doc => {
-          open DocSnapshot
-          {...doc->data(), id: doc->id}
-        })
-      callback(jargons)
-    })
-}
-
-let addJargon = (english, korean) => {
-  open Firebase
-  let {firestore} = getFirebase()
-  addDoc(collection(firestore, ~path="jargons"), {"english": english, "korean": korean})
-}
+type order = (language, direction)
 
 module Dictionary = {
   let header =
@@ -45,36 +15,47 @@ module Dictionary = {
   }
 
   @react.component
-  let make = (~query) => {
-    let (jargons, setJargons) = React.useState(_ => [])
-    let (order, setOrder) = React.useState(_ => English(Ascending))
+  let make = (~query as regexQuery) => {
+    let ((language, direction), setOrder) = React.useState(_ => (English, Ascending))
 
-    React.useEffect0(() => {
-      let stream = streamJargons(~order)
-      let unsubscribe = stream(jargons => {
-        setJargons(_ => jargons)
-      })
+    open Firebase
 
-      // cleanup
-      Some(() => {unsubscribe()})
-    })
+    let jargonsCollection = useFirestore()->collection(~path="jargons")
+    let queryConstraint = {
+      let language = switch language {
+      | English => "english"
+      | Korean => "korean"
+      }
+      let direction = switch direction {
+      | Ascending => "asc"
+      | Descending => "desc"
+      }
+      orderBy(language, ~direction)
+    }
+    let jargonsQuery = jargonsCollection->query(queryConstraint)
+    let {status, data: jargons} =
+      jargonsQuery->useFirestoreCollectionData(reactFireOptions(~idField="id", ()))
 
-    let regex = {
-      let matchAll = %re("/.*/")
-      try Js.Re.fromString(query) catch {
-      | Js.Exn.Error(obj) => {
-          obj->Js.Exn.message->Option.forEach(Js.log)
-          matchAll
+    if status == "loading" {
+      React.string("loading")
+    } else {
+      let regex = {
+        let matchAll = %re("/.*/")
+        try Js.Re.fromString(regexQuery) catch {
+        | Js.Exn.Error(obj) => {
+            obj->Js.Exn.message->Option.forEach(Js.log)
+            matchAll
+          }
         }
       }
+      let rows = jargons->Array.keepMap(({english, korean} as jargon) => {
+        switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
+        | (None, None) => None
+        | _ => Some(makeRow(jargon))
+        }
+      })
+      <table className="content-table"> header <tbody> {React.array(rows)} </tbody> </table>
     }
-    let rows = jargons->Array.keepMap(({english, korean} as jargon) => {
-      switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
-      | (None, None) => None
-      | _ => Some(makeRow(jargon))
-      }
-    })
-    <table className="content-table"> header <tbody> {React.array(rows)} </tbody> </table>
   }
 }
 

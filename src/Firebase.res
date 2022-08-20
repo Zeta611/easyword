@@ -2,17 +2,40 @@ type firebaseConfig
 @module("./firebaseConfig")
 external firebaseConfig: firebaseConfig = "firebaseConfig"
 
-type firebaseApp
-@module("firebase/app")
-external initializeApp: firebaseConfig => firebaseApp = "initializeApp"
+module FirebaseAppProvider = {
+  @react.component @module("reactfire")
+  external make: (~firebaseConfig: firebaseConfig, ~children: React.element) => React.element =
+    "FirebaseAppProvider"
+}
 
-type analytics
-@module("firebase/analytics")
-external getAnalytics: firebaseApp => analytics = "getAnalytics"
+type firebaseApp
+@module("reactfire")
+external useFirebaseApp: unit => firebaseApp = "useFirebaseApp"
+
+// @module("firebase/app")
+// external initializeApp: firebaseConfig => firebaseApp = "initializeApp"
+
+// type analytics
+// @module("firebase/analytics")
+// external getAnalytics: firebaseApp => analytics = "getAnalytics"
 
 type firestore
 @module("firebase/firestore")
 external getFirestore: firebaseApp => firestore = "getFirestore"
+
+module FirestoreProvider = {
+  @react.component @module("reactfire")
+  external make: (~sdk: firestore, ~children: React.element) => React.element = "FirestoreProvider"
+}
+
+// TODO: Bind TS string union `status`
+type observableStatus<'a> = {status: string, data: 'a}
+@module("reactfire")
+external useInitFirestore: (firebaseApp => Js.Promise.t<firestore>) => observableStatus<_> =
+  "useInitFirestore"
+
+@module("reactfire")
+external useFirestore: unit => firestore = "useFirestore"
 
 @module("firebase/firestore")
 external enableMultiTabIndexedDbPersistence: firestore => Js.Promise.t<unit> =
@@ -28,56 +51,19 @@ type queryConstraint
 external query: (collectionReference, queryConstraint) => query = "query"
 
 @module("firebase/firestore")
-external orderBy: (string, ~order: string=?, unit) => queryConstraint = "orderBy"
+external orderBy: (string, ~direction: string) => queryConstraint = "orderBy"
 
-module DocSnapshot = {
-  type t
-
-  @get external exists: t => bool = "exists"
-  @get external id: t => string = "id"
-  @send external data: (t, unit) => 'a = "data"
+@deriving(abstract)
+type reactFireOptions<'a> = {
+  @optional idField: string,
+  @optional initialData: 'a,
+  @optional suspense: bool,
 }
 
-module QuerySnapshot = {
-  type t
+@module("reactfire")
+external useFirestoreCollectionData: (query, reactFireOptions<_>) => observableStatus<_> =
+  "useFirestoreCollectionData"
 
-  @get external docs: t => array<DocSnapshot.t> = "docs"
-  @get external size: t => int = "size"
-}
-
-type unsubscribe = unit => unit
-@module("firebase/firestore")
-external onSnapshot: (query, QuerySnapshot.t => unit) => unsubscribe = "onSnapshot"
-
-@module("firebase/firestore")
-external addDoc: (collectionReference, 'a) => Js.Promise.t<'b> = "addDoc"
-
-type auth
-@module("firebase/auth")
-external getAuth: firebaseApp => auth = "getAuth"
-
-type firebaseServices = {
-  firebaseApp: firebaseApp,
-  analytics: analytics,
-  firestore: firestore,
-  auth: auth,
-}
-
-let initializeServices = () => {
-  let firebaseApp = firebaseConfig->initializeApp
-  let analytics = firebaseApp->getAnalytics
-  let firestore = firebaseApp->getFirestore
-  let auth = firebaseApp->getAuth
-  {firebaseApp: firebaseApp, analytics: analytics, firestore: firestore, auth: auth}
-}
-
-let getFirebase = initializeServices
-
-let () = {
-  let {firestore} = initializeServices()
-  open Js.Promise
-  firestore->enableMultiTabIndexedDbPersistence->catch(err => {
-    Js.log(err)
-    resolve()
-  }, _)->ignore
-}
+// type auth
+// @module("firebase/auth")
+// external getAuth: firebaseApp => auth = "getAuth"

@@ -2,24 +2,23 @@
 
 import * as App from "./App.js";
 import * as React from "react";
+import * as Firebase from "./Firebase.js";
 import * as ReactDom from "react-dom";
-import * as Caml_exceptions from "../node_modules/rescript/lib/es6/caml_exceptions.js";
-
-var RootMissing = /* @__PURE__ */Caml_exceptions.create("Index.RootMissing");
+import * as Reactfire from "reactfire";
+import * as Pervasives from "../node_modules/rescript/lib/es6/pervasives.js";
 
 var root = document.querySelector("#root");
 
 if (root == null) {
-  throw {
-        RE_EXN_ID: RootMissing,
-        Error: new Error()
-      };
+  Pervasives.failwith("DOM root is missing");
+} else {
+  ReactDom.render(React.createElement(Reactfire.FirebaseAppProvider, {
+            firebaseConfig: Firebase.firebaseConfig,
+            children: React.createElement(App.make, {})
+          }), root);
 }
 
-ReactDom.render(React.createElement(App.make, {}), root);
-
 export {
-  RootMissing ,
   
 }
 /* root Not a pure module */
