@@ -14,6 +14,10 @@ type firestore
 @module("firebase/firestore")
 external getFirestore: firebaseApp => firestore = "getFirestore"
 
+@module("firebase/firestore")
+external enableMultiTabIndexedDbPersistence: firestore => Js.Promise.t<unit> =
+  "enableMultiTabIndexedDbPersistence"
+
 type collectionReference
 @module("firebase/firestore")
 external collection: (firestore, ~path: string) => collectionReference = "collection"
@@ -68,3 +72,12 @@ let initializeServices = () => {
 }
 
 let getFirebase = initializeServices
+
+let () = {
+  let {firestore} = initializeServices()
+  open Js.Promise
+  firestore->enableMultiTabIndexedDbPersistence->catch(err => {
+    Js.log(err)
+    resolve()
+  }, _)->ignore
+}

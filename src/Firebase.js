@@ -25,6 +25,15 @@ function initializeServices(param) {
         };
 }
 
+var match = initializeServices(undefined);
+
+var __x = Firestore.enableMultiTabIndexedDbPersistence(match.firestore);
+
+__x.catch(function (err) {
+      console.log(err);
+      return Promise.resolve(undefined);
+    });
+
 var getFirebase = initializeServices;
 
 export {
