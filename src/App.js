@@ -20,16 +20,17 @@ function App(Props) {
                     return Promise.resolve(db);
                   });
       });
-  if (match.status === "loading") {
-    return "loading...";
-  }
   var match$1 = url.path;
   if (match$1) {
     if (match$1.hd === "jargon" && !match$1.tl) {
-      return React.createElement(Reactfire.FirestoreProvider, {
-                  sdk: match.data,
-                  children: React.createElement(Jargon.make, {})
-                });
+      if (match.status === "loading") {
+        return "loading...";
+      } else {
+        return React.createElement(Reactfire.FirestoreProvider, {
+                    sdk: match.data,
+                    children: React.createElement(Jargon.make, {})
+                  });
+      }
     } else {
       return "404";
     }

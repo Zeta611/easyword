@@ -15,13 +15,14 @@ let make = () => {
     }, _)
   })
 
-  if status == "loading" {
-    React.string("loading...")
-  } else {
-    switch url.path {
-    | list{} => <Home />
-    | list{"jargon"} => <FirestoreProvider sdk=firestoreInstance> <Jargon /> </FirestoreProvider>
-    | _ => React.string("404")
+  switch url.path {
+  | list{} => <Home />
+  | list{"jargon"} =>
+    if status == "loading" {
+      React.string("loading...")
+    } else {
+      <FirestoreProvider sdk=firestoreInstance> <Jargon /> </FirestoreProvider>
     }
+  | _ => React.string("404")
   }
 }
