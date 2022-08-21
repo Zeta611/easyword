@@ -3,8 +3,10 @@
 import * as Home from "./Home.js";
 import * as React from "react";
 import * as Jargon from "./Jargon.js";
+import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
+import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.mjs";
 
@@ -12,6 +14,10 @@ function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var app = Reactfire.useFirebaseApp();
   var auth = Auth.getAuth(app);
+  var appCheck = AppCheck.initializeAppCheck(app, {
+        provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
+        isTokenAutoRefreshEnabled: true
+      });
   var match = Reactfire.useInitFirestore(function (app) {
         var firestore = Firestore.getFirestore(app);
         var __x = Firestore.enableMultiTabIndexedDbPersistence(firestore);
@@ -33,9 +39,12 @@ function App(Props) {
                 })
         ) : "404"
     ) : React.createElement(Home.make, {});
-  return React.createElement(Reactfire.AuthProvider, {
-              sdk: auth,
-              children: tmp
+  return React.createElement(Reactfire.AppCheckProvider, {
+              sdk: appCheck,
+              children: React.createElement(Reactfire.AuthProvider, {
+                    sdk: auth,
+                    children: tmp
+                  })
             });
 }
 

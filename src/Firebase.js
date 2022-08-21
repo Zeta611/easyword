@@ -10,11 +10,17 @@ var FirestoreProvider = {};
 
 var AuthProvider = {};
 
+var appCheckToken = FirebaseConfig.APP_CHECK_TOKEN;
+
+var AppCheckProvider = {};
+
 export {
   firebaseConfig ,
   FirebaseAppProvider ,
   FirestoreProvider ,
   AuthProvider ,
+  appCheckToken ,
+  AppCheckProvider ,
   
 }
 /* firebaseConfig Not a pure module */

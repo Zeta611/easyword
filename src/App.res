@@ -7,6 +7,14 @@ let make = () => {
   let app = useFirebaseApp()
   let auth = app->getAuth
 
+  let appCheck = initializeAppCheck(
+    app,
+    {
+      provider: createReCaptchaV3Provider(appCheckToken),
+      isTokenAutoRefreshEnabled: true,
+    },
+  )
+
   let {status, data: firestore} = useInitFirestore(app => {
     let firestore = app->getFirestore
     firestore
@@ -18,16 +26,18 @@ let make = () => {
     }, _)
   })
 
-  <AuthProvider sdk=auth>
-    {switch url.path {
-    | list{} => <Home />
-    | list{"jargon"} =>
-      if status == "loading" {
-        React.string("loading...")
-      } else {
-        <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
-      }
-    | _ => React.string("404")
-    }}
-  </AuthProvider>
+  <AppCheckProvider sdk=appCheck>
+    <AuthProvider sdk=auth>
+      {switch url.path {
+      | list{} => <Home />
+      | list{"jargon"} =>
+        if status == "loading" {
+          React.string("loading...")
+        } else {
+          <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+        }
+      | _ => React.string("404")
+      }}
+    </AuthProvider>
+  </AppCheckProvider>
 }

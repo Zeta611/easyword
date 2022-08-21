@@ -72,3 +72,21 @@ module AuthProvider = {
   @react.component @module("reactfire")
   external make: (~sdk: auth, ~children: React.element) => React.element = "AuthProvider"
 }
+
+type appCheckToken
+@module("./firebaseConfig")
+external appCheckToken: appCheckToken = "APP_CHECK_TOKEN"
+
+type reCaptchaV3Provider
+@new @module("firebase/app-check")
+external createReCaptchaV3Provider: appCheckToken => reCaptchaV3Provider = "ReCaptchaV3Provider"
+
+type appCheck
+type appCheckConfig = {provider: reCaptchaV3Provider, isTokenAutoRefreshEnabled: bool}
+@module("firebase/app-check")
+external initializeAppCheck: (firebaseApp, appCheckConfig) => appCheck = "initializeAppCheck"
+
+module AppCheckProvider = {
+  @react.component @module("reactfire")
+  external make: (~sdk: appCheck, ~children: React.element) => React.element = "AppCheckProvider"
+}
