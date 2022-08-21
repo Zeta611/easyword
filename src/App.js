@@ -14,6 +14,7 @@ function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var app = Reactfire.useFirebaseApp();
   var auth = Auth.getAuth(app);
+  ((self.FIREBASE_APPCHECK_DEBUG_TOKEN = true));
   var appCheck = AppCheck.initializeAppCheck(app, {
         provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
         isTokenAutoRefreshEnabled: true
@@ -29,29 +30,24 @@ function App(Props) {
                     return Promise.resolve(firestore);
                   });
       });
-  var match$1 = url.path;
-  if (match$1) {
-    if (match$1.hd === "jargon" && !match$1.tl) {
-      if (match.status === "loading") {
-        return "loading...";
-      } else {
-        return React.createElement(Reactfire.AppCheckProvider, {
-                    sdk: appCheck,
-                    children: React.createElement(Reactfire.AuthProvider, {
-                          sdk: auth,
-                          children: React.createElement(Reactfire.FirestoreProvider, {
-                                sdk: match.data,
-                                children: React.createElement(Jargon.make, {})
-                              })
-                        })
-                  });
-      }
-    } else {
-      return "404";
-    }
-  } else {
-    return React.createElement(Home.make, {});
+  if (match.status === "loading") {
+    return "loading...";
   }
+  var match$1 = url.path;
+  var tmp;
+  tmp = match$1 ? (
+      match$1.hd === "jargon" && !match$1.tl ? React.createElement(Reactfire.FirestoreProvider, {
+              sdk: match.data,
+              children: React.createElement(Jargon.make, {})
+            }) : "404"
+    ) : React.createElement(Home.make, {});
+  return React.createElement(Reactfire.AppCheckProvider, {
+              sdk: appCheck,
+              children: React.createElement(Reactfire.AuthProvider, {
+                    sdk: auth,
+                    children: tmp
+                  })
+            });
 }
 
 var make = App;

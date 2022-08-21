@@ -6,7 +6,7 @@ let make = () => {
 
   let app = useFirebaseApp()
   let auth = app->getAuth
-
+  let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
   let appCheck = initializeAppCheck(
     app,
     {
@@ -38,20 +38,18 @@ let make = () => {
     }, _)
   })
 
-  {
-    switch url.path {
-    | list{} => <Home />
-    | list{"jargon"} =>
-      if status == "loading" {
-        React.string("loading...")
-      } else {
-        <AppCheckProvider sdk=appCheck>
-          <AuthProvider sdk=auth>
-            <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
-          </AuthProvider>
-        </AppCheckProvider>
-      }
-    | _ => React.string("404")
-    }
+  if status == "loading" {
+    React.string("loading...")
+  } else {
+    <AppCheckProvider sdk=appCheck>
+      <AuthProvider sdk=auth>
+        {switch url.path {
+        | list{} => <Home />
+        | list{"jargon"} => <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+
+        | _ => React.string("404")
+        }}
+      </AuthProvider>
+    </AppCheckProvider>
   }
 }
