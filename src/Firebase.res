@@ -64,6 +64,11 @@ type reactFireOptions<'a> = {
 external useFirestoreCollectionData: (query, reactFireOptions<_>) => observableStatus<_> =
   "useFirestoreCollectionData"
 
-// type auth
-// @module("firebase/auth")
-// external getAuth: firebaseApp => auth = "getAuth"
+type auth
+@module("firebase/auth")
+external getAuth: firebaseApp => auth = "getAuth"
+
+module AuthProvider = {
+  @react.component @module("reactfire")
+  external make: (~sdk: auth, ~children: React.element) => React.element = "AuthProvider"
+}

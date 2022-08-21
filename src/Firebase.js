@@ -8,10 +8,13 @@ var FirebaseAppProvider = {};
 
 var FirestoreProvider = {};
 
+var AuthProvider = {};
+
 export {
   firebaseConfig ,
   FirebaseAppProvider ,
   FirestoreProvider ,
+  AuthProvider ,
   
 }
 /* firebaseConfig Not a pure module */

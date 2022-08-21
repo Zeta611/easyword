@@ -4,25 +4,30 @@ let make = () => {
 
   open Firebase
 
-  let {status, data: firestoreInstance} = useInitFirestore(firebaseApp => {
-    let db = firebaseApp->getFirestore
-    db
+  let app = useFirebaseApp()
+  let auth = app->getAuth
+
+  let {status, data: firestore} = useInitFirestore(app => {
+    let firestore = app->getFirestore
+    firestore
     ->enableMultiTabIndexedDbPersistence
-    ->Js.Promise.then_(_ => Js.Promise.resolve(db), _)
+    ->Js.Promise.then_(_ => Js.Promise.resolve(firestore), _)
     ->Js.Promise.catch(err => {
       Js.log(err)
-      Js.Promise.resolve(db)
+      Js.Promise.resolve(firestore)
     }, _)
   })
 
-  switch url.path {
-  | list{} => <Home />
-  | list{"jargon"} =>
-    if status == "loading" {
-      React.string("loading...")
-    } else {
-      <FirestoreProvider sdk=firestoreInstance> <Jargon /> </FirestoreProvider>
-    }
-  | _ => React.string("404")
-  }
+  <AuthProvider sdk=auth>
+    {switch url.path {
+    | list{} => <Home />
+    | list{"jargon"} =>
+      if status == "loading" {
+        React.string("loading...")
+      } else {
+        <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+      }
+    | _ => React.string("404")
+    }}
+  </AuthProvider>
 }

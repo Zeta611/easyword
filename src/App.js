@@ -4,39 +4,39 @@ import * as Home from "./Home.js";
 import * as React from "react";
 import * as Jargon from "./Jargon.js";
 import * as Reactfire from "reactfire";
+import * as Auth from "firebase/auth";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.mjs";
 
 function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
-  var match = Reactfire.useInitFirestore(function (firebaseApp) {
-        var db = Firestore.getFirestore(firebaseApp);
-        var __x = Firestore.enableMultiTabIndexedDbPersistence(db);
+  var app = Reactfire.useFirebaseApp();
+  var auth = Auth.getAuth(app);
+  var match = Reactfire.useInitFirestore(function (app) {
+        var firestore = Firestore.getFirestore(app);
+        var __x = Firestore.enableMultiTabIndexedDbPersistence(firestore);
         var __x$1 = __x.then(function (param) {
-              return Promise.resolve(db);
+              return Promise.resolve(firestore);
             });
         return __x$1.catch(function (err) {
                     console.log(err);
-                    return Promise.resolve(db);
+                    return Promise.resolve(firestore);
                   });
       });
   var match$1 = url.path;
-  if (match$1) {
-    if (match$1.hd === "jargon" && !match$1.tl) {
-      if (match.status === "loading") {
-        return "loading...";
-      } else {
-        return React.createElement(Reactfire.FirestoreProvider, {
-                    sdk: match.data,
-                    children: React.createElement(Jargon.make, {})
-                  });
-      }
-    } else {
-      return "404";
-    }
-  } else {
-    return React.createElement(Home.make, {});
-  }
+  var tmp;
+  tmp = match$1 ? (
+      match$1.hd === "jargon" && !match$1.tl ? (
+          match.status === "loading" ? "loading..." : React.createElement(Reactfire.FirestoreProvider, {
+                  sdk: match.data,
+                  children: React.createElement(Jargon.make, {})
+                })
+        ) : "404"
+    ) : React.createElement(Home.make, {});
+  return React.createElement(Reactfire.AuthProvider, {
+              sdk: auth,
+              children: tmp
+            });
 }
 
 var make = App;
