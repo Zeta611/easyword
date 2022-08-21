@@ -38,18 +38,20 @@ let make = () => {
     }, _)
   })
 
-  <AppCheckProvider sdk=appCheck>
-    <AuthProvider sdk=auth>
-      {switch url.path {
-      | list{} => <Home />
-      | list{"jargon"} =>
-        if status == "loading" {
-          React.string("loading...")
-        } else {
-          <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
-        }
-      | _ => React.string("404")
-      }}
-    </AuthProvider>
-  </AppCheckProvider>
+  {
+    switch url.path {
+    | list{} => <Home />
+    | list{"jargon"} =>
+      if status == "loading" {
+        React.string("loading...")
+      } else {
+        <AppCheckProvider sdk=appCheck>
+          <AuthProvider sdk=auth>
+            <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+          </AuthProvider>
+        </AppCheckProvider>
+      }
+    | _ => React.string("404")
+    }
+  }
 }
