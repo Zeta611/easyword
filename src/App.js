@@ -19,7 +19,15 @@ function App(Props) {
         isTokenAutoRefreshEnabled: true
       });
   var match = Reactfire.useInitFirestore(function (app) {
-        return Promise.resolve(Firestore.getFirestore(app));
+        var firestore = Firestore.getFirestore(app);
+        var __x = Firestore.enableIndexedDbPersistence(firestore);
+        var __x$1 = __x.catch(function (err) {
+              console.log(err);
+              return Promise.resolve(undefined);
+            });
+        return __x$1.then(function (param) {
+                    return Promise.resolve(firestore);
+                  });
       });
   var match$1 = url.path;
   var tmp;

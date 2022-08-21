@@ -30,12 +30,12 @@ let make = () => {
   let {status, data: firestore} = useInitFirestore(app => {
     // let firestore = app->initializeFirestore()
     let firestore = app->getFirestore
-    // firestore->enableMultiTabIndexedDbPersistence->Js.Promise.catch(err => {
-    //   Js.log(err)
-    //   Js.Promise.resolve()
-    // }, _)->Js.Promise.then_(_ => {
-    Js.Promise.resolve(firestore)
-    // }, _)
+    firestore->enableIndexedDbPersistence->Js.Promise.catch(err => {
+      Js.log(err)
+      Js.Promise.resolve()
+    }, _)->Js.Promise.then_(_ => {
+      Js.Promise.resolve(firestore)
+    }, _)
   })
 
   <AppCheckProvider sdk=appCheck>
