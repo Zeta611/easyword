@@ -5,13 +5,11 @@ type direction = Ascending | Descending
 type order = (language, direction)
 
 module Dictionary = {
-  let header =
-    <thead>
-      <tr> <th> {React.string(`영어`)} </th> <th> {React.string(`한국어`)} </th> </tr>
-    </thead>
-
   let makeRow = ({id, english, korean}) => {
-    <tr key=id> <td> {React.string(english)} </td> <td> {React.string(korean)} </td> </tr>
+    <div>
+      <div className="font-semibold"> {React.string(english)} </div>
+      <div className="font-regular"> {React.string(korean)} </div>
+    </div>
   }
 
   @react.component
@@ -54,7 +52,8 @@ module Dictionary = {
         | _ => Some(makeRow(jargon))
         }
       })
-      <table className="content-table"> header <tbody> {React.array(rows)} </tbody> </table>
+
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-2"> {React.array(rows)} </div>
     }
   }
 }
@@ -78,5 +77,5 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div className="container"> <InputForm query onChange /> <Dictionary query /> </div>
+  <div> <InputForm query onChange /> <Dictionary query /> </div>
 }

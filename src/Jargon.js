@@ -10,12 +10,12 @@ import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
 
-var header = React.createElement("thead", undefined, React.createElement("tr", undefined, React.createElement("th", undefined, "영어"), React.createElement("th", undefined, "한국어")));
-
 function makeRow(param) {
-  return React.createElement("tr", {
-              key: param.id
-            }, React.createElement("td", undefined, param.english), React.createElement("td", undefined, param.korean));
+  return React.createElement("div", undefined, React.createElement("div", {
+                  className: "font-semibold"
+                }, param.english), React.createElement("div", {
+                  className: "font-regular"
+                }, param.korean));
 }
 
 function Jargon$Dictionary(Props) {
@@ -63,13 +63,12 @@ function Jargon$Dictionary(Props) {
           }
           
         }));
-  return React.createElement("table", {
-              className: "content-table"
-            }, header, React.createElement("tbody", undefined, rows));
+  return React.createElement("div", {
+              className: "grid sm:grid-cols-2 xl:grid-cols-3 gap-2"
+            }, rows);
 }
 
 var Dictionary = {
-  header: header,
   makeRow: makeRow,
   make: Jargon$Dictionary
 };
@@ -100,9 +99,7 @@ function Jargon(Props) {
                   return value;
                 }));
   };
-  return React.createElement("div", {
-              className: "container"
-            }, React.createElement(Jargon$InputForm, {
+  return React.createElement("div", undefined, React.createElement(Jargon$InputForm, {
                   query: query,
                   onChange: onChange
                 }), React.createElement(Jargon$Dictionary, {
@@ -118,4 +115,4 @@ export {
   make ,
   
 }
-/* header Not a pure module */
+/* react Not a pure module */

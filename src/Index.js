@@ -7,6 +7,9 @@ import * as ReactDom from "react-dom";
 import * as Reactfire from "reactfire";
 import * as Pervasives from "../node_modules/rescript/lib/es6/pervasives.js";
 
+import './main.css'
+;
+
 var root = document.querySelector("#root");
 
 if (root == null) {
@@ -21,4 +24,4 @@ if (root == null) {
 export {
   
 }
-/* root Not a pure module */
+/*  Not a pure module */

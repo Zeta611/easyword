@@ -1,3 +1,5 @@
+%%raw("import './main.css'")
+
 open Firebase
 
 switch ReactDOM.querySelector("#root") {

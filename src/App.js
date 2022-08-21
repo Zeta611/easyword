@@ -8,7 +8,7 @@ import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
 import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.mjs";
+import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
 function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
