@@ -38,6 +38,9 @@ external useInitFirestore: (firebaseApp => Js.Promise.t<firestore>) => observabl
 external useFirestore: unit => firestore = "useFirestore"
 
 @module("firebase/firestore")
+external enableIndexedDbPersistence: firestore => Js.Promise.t<unit> = "enableIndexedDbPersistence"
+
+@module("firebase/firestore")
 external enableMultiTabIndexedDbPersistence: firestore => Js.Promise.t<unit> =
   "enableMultiTabIndexedDbPersistence"
 

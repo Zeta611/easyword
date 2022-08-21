@@ -21,11 +21,11 @@ function App(Props) {
   var match = Reactfire.useInitFirestore(function (app) {
         var firestore = Firestore.getFirestore(app);
         var __x = Firestore.enableMultiTabIndexedDbPersistence(firestore);
-        var __x$1 = __x.then(function (param) {
-              return Promise.resolve(firestore);
+        var __x$1 = __x.catch(function (err) {
+              console.log(err);
+              return Promise.resolve(undefined);
             });
-        return __x$1.catch(function (err) {
-                    console.log(err);
+        return __x$1.then(function (param) {
                     return Promise.resolve(firestore);
                   });
       });
