@@ -28,7 +28,6 @@ function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var app = Reactfire.useFirebaseApp();
   var auth = Auth.getAuth(app);
-  ((self.FIREBASE_APPCHECK_DEBUG_TOKEN = true));
   var appCheck = AppCheck.initializeAppCheck(app, {
         provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
         isTokenAutoRefreshEnabled: true

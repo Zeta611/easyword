@@ -20,7 +20,7 @@ let make = () => {
 
   let app = useFirebaseApp()
   let auth = app->getAuth
-  let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
+  // let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
   let appCheck = initializeAppCheck(
     app,
     {
