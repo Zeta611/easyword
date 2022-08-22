@@ -32,8 +32,7 @@ function App(Props) {
         provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
         isTokenAutoRefreshEnabled: true
       });
-  if ((iOS())) {
-    var firestore = Firestore.getFirestore(app);
+  var component = function (appCheck, auth, firestore) {
     var match = url.path;
     var tmp;
     tmp = match ? (
@@ -49,8 +48,11 @@ function App(Props) {
                       children: tmp
                     })
               });
+  };
+  if ((iOS())) {
+    return component(appCheck, auth, Firestore.getFirestore(app));
   }
-  var match$1 = Reactfire.useInitFirestore(function (app) {
+  var match = Reactfire.useInitFirestore(function (app) {
         var firestore = Firestore.getFirestore(app);
         var __x = Firestore.enableIndexedDbPersistence(firestore);
         var __x$1 = __x.catch(function (err) {
@@ -61,24 +63,11 @@ function App(Props) {
                     return Promise.resolve(firestore);
                   });
       });
-  if (match$1.status === "loading") {
+  if (match.status === "loading") {
     return "loading...";
+  } else {
+    return component(appCheck, auth, match.data);
   }
-  var match$2 = url.path;
-  var tmp$1;
-  tmp$1 = match$2 ? (
-      match$2.hd === "jargon" && !match$2.tl ? React.createElement(Reactfire.FirestoreProvider, {
-              sdk: match$1.data,
-              children: React.createElement(Jargon.make, {})
-            }) : "404"
-    ) : React.createElement(Home.make, {});
-  return React.createElement(Reactfire.AppCheckProvider, {
-              sdk: appCheck,
-              children: React.createElement(Reactfire.AuthProvider, {
-                    sdk: auth,
-                    children: tmp$1
-                  })
-            });
 }
 
 var make = App;

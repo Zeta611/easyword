@@ -29,8 +29,7 @@ let make = () => {
     },
   )
 
-  if %raw(`iOS()`) {
-    let firestore = app->getFirestore
+  let component = (appCheck, auth, firestore) => {
     <AppCheckProvider sdk=appCheck>
       <AuthProvider sdk=auth>
         {switch url.path {
@@ -40,6 +39,10 @@ let make = () => {
         }}
       </AuthProvider>
     </AppCheckProvider>
+  }
+
+  if %raw(`iOS()`) {
+    component(appCheck, auth, app->getFirestore)
   } else {
     let {status, data: firestore} = useInitFirestore(app => {
       let firestore = app->getFirestore
@@ -54,15 +57,7 @@ let make = () => {
     if status == "loading" {
       React.string("loading...")
     } else {
-      <AppCheckProvider sdk=appCheck>
-        <AuthProvider sdk=auth>
-          {switch url.path {
-          | list{} => <Home />
-          | list{"jargon"} => <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
-          | _ => React.string("404")
-          }}
-        </AuthProvider>
-      </AppCheckProvider>
+      component(appCheck, auth, firestore)
     }
   }
 }
