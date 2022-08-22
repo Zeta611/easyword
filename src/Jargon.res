@@ -8,7 +8,7 @@ module Dictionary = {
   let makeRow = ({id, english, korean}) => {
     <div key={id}>
       <div className="font-semibold"> {React.string(english)} </div>
-      <div className="font-regular"> {React.string(korean)} </div>
+      <div className="text-right font-regular"> {React.string(korean)} </div>
     </div>
   }
 
@@ -53,7 +53,9 @@ module Dictionary = {
         }
       })
 
-      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-2"> {React.array(rows)} </div>
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+        {React.array(rows)}
+      </div>
     }
   }
 }
@@ -63,7 +65,13 @@ module InputForm = {
   let make = (~query, ~onChange) => {
     <form>
       <label> {React.string(`검색 (정규식)`)} </label>
-      <input type_="text" value=query onChange />
+      <input
+        type_="text"
+        value=query
+        onChange
+        className="border border-slate-300 rounded-md"
+        placeholder="Regex: /abs.*[ ].*/"
+      />
     </form>
   }
 }
@@ -77,5 +85,8 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div> <InputForm query onChange /> <Dictionary query /> </div>
+  <div className="p-5">
+    <InputForm query onChange />
+    <Dictionary query />
+  </div>
 }

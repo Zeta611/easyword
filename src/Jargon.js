@@ -16,7 +16,7 @@ function makeRow(param) {
             }, React.createElement("div", {
                   className: "font-semibold"
                 }, param.english), React.createElement("div", {
-                  className: "font-regular"
+                  className: "text-right font-regular"
                 }, param.korean));
 }
 
@@ -65,7 +65,7 @@ function Jargon$Dictionary(Props) {
           
         }));
   return React.createElement("div", {
-              className: "grid sm:grid-cols-2 xl:grid-cols-3 gap-2"
+              className: "grid sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2"
             }, rows);
 }
 
@@ -78,6 +78,8 @@ function Jargon$InputForm(Props) {
   var query = Props.query;
   var onChange = Props.onChange;
   return React.createElement("form", undefined, React.createElement("label", undefined, "검색 (정규식)"), React.createElement("input", {
+                  className: "border border-slate-300 rounded-md",
+                  placeholder: "Regex: /abs.*[ ].*/",
                   type: "text",
                   value: query,
                   onChange: onChange
@@ -100,7 +102,9 @@ function Jargon(Props) {
             return value;
           }));
   };
-  return React.createElement("div", undefined, React.createElement(Jargon$InputForm, {
+  return React.createElement("div", {
+              className: "p-5"
+            }, React.createElement(Jargon$InputForm, {
                   query: query,
                   onChange: onChange
                 }), React.createElement(Jargon$Dictionary, {
