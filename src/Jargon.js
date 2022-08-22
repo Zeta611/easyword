@@ -11,7 +11,9 @@ import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_ex
 import * as Firestore from "firebase/firestore";
 
 function makeRow(param) {
-  return React.createElement("div", undefined, React.createElement("div", {
+  return React.createElement("div", {
+              key: param.id
+            }, React.createElement("div", {
                   className: "font-semibold"
                 }, param.english), React.createElement("div", {
                   className: "font-regular"

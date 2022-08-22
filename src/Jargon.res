@@ -6,7 +6,7 @@ type order = (language, direction)
 
 module Dictionary = {
   let makeRow = ({id, english, korean}) => {
-    <div>
+    <div key={id}>
       <div className="font-semibold"> {React.string(english)} </div>
       <div className="font-regular"> {React.string(korean)} </div>
     </div>

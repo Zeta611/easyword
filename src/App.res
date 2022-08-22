@@ -1,3 +1,17 @@
+%%raw(`
+function iOS() {
+  return [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ].includes(navigator.platform)
+  // iPad on iOS 13 detection
+  || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+}`)
+
 @react.component
 let make = () => {
   let url = RescriptReactRouter.useUrl()
@@ -15,44 +29,40 @@ let make = () => {
     },
   )
 
-  // let (firestore, setFirestore) = React.useState(_ => None)
-  // React.useEffect0(() => {
-  let firestore = app->getFirestore
-  //   firestore->enableMultiTabIndexedDbPersistence->Js.Promise.then_(() => {
-  //     setFirestore(_ => Some(firestore))
-  //     Js.Promise.resolve()
-  //   }, _)->ignore
-  //   setFirestore(_ => Some(firestore))
+  if %raw(`iOS()`) {
+    let firestore = app->getFirestore
+    <AppCheckProvider sdk=appCheck>
+      <AuthProvider sdk=auth>
+        {switch url.path {
+        | list{} => <Home />
+        | list{"jargon"} => <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+        | _ => React.string("404")
+        }}
+      </AuthProvider>
+    </AppCheckProvider>
+  } else {
+    let {status, data: firestore} = useInitFirestore(app => {
+      let firestore = app->getFirestore
+      firestore->enableIndexedDbPersistence->Js.Promise.catch(err => {
+        Js.log(err)
+        Js.Promise.resolve()
+      }, _)->Js.Promise.then_(_ => {
+        Js.Promise.resolve(firestore)
+      }, _)
+    })
 
-  //   None
-  // })
-
-  // let {status, data: firestore} = useInitFirestore(app => {
-  //   // let firestore = app->initializeFirestore()
-  //   let firestore = app->getFirestore
-  //   firestore->enableIndexedDbPersistence->Js.Promise.catch(err => {
-  //     Js.log(err)
-  //     Js.Promise.resolve()
-  //   }, _)->Js.Promise.then_(_ => {
-  //     Js.Promise.resolve(firestore)
-  //   }, _)
-  // })
-
-  // if status == "loading" {
-  //   React.string("loading...")
-  // } else {
-  // switch firestore {
-  // | None => React.string("loading...")
-  // | Some(firestore) =>
-  <AppCheckProvider sdk=appCheck>
-    <AuthProvider sdk=auth>
-      {switch url.path {
-      | list{} => <Home />
-      | list{"jargon"} => <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
-      | _ => React.string("404")
-      }}
-    </AuthProvider>
-  </AppCheckProvider>
-  // }
-  // }
+    if status == "loading" {
+      React.string("loading...")
+    } else {
+      <AppCheckProvider sdk=appCheck>
+        <AuthProvider sdk=auth>
+          {switch url.path {
+          | list{} => <Home />
+          | list{"jargon"} => <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+          | _ => React.string("404")
+          }}
+        </AuthProvider>
+      </AppCheckProvider>
+    }
+  }
 }
