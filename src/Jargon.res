@@ -6,9 +6,15 @@ type order = (language, direction)
 
 module Dictionary = {
   let makeRow = ({id, english, korean}) => {
-    <div key={id} className="group p-4 hover:bg-teal-50 rounded-xl shadow-md">
-      <div className="font-semibold group-hover:text-teal-700"> {React.string(english)} </div>
-      <div className="font-regular text-right text-slate-500 group-hover:text-teal-600">
+    <div
+      key={id}
+      className="group p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900">
+      <div
+        className="font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200 dark:text-white">
+        {React.string(english)}
+      </div>
+      <div
+        className="font-regular text-right text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
         {React.string(korean)}
       </div>
     </div>
@@ -71,7 +77,7 @@ module InputForm = {
           type_="search"
           value=query
           onChange
-          className="block p-4 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-solid border-slate-200 hover:bg-slate-200"
+          className="block p-4 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700"
           placeholder="정규식: syntax$"
         />
       </div>
@@ -88,7 +94,7 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div className="grid gap-4 p-5">
+  <div className="grid gap-4 p-5 bg-[#f8f9fa] dark:bg-black">
     <InputForm query onChange />
     <Dictionary query />
   </div>

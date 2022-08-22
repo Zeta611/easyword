@@ -13,11 +13,11 @@ import * as Firestore from "firebase/firestore";
 function makeRow(param) {
   return React.createElement("div", {
               key: param.id,
-              className: "group p-4 hover:bg-teal-50 rounded-xl shadow-md"
+              className: "group p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
             }, React.createElement("div", {
-                  className: "font-semibold group-hover:text-teal-700"
+                  className: "font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200 dark:text-white"
                 }, param.english), React.createElement("div", {
-                  className: "font-regular text-right text-slate-500 group-hover:text-teal-600"
+                  className: "font-regular text-right text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300"
                 }, param.korean));
 }
 
@@ -81,7 +81,7 @@ function Jargon$InputForm(Props) {
   return React.createElement("form", undefined, React.createElement("div", {
                   className: "relative"
                 }, React.createElement("input", {
-                      className: "block p-4 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-solid border-slate-200 hover:bg-slate-200",
+                      className: "block p-4 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700",
                       placeholder: "정규식: syntax$",
                       type: "search",
                       value: query,
@@ -106,7 +106,7 @@ function Jargon(Props) {
           }));
   };
   return React.createElement("div", {
-              className: "grid gap-4 p-5"
+              className: "grid gap-4 p-5 bg-[#f8f9fa] dark:bg-black"
             }, React.createElement(Jargon$InputForm, {
                   query: query,
                   onChange: onChange
