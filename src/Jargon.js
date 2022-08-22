@@ -106,7 +106,7 @@ function Jargon(Props) {
           }));
   };
   return React.createElement("div", {
-              className: "grid gap-4 p-5 bg-[#f8f9fa] dark:bg-black"
+              className: "grid gap-4 p-5"
             }, React.createElement(Jargon$InputForm, {
                   query: query,
                   onChange: onChange

@@ -94,7 +94,7 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div className="grid gap-4 p-5 bg-[#f8f9fa] dark:bg-black">
+  <div className="grid gap-4 p-5">
     <InputForm query onChange />
     <Dictionary query />
   </div>
