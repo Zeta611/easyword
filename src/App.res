@@ -34,8 +34,9 @@ let make = () => {
         {switch url.path {
         | list{} =>
           <FirestoreProvider sdk=firestore>
-            <Jargon />
+            <Home />
           </FirestoreProvider>
+        | list{"jargon", id} => <Jargon id />
         | _ => React.string("404")
         }}
       </AuthProvider>
