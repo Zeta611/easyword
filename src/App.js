@@ -11,24 +11,11 @@ import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
-function iOS() {
-  return [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    'iPhone',
-    'iPod'
-  ].includes(navigator.platform)
-  // iPad on iOS 13 detection
-  || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-}
-;
-
 function App(Props) {
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   var app = Reactfire.useFirebaseApp();
   var auth = Auth.getAuth(app);
+  ((self.FIREBASE_APPCHECK_DEBUG_TOKEN = true));
   var appCheck = AppCheck.initializeAppCheck(app, {
         provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
         isTokenAutoRefreshEnabled: true
@@ -50,20 +37,18 @@ function App(Props) {
       });
   if (match.status === "loading") {
     return "loading...";
-  } else {
-    var firestore = match.data;
-    var match$1 = url.path;
-    return React.createElement(Reactfire.AppCheckProvider, {
-                sdk: appCheck,
-                children: React.createElement(Reactfire.AuthProvider, {
-                      sdk: auth,
-                      children: match$1 ? "404" : React.createElement(Reactfire.FirestoreProvider, {
-                              sdk: firestore,
-                              children: React.createElement(Jargon.make, {})
-                            })
-                    })
-              });
   }
+  var match$1 = url.path;
+  return React.createElement(Reactfire.AppCheckProvider, {
+              sdk: appCheck,
+              children: React.createElement(Reactfire.AuthProvider, {
+                    sdk: auth,
+                    children: match$1 ? "404" : React.createElement(Reactfire.FirestoreProvider, {
+                            sdk: match.data,
+                            children: React.createElement(Jargon.make, {})
+                          })
+                  })
+            });
 }
 
 var make = App;
@@ -71,4 +56,4 @@ var make = App;
 export {
   make ,
 }
-/*  Not a pure module */
+/* react Not a pure module */
