@@ -33,22 +33,6 @@ function App(Props) {
         provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
         isTokenAutoRefreshEnabled: true
       });
-  var component = function (appCheck, auth, firestore) {
-    var match = url.path;
-    return React.createElement(Reactfire.AppCheckProvider, {
-                sdk: appCheck,
-                children: React.createElement(Reactfire.AuthProvider, {
-                      sdk: auth,
-                      children: match ? "404" : React.createElement(Reactfire.FirestoreProvider, {
-                              sdk: firestore,
-                              children: React.createElement(Jargon.make, {})
-                            })
-                    })
-              });
-  };
-  if ((iOS())) {
-    return component(appCheck, auth, Firestore.getFirestore(app));
-  }
   var match = Reactfire.useInitFirestore(async function (app) {
         var firestore = Firestore.getFirestore(app);
         try {
@@ -67,7 +51,18 @@ function App(Props) {
   if (match.status === "loading") {
     return "loading...";
   } else {
-    return component(appCheck, auth, match.data);
+    var firestore = match.data;
+    var match$1 = url.path;
+    return React.createElement(Reactfire.AppCheckProvider, {
+                sdk: appCheck,
+                children: React.createElement(Reactfire.AuthProvider, {
+                      sdk: auth,
+                      children: match$1 ? "404" : React.createElement(Reactfire.FirestoreProvider, {
+                              sdk: firestore,
+                              children: React.createElement(Jargon.make, {})
+                            })
+                    })
+              });
   }
 }
 

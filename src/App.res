@@ -44,23 +44,23 @@ let make = () => {
     </AppCheckProvider>
   }
 
-  if %raw(`iOS()`) {
-    component(appCheck, auth, app->getFirestore)
-  } else {
-    let {status, data: firestore} = useInitFirestore(async (app) => {
-      let firestore = app->getFirestore
-      try {
-        await (firestore->enableMultiTabIndexedDbPersistence)
-      } catch {
-      | Js.Exn.Error(err) => Js.log(err)
-      }
-      firestore
-    })
-
-    if status == "loading" {
-      React.string("loading...")
-    } else {
-      component(appCheck, auth, firestore)
+  // if %raw(`iOS()`) {
+  //   component(appCheck, auth, app->getFirestore)
+  // } else {
+  let {status, data: firestore} = useInitFirestore(async (app) => {
+    let firestore = app->getFirestore
+    try {
+      await (firestore->enableMultiTabIndexedDbPersistence)
+    } catch {
+    | Js.Exn.Error(err) => Js.log(err)
     }
+    firestore
+  })
+
+  if status == "loading" {
+    React.string("loading...")
+  } else {
+    component(appCheck, auth, firestore)
   }
+  // }
 }
