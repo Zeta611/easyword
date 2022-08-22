@@ -6,9 +6,9 @@ type order = (language, direction)
 
 module Dictionary = {
   let makeRow = ({id, english, korean}) => {
-    <div key={id}>
+    <div key={id} className="p-4 bg-white rounded-xl shadow-md">
       <div className="font-semibold"> {React.string(english)} </div>
-      <div className="text-right font-regular"> {React.string(korean)} </div>
+      <div className="text-right text-slate-500 font-regular"> {React.string(korean)} </div>
     </div>
   }
 
@@ -63,7 +63,7 @@ module Dictionary = {
 module InputForm = {
   @react.component
   let make = (~query, ~onChange) => {
-    <form>
+    <form className="max-w-sm mx-auto flex space-x-2">
       <label> {React.string(`검색 (정규식)`)} </label>
       <input
         type_="text"
@@ -85,7 +85,7 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div className="p-5">
+  <div className="grid gap-4 p-5">
     <InputForm query onChange />
     <Dictionary query />
   </div>

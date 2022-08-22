@@ -12,11 +12,12 @@ import * as Firestore from "firebase/firestore";
 
 function makeRow(param) {
   return React.createElement("div", {
-              key: param.id
+              key: param.id,
+              className: "p-4 bg-white rounded-xl shadow-md"
             }, React.createElement("div", {
                   className: "font-semibold"
                 }, param.english), React.createElement("div", {
-                  className: "text-right font-regular"
+                  className: "text-right text-slate-500 font-regular"
                 }, param.korean));
 }
 
@@ -77,7 +78,9 @@ var Dictionary = {
 function Jargon$InputForm(Props) {
   var query = Props.query;
   var onChange = Props.onChange;
-  return React.createElement("form", undefined, React.createElement("label", undefined, "검색 (정규식)"), React.createElement("input", {
+  return React.createElement("form", {
+              className: "max-w-sm mx-auto flex space-x-2"
+            }, React.createElement("label", undefined, "검색 (정규식)"), React.createElement("input", {
                   className: "border border-slate-300 rounded-md",
                   placeholder: "Regex: /abs.*[ ].*/",
                   type: "text",
@@ -103,7 +106,7 @@ function Jargon(Props) {
           }));
   };
   return React.createElement("div", {
-              className: "p-5"
+              className: "grid gap-4 p-5"
             }, React.createElement(Jargon$InputForm, {
                   query: query,
                   onChange: onChange
