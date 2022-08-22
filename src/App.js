@@ -3,12 +3,14 @@
 import * as Home from "./Home.js";
 import * as React from "react";
 import * as Jargon from "./Jargon.js";
+import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
+import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.mjs";
+import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
 function iOS() {
   return [
@@ -52,16 +54,20 @@ function App(Props) {
   if ((iOS())) {
     return component(appCheck, auth, Firestore.getFirestore(app));
   }
-  var match = Reactfire.useInitFirestore(function (app) {
+  var match = Reactfire.useInitFirestore(async function (app) {
         var firestore = Firestore.getFirestore(app);
-        var __x = Firestore.enableIndexedDbPersistence(firestore);
-        var __x$1 = __x.catch(function (err) {
-              console.log(err);
-              return Promise.resolve(undefined);
-            });
-        return __x$1.then(function (param) {
-                    return Promise.resolve(firestore);
-                  });
+        try {
+          await Firestore.enableMultiTabIndexedDbPersistence(firestore);
+        }
+        catch (raw_err){
+          var err = Caml_js_exceptions.internalToOCamlException(raw_err);
+          if (err.RE_EXN_ID === Js_exn.$$Error) {
+            console.log(err._1);
+          } else {
+            throw err;
+          }
+        }
+        return firestore;
       });
   if (match.status === "loading") {
     return "loading...";
@@ -74,6 +80,5 @@ var make = App;
 
 export {
   make ,
-  
 }
 /*  Not a pure module */

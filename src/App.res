@@ -21,6 +21,7 @@ let make = () => {
   let app = useFirebaseApp()
   let auth = app->getAuth
   // let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
+
   let appCheck = initializeAppCheck(
     app,
     {
@@ -34,7 +35,10 @@ let make = () => {
       <AuthProvider sdk=auth>
         {switch url.path {
         | list{} => <Home />
-        | list{"jargon"} => <FirestoreProvider sdk=firestore> <Jargon /> </FirestoreProvider>
+        | list{"jargon"} =>
+          <FirestoreProvider sdk=firestore>
+            <Jargon />
+          </FirestoreProvider>
         | _ => React.string("404")
         }}
       </AuthProvider>
@@ -44,14 +48,14 @@ let make = () => {
   if %raw(`iOS()`) {
     component(appCheck, auth, app->getFirestore)
   } else {
-    let {status, data: firestore} = useInitFirestore(app => {
+    let {status, data: firestore} = useInitFirestore(async (app) => {
       let firestore = app->getFirestore
-      firestore->enableIndexedDbPersistence->Js.Promise.catch(err => {
-        Js.log(err)
-        Js.Promise.resolve()
-      }, _)->Js.Promise.then_(_ => {
-        Js.Promise.resolve(firestore)
-      }, _)
+      try {
+        await (firestore->enableMultiTabIndexedDbPersistence)
+      } catch {
+      | Js.Exn.Error(err) => Js.log(err)
+      }
+      firestore
     })
 
     if status == "loading" {

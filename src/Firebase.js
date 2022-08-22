@@ -21,6 +21,5 @@ export {
   AuthProvider ,
   appCheckToken ,
   AppCheckProvider ,
-  
 }
 /* firebaseConfig Not a pure module */

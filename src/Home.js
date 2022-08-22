@@ -14,6 +14,5 @@ var make = Home;
 
 export {
   make ,
-  
 }
 /* react Not a pure module */

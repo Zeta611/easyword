@@ -1547,7 +1547,7 @@ __metadata:
     react-dom: ^18.2.0
     reactfire: ^4.2.2
     reanalyze: ^2.23.0
-    rescript: ^9.1.4
+    rescript: ./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz
     tailwindcss: ^3.1.8
     vite: ^3.0.4
   languageName: unknown
@@ -2956,15 +2956,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rescript@npm:^9.1.4":
-  version: 9.1.4
-  resolution: "rescript@npm:9.1.4"
+"rescript@file:./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz::locator=eko%40workspace%3A.":
+  version: 10.1.0-alpha.1
+  resolution: "rescript@file:./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz::locator=eko%40workspace%3A."
   bin:
     bsc: bsc
     bsrefmt: bsrefmt
     bstracing: lib/bstracing
     rescript: rescript
-  checksum: 3c503580f968b4d4409830093c57f85b5590f7372250345427b3a7c1f5ccb08009e1edd89b4a3dcbb3ee95ee4dcad9c337ece4d1f8fdaa10e22ed04b8a7495c0
+  checksum: 243b717f06cba45d2af77d37b7a94a157a607c1c8eef2cbc7f0520032c92a1fd2c9ac1b38ce36fcad1f113ce409697399f7ccf523a5f8adeac0077b3deaa9211
   languageName: node
   linkType: hard
 

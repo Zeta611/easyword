@@ -50,7 +50,6 @@ function Jargon$Dictionary(Props) {
     if (obj.RE_EXN_ID === Js_exn.$$Error) {
       Belt_Option.forEach(obj._1.message, (function (prim) {
               console.log(prim);
-              
             }));
       regex = matchAll;
     } else {
@@ -97,9 +96,9 @@ function Jargon(Props) {
   var query = match[0];
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
-    return Curry._1(setQuery, (function (param) {
-                  return value;
-                }));
+    Curry._1(setQuery, (function (param) {
+            return value;
+          }));
   };
   return React.createElement("div", undefined, React.createElement(Jargon$InputForm, {
                   query: query,
@@ -115,6 +114,5 @@ export {
   Dictionary ,
   InputForm ,
   make ,
-  
 }
 /* react Not a pure module */
