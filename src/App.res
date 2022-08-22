@@ -34,8 +34,7 @@ let make = () => {
     <AppCheckProvider sdk=appCheck>
       <AuthProvider sdk=auth>
         {switch url.path {
-        | list{} => <Home />
-        | list{"jargon"} =>
+        | list{} =>
           <FirestoreProvider sdk=firestore>
             <Jargon />
           </FirestoreProvider>
