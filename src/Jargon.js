@@ -13,11 +13,11 @@ import * as Firestore from "firebase/firestore";
 function makeRow(param) {
   return React.createElement("div", {
               key: param.id,
-              className: "group p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md"
+              className: "group p-4 hover:bg-teal-50 rounded-xl shadow-md"
             }, React.createElement("div", {
                   className: "font-semibold group-hover:text-teal-700"
                 }, param.english), React.createElement("div", {
-                  className: "text-right text-slate-500 group-hover:text-teal-600 font-regular"
+                  className: "font-regular text-right text-slate-500 group-hover:text-teal-600"
                 }, param.korean));
 }
 
@@ -78,15 +78,15 @@ var Dictionary = {
 function Jargon$InputForm(Props) {
   var query = Props.query;
   var onChange = Props.onChange;
-  return React.createElement("form", {
-              className: "max-w-sm mx-auto flex space-x-2"
-            }, React.createElement("label", undefined, "검색 (정규식)"), React.createElement("input", {
-                  className: "border border-slate-300 rounded-md",
-                  placeholder: "Regex: /abs.*[ ].*/",
-                  type: "text",
-                  value: query,
-                  onChange: onChange
-                }));
+  return React.createElement("form", undefined, React.createElement("div", {
+                  className: "relative"
+                }, React.createElement("input", {
+                      className: "block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-slate-200 hover:bg-slate-200",
+                      placeholder: "정규식: syntax$",
+                      type: "search",
+                      value: query,
+                      onChange: onChange
+                    })));
 }
 
 var InputForm = {

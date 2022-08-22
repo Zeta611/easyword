@@ -6,9 +6,9 @@ type order = (language, direction)
 
 module Dictionary = {
   let makeRow = ({id, english, korean}) => {
-    <div key={id} className="group p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md">
+    <div key={id} className="group p-4 hover:bg-teal-50 rounded-xl shadow-md">
       <div className="font-semibold group-hover:text-teal-700"> {React.string(english)} </div>
-      <div className="text-right text-slate-500 group-hover:text-teal-600 font-regular">
+      <div className="font-regular text-right text-slate-500 group-hover:text-teal-600">
         {React.string(korean)}
       </div>
     </div>
@@ -65,15 +65,16 @@ module Dictionary = {
 module InputForm = {
   @react.component
   let make = (~query, ~onChange) => {
-    <form className="max-w-sm mx-auto flex space-x-2">
-      <label> {React.string(`검색 (정규식)`)} </label>
-      <input
-        type_="text"
-        value=query
-        onChange
-        className="border border-slate-300 rounded-md"
-        placeholder="Regex: /abs.*[ ].*/"
-      />
+    <form>
+      <div className="relative">
+        <input
+          type_="search"
+          value=query
+          onChange
+          className="block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-slate-200 hover:bg-slate-200"
+          placeholder="정규식: syntax$"
+        />
+      </div>
     </form>
   }
 }
