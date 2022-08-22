@@ -13,11 +13,11 @@ import * as Firestore from "firebase/firestore";
 function makeRow(param) {
   return React.createElement("div", {
               key: param.id,
-              className: "p-4 bg-white rounded-xl shadow-md"
+              className: "group p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md"
             }, React.createElement("div", {
-                  className: "font-semibold"
+                  className: "font-semibold group-hover:text-teal-700"
                 }, param.english), React.createElement("div", {
-                  className: "text-right text-slate-500 font-regular"
+                  className: "text-right text-slate-500 group-hover:text-teal-600 font-regular"
                 }, param.korean));
 }
 

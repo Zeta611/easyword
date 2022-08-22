@@ -6,9 +6,11 @@ type order = (language, direction)
 
 module Dictionary = {
   let makeRow = ({id, english, korean}) => {
-    <div key={id} className="p-4 bg-white rounded-xl shadow-md">
-      <div className="font-semibold"> {React.string(english)} </div>
-      <div className="text-right text-slate-500 font-regular"> {React.string(korean)} </div>
+    <div key={id} className="group p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md">
+      <div className="font-semibold group-hover:text-teal-700"> {React.string(english)} </div>
+      <div className="text-right text-slate-500 group-hover:text-teal-600 font-regular">
+        {React.string(korean)}
+      </div>
     </div>
   }
 
