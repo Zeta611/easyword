@@ -81,7 +81,7 @@ function Jargon$InputForm(Props) {
   return React.createElement("form", undefined, React.createElement("div", {
                   className: "relative"
                 }, React.createElement("input", {
-                      className: "block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-slate-200 hover:bg-slate-200",
+                      className: "block p-4 w-full text-base text-gray-900 bg-gray-50 rounded-lg border border-slate-200 hover:bg-slate-200",
                       placeholder: "정규식: syntax$",
                       type: "search",
                       value: query,
