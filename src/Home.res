@@ -41,7 +41,7 @@ module Dictionary = {
     }
     let jargonsQuery = jargonsCollection->query(queryConstraint)
     let {status, data: jargons} =
-      jargonsQuery->useFirestoreCollectionData(reactFireOptions(~idField="id", ()))
+      jargonsQuery->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
     if status == "loading" {
       React.string("loading")

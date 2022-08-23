@@ -44,6 +44,10 @@ external enableIndexedDbPersistence: firestore => Js.Promise.t<unit> = "enableIn
 external enableMultiTabIndexedDbPersistence: firestore => Js.Promise.t<unit> =
   "enableMultiTabIndexedDbPersistence"
 
+type documentReference
+@module("firebase/firestore")
+external doc: (firestore, ~path: string) => documentReference = "doc"
+
 type collectionReference
 @module("firebase/firestore")
 external collection: (firestore, ~path: string) => collectionReference = "collection"
@@ -64,8 +68,14 @@ type reactFireOptions<'a> = {
 }
 
 @module("reactfire")
-external useFirestoreCollectionData: (query, reactFireOptions<_>) => observableStatus<_> =
-  "useFirestoreCollectionData"
+external useFirestoreDocData: documentReference => observableStatus<_> = "useFirestoreDocData"
+
+@module("reactfire")
+external useFirestoreCollectionData: (
+  query,
+  ~options: reactFireOptions<_>=?,
+  unit,
+) => observableStatus<_> = "useFirestoreCollectionData"
 
 type auth
 @module("firebase/auth")
@@ -93,3 +103,9 @@ module AppCheckProvider = {
   @react.component @module("reactfire")
   external make: (~sdk: appCheck, ~children: React.element) => React.element = "AppCheckProvider"
 }
+
+type timestamp
+@new @module("firebase/firestore")
+external make: unit => timestamp = "Timestamp"
+@send
+external toDate: timestamp => Js.Date.t = "toDate"

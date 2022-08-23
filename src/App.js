@@ -50,16 +50,16 @@ function App(Props) {
       tmp = "404";
     }
   } else {
-    tmp = React.createElement(Reactfire.FirestoreProvider, {
-          sdk: match.data,
-          children: React.createElement(Home.make, {})
-        });
+    tmp = React.createElement(Home.make, {});
   }
   return React.createElement(Reactfire.AppCheckProvider, {
               sdk: appCheck,
               children: React.createElement(Reactfire.AuthProvider, {
                     sdk: auth,
-                    children: tmp
+                    children: React.createElement(Reactfire.FirestoreProvider, {
+                          sdk: match.data,
+                          children: tmp
+                        })
                   })
             });
 }

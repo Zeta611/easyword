@@ -31,14 +31,14 @@ let make = () => {
   } else {
     <AppCheckProvider sdk=appCheck>
       <AuthProvider sdk=auth>
-        {switch url.path {
-        | list{} =>
-          <FirestoreProvider sdk=firestore>
-            <Home />
-          </FirestoreProvider>
-        | list{"jargon", id} => <Jargon id />
-        | _ => React.string("404")
-        }}
+        <FirestoreProvider sdk=firestore>
+          {switch url.path {
+          | list{} => <Home />
+
+          | list{"jargon", id} => <Jargon id />
+          | _ => React.string("404")
+          }}
+        </FirestoreProvider>
       </AuthProvider>
     </AppCheckProvider>
   }
