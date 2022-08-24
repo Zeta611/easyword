@@ -8,9 +8,16 @@ module FirebaseAppProvider = {
     "FirebaseAppProvider"
 }
 
-type firebaseApp
+module FirebaseOptions = {
+  type t
+}
+
+module FirebaseApp = {
+  type t = {options: FirebaseOptions.t}
+}
+
 @module("reactfire")
-external useFirebaseApp: unit => firebaseApp = "useFirebaseApp"
+external useFirebaseApp: unit => FirebaseApp.t = "useFirebaseApp"
 
 // @module("firebase/app")
 // external initializeApp: firebaseConfig => firebaseApp = "initializeApp"
@@ -21,7 +28,7 @@ external useFirebaseApp: unit => firebaseApp = "useFirebaseApp"
 
 type firestore
 @module("firebase/firestore")
-external getFirestore: firebaseApp => firestore = "getFirestore"
+external getFirestore: FirebaseApp.t => firestore = "getFirestore"
 
 module FirestoreProvider = {
   @react.component @module("reactfire")
@@ -31,7 +38,7 @@ module FirestoreProvider = {
 // TODO: Bind TS string union `status`
 type observableStatus<'a> = {status: string, data: 'a}
 @module("reactfire")
-external useInitFirestore: (firebaseApp => Js.Promise.t<firestore>) => observableStatus<_> =
+external useInitFirestore: (FirebaseApp.t => Js.Promise.t<firestore>) => observableStatus<_> =
   "useInitFirestore"
 
 @module("reactfire")
@@ -77,14 +84,34 @@ external useFirestoreCollectionData: (
   unit,
 ) => observableStatus<_> = "useFirestoreCollectionData"
 
-type auth
+module Auth = {
+  type t = {app: FirebaseApp.t}
+
+  @send
+  external onAuthStateChanged: (t, 'user) => 'unsubscribe = "onAuthStateChanged"
+
+  module EmailAuthProvider = {
+    let providerID = "password"
+  }
+  module GithubAuthProvider = {
+    let providerID = "github.com"
+  }
+}
+
 @module("firebase/auth")
-external getAuth: firebaseApp => auth = "getAuth"
+external getAuth: FirebaseApp.t => Auth.t = "getAuth"
 
 module AuthProvider = {
   @react.component @module("reactfire")
-  external make: (~sdk: auth, ~children: React.element) => React.element = "AuthProvider"
+  external make: (~sdk: Auth.t, ~children: React.element) => React.element = "AuthProvider"
 }
+
+@module("reactfire")
+external useAuth: unit => Auth.t = "useAuth"
+
+type signInCheckResult = {signedIn: bool}
+@module("reactfire")
+external useSigninCheck: unit => observableStatus<signInCheckResult> = "useSigninCheck"
 
 type appCheckToken
 @module("./firebaseConfig")
@@ -97,15 +124,32 @@ external createReCaptchaV3Provider: appCheckToken => reCaptchaV3Provider = "ReCa
 type appCheck
 type appCheckConfig = {provider: reCaptchaV3Provider, isTokenAutoRefreshEnabled: bool}
 @module("firebase/app-check")
-external initializeAppCheck: (firebaseApp, appCheckConfig) => appCheck = "initializeAppCheck"
+external initializeAppCheck: (FirebaseApp.t, appCheckConfig) => appCheck = "initializeAppCheck"
 
 module AppCheckProvider = {
   @react.component @module("reactfire")
   external make: (~sdk: appCheck, ~children: React.element) => React.element = "AppCheckProvider"
 }
 
-type timestamp
-@new @module("firebase/firestore")
-external make: unit => timestamp = "Timestamp"
-@send
-external toDate: timestamp => Js.Date.t = "toDate"
+module Timestamp = {
+  type t
+  @new @module("firebase/firestore")
+  external make: unit => t = "Timestamp"
+  @send
+  external toDate: t => Js.Date.t = "toDate"
+}
+
+module StyledFirebaseAuth = {
+  @react.component @module("react-firebaseui")
+  external make: (~uiConfig: 'uiConfig, ~firebaseAuth: 'a) => React.element = "StyledFirebaseAuth"
+}
+
+module FirebaseCompat = {
+  type firebase
+
+  @module("firebase/compat/app")
+  external firebase: firebase = "default"
+
+  @send
+  external initializeApp: (firebase, FirebaseOptions.t) => FirebaseApp.t = "initializeApp"
+}

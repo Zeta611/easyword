@@ -3,7 +3,7 @@ type comment = {
   id: string,
   comment: string,
   user: string,
-  timestamp: Firebase.timestamp,
+  timestamp: Firebase.Timestamp.t,
   parent: string,
 }
 
@@ -43,7 +43,7 @@ let rec makeComment = ({comment: {id, comment, user, timestamp, _}, children, _}
   <div key=id>
     <div className="grid grid-cols-2">
       <div> {React.string(user)} </div>
-      <div> {React.string(timestamp->Firebase.toDate->Js.Date.toDateString)} </div>
+      <div> {React.string(timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString)} </div>
       <div> {React.string(comment)} </div>
     </div>
     <div className="ml-4"> {makeSiblings(children)} </div>

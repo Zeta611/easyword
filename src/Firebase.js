@@ -6,7 +6,24 @@ var firebaseConfig = FirebaseConfig.firebaseConfig;
 
 var FirebaseAppProvider = {};
 
+var FirebaseOptions = {};
+
+var FirebaseApp = {};
+
 var FirestoreProvider = {};
+
+var EmailAuthProvider = {
+  providerID: "password"
+};
+
+var GithubAuthProvider = {
+  providerID: "github.com"
+};
+
+var Auth = {
+  EmailAuthProvider: EmailAuthProvider,
+  GithubAuthProvider: GithubAuthProvider
+};
 
 var AuthProvider = {};
 
@@ -14,12 +31,24 @@ var appCheckToken = FirebaseConfig.APP_CHECK_TOKEN;
 
 var AppCheckProvider = {};
 
+var Timestamp = {};
+
+var StyledFirebaseAuth = {};
+
+var FirebaseCompat = {};
+
 export {
   firebaseConfig ,
   FirebaseAppProvider ,
+  FirebaseOptions ,
+  FirebaseApp ,
   FirestoreProvider ,
+  Auth ,
   AuthProvider ,
   appCheckToken ,
   AppCheckProvider ,
+  Timestamp ,
+  StyledFirebaseAuth ,
+  FirebaseCompat ,
 }
 /* firebaseConfig Not a pure module */

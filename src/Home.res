@@ -23,7 +23,7 @@ module Dictionary = {
 
   @react.component
   let make = (~query as regexQuery) => {
-    let ((language, direction), setOrder) = React.useState(_ => (English, Ascending))
+    let ((language, direction), setOrder) = React.useState(() => (English, Ascending))
 
     open Firebase
 

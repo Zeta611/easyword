@@ -1519,6 +1519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dialog-polyfill@npm:^0.4.7":
+  version: 0.4.10
+  resolution: "dialog-polyfill@npm:0.4.10"
+  checksum: f5f472542a059ade7f1f19bc7bf7acf19210a1d89f9dda99cc67027f58709307c8c8faff9e4217cf9ef4d06ef0be3bf9885d48a7304e0f5b01b4f36c0e4570e1
+  languageName: node
+  linkType: hard
+
 "didyoumean@npm:^1.2.2":
   version: 1.2.2
   resolution: "didyoumean@npm:1.2.2"
@@ -1545,6 +1552,7 @@ __metadata:
     postcss: ^8.4.16
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-firebaseui: ^6.0.0
     reactfire: ^4.2.2
     reanalyze: ^2.23.0
     rescript: ./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz
@@ -1889,6 +1897,18 @@ __metadata:
     "@firebase/storage-compat": 0.1.17
     "@firebase/util": 1.6.3
   checksum: 546d4392080221dc9737d8560fa7f809722190cdd8825f65d75616004fb75d395ac7d0983e1d93f768299b04b1002f8868da5b28dda960f6490e5856849103fe
+  languageName: node
+  linkType: hard
+
+"firebaseui@npm:^6.0.0":
+  version: 6.0.1
+  resolution: "firebaseui@npm:6.0.1"
+  dependencies:
+    dialog-polyfill: ^0.4.7
+    material-design-lite: ^1.2.0
+  peerDependencies:
+    firebase: ^9.1.3
+  checksum: 584cf1a1f5b4991c40946c728052b11d23ae38c483de22b6153f594df22dd44e21e09abe789b718a424f7c752e5a5a4e4d39f79b7028b481fbac1781bc87bf7a
   languageName: node
   linkType: hard
 
@@ -2386,6 +2406,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"material-design-lite@npm:^1.2.0":
+  version: 1.3.0
+  resolution: "material-design-lite@npm:1.3.0"
+  checksum: f5d45f84408feb11c6e6da2389b69f73cbef3954b9259eced1f25070ad6e299f59782ca7e63e37635bdc177aea69a58aaa7b03fb9f74070a9dd6a44364d6bc9a
+  languageName: node
+  linkType: hard
+
 "merge2@npm:^1.3.0":
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
@@ -2855,6 +2882,18 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
+  languageName: node
+  linkType: hard
+
+"react-firebaseui@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "react-firebaseui@npm:6.0.0"
+  dependencies:
+    firebaseui: ^6.0.0
+  peerDependencies:
+    firebase: ^9.1.3
+    react: ">=15 <=17"
+  checksum: 05c58ddbe7b8054158366d58a024af3512be3606e982e635eb34b1de5e1c398cf3cb9f2985e75c654c5e1d31ac0ba1bed8c37913d34e25954abc0b1516dc78d9
   languageName: node
   linkType: hard
 

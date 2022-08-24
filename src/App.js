@@ -5,6 +5,7 @@ import * as React from "react";
 import * as Jargon from "./Jargon.js";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
+import * as SignIn from "./SignIn.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
@@ -44,13 +45,18 @@ function App(Props) {
   var match$1 = url.path;
   var tmp;
   if (match$1) {
-    if (match$1.hd === "jargon") {
-      var match$2 = match$1.tl;
-      tmp = match$2 && !match$2.tl ? React.createElement(Jargon.make, {
-              id: match$2.hd
-            }) : "404";
-    } else {
-      tmp = "404";
+    switch (match$1.hd) {
+      case "jargon" :
+          var match$2 = match$1.tl;
+          tmp = match$2 && !match$2.tl ? React.createElement(Jargon.make, {
+                  id: match$2.hd
+                }) : "404";
+          break;
+      case "login" :
+          tmp = match$1.tl ? "404" : React.createElement(SignIn.make, {});
+          break;
+      default:
+        tmp = "404";
     }
   } else {
     tmp = React.createElement(Home.make, {});
