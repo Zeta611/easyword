@@ -3,6 +3,7 @@
 import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
+import * as Loader from "./Loader.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
@@ -44,7 +45,9 @@ function Home$Dictionary(Props) {
         idField: "id"
       });
   if (match$2.status === "loading") {
-    return "loading";
+    return React.createElement("div", {
+                className: "h-screen grid justify-center content-center"
+              }, React.createElement(Loader.make, {}));
   }
   var matchAll = /.*/;
   var regex;

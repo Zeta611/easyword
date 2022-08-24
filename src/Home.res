@@ -44,7 +44,9 @@ module Dictionary = {
       jargonsQuery->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
     if status == "loading" {
-      React.string("loading")
+      <div className="h-screen grid justify-center content-center">
+        <Loader />
+      </div>
     } else {
       let regex = {
         let matchAll = %re("/.*/")

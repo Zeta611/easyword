@@ -27,14 +27,15 @@ let make = () => {
   })
 
   if status == "loading" {
-    React.string("loading...")
+    <div className="h-screen grid justify-center content-center">
+      <Loader />
+    </div>
   } else {
     <AppCheckProvider sdk=appCheck>
       <AuthProvider sdk=auth>
         <FirestoreProvider sdk=firestore>
           {switch url.path {
           | list{} => <Home />
-
           | list{"jargon", id} => <Jargon id />
           | _ => React.string("404")
           }}

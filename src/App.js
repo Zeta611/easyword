@@ -4,6 +4,7 @@ import * as Home from "./Home.js";
 import * as React from "react";
 import * as Jargon from "./Jargon.js";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
+import * as Loader from "./Loader.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
@@ -36,7 +37,9 @@ function App(Props) {
         return firestore;
       });
   if (match.status === "loading") {
-    return "loading...";
+    return React.createElement("div", {
+                className: "h-screen grid justify-center content-center"
+              }, React.createElement(Loader.make, {}));
   }
   var match$1 = url.path;
   var tmp;

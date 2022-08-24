@@ -88,7 +88,9 @@ let make = (~id) => {
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
   if docStatus == "loading" || collectionStatus == "loading" {
-    React.string("loading")
+    <div className="h-screen grid justify-center content-center">
+      <Loader />
+    </div>
   } else {
     let (roots, commentNodeTable) = constructForest(comments)
     <main className="grid p-5 gap-3 dark:text-white">
