@@ -40,17 +40,36 @@ let constructForest = (comments: array<comment>) => {
 }
 
 let rec makeComment = ({comment: {id, comment, user, timestamp, _}, children, _}) => {
-  <div className="ml-4" key=id>
+  <div key=id>
     <div className="grid grid-cols-2">
       <div> {React.string(user)} </div>
       <div> {React.string(timestamp->Firebase.toDate->Js.Date.toDateString)} </div>
       <div> {React.string(comment)} </div>
     </div>
-    <div> {makeSiblings(children)} </div>
+    <div className="ml-4"> {makeSiblings(children)} </div>
   </div>
 }
 and makeSiblings = (siblings: commentList) => {
   <div> {React.array(siblings->List.toArray->Array.map(makeComment))} </div>
+}
+
+module CommentInput = {
+  @react.component
+  let make = () => {
+    <form>
+      <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
+        <textarea
+          name="comment"
+          id="comment"
+          placeholder="여러분의 생각은 어떠신가요?"
+          className="h-24 p-1 border place-self-stretch"
+        />
+        <input
+          type_="submit" value="Comment" className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300"
+        />
+      </div>
+    </form>
+  }
 }
 
 @react.component
@@ -72,12 +91,13 @@ let make = (~id) => {
     React.string("loading")
   } else {
     let (roots, commentNodeTable) = constructForest(comments)
-    <div className="dark:text-white">
-      <div className="flex gap-3">
-        <div className="flex-none"> {React.string(english)} </div>
-        <div className="flex-none"> {React.string(korean)} </div>
-      </div>
-      {makeSiblings(roots.contents)}
-    </div>
+    <main className="grid p-5 gap-3 dark:text-white">
+      <h1 className="grid gap-1">
+        <div className="text-3xl font-bold"> {React.string(english)} </div>
+        <div className="text-2xl font-medium"> {React.string(korean)} </div>
+      </h1>
+      <CommentInput />
+      <div> {makeSiblings(roots.contents)} </div>
+    </main>
   }
 }

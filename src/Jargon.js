@@ -45,16 +45,36 @@ function makeComment(param) {
   var match = param.comment;
   var children = param.children;
   return React.createElement("div", {
-              key: match.id,
-              className: "ml-4"
+              key: match.id
             }, React.createElement("div", {
                   className: "grid grid-cols-2"
-                }, React.createElement("div", undefined, match.user), React.createElement("div", undefined, match.timestamp.toDate().toDateString()), React.createElement("div", undefined, match.comment)), React.createElement("div", undefined, makeSiblings(children)));
+                }, React.createElement("div", undefined, match.user), React.createElement("div", undefined, match.timestamp.toDate().toDateString()), React.createElement("div", undefined, match.comment)), React.createElement("div", {
+                  className: "ml-4"
+                }, makeSiblings(children)));
 }
 
 function makeSiblings(siblings) {
   return React.createElement("div", undefined, Belt_Array.map(Belt_List.toArray(siblings), makeComment));
 }
+
+function Jargon$CommentInput(Props) {
+  return React.createElement("form", undefined, React.createElement("div", {
+                  className: "p-2 gap-3 grid grid-cols-1 place-items-end"
+                }, React.createElement("textarea", {
+                      className: "h-24 p-1 border place-self-stretch",
+                      id: "comment",
+                      name: "comment",
+                      placeholder: "여러분의 생각은 어떠신가요?"
+                    }), React.createElement("input", {
+                      className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300",
+                      type: "submit",
+                      value: "Comment"
+                    })));
+}
+
+var CommentInput = {
+  make: Jargon$CommentInput
+};
 
 function Jargon(Props) {
   var id = Props.id;
@@ -70,15 +90,15 @@ function Jargon(Props) {
     return "loading";
   }
   var match$3 = constructForest(match$2.data);
-  return React.createElement("div", {
-              className: "dark:text-white"
-            }, React.createElement("div", {
-                  className: "flex gap-3"
+  return React.createElement("main", {
+              className: "grid p-5 gap-3 dark:text-white"
+            }, React.createElement("h1", {
+                  className: "grid gap-1"
                 }, React.createElement("div", {
-                      className: "flex-none"
+                      className: "text-3xl font-bold"
                     }, match$1.english), React.createElement("div", {
-                      className: "flex-none"
-                    }, match$1.korean)), makeSiblings(match$3[0].contents));
+                      className: "text-2xl font-medium"
+                    }, match$1.korean)), React.createElement(Jargon$CommentInput, {}), React.createElement("div", undefined, makeSiblings(match$3[0].contents)));
 }
 
 var make = Jargon;
@@ -87,6 +107,7 @@ export {
   constructForest ,
   makeComment ,
   makeSiblings ,
+  CommentInput ,
   make ,
 }
 /* react Not a pure module */
