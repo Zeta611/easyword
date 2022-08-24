@@ -21,13 +21,17 @@ let make = () => {
     <div className="h-screen grid justify-center content-center">
       <Loader />
     </div>
+  } else if signedIn {
+    RescriptReactRouter.push(`/`)
+    <> </>
   } else {
-    <div className="h-screen grid justify-center content-center dark:text-white">
-      {if !signedIn {
+    <div
+      className="h-screen bg-cover bg-center bg-[url('/assets/layered-waves.svg')] justify-self-stretch grid justify-center content-center">
+      <div
+        className="h-96 w-96 bg-zinc-50 bg-opacity-30 backdrop-blur-lg drop-shadow-lg rounded-xl grid content-center gap-3 text-zinc-800 dark:text-zinc-50">
+        <div className="text-3xl font-medium text-center"> {React.string(`로그인`)} </div>
         <StyledFirebaseAuth uiConfig firebaseAuth />
-      } else {
-        React.string("Already signed in!")
-      }}
+      </div>
     </div>
   }
 }

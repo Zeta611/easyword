@@ -10,7 +10,6 @@
     -webkit-appearance: none;
   }
   body {
-    @apply bg-[#f8f9fa];
-    @apply dark:bg-black; 
+    @apply bg-[#f8f9fa] dark:bg-black; 
   }
 }
