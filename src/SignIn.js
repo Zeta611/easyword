@@ -32,7 +32,7 @@ function SignIn(Props) {
               }, React.createElement(Loader.make, {}));
   } else if (match.data.signedIn) {
     RescriptReactRouter.push("/");
-    return React.createElement(React.Fragment, undefined);
+    return null;
   } else {
     return React.createElement("div", {
                 className: "h-screen bg-cover bg-center bg-[url('/assets/layered-waves.svg')] justify-self-stretch grid justify-center content-center"

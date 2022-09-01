@@ -23,7 +23,7 @@ let make = () => {
     </div>
   } else if signedIn {
     RescriptReactRouter.push(`/`)
-    <> </>
+    React.null
   } else {
     <div
       className="h-screen bg-cover bg-center bg-[url('/assets/layered-waves.svg')] justify-self-stretch grid justify-center content-center">
