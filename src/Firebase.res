@@ -36,7 +36,7 @@ module FirestoreProvider = {
 }
 
 // TODO: Bind TS string union `status`
-type observableStatus<'a> = {status: string, data: 'a}
+type observableStatus<'a> = {status: @string [#loading | #success], data: option<'a>}
 @module("reactfire")
 external useInitFirestore: (FirebaseApp.t => Js.Promise.t<firestore>) => observableStatus<_> =
   "useInitFirestore"

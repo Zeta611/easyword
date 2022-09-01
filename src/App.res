@@ -26,22 +26,28 @@ let make = () => {
     firestore
   })
 
-  if status == "loading" {
+  switch status {
+  | #loading =>
     <div className="h-screen grid justify-center content-center">
       <Loader />
     </div>
-  } else {
-    <AppCheckProvider sdk=appCheck>
-      <AuthProvider sdk=auth>
-        <FirestoreProvider sdk=firestore>
-          {switch url.path {
-          | list{} => <Home />
-          | list{"jargon", id} => <Jargon id />
-          | list{"login"} => <SignIn />
-          | _ => React.string("404")
-          }}
-        </FirestoreProvider>
-      </AuthProvider>
-    </AppCheckProvider>
+
+  | #success =>
+    switch firestore {
+    | None => React.null
+    | Some(firestore) =>
+      <AppCheckProvider sdk=appCheck>
+        <AuthProvider sdk=auth>
+          <FirestoreProvider sdk=firestore>
+            {switch url.path {
+            | list{} => <Home />
+            | list{"jargon", id} => <Jargon id />
+            | list{"login"} => <SignIn />
+            | _ => React.string("404")
+            }}
+          </FirestoreProvider>
+        </AuthProvider>
+      </AppCheckProvider>
+    }
   }
 }

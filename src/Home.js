@@ -44,10 +44,14 @@ function Home$Dictionary(Props) {
   var match$2 = Reactfire.useFirestoreCollectionData(jargonsQuery, {
         idField: "id"
       });
-  if (match$2.status === "loading") {
+  if (match$2.status !== "success") {
     return React.createElement("div", {
                 className: "h-screen grid justify-center content-center"
               }, React.createElement(Loader.make, {}));
+  }
+  var jargons = match$2.data;
+  if (jargons === undefined) {
+    return null;
   }
   var matchAll = /.*/;
   var regex;
@@ -65,7 +69,7 @@ function Home$Dictionary(Props) {
       throw obj;
     }
   }
-  var rows = Belt_Array.keepMap(match$2.data, (function (jargon) {
+  var rows = Belt_Array.keepMap(Caml_option.valFromOption(jargons), (function (jargon) {
           var match = jargon.english.match(regex);
           var match$1 = jargon.korean.match(regex);
           if (match !== null || match$1 !== null) {

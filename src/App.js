@@ -8,6 +8,7 @@ import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
+import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as Auth from "firebase/auth";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as AppCheck from "firebase/app-check";
@@ -37,10 +38,14 @@ function App(Props) {
         }
         return firestore;
       });
-  if (match.status === "loading") {
+  if (match.status !== "success") {
     return React.createElement("div", {
                 className: "h-screen grid justify-center content-center"
               }, React.createElement(Loader.make, {}));
+  }
+  var firestore = match.data;
+  if (firestore === undefined) {
+    return null;
   }
   var match$1 = url.path;
   var tmp;
@@ -66,7 +71,7 @@ function App(Props) {
               children: React.createElement(Reactfire.AuthProvider, {
                     sdk: auth,
                     children: React.createElement(Reactfire.FirestoreProvider, {
-                          sdk: match.data,
+                          sdk: Caml_option.valFromOption(firestore),
                           children: tmp
                         })
                   })

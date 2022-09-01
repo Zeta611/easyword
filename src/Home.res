@@ -43,30 +43,36 @@ module Dictionary = {
     let {status, data: jargons} =
       jargonsQuery->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
-    if status == "loading" {
+    switch status {
+    | #loading =>
       <div className="h-screen grid justify-center content-center">
         <Loader />
       </div>
-    } else {
-      let regex = {
-        let matchAll = %re("/.*/")
-        try Js.Re.fromString(regexQuery) catch {
-        | Js.Exn.Error(obj) => {
-            obj->Js.Exn.message->Option.forEach(Js.log)
-            matchAll
+
+    | #success =>
+      switch jargons {
+      | None => React.null
+      | Some(jargons) =>
+        let regex = {
+          let matchAll = %re("/.*/")
+          try Js.Re.fromString(regexQuery) catch {
+          | Js.Exn.Error(obj) => {
+              obj->Js.Exn.message->Option.forEach(Js.log)
+              matchAll
+            }
           }
         }
-      }
-      let rows = jargons->Array.keepMap(({english, korean} as jargon) => {
-        switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
-        | (None, None) => None
-        | _ => Some(makeRow(jargon))
-        }
-      })
+        let rows = jargons->Array.keepMap(({english, korean} as jargon) => {
+          switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
+          | (None, None) => None
+          | _ => Some(makeRow(jargon))
+          }
+        })
 
-      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
-        {React.array(rows)}
-      </div>
+        <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+          {React.array(rows)}
+        </div>
+      }
     }
   }
 }
