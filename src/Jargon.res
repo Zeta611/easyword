@@ -53,14 +53,32 @@ and makeSiblings = (siblings: commentList) => {
   <div> {React.array(siblings->List.toArray->Array.map(makeComment))} </div>
 }
 
+module Window = {
+  @scope("window") @val
+  external alert: string => unit = "alert"
+}
+
 module CommentInput = {
   @react.component
   let make = () => {
-    <form>
+    let (comment, setComment) = React.useState(() => "")
+    let handleInputChange = event => {
+      let value = ReactEvent.Form.currentTarget(event)["value"]
+      setComment(_ => value)
+    }
+
+    let handleSubmit = event => {
+      ReactEvent.Form.preventDefault(event)
+      Window.alert(comment)
+    }
+
+    <form onSubmit={handleSubmit}>
       <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
         <textarea
           name="comment"
           id="comment"
+          value={comment}
+          onChange={handleInputChange}
           placeholder="여러분의 생각은 어떠신가요?"
           className="h-24 p-1 border place-self-stretch"
         />
