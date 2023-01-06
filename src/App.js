@@ -5,6 +5,7 @@ import * as React from "react";
 import * as Jargon from "./Jargon.js";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
+import * as Navbar from "./Navbar.js";
 import * as SignIn from "./SignIn.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
@@ -64,7 +65,7 @@ function App(Props) {
         tmp = "404";
     }
   } else {
-    tmp = React.createElement(Home.make, {});
+    tmp = React.createElement("div", undefined, React.createElement(Navbar.make, {}), React.createElement(Home.make, {}));
   }
   return React.createElement(Reactfire.AppCheckProvider, {
               sdk: appCheck,

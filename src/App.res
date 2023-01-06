@@ -6,6 +6,7 @@ let make = () => {
 
   let app = useFirebaseApp()
   let auth = app->getAuth
+
   // let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
 
   let appCheck = initializeAppCheck(
@@ -40,7 +41,11 @@ let make = () => {
         <AuthProvider sdk=auth>
           <FirestoreProvider sdk=firestore>
             {switch url.path {
-            | list{} => <Home />
+            | list{} =>
+              <div>
+                <Navbar />
+                <Home />
+              </div>
             | list{"jargon", id} => <Jargon id />
             | list{"login"} => <SignIn />
             | _ => React.string("404")
