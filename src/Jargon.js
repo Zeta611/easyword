@@ -64,6 +64,8 @@ function makeSiblings(siblings) {
 var $$Window = {};
 
 function Jargon$CommentInput(Props) {
+  var id = Props.id;
+  var signInData = Props.signInData;
   var match = React.useState(function () {
         return "";
       });
@@ -75,9 +77,20 @@ function Jargon$CommentInput(Props) {
             return value;
           }));
   };
+  var firestore = Reactfire.useFirestore();
+  var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    window.alert(comment);
+    if (signInData !== undefined && signInData.signedIn) {
+      Firestore.addDoc(commentsCollection, {
+            comment: comment,
+            user: signInData.user.uid,
+            timestamp: Firestore.Timestamp.fromDate(new Date()),
+            parent: ""
+          });
+    } else {
+      window.alert("You need to be signed in to comment!");
+    }
   };
   return React.createElement("form", {
               onSubmit: handleSubmit
@@ -113,7 +126,7 @@ function Jargon(Props) {
       });
   var comments = match$1.data;
   var match$2 = Reactfire.useSigninCheck();
-  var signedIn = match$2.data;
+  var signInData = match$2.data;
   if (match.status === "success" && match$1.status === "success" && match$2.status === "success") {
     if (jargons === undefined) {
       return null;
@@ -122,8 +135,8 @@ function Jargon(Props) {
       return null;
     }
     var match$3 = constructForest(Caml_option.valFromOption(comments));
-    return React.createElement("div", undefined, signedIn !== undefined ? (
-                  signedIn.signedIn ? React.createElement(Navbar.make, {
+    return React.createElement("div", undefined, signInData !== undefined ? (
+                  signInData.signedIn ? React.createElement(Navbar.make, {
                           signedIn: true
                         }) : React.createElement(Navbar.make, {
                           signedIn: false
@@ -138,7 +151,10 @@ function Jargon(Props) {
                             className: "text-3xl font-bold"
                           }, jargons.english), React.createElement("div", {
                             className: "text-2xl font-medium"
-                          }, jargons.korean)), React.createElement(Jargon$CommentInput, {}), React.createElement("div", undefined, makeSiblings(match$3[0].contents))));
+                          }, jargons.korean)), React.createElement(Jargon$CommentInput, {
+                        id: id,
+                        signInData: signInData
+                      }), React.createElement("div", undefined, makeSiblings(match$3[0].contents))));
   }
   return React.createElement("div", {
               className: "h-screen grid justify-center content-center"

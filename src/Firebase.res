@@ -67,6 +67,9 @@ external query: (collectionReference, queryConstraint) => query = "query"
 @module("firebase/firestore")
 external orderBy: (string, ~direction: string) => queryConstraint = "orderBy"
 
+@module("firebase/firestore")
+external addDoc: (collectionReference, 'a) => Js.Promise.t<documentReference> = "addDoc"
+
 @deriving(abstract)
 type reactFireOptions<'a> = {
   @optional idField: string,
@@ -109,7 +112,14 @@ module AuthProvider = {
 @module("reactfire")
 external useAuth: unit => Auth.t = "useAuth"
 
-type signInCheckResult = {signedIn: bool}
+type user = {
+  uid: string,
+  displayName: option<string>,
+  email: option<string>,
+  emailVerified: bool,
+}
+
+type signInCheckResult = {signedIn: bool, user: user}
 @module("reactfire")
 external useSigninCheck: unit => observableStatus<signInCheckResult> = "useSigninCheck"
 
@@ -137,6 +147,8 @@ module Timestamp = {
   external make: unit => t = "Timestamp"
   @send
   external toDate: t => Js.Date.t = "toDate"
+  @module("firebase/firestore") @scope("Timestamp")
+  external fromDate: Js.Date.t => t = "fromDate"
 }
 
 module StyledFirebaseAuth = {

@@ -1,6 +1,13 @@
 // Firestore comment entity
-type comment = {
+type fetchedComment = {
   id: string,
+  comment: string,
+  user: string,
+  timestamp: Firebase.Timestamp.t,
+  parent: string,
+}
+
+type writtenComment = {
   comment: string,
   user: string,
   timestamp: Firebase.Timestamp.t,
@@ -9,12 +16,12 @@ type comment = {
 
 type rec commentList = list<commentNode>
 and commentNode = {
-  comment: comment,
+  comment: fetchedComment,
   mutable parent: option<commentNode>,
   mutable children: commentList,
 }
 
-let constructForest = (comments: array<comment>) => {
+let constructForest = (comments: array<fetchedComment>) => {
   let roots: ref<commentList> = ref(list{})
   let commentNodeTable = HashMap.String.make(~hintSize=10)
 
@@ -60,16 +67,37 @@ module Window = {
 
 module CommentInput = {
   @react.component
-  let make = () => {
+  let make = (~id, ~signInData: option<Firebase.signInCheckResult>) => {
+    // For handling the comment textarea
     let (comment, setComment) = React.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
       setComment(_ => value)
     }
 
+    // Write comment to the Firestore on submit
+    let commentsCollection = {
+      open Firebase
+      let firestore = useFirestore()
+      firestore->collection(~path=`jargons/${id}/comments`)
+    }
     let handleSubmit = event => {
+      // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
-      Window.alert(comment)
+
+      switch signInData {
+      | Some({signedIn: true, user: {uid}}) =>
+        let _ = Firebase.addDoc(
+          commentsCollection,
+          {
+            comment,
+            user: uid, // TODO: use displayName
+            timestamp: Js.Date.make()->Firebase.Timestamp.fromDate,
+            parent: "",
+          },
+        )
+      | _ => Window.alert("You need to be signed in to comment!")
+      }
     }
 
     <form onSubmit={handleSubmit}>
@@ -104,7 +132,7 @@ let make = (~id) => {
     ->query(orderBy("timestamp", ~direction="asc"))
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
-  let {status: signInStatus, data: signedIn} = Firebase.useSigninCheck()
+  let {status: signInStatus, data: signInData} = useSigninCheck()
 
   switch (docStatus, collectionStatus, signInStatus) {
   | (#success, #success, #success) =>
@@ -113,7 +141,7 @@ let make = (~id) => {
     | (Some({korean, english}: Home.jargon), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
         <div>
-          {switch signedIn {
+          {switch signInData {
           | None | Some({signedIn: false}) => <Navbar signedIn=false />
           | Some({signedIn: true}) => <Navbar signedIn=true />
           }}
@@ -122,7 +150,7 @@ let make = (~id) => {
               <div className="text-3xl font-bold"> {React.string(english)} </div>
               <div className="text-2xl font-medium"> {React.string(korean)} </div>
             </h1>
-            <CommentInput />
+            <CommentInput id signInData />
             <div> {makeSiblings(roots.contents)} </div>
           </main>
         </div>
