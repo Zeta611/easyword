@@ -86,26 +86,33 @@ let make = (~id) => {
     ->query(orderBy("timestamp", ~direction="asc"))
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
-  switch (docStatus, collectionStatus) {
-  | (#loading, _) | (_, #loading) =>
-    <div className="h-screen grid justify-center content-center">
-      <Loader />
-    </div>
+  let {status: signInStatus, data: signedIn} = Firebase.useSigninCheck()
 
-  | (#success, #success) =>
+  switch (docStatus, collectionStatus, signInStatus) {
+  | (#success, #success, #success) =>
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
     | (Some({korean, english}: Home.jargon), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
-        <main className="grid p-5 gap-3 dark:text-white">
-          <h1 className="grid gap-1">
-            <div className="text-3xl font-bold"> {React.string(english)} </div>
-            <div className="text-2xl font-medium"> {React.string(korean)} </div>
-          </h1>
-          <CommentInput />
-          <div> {makeSiblings(roots.contents)} </div>
-        </main>
+        <div>
+          {switch signedIn {
+          | None | Some({signedIn: false}) => <Navbar signedIn=false />
+          | Some({signedIn: true}) => <Navbar signedIn=true />
+          }}
+          <main className="grid p-5 gap-3 dark:text-white">
+            <h1 className="grid gap-1">
+              <div className="text-3xl font-bold"> {React.string(english)} </div>
+              <div className="text-2xl font-medium"> {React.string(korean)} </div>
+            </h1>
+            <CommentInput />
+            <div> {makeSiblings(roots.contents)} </div>
+          </main>
+        </div>
       }
     }
+  | _ =>
+    <div className="h-screen grid justify-center content-center">
+      <Loader />
+    </div>
   }
 }

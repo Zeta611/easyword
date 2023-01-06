@@ -103,8 +103,23 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  <div className="grid gap-4 p-5">
-    <InputForm query onChange />
-    <Dictionary query />
-  </div>
+  let {status: signInStatus, data: signedIn} = Firebase.useSigninCheck()
+
+  switch signInStatus {
+  | #loading =>
+    <div className="h-screen grid justify-center content-center">
+      <Loader />
+    </div>
+  | #success =>
+    <div>
+      {switch signedIn {
+      | None | Some({signedIn: false}) => <Navbar signedIn=false />
+      | Some({signedIn: true}) => <Navbar signedIn=true />
+      }}
+      <div className="grid gap-4 p-5">
+        <InputForm query onChange />
+        <Dictionary query />
+      </div>
+    </div>
+  }
 }

@@ -1,2 +1,2 @@
 @module("./Navbar.jsx") @react.component
-external make: unit => React.element = "Navbar_"
+external make: (~signedIn: bool) => React.element = "Navbar_"

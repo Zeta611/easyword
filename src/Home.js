@@ -4,6 +4,7 @@ import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
+import * as Navbar from "./Navbar.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
@@ -117,14 +118,29 @@ function Home(Props) {
             return value;
           }));
   };
-  return React.createElement("div", {
-              className: "grid gap-4 p-5"
-            }, React.createElement(Home$InputForm, {
-                  query: query,
-                  onChange: onChange
-                }), React.createElement(Home$Dictionary, {
-                  query: query
-                }));
+  var match$1 = Reactfire.useSigninCheck();
+  if (match$1.status !== "success") {
+    return React.createElement("div", {
+                className: "h-screen grid justify-center content-center"
+              }, React.createElement(Loader.make, {}));
+  }
+  var signedIn = match$1.data;
+  return React.createElement("div", undefined, signedIn !== undefined ? (
+                signedIn.signedIn ? React.createElement(Navbar.make, {
+                        signedIn: true
+                      }) : React.createElement(Navbar.make, {
+                        signedIn: false
+                      })
+              ) : React.createElement(Navbar.make, {
+                    signedIn: false
+                  }), React.createElement("div", {
+                  className: "grid gap-4 p-5"
+                }, React.createElement(Home$InputForm, {
+                      query: query,
+                      onChange: onChange
+                    }), React.createElement(Home$Dictionary, {
+                      query: query
+                    })));
 }
 
 var make = Home;

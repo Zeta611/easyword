@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as Loader from "./Loader.js";
+import * as Navbar from "./Navbar.js";
 import * as Belt_List from "../node_modules/rescript/lib/es6/belt_List.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
@@ -89,23 +90,33 @@ function Jargon(Props) {
         idField: "id"
       });
   var comments = match$1.data;
-  if (match.status === "success" && match$1.status === "success") {
+  var match$2 = Reactfire.useSigninCheck();
+  var signedIn = match$2.data;
+  if (match.status === "success" && match$1.status === "success" && match$2.status === "success") {
     if (jargons === undefined) {
       return null;
     }
     if (comments === undefined) {
       return null;
     }
-    var match$2 = constructForest(Caml_option.valFromOption(comments));
-    return React.createElement("main", {
-                className: "grid p-5 gap-3 dark:text-white"
-              }, React.createElement("h1", {
-                    className: "grid gap-1"
-                  }, React.createElement("div", {
-                        className: "text-3xl font-bold"
-                      }, jargons.english), React.createElement("div", {
-                        className: "text-2xl font-medium"
-                      }, jargons.korean)), React.createElement(Jargon$CommentInput, {}), React.createElement("div", undefined, makeSiblings(match$2[0].contents)));
+    var match$3 = constructForest(Caml_option.valFromOption(comments));
+    return React.createElement("div", undefined, signedIn !== undefined ? (
+                  signedIn.signedIn ? React.createElement(Navbar.make, {
+                          signedIn: true
+                        }) : React.createElement(Navbar.make, {
+                          signedIn: false
+                        })
+                ) : React.createElement(Navbar.make, {
+                      signedIn: false
+                    }), React.createElement("main", {
+                    className: "grid p-5 gap-3 dark:text-white"
+                  }, React.createElement("h1", {
+                        className: "grid gap-1"
+                      }, React.createElement("div", {
+                            className: "text-3xl font-bold"
+                          }, jargons.english), React.createElement("div", {
+                            className: "text-2xl font-medium"
+                          }, jargons.korean)), React.createElement(Jargon$CommentInput, {}), React.createElement("div", undefined, makeSiblings(match$3[0].contents))));
   }
   return React.createElement("div", {
               className: "h-screen grid justify-center content-center"
