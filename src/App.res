@@ -40,16 +40,15 @@ let make = () => {
       <AppCheckProvider sdk=appCheck>
         <AuthProvider sdk=auth>
           <FirestoreProvider sdk=firestore>
-            {switch url.path {
-            | list{} =>
-              <div>
-                <Navbar />
-                <Home />
-              </div>
-            | list{"jargon", id} => <Jargon id />
-            | list{"login"} => <SignIn />
-            | _ => React.string("404")
-            }}
+            <div>
+              <Navbar />
+              {switch url.path {
+              | list{} => <Home />
+              | list{"jargon", id} => <Jargon id />
+              | list{"login"} => <SignIn />
+              | _ => React.string("404")
+              }}
+            </div>
           </FirestoreProvider>
         </AuthProvider>
       </AppCheckProvider>

@@ -65,7 +65,7 @@ function App(Props) {
         tmp = "404";
     }
   } else {
-    tmp = React.createElement("div", undefined, React.createElement(Navbar.make, {}), React.createElement(Home.make, {}));
+    tmp = React.createElement(Home.make, {});
   }
   return React.createElement(Reactfire.AppCheckProvider, {
               sdk: appCheck,
@@ -73,7 +73,7 @@ function App(Props) {
                     sdk: auth,
                     children: React.createElement(Reactfire.FirestoreProvider, {
                           sdk: Caml_option.valFromOption(firestore),
-                          children: tmp
+                          children: React.createElement("div", undefined, React.createElement(Navbar.make, {}), tmp)
                         })
                   })
             });
