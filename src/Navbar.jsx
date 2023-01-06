@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, LanguageIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: '홈', href: '/', current: true },
@@ -31,16 +31,8 @@ function Navbar_(props) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
+                  <LanguageIcon className="block h-8 w-auto lg:hidden text-gray-400"/>
+                  <LanguageIcon className="hidden h-8 w-auto lg:block text-gray-400"/>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
