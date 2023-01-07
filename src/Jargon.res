@@ -87,20 +87,21 @@ module CommentInput = {
 
       switch signInData {
       | Some({signedIn: true, user: {uid, email, providerData}}) =>
+        open Firebase
         let email = {
           open Option
           // email doesn't contain data when using other providers (https://stackoverflow.com/a/48815576)
           // In such case, access it from providerData
           // If it is absent there, fall back to uid
-          email->getWithDefault(providerData[0]->flatMap(d => d.email)->getWithDefault(uid))
+          email->getWithDefault(providerData[0]->flatMap(User.email)->getWithDefault(uid))
         }
 
-        let _ = Firebase.addDoc(
+        let _ = addDoc(
           commentsCollection,
           {
             comment,
             user: email, // TODO: use displayName
-            timestamp: Js.Date.make()->Firebase.Timestamp.fromDate,
+            timestamp: Js.Date.make()->Timestamp.fromDate,
             parent: "",
           },
         )

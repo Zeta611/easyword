@@ -4,6 +4,7 @@ import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Loader from "./Loader.js";
 import * as Navbar from "./Navbar.js";
+import * as Firebase from "./Firebase.js";
 import * as Belt_List from "../node_modules/rescript/lib/es6/belt_List.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
@@ -84,9 +85,7 @@ function Jargon$CommentInput(Props) {
     if (signInData !== undefined) {
       if (signInData.signedIn) {
         var match = signInData.user;
-        var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), (function (d) {
-                        return d.email;
-                      })), match.uid));
+        var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), Firebase.User.email), match.uid));
         Firestore.addDoc(commentsCollection, {
               comment: comment,
               user: email,

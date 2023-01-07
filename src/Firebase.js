@@ -27,6 +27,29 @@ var Auth = {
 
 var AuthProvider = {};
 
+function uid(param) {
+  return param.uid;
+}
+
+function providerId(param) {
+  return param.providerId;
+}
+
+function displayName(param) {
+  return param.displayName;
+}
+
+function email(param) {
+  return param.email;
+}
+
+var User = {
+  uid: uid,
+  providerId: providerId,
+  displayName: displayName,
+  email: email
+};
+
 var appCheckToken = FirebaseConfig.APP_CHECK_TOKEN;
 
 var AppCheckProvider = {};
@@ -45,6 +68,7 @@ export {
   FirestoreProvider ,
   Auth ,
   AuthProvider ,
+  User ,
   appCheckToken ,
   AppCheckProvider ,
   Timestamp ,

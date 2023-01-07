@@ -112,21 +112,24 @@ module AuthProvider = {
 @module("reactfire")
 external useAuth: unit => Auth.t = "useAuth"
 
-type userInfo = {
-  uid: string,
-  providerId: string,
-  displayName: option<string>,
-  email: option<string>,
-}
-type user = {
-  uid: string,
-  displayName: option<string>,
-  email: option<string>,
-  emailVerified: bool,
-  providerData: array<userInfo>,
+module User = {
+  @deriving(accessors)
+  type info = {
+    uid: string,
+    providerId: string,
+    displayName: option<string>,
+    email: option<string>,
+  }
+  type t = {
+    uid: string,
+    displayName: option<string>,
+    email: option<string>,
+    emailVerified: bool,
+    providerData: array<info>,
+  }
 }
 
-type signInCheckResult = {signedIn: bool, user: user}
+type signInCheckResult = {signedIn: bool, user: User.t}
 @module("reactfire")
 external useSigninCheck: unit => observableStatus<signInCheckResult> = "useSigninCheck"
 
