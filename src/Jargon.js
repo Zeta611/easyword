@@ -81,16 +81,24 @@ function Jargon$CommentInput(Props) {
   var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (signInData !== undefined && signInData.signedIn) {
-      Firestore.addDoc(commentsCollection, {
-            comment: comment,
-            user: signInData.user.uid,
-            timestamp: Firestore.Timestamp.fromDate(new Date()),
-            parent: ""
-          });
-    } else {
+    if (signInData !== undefined) {
+      if (signInData.signedIn) {
+        var match = signInData.user;
+        var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), (function (d) {
+                        return d.email;
+                      })), match.uid));
+        Firestore.addDoc(commentsCollection, {
+              comment: comment,
+              user: email,
+              timestamp: Firestore.Timestamp.fromDate(new Date()),
+              parent: ""
+            });
+        return ;
+      }
       window.alert("You need to be signed in to comment!");
+      return ;
     }
+    window.alert("You need to be signed in to comment!");
   };
   return React.createElement("form", {
               onSubmit: handleSubmit

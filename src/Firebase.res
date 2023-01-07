@@ -112,11 +112,18 @@ module AuthProvider = {
 @module("reactfire")
 external useAuth: unit => Auth.t = "useAuth"
 
+type userInfo = {
+  uid: string,
+  providerId: string,
+  displayName: option<string>,
+  email: option<string>,
+}
 type user = {
   uid: string,
   displayName: option<string>,
   email: option<string>,
   emailVerified: bool,
+  providerData: array<userInfo>,
 }
 
 type signInCheckResult = {signedIn: bool, user: user}

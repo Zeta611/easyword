@@ -86,12 +86,20 @@ module CommentInput = {
       ReactEvent.Form.preventDefault(event)
 
       switch signInData {
-      | Some({signedIn: true, user: {uid}}) =>
+      | Some({signedIn: true, user: {uid, email, providerData}}) =>
+        let email = {
+          open Option
+          // email doesn't contain data when using other providers (https://stackoverflow.com/a/48815576)
+          // In such case, access it from providerData
+          // If it is absent there, fall back to uid
+          email->getWithDefault(providerData[0]->flatMap(d => d.email)->getWithDefault(uid))
+        }
+
         let _ = Firebase.addDoc(
           commentsCollection,
           {
             comment,
-            user: uid, // TODO: use displayName
+            user: email, // TODO: use displayName
             timestamp: Js.Date.make()->Firebase.Timestamp.fromDate,
             parent: "",
           },
