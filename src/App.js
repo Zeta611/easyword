@@ -2,12 +2,12 @@
 
 import * as Home from "./Home.js";
 import * as React from "react";
-import * as Jargon from "./Jargon.js";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
+import * as JargonPost from "./JargonPost.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as Auth from "firebase/auth";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
@@ -16,7 +16,6 @@ import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
 function App(Props) {
-  var url = RescriptReactRouter.useUrl(undefined, undefined);
   var app = Reactfire.useFirebaseApp();
   var auth = Auth.getAuth(app);
   var appCheck = AppCheck.initializeAppCheck(app, {
@@ -38,12 +37,13 @@ function App(Props) {
         }
         return firestore;
       });
+  var firestore = match.data;
+  var url = RescriptReactRouter.useUrl(undefined, undefined);
   if (match.status !== "success") {
     return React.createElement("div", {
                 className: "h-screen grid justify-center content-center"
               }, React.createElement(Loader.make, {}));
   }
-  var firestore = match.data;
   if (firestore === undefined) {
     return null;
   }
@@ -53,7 +53,7 @@ function App(Props) {
     switch (match$1.hd) {
       case "jargon" :
           var match$2 = match$1.tl;
-          tmp = match$2 && !match$2.tl ? React.createElement(Jargon.make, {
+          tmp = match$2 && !match$2.tl ? React.createElement(JargonPost.make, {
                   id: match$2.hd
                 }) : "404";
           break;

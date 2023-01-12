@@ -1,7 +1,5 @@
 @react.component
 let make = () => {
-  let url = RescriptReactRouter.useUrl()
-
   open Firebase
 
   let app = useFirebaseApp()
@@ -27,6 +25,8 @@ let make = () => {
     firestore
   })
 
+  let url = RescriptReactRouter.useUrl()
+
   switch status {
   | #loading =>
     <div className="h-screen grid justify-center content-center">
@@ -42,7 +42,7 @@ let make = () => {
           <FirestoreProvider sdk=firestore>
             {switch url.path {
             | list{} => <Home />
-            | list{"jargon", id} => <Jargon id />
+            | list{"jargon", id} => <JargonPost id />
             | list{"login"} => <SignIn />
             | _ => React.string("404")
             }}

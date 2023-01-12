@@ -64,7 +64,7 @@ function makeSiblings(siblings) {
 
 var $$Window = {};
 
-function Jargon$CommentInput(Props) {
+function JargonPost$CommentInput(Props) {
   var id = Props.id;
   var signInData = Props.signInData;
   var match = React.useState(function () {
@@ -118,10 +118,10 @@ function Jargon$CommentInput(Props) {
 }
 
 var CommentInput = {
-  make: Jargon$CommentInput
+  make: JargonPost$CommentInput
 };
 
-function Jargon(Props) {
+function JargonPost(Props) {
   var id = Props.id;
   var firestore = Reactfire.useFirestore();
   var jargonDoc = Firestore.doc(firestore, "jargons/" + id + "");
@@ -158,7 +158,7 @@ function Jargon(Props) {
                             className: "text-3xl font-bold"
                           }, jargons.english), React.createElement("div", {
                             className: "text-2xl font-medium"
-                          }, jargons.korean)), React.createElement(Jargon$CommentInput, {
+                          }, jargons.korean)), React.createElement(JargonPost$CommentInput, {
                         id: id,
                         signInData: signInData
                       }), React.createElement("div", undefined, makeSiblings(match$3[0].contents))));
@@ -168,7 +168,7 @@ function Jargon(Props) {
             }, React.createElement(Loader.make, {}));
 }
 
-var make = Jargon;
+var make = JargonPost;
 
 export {
   constructForest ,

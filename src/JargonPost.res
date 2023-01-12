@@ -147,7 +147,7 @@ let make = (~id) => {
   | (#success, #success, #success) =>
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
-    | (Some({korean, english}: Home.jargon), Some(comments)) => {
+    | (Some({korean, english}: JargonList.jargon), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
         <div>
           {switch signInData {
