@@ -1,14 +1,8 @@
 // Firestore comment entity
-type fetchedComment = {
-  id: string,
-  comment: string,
-  user: string,
-  timestamp: Firebase.Timestamp.t,
-  parent: string,
-}
-
-type writtenComment = {
-  comment: string,
+@deriving({abstract: light})
+type comment = {
+  @optional id: string,
+  content: string,
   user: string,
   timestamp: Firebase.Timestamp.t,
   parent: string,
@@ -16,17 +10,19 @@ type writtenComment = {
 
 type rec commentList = list<commentNode>
 and commentNode = {
-  comment: fetchedComment,
+  comment: comment,
   mutable parent: option<commentNode>,
   mutable children: commentList,
 }
 
-let constructForest = (comments: array<fetchedComment>) => {
+let constructForest = (comments: array<comment>) => {
   let roots: ref<commentList> = ref(list{})
   let commentNodeTable = HashMap.String.make(~hintSize=10)
 
   // Store comments in the lookupComment hash map & add roots as well
-  comments->Array.forEach(({id, parent} as comment) => {
+  comments->Array.forEach(comment => {
+    let id = comment->id->Option.getExn
+    let parent = comment->parent
     let node = {comment, parent: None, children: list{}}
     commentNodeTable->HashMap.String.set(id, node)
     if parent == "" {
@@ -35,7 +31,8 @@ let constructForest = (comments: array<fetchedComment>) => {
   })
 
   // Iterate through the array and link the nodes
-  commentNodeTable->HashMap.String.forEach((_, {comment: {parent, _}, _} as node) => {
+  commentNodeTable->HashMap.String.forEach((_, {comment, _} as node) => {
+    let parent = comment->parent
     if parent != "" {
       let parentNode = commentNodeTable->HashMap.String.get(parent)->Option.getExn
       parentNode.children = parentNode.children->List.add(node)
@@ -46,18 +43,20 @@ let constructForest = (comments: array<fetchedComment>) => {
   (roots, commentNodeTable)
 }
 
-let rec makeComment = ({comment: {id, comment, user, timestamp, _}, children, _}) => {
-  <div key=id>
+let rec makeComment = ({comment, children, _}) => {
+  <div key={comment->id->Option.getExn}>
     <div className="grid grid-cols-2">
-      <div> {React.string(user)} </div>
-      <div> {React.string(timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString)} </div>
-      <div> {React.string(comment)} </div>
+      <div> {comment->user->React.string} </div>
+      <div>
+        {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
+      </div>
+      <div> {comment->content->React.string} </div>
     </div>
     <div className="ml-4"> {makeSiblings(children)} </div>
   </div>
 }
 and makeSiblings = (siblings: commentList) => {
-  <div> {React.array(siblings->List.toArray->Array.map(makeComment))} </div>
+  <div> {siblings->List.toArray->Array.map(makeComment)->React.array} </div>
 }
 
 module Window = {
@@ -69,10 +68,10 @@ module CommentInput = {
   @react.component
   let make = (~id, ~signInData: option<Firebase.signInCheckResult>) => {
     // For handling the comment textarea
-    let (comment, setComment) = React.useState(() => "")
+    let (content, setContent) = React.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
-      setComment(_ => value)
+      setContent(_ => value)
     }
 
     // Write comment to the Firestore on submit
@@ -98,12 +97,12 @@ module CommentInput = {
 
         let _ = addDoc(
           commentsCollection,
-          {
-            comment,
-            user: email, // TODO: use displayName
-            timestamp: Js.Date.make()->Timestamp.fromDate,
-            parent: "",
-          },
+          comment(
+            ~content,
+            ~user=email /* TODO: use displayName */,
+            ~timestamp=Js.Date.make()->Timestamp.fromDate,
+            ~parent="",
+          ),
         )
       | _ => Window.alert("You need to be signed in to comment!")
       }
@@ -114,7 +113,7 @@ module CommentInput = {
         <textarea
           name="comment"
           id="comment"
-          value={comment}
+          value={content}
           onChange={handleInputChange}
           placeholder="여러분의 생각은 어떠신가요?"
           className="h-24 p-1 border place-self-stretch"
@@ -147,7 +146,7 @@ let make = (~id) => {
   | (#success, #success, #success) =>
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
-    | (Some({korean, english}: JargonList.jargon), Some(comments)) => {
+    | (Some({korean, english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
         <div>
           {switch signInData {

@@ -19,13 +19,15 @@ function constructForest(comments) {
   };
   var commentNodeTable = Belt_HashMapString.make(10);
   Belt_Array.forEach(comments, (function (comment) {
+          var id = Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id));
+          var parent = comment.parent;
           var node = {
             comment: comment,
             parent: undefined,
             children: /* [] */0
           };
-          Belt_HashMapString.set(commentNodeTable, comment.id, node);
-          if (comment.parent === "") {
+          Belt_HashMapString.set(commentNodeTable, id, node);
+          if (parent === "") {
             roots.contents = Belt_List.add(roots.contents, node);
             return ;
           }
@@ -47,13 +49,13 @@ function constructForest(comments) {
 }
 
 function makeComment(param) {
-  var match = param.comment;
+  var comment = param.comment;
   var children = param.children;
   return React.createElement("div", {
-              key: match.id
+              key: Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id))
             }, React.createElement("div", {
                   className: "grid grid-cols-2"
-                }, React.createElement("div", undefined, match.user), React.createElement("div", undefined, match.timestamp.toDate().toDateString()), React.createElement("div", undefined, match.comment)), React.createElement("div", {
+                }, React.createElement("div", undefined, comment.user), React.createElement("div", undefined, comment.timestamp.toDate().toDateString()), React.createElement("div", undefined, comment.content)), React.createElement("div", {
                   className: "ml-4"
                 }, makeSiblings(children)));
 }
@@ -70,11 +72,11 @@ function JargonPost$CommentInput(Props) {
   var match = React.useState(function () {
         return "";
       });
-  var setComment = match[1];
-  var comment = match[0];
+  var setContent = match[1];
+  var content = match[0];
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
-    Curry._1(setComment, (function (param) {
+    Curry._1(setContent, (function (param) {
             return value;
           }));
   };
@@ -86,12 +88,22 @@ function JargonPost$CommentInput(Props) {
       if (signInData.signedIn) {
         var match = signInData.user;
         var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), Firebase.User.email), match.uid));
-        Firestore.addDoc(commentsCollection, {
-              comment: comment,
-              user: email,
-              timestamp: Firestore.Timestamp.fromDate(new Date()),
-              parent: ""
-            });
+        var arg = Firestore.Timestamp.fromDate(new Date());
+        Firestore.addDoc(commentsCollection, (function (param) {
+                return function (param$1) {
+                  var prim4 = "";
+                  var tmp = {
+                    content: content,
+                    user: email,
+                    timestamp: arg,
+                    parent: prim4
+                  };
+                  if (param !== undefined) {
+                    tmp.id = Caml_option.valFromOption(param);
+                  }
+                  return tmp;
+                };
+              }));
         return ;
       }
       window.alert("You need to be signed in to comment!");
@@ -108,7 +120,7 @@ function JargonPost$CommentInput(Props) {
                       id: "comment",
                       name: "comment",
                       placeholder: "여러분의 생각은 어떠신가요?",
-                      value: comment,
+                      value: content,
                       onChange: handleInputChange
                     }), React.createElement("input", {
                       className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300",

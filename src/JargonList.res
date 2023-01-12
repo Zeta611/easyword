@@ -1,24 +1,23 @@
-type jargon = {id: string, english: string, korean: string}
+open Jargon
 
 type language = English | Korean
 type direction = Ascending | Descending
 type order = (language, direction)
 
-let makeRow = ({id, english, korean}) => {
+let makeRow = ({id, english, korean}) =>
   <div
     key={id}
     className="group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
     onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
     <div
       className="font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200 dark:text-white">
-      {React.string(english)}
+      {english->React.string}
     </div>
     <div
       className="font-regular text-right text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
-      {React.string(korean)}
+      {korean->React.string}
     </div>
   </div>
-}
 
 @react.component
 let make = (~query as regexQuery) => {
