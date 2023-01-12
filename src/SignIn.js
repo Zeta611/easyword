@@ -6,6 +6,7 @@ import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
 import * as ReactFirebaseui from "react-firebaseui";
+import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 import App from "firebase/compat/app";
 
@@ -22,7 +23,7 @@ var uiConfig = {
   }
 };
 
-function SignIn(Props) {
+function SignIn(props) {
   var match = Reactfire.useSigninCheck();
   var data = match.data;
   React.useEffect((function () {
@@ -35,23 +36,30 @@ function SignIn(Props) {
   var firebaseAuth = Auth.getAuth(app);
   if (match.status === "success") {
     if (data !== undefined && !data.signedIn) {
-      return React.createElement("div", {
+      return JsxRuntime.jsx("div", {
+                  children: JsxRuntime.jsxs("div", {
+                        children: [
+                          JsxRuntime.jsx("div", {
+                                children: "로그인",
+                                className: "text-3xl font-medium text-center"
+                              }),
+                          JsxRuntime.jsx(ReactFirebaseui.StyledFirebaseAuth, {
+                                uiConfig: uiConfig,
+                                firebaseAuth: firebaseAuth
+                              })
+                        ],
+                        className: "h-96 w-96 bg-zinc-50 bg-opacity-30 backdrop-blur-lg drop-shadow-lg rounded-xl grid content-center gap-3 text-zinc-800 dark:text-zinc-50"
+                      }),
                   className: "h-screen bg-cover bg-center bg-[url('/assets/layered-waves.svg')] justify-self-stretch grid justify-center content-center"
-                }, React.createElement("div", {
-                      className: "h-96 w-96 bg-zinc-50 bg-opacity-30 backdrop-blur-lg drop-shadow-lg rounded-xl grid content-center gap-3 text-zinc-800 dark:text-zinc-50"
-                    }, React.createElement("div", {
-                          className: "text-3xl font-medium text-center"
-                        }, "로그인"), React.createElement(ReactFirebaseui.StyledFirebaseAuth, {
-                          uiConfig: uiConfig,
-                          firebaseAuth: firebaseAuth
-                        })));
+                });
     } else {
       return null;
     }
   } else {
-    return React.createElement("div", {
+    return JsxRuntime.jsx("div", {
+                children: JsxRuntime.jsx(Loader.make, {}),
                 className: "h-screen grid justify-center content-center"
-              }, React.createElement(Loader.make, {}));
+              });
   }
 }
 

@@ -7,26 +7,28 @@ import * as Loader from "./Loader.js";
 import * as Navbar from "./Navbar.js";
 import * as Reactfire from "reactfire";
 import * as JargonList from "./JargonList.js";
+import * as JsxRuntime from "react/jsx-runtime";
 
-function Home$SearchBar(Props) {
-  var query = Props.query;
-  var onChange = Props.onChange;
-  return React.createElement("form", undefined, React.createElement("div", {
-                  className: "relative"
-                }, React.createElement("input", {
-                      className: "block px-4 h-10 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700",
-                      placeholder: "정규식: syntax$",
-                      type: "search",
-                      value: query,
-                      onChange: onChange
-                    })));
+function Home$SearchBar(props) {
+  return JsxRuntime.jsx("form", {
+              children: JsxRuntime.jsx("div", {
+                    children: JsxRuntime.jsx("input", {
+                          className: "block px-4 h-10 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700",
+                          placeholder: "정규식: syntax$",
+                          type: "search",
+                          value: props.query,
+                          onChange: props.onChange
+                        }),
+                    className: "relative"
+                  })
+            });
 }
 
 var SearchBar = {
   make: Home$SearchBar
 };
 
-function Home(Props) {
+function Home(props) {
   var match = React.useState(function () {
         return "";
       });
@@ -44,37 +46,49 @@ function Home(Props) {
   };
   var match$2 = Reactfire.useSigninCheck();
   if (match$2.status !== "success") {
-    return React.createElement("div", {
+    return JsxRuntime.jsx("div", {
+                children: JsxRuntime.jsx(Loader.make, {}),
                 className: "h-screen grid justify-center content-center"
-              }, React.createElement(Loader.make, {}));
+              });
   }
   var signedIn = match$2.data;
-  return React.createElement("div", undefined, signedIn !== undefined ? (
-                signedIn.signedIn ? React.createElement(Navbar.make, {
+  return JsxRuntime.jsxs("div", {
+              children: [
+                signedIn !== undefined && signedIn.signedIn ? JsxRuntime.jsx(Navbar.make, {
                         signedIn: true
-                      }) : React.createElement(Navbar.make, {
+                      }) : JsxRuntime.jsx(Navbar.make, {
                         signedIn: false
-                      })
-              ) : React.createElement(Navbar.make, {
-                    signedIn: false
-                  }), React.createElement("div", {
-                  className: "grid gap-4 p-5"
-                }, React.createElement("div", {
-                      className: "flex items-center space-x-2"
-                    }, React.createElement("div", {
-                          className: "flex-auto"
-                        }, React.createElement(Home$SearchBar, {
-                              query: query,
-                              onChange: onChange
-                            })), React.createElement("div", {
-                          className: "flex-none"
-                        }, React.createElement(Filter.make, {
+                      }),
+                JsxRuntime.jsxs("div", {
+                      children: [
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("div", {
+                                      children: JsxRuntime.jsx(Home$SearchBar, {
+                                            query: query,
+                                            onChange: onChange
+                                          }),
+                                      className: "flex-auto"
+                                    }),
+                                JsxRuntime.jsx("div", {
+                                      children: JsxRuntime.jsx(Filter.make, {
+                                            enKo: enKo,
+                                            setEnKo: match$1[1]
+                                          }),
+                                      className: "flex-none"
+                                    })
+                              ],
+                              className: "flex items-center space-x-2"
+                            }),
+                        JsxRuntime.jsx(JargonList.make, {
                               enKo: enKo,
-                              setEnKo: match$1[1]
-                            }))), React.createElement(JargonList.make, {
-                      enKo: enKo,
-                      query: query
-                    })));
+                              query: query
+                            })
+                      ],
+                      className: "grid gap-4 p-5"
+                    })
+              ]
+            });
 }
 
 var make = Home;

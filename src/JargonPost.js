@@ -10,6 +10,7 @@ import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as JsxRuntime from "react/jsx-runtime";
 import * as Belt_HashMapString from "../node_modules/rescript/lib/es6/belt_HashMapString.js";
 import * as Firestore from "firebase/firestore";
 
@@ -51,24 +52,40 @@ function constructForest(comments) {
 function makeComment(param) {
   var comment = param.comment;
   var children = param.children;
-  return React.createElement("div", {
-              key: Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id))
-            }, React.createElement("div", {
-                  className: "grid grid-cols-2"
-                }, React.createElement("div", undefined, comment.user), React.createElement("div", undefined, comment.timestamp.toDate().toDateString()), React.createElement("div", undefined, comment.content)), React.createElement("div", {
-                  className: "ml-4"
-                }, makeSiblings(children)));
+  return JsxRuntime.jsxs("div", {
+              children: [
+                JsxRuntime.jsxs("div", {
+                      children: [
+                        JsxRuntime.jsx("div", {
+                              children: comment.user
+                            }),
+                        JsxRuntime.jsx("div", {
+                              children: comment.timestamp.toDate().toDateString()
+                            }),
+                        JsxRuntime.jsx("div", {
+                              children: comment.content
+                            })
+                      ],
+                      className: "grid grid-cols-2"
+                    }),
+                JsxRuntime.jsx("div", {
+                      children: makeSiblings(children),
+                      className: "ml-4"
+                    })
+              ]
+            }, Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id)));
 }
 
 function makeSiblings(siblings) {
-  return React.createElement("div", undefined, Belt_Array.map(Belt_List.toArray(siblings), makeComment));
+  return JsxRuntime.jsx("div", {
+              children: Belt_Array.map(Belt_List.toArray(siblings), makeComment)
+            });
 }
 
 var $$Window = {};
 
-function JargonPost$CommentInput(Props) {
-  var id = Props.id;
-  var signInData = Props.signInData;
+function JargonPost$CommentInput(props) {
+  var signInData = props.signInData;
   var match = React.useState(function () {
         return "";
       });
@@ -81,7 +98,7 @@ function JargonPost$CommentInput(Props) {
           }));
   };
   var firestore = Reactfire.useFirestore();
-  var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
+  var commentsCollection = Firestore.collection(firestore, "jargons/" + props.id + "/comments");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
     if (signInData !== undefined) {
@@ -111,30 +128,35 @@ function JargonPost$CommentInput(Props) {
     }
     window.alert("You need to be signed in to comment!");
   };
-  return React.createElement("form", {
+  return JsxRuntime.jsx("form", {
+              children: JsxRuntime.jsxs("div", {
+                    children: [
+                      JsxRuntime.jsx("textarea", {
+                            className: "h-24 p-1 border place-self-stretch",
+                            id: "comment",
+                            name: "comment",
+                            placeholder: "여러분의 생각은 어떠신가요?",
+                            value: content,
+                            onChange: handleInputChange
+                          }),
+                      JsxRuntime.jsx("input", {
+                            className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300",
+                            type: "submit",
+                            value: "Comment"
+                          })
+                    ],
+                    className: "p-2 gap-3 grid grid-cols-1 place-items-end"
+                  }),
               onSubmit: handleSubmit
-            }, React.createElement("div", {
-                  className: "p-2 gap-3 grid grid-cols-1 place-items-end"
-                }, React.createElement("textarea", {
-                      className: "h-24 p-1 border place-self-stretch",
-                      id: "comment",
-                      name: "comment",
-                      placeholder: "여러분의 생각은 어떠신가요?",
-                      value: content,
-                      onChange: handleInputChange
-                    }), React.createElement("input", {
-                      className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300",
-                      type: "submit",
-                      value: "Comment"
-                    })));
+            });
 }
 
 var CommentInput = {
   make: JargonPost$CommentInput
 };
 
-function JargonPost(Props) {
-  var id = Props.id;
+function JargonPost(props) {
+  var id = props.id;
   var firestore = Reactfire.useFirestore();
   var jargonDoc = Firestore.doc(firestore, "jargons/" + id + "");
   var match = Reactfire.useFirestoreDocData(jargonDoc);
@@ -154,30 +176,45 @@ function JargonPost(Props) {
       return null;
     }
     var match$3 = constructForest(Caml_option.valFromOption(comments));
-    return React.createElement("div", undefined, signInData !== undefined ? (
-                  signInData.signedIn ? React.createElement(Navbar.make, {
+    return JsxRuntime.jsxs("div", {
+                children: [
+                  signInData !== undefined && signInData.signedIn ? JsxRuntime.jsx(Navbar.make, {
                           signedIn: true
-                        }) : React.createElement(Navbar.make, {
+                        }) : JsxRuntime.jsx(Navbar.make, {
                           signedIn: false
-                        })
-                ) : React.createElement(Navbar.make, {
-                      signedIn: false
-                    }), React.createElement("main", {
-                    className: "grid p-5 gap-3 dark:text-white"
-                  }, React.createElement("h1", {
-                        className: "grid gap-1"
-                      }, React.createElement("div", {
-                            className: "text-3xl font-bold"
-                          }, jargons.english), React.createElement("div", {
-                            className: "text-2xl font-medium"
-                          }, jargons.korean)), React.createElement(JargonPost$CommentInput, {
-                        id: id,
-                        signInData: signInData
-                      }), React.createElement("div", undefined, makeSiblings(match$3[0].contents))));
+                        }),
+                  JsxRuntime.jsxs("main", {
+                        children: [
+                          JsxRuntime.jsxs("h1", {
+                                children: [
+                                  JsxRuntime.jsx("div", {
+                                        children: jargons.english,
+                                        className: "text-3xl font-bold"
+                                      }),
+                                  JsxRuntime.jsx("div", {
+                                        children: jargons.korean,
+                                        className: "text-2xl font-medium"
+                                      })
+                                ],
+                                className: "grid gap-1"
+                              }),
+                          JsxRuntime.jsx(JargonPost$CommentInput, {
+                                id: id,
+                                signInData: signInData
+                              }),
+                          JsxRuntime.jsx("div", {
+                                children: makeSiblings(match$3[0].contents)
+                              })
+                        ],
+                        className: "grid p-5 gap-3 dark:text-white"
+                      })
+                ]
+              });
   }
-  return React.createElement("div", {
+  return JsxRuntime.jsx("div", {
+              children: JsxRuntime.jsx(Loader.make, {}),
               className: "h-screen grid justify-center content-center"
-            }, React.createElement(Loader.make, {}));
+            });
 }
 
 var make = JargonPost;

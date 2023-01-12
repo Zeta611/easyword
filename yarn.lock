@@ -1074,13 +1074,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rescript/react@npm:^0.10.3":
-  version: 0.10.3
-  resolution: "@rescript/react@npm:0.10.3"
+"@rescript/react@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@rescript/react@npm:0.11.0"
   peerDependencies:
-    react: ">=16.8.1"
-    react-dom: ">=16.8.1"
-  checksum: 8561282f78b87c73c864b21d7f94f23545b6e7488167370aab2effa9268bab14f78b948dd0de4b84580467eff7c55c7dd1d080726ec63cb5b2dde030d37a1fbf
+    react: ">=18.0.0"
+    react-dom: ">=18.0.0"
+  checksum: c399d114f7081dca56b200c377dc4896f7c4e7ec092a73f6b42aadffd7b3b146a462009139e71c834db5989331777ffd57bbcef2adfb165104510aa5c60c9ada
   languageName: node
   linkType: hard
 
@@ -1574,7 +1574,7 @@ __metadata:
   dependencies:
     "@headlessui/react": ^1.7.7
     "@heroicons/react": ^2.0.13
-    "@rescript/react": ^0.10.3
+    "@rescript/react": ^0.11.0
     "@vitejs/plugin-react": ^2.0.1
     autoprefixer: ^10.4.8
     firebase: ^9.9.2
@@ -1585,7 +1585,7 @@ __metadata:
     react-firebaseui: ^6.0.0
     reactfire: ^4.2.2
     reanalyze: ^2.23.0
-    rescript: ./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz
+    rescript: 10.1.0
     tailwindcss: ^3.1.8
     vite: ^3.0.4
   languageName: unknown
@@ -3025,15 +3025,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rescript@file:./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz::locator=eko%40workspace%3A.":
-  version: 10.1.0-alpha.1
-  resolution: "rescript@file:./npm-packages/rescript-10.1.0-alpha.1-bb9dc61.tgz::locator=eko%40workspace%3A."
+"rescript@npm:10.1.0":
+  version: 10.1.0
+  resolution: "rescript@npm:10.1.0"
   bin:
     bsc: bsc
     bsrefmt: bsrefmt
     bstracing: lib/bstracing
     rescript: rescript
-  checksum: 243b717f06cba45d2af77d37b7a94a157a607c1c8eef2cbc7f0520032c92a1fd2c9ac1b38ce36fcad1f113ce409697399f7ccf523a5f8adeac0077b3deaa9211
+  checksum: b0b6ffbe7e6fc52098ccdeea30dff886dff4cf09c8cd85bdfa2b6cd7a854f35c167aa96e03f1590070315c344b85f24f311aa8ac26d3e96a763730a03bb99d7d
   languageName: node
   linkType: hard
 
