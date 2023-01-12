@@ -2,18 +2,19 @@
 
 import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
+import * as Filter from "./Filter.js";
 import * as Loader from "./Loader.js";
 import * as Navbar from "./Navbar.js";
 import * as Reactfire from "reactfire";
 import * as JargonList from "./JargonList.js";
 
-function Home$InputForm(Props) {
+function Home$SearchBar(Props) {
   var query = Props.query;
   var onChange = Props.onChange;
   return React.createElement("form", undefined, React.createElement("div", {
                   className: "relative"
                 }, React.createElement("input", {
-                      className: "block p-4 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700",
+                      className: "block px-4 h-10 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700",
                       placeholder: "정규식: syntax$",
                       type: "search",
                       value: query,
@@ -21,8 +22,8 @@ function Home$InputForm(Props) {
                     })));
 }
 
-var InputForm = {
-  make: Home$InputForm
+var SearchBar = {
+  make: Home$SearchBar
 };
 
 function Home(Props) {
@@ -31,19 +32,23 @@ function Home(Props) {
       });
   var setQuery = match[1];
   var query = match[0];
+  var match$1 = React.useState(function () {
+        return true;
+      });
+  var enKo = match$1[0];
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
     Curry._1(setQuery, (function (param) {
             return value;
           }));
   };
-  var match$1 = Reactfire.useSigninCheck();
-  if (match$1.status !== "success") {
+  var match$2 = Reactfire.useSigninCheck();
+  if (match$2.status !== "success") {
     return React.createElement("div", {
                 className: "h-screen grid justify-center content-center"
               }, React.createElement(Loader.make, {}));
   }
-  var signedIn = match$1.data;
+  var signedIn = match$2.data;
   return React.createElement("div", undefined, signedIn !== undefined ? (
                 signedIn.signedIn ? React.createElement(Navbar.make, {
                         signedIn: true
@@ -54,10 +59,20 @@ function Home(Props) {
                     signedIn: false
                   }), React.createElement("div", {
                   className: "grid gap-4 p-5"
-                }, React.createElement(Home$InputForm, {
-                      query: query,
-                      onChange: onChange
-                    }), React.createElement(JargonList.make, {
+                }, React.createElement("div", {
+                      className: "flex items-center space-x-2"
+                    }, React.createElement("div", {
+                          className: "flex-auto"
+                        }, React.createElement(Home$SearchBar, {
+                              query: query,
+                              onChange: onChange
+                            })), React.createElement("div", {
+                          className: "flex-none"
+                        }, React.createElement(Filter.make, {
+                              enKo: enKo,
+                              setEnKo: match$1[1]
+                            }))), React.createElement(JargonList.make, {
+                      enKo: enKo,
                       query: query
                     })));
 }
@@ -65,7 +80,7 @@ function Home(Props) {
 var make = Home;
 
 export {
-  InputForm ,
+  SearchBar ,
   make ,
 }
 /* react Not a pure module */

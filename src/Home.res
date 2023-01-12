@@ -1,4 +1,4 @@
-module InputForm = {
+module SearchBar = {
   @react.component
   let make = (~query, ~onChange) => {
     <form>
@@ -7,7 +7,7 @@ module InputForm = {
           type_="search"
           value=query
           onChange
-          className="block p-4 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700"
+          className="block px-4 h-10 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700"
           placeholder="정규식: syntax$"
         />
       </div>
@@ -17,8 +17,10 @@ module InputForm = {
 
 @react.component
 let make = () => {
-  // query is set from InputForm via onChange and passed into Dictionary
+  // query is set from SearchBar via onChange and passed into Dictionary
   let (query, setQuery) = React.useState(() => "")
+  let (enKo, setEnKo) = React.useState(() => true)
+
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
     setQuery(_ => value)
@@ -38,8 +40,15 @@ let make = () => {
       | Some({signedIn: true}) => <Navbar signedIn=true />
       }}
       <div className="grid gap-4 p-5">
-        <InputForm query onChange />
-        <JargonList query />
+        <div className="flex items-center space-x-2">
+          <div className="flex-auto">
+            <SearchBar query onChange />
+          </div>
+          <div className="flex-none">
+            <Filter enKo setEnKo />
+          </div>
+        </div>
+        <JargonList enKo query />
       </div>
     </div>
   }
