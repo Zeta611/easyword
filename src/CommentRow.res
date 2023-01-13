@@ -87,8 +87,11 @@ module rec CommentNode: {
       } else {
         React.null
       }}
-      <div className="ml-6">
-        <CommentSiblings jargonID siblings=children />
+      <div className="flex">
+        <div className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600" />
+        <div className="flex-initial w-full">
+          <CommentSiblings jargonID siblings=children />
+        </div>
       </div>
     </>
   }

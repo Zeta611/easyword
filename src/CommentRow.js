@@ -26,7 +26,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      99,
+      102,
       4
     ], {
       TAG: /* Module */0,
@@ -128,12 +128,20 @@ function CommentRow$CommentNode(props) {
                             }),
                         onSubmit: handleSubmit
                       }) : null,
-                JsxRuntime.jsx("div", {
-                      children: JsxRuntime.jsx(CommentSiblings.make, {
-                            jargonID: jargonID,
-                            siblings: children
-                          }),
-                      className: "ml-6"
+                JsxRuntime.jsxs("div", {
+                      children: [
+                        JsxRuntime.jsx("div", {
+                              className: "flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
+                            }),
+                        JsxRuntime.jsx("div", {
+                              children: JsxRuntime.jsx(CommentSiblings.make, {
+                                    jargonID: jargonID,
+                                    siblings: children
+                                  }),
+                              className: "flex-initial w-full"
+                            })
+                      ],
+                      className: "flex"
                     })
               ]
             });
