@@ -20,6 +20,7 @@ let make = () => {
   // query is set from SearchBar via onChange and passed into Dictionary
   let (query, setQuery) = React.useState(() => "")
   let (enKo, setEnKo) = React.useState(() => true)
+  let (ascending, setAscending) = React.useState(() => true)
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
@@ -45,10 +46,10 @@ let make = () => {
             <SearchBar query onChange />
           </div>
           <div className="flex-none">
-            <Filter enKo setEnKo />
+            <Filter enKo setEnKo ascending setAscending />
           </div>
         </div>
-        <JargonList enKo query />
+        <JargonList enKo ascending query />
       </div>
     </div>
   }

@@ -42,9 +42,11 @@ function makeRow(param, language) {
 
 function JargonList(props) {
   var language = props.enKo ? /* English */0 : /* Korean */1;
+  var direction = props.ascending ? /* Ascending */0 : /* Descending */1;
   var jargonsCollection = Firestore.collection(Reactfire.useFirestore(), "jargons");
   var language$1 = language ? "korean" : "english";
-  var queryConstraint = Firestore.orderBy(language$1, "asc");
+  var direction$1 = direction ? "desc" : "asc";
+  var queryConstraint = Firestore.orderBy(language$1, direction$1);
   var jargonsQuery = Firestore.query(jargonsCollection, queryConstraint);
   var match = Reactfire.useFirestoreCollectionData(jargonsQuery, {
         idField: "id"

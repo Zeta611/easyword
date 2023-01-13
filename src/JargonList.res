@@ -26,9 +26,9 @@ let makeRow = ({id, english, korean}, language) => {
 }
 
 @react.component
-let make = (~enKo, ~query as regexQuery) => {
+let make = (~enKo, ~ascending, ~query as regexQuery) => {
   let language = enKo ? English : Korean
-  let direction = Ascending
+  let direction = ascending ? Ascending : Descending
 
   open Firebase
 
