@@ -7,7 +7,7 @@ function Filter_(props) {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-          {props.ascending ?
+          {props.order[1] ?
             <ArrowUpIcon
               className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
               aria-hidden="true"
@@ -16,7 +16,7 @@ function Filter_(props) {
               className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
               aria-hidden="true"
             />}
-          {props.enKo ? '영한' : '한영'}
+          {props.order[0] ? '영한' : '한영'}
           <ChevronDownIcon
             className="ml-2 -mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
             aria-hidden="true"
@@ -38,15 +38,15 @@ function Filter_(props) {
               {({ active }) => (
                 <button
                   onClick={() => {
-                    props.setAscending(b => (props.enKo ? true : !b))
-                    props.setEnKo(_ => false)
+                    props.setOrder(order => [order[0], props.order[0] ? true : !order[1]])
+                    props.setOrder(order => [false, order[1]])
 
                   }}
                   className={`${active ? 'bg-teal-500 text-white' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   한영
-                  {props.enKo ? <></> : props.ascending ? <ArrowUpIcon
+                  {props.order[0] ? <></> : props.order[1] ? <ArrowUpIcon
                     className="flex-0 ml-1 h-5 w-5 text-teal-200 hover:text-teal-100"
                     aria-hidden="true"
                   /> : <ArrowDownIcon
@@ -59,15 +59,15 @@ function Filter_(props) {
               {({ active }) => (
                 <button
                   onClick={() => {
-                    props.setAscending(b => (props.enKo ? !b : true))
-                    props.setEnKo(_ => true)
+                    props.setOrder(order => [order[0], props.order[0] ? !order[1] : true])
+                    props.setOrder(order => [true, order[1]])
 
                   }}
                   className={`${active ? 'bg-teal-500 text-white' : 'text-gray-900'
                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                 >
                   영한
-                  {props.enKo ? (props.ascending ? <ArrowUpIcon
+                  {props.order[0] ? (props.order[1] ? <ArrowUpIcon
                     className="flex-0 ml-1 h-5 w-5 text-teal-200 hover:text-teal-100"
                     aria-hidden="true"
                   /> : <ArrowDownIcon

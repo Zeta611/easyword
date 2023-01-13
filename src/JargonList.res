@@ -1,9 +1,5 @@
 open Jargon
 
-type language = English | Korean
-type direction = Ascending | Descending
-type order = (language, direction)
-
 let makeRow = ({id, english, korean}, language) => {
   let (primary, secondary) = switch language {
   | English => (english, korean)
@@ -26,9 +22,8 @@ let makeRow = ({id, english, korean}, language) => {
 }
 
 @react.component
-let make = (~enKo, ~ascending, ~query as regexQuery) => {
-  let language = enKo ? English : Korean
-  let direction = ascending ? Ascending : Descending
+let make = (~order, ~query as regexQuery) => {
+  let (language, direction) = order
 
   open Firebase
 

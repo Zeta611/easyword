@@ -19,8 +19,10 @@ module SearchBar = {
 let make = () => {
   // query is set from SearchBar via onChange and passed into Dictionary
   let (query, setQuery) = React.useState(() => "")
-  let (enKo, setEnKo) = React.useState(() => true)
-  let (ascending, setAscending) = React.useState(() => true)
+  let (order, setOrder) = React.useState(() => {
+    open Jargon
+    (English, Ascending)
+  })
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
@@ -46,10 +48,10 @@ let make = () => {
             <SearchBar query onChange />
           </div>
           <div className="flex-none">
-            <Filter enKo setEnKo ascending setAscending />
+            <Filter order setOrder />
           </div>
         </div>
-        <JargonList enKo ascending query />
+        <JargonList order query />
       </div>
     </div>
   }

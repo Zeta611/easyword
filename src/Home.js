@@ -35,27 +35,26 @@ function Home(props) {
   var setQuery = match[1];
   var query = match[0];
   var match$1 = React.useState(function () {
-        return true;
+        return [
+                /* English */0,
+                /* Ascending */0
+              ];
       });
-  var enKo = match$1[0];
-  var match$2 = React.useState(function () {
-        return true;
-      });
-  var ascending = match$2[0];
+  var order = match$1[0];
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
     Curry._1(setQuery, (function (param) {
             return value;
           }));
   };
-  var match$3 = Reactfire.useSigninCheck();
-  if (match$3.status !== "success") {
+  var match$2 = Reactfire.useSigninCheck();
+  if (match$2.status !== "success") {
     return JsxRuntime.jsx("div", {
                 children: JsxRuntime.jsx(Loader.make, {}),
                 className: "h-screen grid justify-center content-center"
               });
   }
-  var signedIn = match$3.data;
+  var signedIn = match$2.data;
   return JsxRuntime.jsxs("div", {
               children: [
                 signedIn !== undefined && signedIn.signedIn ? JsxRuntime.jsx(Navbar.make, {
@@ -76,10 +75,8 @@ function Home(props) {
                                     }),
                                 JsxRuntime.jsx("div", {
                                       children: JsxRuntime.jsx(Filter.make, {
-                                            enKo: enKo,
-                                            setEnKo: match$1[1],
-                                            ascending: ascending,
-                                            setAscending: match$2[1]
+                                            order: order,
+                                            setOrder: match$1[1]
                                           }),
                                       className: "flex-none"
                                     })
@@ -87,8 +84,7 @@ function Home(props) {
                               className: "flex items-center space-x-2"
                             }),
                         JsxRuntime.jsx(JargonList.make, {
-                              enKo: enKo,
-                              ascending: ascending,
+                              order: order,
                               query: query
                             })
                       ],
