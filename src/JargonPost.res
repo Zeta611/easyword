@@ -1,22 +1,7 @@
-// Firestore comment entity
-@deriving({abstract: light})
-type comment = {
-  @optional id: string,
-  content: string,
-  user: string,
-  timestamp: Firebase.Timestamp.t,
-  parent: string,
-}
+let constructForest = (comments: array<Comment.t>) => {
+  open Comment
 
-type rec commentList = list<commentNode>
-and commentNode = {
-  comment: comment,
-  mutable parent: option<commentNode>,
-  mutable children: commentList,
-}
-
-let constructForest = (comments: array<comment>) => {
-  let roots: ref<commentList> = ref(list{})
+  let roots: ref<list<node>> = ref(list{})
   let commentNodeTable = HashMap.String.make(~hintSize=10)
 
   // Store comments in the lookupComment hash map & add roots as well
@@ -41,27 +26,6 @@ let constructForest = (comments: array<comment>) => {
   })
 
   (roots, commentNodeTable)
-}
-
-let rec makeComment = ({comment, children, _}) => {
-  <div key={comment->id->Option.getExn}>
-    <div className="grid grid-cols-2">
-      <div> {comment->user->React.string} </div>
-      <div>
-        {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
-      </div>
-      <div> {comment->content->React.string} </div>
-    </div>
-    <div className="ml-4"> {makeSiblings(children)} </div>
-  </div>
-}
-and makeSiblings = (siblings: commentList) => {
-  <div> {siblings->List.toArray->Array.map(makeComment)->React.array} </div>
-}
-
-module Window = {
-  @scope("window") @val
-  external alert: string => unit = "alert"
 }
 
 module CommentInput = {
@@ -97,7 +61,7 @@ module CommentInput = {
 
         let _ = addDoc(
           commentsCollection,
-          comment(
+          Comment.t(
             ~content,
             ~user=email /* TODO: use displayName */,
             ~timestamp=Js.Date.make()->Timestamp.fromDate,
@@ -160,7 +124,9 @@ let make = (~id) => {
               <div className="text-2xl font-medium"> {React.string(korean)} </div>
             </h1>
             <CommentInput id signInData />
-            <div> {makeSiblings(roots.contents)} </div>
+            <div>
+              <CommentRow jargonID=id siblings=roots.contents />
+            </div>
           </main>
         </div>
       }

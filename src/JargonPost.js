@@ -8,6 +8,7 @@ import * as Firebase from "./Firebase.js";
 import * as Belt_List from "../node_modules/rescript/lib/es6/belt_List.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
+import * as CommentRow from "./CommentRow.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as JsxRuntime from "react/jsx-runtime";
@@ -48,41 +49,6 @@ function constructForest(comments) {
           commentNodeTable
         ];
 }
-
-function makeComment(param) {
-  var comment = param.comment;
-  var children = param.children;
-  return JsxRuntime.jsxs("div", {
-              children: [
-                JsxRuntime.jsxs("div", {
-                      children: [
-                        JsxRuntime.jsx("div", {
-                              children: comment.user
-                            }),
-                        JsxRuntime.jsx("div", {
-                              children: comment.timestamp.toDate().toDateString()
-                            }),
-                        JsxRuntime.jsx("div", {
-                              children: comment.content
-                            })
-                      ],
-                      className: "grid grid-cols-2"
-                    }),
-                JsxRuntime.jsx("div", {
-                      children: makeSiblings(children),
-                      className: "ml-4"
-                    })
-              ]
-            }, Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id)));
-}
-
-function makeSiblings(siblings) {
-  return JsxRuntime.jsx("div", {
-              children: Belt_Array.map(Belt_List.toArray(siblings), makeComment)
-            });
-}
-
-var $$Window = {};
 
 function JargonPost$CommentInput(props) {
   var signInData = props.signInData;
@@ -193,7 +159,10 @@ function JargonPost(props) {
                                 signInData: signInData
                               }),
                           JsxRuntime.jsx("div", {
-                                children: makeSiblings(match$3[0].contents)
+                                children: JsxRuntime.jsx(CommentRow.make, {
+                                      jargonID: id,
+                                      siblings: match$3[0].contents
+                                    })
                               })
                         ],
                         className: "grid p-5 gap-3 dark:text-white"
@@ -211,9 +180,6 @@ var make = JargonPost;
 
 export {
   constructForest ,
-  makeComment ,
-  makeSiblings ,
-  $$Window ,
   CommentInput ,
   make ,
 }
