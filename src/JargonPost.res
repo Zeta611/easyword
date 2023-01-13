@@ -102,6 +102,7 @@ module CommentInput = {
             ~user=email /* TODO: use displayName */,
             ~timestamp=Js.Date.make()->Timestamp.fromDate,
             ~parent="",
+            (),
           ),
         )
       | _ => Window.alert("You need to be signed in to comment!")

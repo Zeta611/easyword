@@ -105,22 +105,12 @@ function JargonPost$CommentInput(props) {
       if (signInData.signedIn) {
         var match = signInData.user;
         var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), Firebase.User.email), match.uid));
-        var arg = Firestore.Timestamp.fromDate(new Date());
-        Firestore.addDoc(commentsCollection, (function (param) {
-                return function (param$1) {
-                  var prim4 = "";
-                  var tmp = {
-                    content: content,
-                    user: email,
-                    timestamp: arg,
-                    parent: prim4
-                  };
-                  if (param !== undefined) {
-                    tmp.id = Caml_option.valFromOption(param);
-                  }
-                  return tmp;
-                };
-              }));
+        Firestore.addDoc(commentsCollection, {
+              content: content,
+              user: email,
+              timestamp: Firestore.Timestamp.fromDate(new Date()),
+              parent: ""
+            });
         return ;
       }
       window.alert("You need to be signed in to comment!");
