@@ -29,20 +29,15 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  let signInData = React.useContext(SignInContext.context)
-
-  <div>
-    <Navbar signedIn=signInData.signedIn />
-    <div className="grid gap-4 p-5">
-      <div className="flex items-center space-x-2">
-        <div className="flex-auto">
-          <SearchBar query onChange />
-        </div>
-        <div className="flex-none">
-          <Filter order setOrder />
-        </div>
+  <div className="grid gap-4 p-5">
+    <div className="flex items-center space-x-2">
+      <div className="flex-auto">
+        <SearchBar query onChange />
       </div>
-      <JargonList order query />
+      <div className="flex-none">
+        <Filter order setOrder />
+      </div>
     </div>
+    <JargonList order query />
   </div>
 }

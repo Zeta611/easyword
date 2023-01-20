@@ -3,7 +3,6 @@
 import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Loader from "./Loader.js";
-import * as Navbar from "./Navbar.js";
 import * as Firebase from "./Firebase.js";
 import * as Belt_List from "../node_modules/rescript/lib/es6/belt_List.js";
 import * as Reactfire from "reactfire";
@@ -52,12 +51,13 @@ function constructForest(comments) {
 }
 
 function JargonPost$CommentInput(props) {
-  var user = props.user;
-  var match = React.useState(function () {
+  var match = React.useContext(SignInContext.context);
+  var user = match.user;
+  var match$1 = React.useState(function () {
         return "";
       });
-  var setContent = match[1];
-  var content = match[0];
+  var setContent = match$1[1];
+  var content = match$1[0];
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     Curry._1(setContent, (function (param) {
@@ -118,7 +118,6 @@ function JargonPost(props) {
         idField: "id"
       });
   var comments = match$1.data;
-  var signInData = React.useContext(SignInContext.context);
   if (match.status === "success" && match$1.status === "success") {
     if (jargons === undefined) {
       return null;
@@ -127,42 +126,32 @@ function JargonPost(props) {
       return null;
     }
     var match$2 = constructForest(Caml_option.valFromOption(comments));
-    var user = signInData.user;
-    return JsxRuntime.jsxs("div", {
+    return JsxRuntime.jsxs("main", {
                 children: [
-                  JsxRuntime.jsx(Navbar.make, {
-                        signedIn: signInData.signedIn
-                      }),
-                  JsxRuntime.jsxs("main", {
+                  JsxRuntime.jsxs("h1", {
                         children: [
-                          JsxRuntime.jsxs("h1", {
-                                children: [
-                                  JsxRuntime.jsx("div", {
-                                        children: jargons.english,
-                                        className: "text-3xl font-bold"
-                                      }),
-                                  JsxRuntime.jsx("div", {
-                                        children: jargons.korean,
-                                        className: "text-2xl font-medium"
-                                      })
-                                ],
-                                className: "grid gap-1"
-                              }),
-                          JsxRuntime.jsx(JargonPost$CommentInput, {
-                                id: id,
-                                user: user
+                          JsxRuntime.jsx("div", {
+                                children: jargons.english,
+                                className: "text-3xl font-bold"
                               }),
                           JsxRuntime.jsx("div", {
-                                children: JsxRuntime.jsx(CommentRow.make, {
-                                      jargonID: id,
-                                      siblings: match$2[0].contents,
-                                      user: user
-                                    })
+                                children: jargons.korean,
+                                className: "text-2xl font-medium"
                               })
                         ],
-                        className: "grid p-5 gap-3 dark:text-white"
+                        className: "grid gap-1"
+                      }),
+                  JsxRuntime.jsx(JargonPost$CommentInput, {
+                        id: id
+                      }),
+                  JsxRuntime.jsx("div", {
+                        children: JsxRuntime.jsx(CommentRow.make, {
+                              jargonID: id,
+                              siblings: match$2[0].contents
+                            })
                       })
-                ]
+                ],
+                className: "grid p-5 gap-3 dark:text-white"
               });
   }
   return JsxRuntime.jsx("div", {

@@ -2,14 +2,11 @@ open Comment
 
 module rec CommentNode: {
   @react.component
-  let make: (~jargonID: string, ~commentNode: node, ~user: option<Firebase.User.t>) => React.element
+  let make: (~jargonID: string, ~commentNode: node) => React.element
 } = {
   @react.component
-  let make = (
-    ~jargonID: string,
-    ~commentNode as {comment, children, _}: node,
-    ~user: option<Firebase.User.t>,
-  ) => {
+  let make = (~jargonID: string, ~commentNode as {comment, children}: node) => {
+    let {user} = React.useContext(SignInContext.context)
     let id = comment->id->Option.getExn
 
     let (show, setShow) = React.useState(() => false)
@@ -92,7 +89,7 @@ module rec CommentNode: {
       <div className="flex">
         <div className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600" />
         <div className="flex-initial w-full">
-          <CommentSiblings jargonID siblings=children user />
+          <CommentSiblings jargonID siblings=children />
         </div>
       </div>
     </>
@@ -100,19 +97,15 @@ module rec CommentNode: {
 }
 and CommentSiblings: {
   @react.component
-  let make: (
-    ~jargonID: string,
-    ~siblings: list<node>,
-    ~user: option<Firebase.User.t>,
-  ) => React.element
+  let make: (~jargonID: string, ~siblings: list<node>) => React.element
 } = {
   @react.component
-  let make = (~jargonID: string, ~siblings: list<node>, ~user: option<Firebase.User.t>) => {
+  let make = (~jargonID: string, ~siblings: list<node>) => {
     siblings
     ->List.toArray
     ->Array.map(commentNode =>
       <div key={commentNode.comment->id->Option.getExn}>
-        <CommentNode jargonID commentNode user />
+        <CommentNode jargonID commentNode />
       </div>
     )
     ->React.array
@@ -120,6 +113,6 @@ and CommentSiblings: {
 }
 
 @react.component
-let make = (~jargonID, ~siblings: list<node>, ~user: option<Firebase.User.t>) => {
-  <CommentSiblings jargonID siblings user />
+let make = (~jargonID, ~siblings: list<node>) => {
+  <CommentSiblings jargonID siblings />
 }

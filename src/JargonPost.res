@@ -16,7 +16,7 @@ let constructForest = (comments: array<Comment.t>) => {
   })
 
   // Iterate through the array and link the nodes
-  commentNodeTable->HashMap.String.forEach((_, {comment, _} as node) => {
+  commentNodeTable->HashMap.String.forEach((_, {comment} as node) => {
     let parent = comment->parent
     if parent != "" {
       let parentNode = commentNodeTable->HashMap.String.get(parent)->Option.getExn
@@ -30,7 +30,9 @@ let constructForest = (comments: array<Comment.t>) => {
 
 module CommentInput = {
   @react.component
-  let make = (~id, ~user: option<Firebase.User.t>) => {
+  let make = (~id) => {
+    let {user} = React.useContext(SignInContext.context)
+
     // For handling the comment textarea
     let (content, setContent) = React.useState(() => "")
     let handleInputChange = event => {
@@ -105,28 +107,22 @@ let make = (~id) => {
     ->query(orderBy("timestamp", ~direction="asc"))
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
-  let signInData = React.useContext(SignInContext.context)
-
   switch (docStatus, collectionStatus) {
   | (#success, #success) =>
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
     | (Some({korean, english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
-        let {signedIn, user} = signInData
-        <div>
-          <Navbar signedIn />
-          <main className="grid p-5 gap-3 dark:text-white">
-            <h1 className="grid gap-1">
-              <div className="text-3xl font-bold"> {React.string(english)} </div>
-              <div className="text-2xl font-medium"> {React.string(korean)} </div>
-            </h1>
-            <CommentInput id user />
-            <div>
-              <CommentRow jargonID=id siblings=roots.contents user />
-            </div>
-          </main>
-        </div>
+        <main className="grid p-5 gap-3 dark:text-white">
+          <h1 className="grid gap-1">
+            <div className="text-3xl font-bold"> {React.string(english)} </div>
+            <div className="text-2xl font-medium"> {React.string(korean)} </div>
+          </h1>
+          <CommentInput id />
+          <div>
+            <CommentRow jargonID=id siblings=roots.contents />
+          </div>
+        </main>
       }
     }
   | _ =>

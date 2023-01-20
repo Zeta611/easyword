@@ -3,9 +3,7 @@
 import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Filter from "./Filter.js";
-import * as Navbar from "./Navbar.js";
 import * as JargonList from "./JargonList.js";
-import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 
 function Home$SearchBar(props) {
@@ -46,41 +44,33 @@ function Home(props) {
             return value;
           }));
   };
-  var signInData = React.useContext(SignInContext.context);
   return JsxRuntime.jsxs("div", {
               children: [
-                JsxRuntime.jsx(Navbar.make, {
-                      signedIn: signInData.signedIn
-                    }),
                 JsxRuntime.jsxs("div", {
                       children: [
-                        JsxRuntime.jsxs("div", {
-                              children: [
-                                JsxRuntime.jsx("div", {
-                                      children: JsxRuntime.jsx(Home$SearchBar, {
-                                            query: query,
-                                            onChange: onChange
-                                          }),
-                                      className: "flex-auto"
-                                    }),
-                                JsxRuntime.jsx("div", {
-                                      children: JsxRuntime.jsx(Filter.make, {
-                                            order: order,
-                                            setOrder: match$1[1]
-                                          }),
-                                      className: "flex-none"
-                                    })
-                              ],
-                              className: "flex items-center space-x-2"
+                        JsxRuntime.jsx("div", {
+                              children: JsxRuntime.jsx(Home$SearchBar, {
+                                    query: query,
+                                    onChange: onChange
+                                  }),
+                              className: "flex-auto"
                             }),
-                        JsxRuntime.jsx(JargonList.make, {
-                              order: order,
-                              query: query
+                        JsxRuntime.jsx("div", {
+                              children: JsxRuntime.jsx(Filter.make, {
+                                    order: order,
+                                    setOrder: match$1[1]
+                                  }),
+                              className: "flex-none"
                             })
                       ],
-                      className: "grid gap-4 p-5"
+                      className: "flex items-center space-x-2"
+                    }),
+                JsxRuntime.jsx(JargonList.make, {
+                      order: order,
+                      query: query
                     })
-              ]
+              ],
+              className: "grid gap-4 p-5"
             });
 }
 

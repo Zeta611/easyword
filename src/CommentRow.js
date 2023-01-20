@@ -9,6 +9,7 @@ import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_module from "../node_modules/rescript/lib/es6/caml_module.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Firestore from "firebase/firestore";
 
@@ -26,7 +27,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      108,
+      101,
       4
     ], {
       TAG: /* Module */0,
@@ -41,17 +42,18 @@ function CommentRow$CommentNode(props) {
   var comment = match.comment;
   var jargonID = props.jargonID;
   var children = match.children;
-  var user = props.user;
+  var match$1 = React.useContext(SignInContext.context);
+  var user = match$1.user;
   var id = Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id));
-  var match$1 = React.useState(function () {
+  var match$2 = React.useState(function () {
         return false;
       });
-  var setShow = match$1[1];
-  var match$2 = React.useState(function () {
+  var setShow = match$2[1];
+  var match$3 = React.useState(function () {
         return "";
       });
-  var setContent = match$2[1];
-  var content = match$2[0];
+  var setContent = match$3[1];
+  var content = match$3[0];
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     Curry._1(setContent, (function (param) {
@@ -101,7 +103,7 @@ function CommentRow$CommentNode(props) {
                       ],
                       className: "grid grid-cols-2"
                     }),
-                match$1[0] ? JsxRuntime.jsx("form", {
+                match$2[0] ? JsxRuntime.jsx("form", {
                         children: JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("textarea", {
@@ -130,8 +132,7 @@ function CommentRow$CommentNode(props) {
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx(CommentSiblings.make, {
                                     jargonID: jargonID,
-                                    siblings: children,
-                                    user: user
+                                    siblings: children
                                   }),
                               className: "flex-initial w-full"
                             })
@@ -153,14 +154,12 @@ Caml_module.update_mod({
     });
 
 function CommentRow$CommentSiblings(props) {
-  var user = props.user;
   var jargonID = props.jargonID;
   return Belt_Array.map(Belt_List.toArray(props.siblings), (function (commentNode) {
                 return JsxRuntime.jsx("div", {
                             children: JsxRuntime.jsx(CommentNode.make, {
                                   jargonID: jargonID,
-                                  commentNode: commentNode,
-                                  user: user
+                                  commentNode: commentNode
                                 })
                           }, Belt_Option.getExn(Caml_option.undefined_to_opt(commentNode.comment.id)));
               }));
@@ -179,8 +178,7 @@ Caml_module.update_mod({
 function CommentRow(props) {
   return JsxRuntime.jsx(CommentSiblings.make, {
               jargonID: props.jargonID,
-              siblings: props.siblings,
-              user: props.user
+              siblings: props.siblings
             });
 }
 

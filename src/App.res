@@ -1,3 +1,19 @@
+module SignInWrapper = {
+  @react.component
+  let make = (~children: React.element) => {
+    let {status, data: signInData} = Firebase.useSigninCheck()
+
+    switch status {
+    | #loading =>
+      <div className="h-screen grid justify-center content-center">
+        <Loader />
+      </div>
+    | #success =>
+      <SignInContext.Provider value={signInData->Option.getExn}> children </SignInContext.Provider>
+    }
+  }
+}
+
 @react.component
 let make = () => {
   open Firebase
@@ -15,10 +31,10 @@ let make = () => {
     },
   )
 
-  let {status, data: firestore} = useInitFirestore(async (app) => {
+  let {status, data: firestore} = useInitFirestore(async app => {
     let firestore = app->getFirestore
     try {
-      await (firestore->enableMultiTabIndexedDbPersistence)
+      await firestore->enableMultiTabIndexedDbPersistence
     } catch {
     | Js.Exn.Error(err) => Js.log(err)
     }
@@ -40,12 +56,20 @@ let make = () => {
       <AppCheckProvider sdk=appCheck>
         <AuthProvider sdk=auth>
           <FirestoreProvider sdk=firestore>
-            {switch url.path {
-            | list{} => <Home />
-            | list{"jargon", id} => <JargonPost id />
-            | list{"login"} => <SignIn />
-            | _ => React.string("404")
-            }}
+            <SignInWrapper>
+              {switch url.path {
+              | list{"login"} => <SignIn />
+              | path =>
+                <NavbarContainer>
+                  {switch path {
+                  | list{} => <Home />
+                  | list{"jargon", id} => <JargonPost id />
+
+                  | _ => React.string("404")
+                  }}
+                </NavbarContainer>
+              }}
+            </SignInWrapper>
           </FirestoreProvider>
         </AuthProvider>
       </AppCheckProvider>
