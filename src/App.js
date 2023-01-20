@@ -113,6 +113,7 @@ function App(props) {
 var make = App;
 
 export {
+  SignInWrapper ,
   make ,
 }
 /* Home Not a pure module */

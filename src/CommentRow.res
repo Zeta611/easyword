@@ -9,7 +9,9 @@ module rec CommentNode: {
     let {user} = React.useContext(SignInContext.context)
     let id = comment->id->Option.getExn
 
-    let (show, setShow) = React.useState(() => false)
+    let (showReply, setShowReply) = React.useState(() => false)
+    let (showChildren, setShowChildren) = React.useState(() => true)
+
     // For handling the comment textarea
     let (content, setContent) = React.useState(() => "")
     let handleInputChange = event => {
@@ -62,19 +64,19 @@ module rec CommentNode: {
         <div>
           <button
             className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300"
-            onClick={_ => setShow(show => !show)}>
+            onClick={_ => setShowReply(show => !show)}>
             {"Reply"->React.string}
           </button>
         </div>
       </div>
-      {if show {
-        <form onSubmit={handleSubmit}>
+      {if showReply {
+        <form onSubmit=handleSubmit>
           <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
             <textarea
               name={"comment" ++ id}
               id={"comment" ++ id}
-              value={content}
-              onChange={handleInputChange}
+              value=content
+              onChange=handleInputChange
               placeholder="여러분의 생각은 어떠신가요?"
               className="h-24 p-1 border place-self-stretch"
             />
@@ -86,12 +88,25 @@ module rec CommentNode: {
       } else {
         React.null
       }}
-      <div className="flex">
-        <div className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600" />
-        <div className="flex-initial w-full">
-          <CommentSiblings jargonID siblings=children />
+      {if showChildren {
+        <div className="flex">
+          <button
+            className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
+            onClick={_ => setShowChildren(show => !show)}
+          />
+          <div className="flex-initial w-full">
+            <CommentSiblings jargonID siblings=children />
+          </div>
         </div>
-      </div>
+      } else {
+        <div className="flex">
+          <button
+            className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
+            onClick={_ => setShowChildren(show => !show)}
+          />
+          <div className="flex-initial w-full"> {"Expand"->React.string} </div>
+        </div>
+      }}
     </>
   }
 }

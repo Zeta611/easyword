@@ -27,7 +27,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      101,
+      116,
       4
     ], {
       TAG: /* Module */0,
@@ -48,12 +48,16 @@ function CommentRow$CommentNode(props) {
   var match$2 = React.useState(function () {
         return false;
       });
-  var setShow = match$2[1];
+  var setShowReply = match$2[1];
   var match$3 = React.useState(function () {
+        return true;
+      });
+  var setShowChildren = match$3[1];
+  var match$4 = React.useState(function () {
         return "";
       });
-  var setContent = match$3[1];
-  var content = match$3[0];
+  var setContent = match$4[1];
+  var content = match$4[0];
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     Curry._1(setContent, (function (param) {
@@ -94,7 +98,7 @@ function CommentRow$CommentNode(props) {
                                     children: "Reply",
                                     className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300",
                                     onClick: (function (param) {
-                                        Curry._1(setShow, (function (show) {
+                                        Curry._1(setShowReply, (function (show) {
                                                 return !show;
                                               }));
                                       })
@@ -124,21 +128,42 @@ function CommentRow$CommentNode(props) {
                             }),
                         onSubmit: handleSubmit
                       }) : null,
-                JsxRuntime.jsxs("div", {
-                      children: [
-                        JsxRuntime.jsx("div", {
-                              className: "flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
-                            }),
-                        JsxRuntime.jsx("div", {
-                              children: JsxRuntime.jsx(CommentSiblings.make, {
-                                    jargonID: jargonID,
-                                    siblings: children
-                                  }),
-                              className: "flex-initial w-full"
-                            })
-                      ],
-                      className: "flex"
-                    })
+                match$3[0] ? JsxRuntime.jsxs("div", {
+                        children: [
+                          JsxRuntime.jsx("button", {
+                                className: "flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600",
+                                onClick: (function (param) {
+                                    Curry._1(setShowChildren, (function (show) {
+                                            return !show;
+                                          }));
+                                  })
+                              }),
+                          JsxRuntime.jsx("div", {
+                                children: JsxRuntime.jsx(CommentSiblings.make, {
+                                      jargonID: jargonID,
+                                      siblings: children
+                                    }),
+                                className: "flex-initial w-full"
+                              })
+                        ],
+                        className: "flex"
+                      }) : JsxRuntime.jsxs("div", {
+                        children: [
+                          JsxRuntime.jsx("button", {
+                                className: "flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600",
+                                onClick: (function (param) {
+                                    Curry._1(setShowChildren, (function (show) {
+                                            return !show;
+                                          }));
+                                  })
+                              }),
+                          JsxRuntime.jsx("div", {
+                                children: "Expand",
+                                className: "flex-initial w-full"
+                              })
+                        ],
+                        className: "flex"
+                      })
               ]
             });
 }
