@@ -2,10 +2,14 @@ open Comment
 
 module rec CommentNode: {
   @react.component
-  let make: (~jargonID: string, ~commentNode: node) => React.element
+  let make: (~jargonID: string, ~commentNode: node, ~user: option<Firebase.User.t>) => React.element
 } = {
   @react.component
-  let make = (~jargonID: string, ~commentNode as {comment, children, _}: node) => {
+  let make = (
+    ~jargonID: string,
+    ~commentNode as {comment, children, _}: node,
+    ~user: option<Firebase.User.t>,
+  ) => {
     let id = comment->id->Option.getExn
 
     let (show, setShow) = React.useState(() => false)
@@ -15,8 +19,6 @@ module rec CommentNode: {
       let value = ReactEvent.Form.currentTarget(event)["value"]
       setContent(_ => value)
     }
-
-    let {status: signInStatus, data: signInData} = Firebase.useSigninCheck()
 
     let commentsCollection = {
       open Firebase
@@ -28,8 +30,8 @@ module rec CommentNode: {
       // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
 
-      switch signInData {
-      | Some({signedIn: true, user: {uid, email, providerData}}) =>
+      switch user {
+      | Some({uid, email, providerData}) =>
         open Firebase
         let email = {
           open Option
@@ -49,13 +51,13 @@ module rec CommentNode: {
             (),
           ),
         )
-      | _ => Window.alert("You need to be signed in to comment!")
+      | None => Window.alert("You need to be signed in to comment!")
       }
     }
 
     <>
       <div className="grid grid-cols-2">
-        <div> {comment->user->React.string} </div>
+        <div> {comment->Comment.user->React.string} </div>
         <div>
           {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
         </div>
@@ -90,7 +92,7 @@ module rec CommentNode: {
       <div className="flex">
         <div className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600" />
         <div className="flex-initial w-full">
-          <CommentSiblings jargonID siblings=children />
+          <CommentSiblings jargonID siblings=children user />
         </div>
       </div>
     </>
@@ -98,15 +100,19 @@ module rec CommentNode: {
 }
 and CommentSiblings: {
   @react.component
-  let make: (~jargonID: string, ~siblings: list<node>) => React.element
+  let make: (
+    ~jargonID: string,
+    ~siblings: list<node>,
+    ~user: option<Firebase.User.t>,
+  ) => React.element
 } = {
   @react.component
-  let make = (~jargonID: string, ~siblings: list<node>) => {
+  let make = (~jargonID: string, ~siblings: list<node>, ~user: option<Firebase.User.t>) => {
     siblings
     ->List.toArray
     ->Array.map(commentNode =>
       <div key={commentNode.comment->id->Option.getExn}>
-        <CommentNode jargonID commentNode />
+        <CommentNode jargonID commentNode user />
       </div>
     )
     ->React.array
@@ -114,6 +120,6 @@ and CommentSiblings: {
 }
 
 @react.component
-let make = (~jargonID, ~siblings: list<node>) => {
-  <CommentSiblings jargonID siblings />
+let make = (~jargonID, ~siblings: list<node>, ~user: option<Firebase.User.t>) => {
+  <CommentSiblings jargonID siblings user />
 }

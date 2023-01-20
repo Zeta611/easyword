@@ -129,7 +129,8 @@ module User = {
   }
 }
 
-type signInCheckResult = {signedIn: bool, user: User.t}
+// TODO: The domain modeling seems a bit off--what does it mean when signedIn is false and there is a user?
+type signInCheckResult = {signedIn: bool, user: option<User.t>}
 @module("reactfire")
 external useSigninCheck: unit => observableStatus<signInCheckResult> = "useSigninCheck"
 

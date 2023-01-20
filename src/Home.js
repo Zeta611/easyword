@@ -3,10 +3,9 @@
 import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
 import * as Filter from "./Filter.js";
-import * as Loader from "./Loader.js";
 import * as Navbar from "./Navbar.js";
-import * as Reactfire from "reactfire";
 import * as JargonList from "./JargonList.js";
+import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 
 function Home$SearchBar(props) {
@@ -47,21 +46,12 @@ function Home(props) {
             return value;
           }));
   };
-  var match$2 = Reactfire.useSigninCheck();
-  if (match$2.status !== "success") {
-    return JsxRuntime.jsx("div", {
-                children: JsxRuntime.jsx(Loader.make, {}),
-                className: "h-screen grid justify-center content-center"
-              });
-  }
-  var signedIn = match$2.data;
+  var signInData = React.useContext(SignInContext.context);
   return JsxRuntime.jsxs("div", {
               children: [
-                signedIn !== undefined && signedIn.signedIn ? JsxRuntime.jsx(Navbar.make, {
-                        signedIn: true
-                      }) : JsxRuntime.jsx(Navbar.make, {
-                        signedIn: false
-                      }),
+                JsxRuntime.jsx(Navbar.make, {
+                      signedIn: signInData.signedIn
+                    }),
                 JsxRuntime.jsxs("div", {
                       children: [
                         JsxRuntime.jsxs("div", {

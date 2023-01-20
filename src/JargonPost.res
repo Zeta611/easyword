@@ -30,7 +30,7 @@ let constructForest = (comments: array<Comment.t>) => {
 
 module CommentInput = {
   @react.component
-  let make = (~id, ~signInData: option<Firebase.signInCheckResult>) => {
+  let make = (~id, ~user: option<Firebase.User.t>) => {
     // For handling the comment textarea
     let (content, setContent) = React.useState(() => "")
     let handleInputChange = event => {
@@ -48,8 +48,8 @@ module CommentInput = {
       // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
 
-      switch signInData {
-      | Some({signedIn: true, user: {uid, email, providerData}}) =>
+      switch user {
+      | Some({uid, email, providerData}) =>
         open Firebase
         let email = {
           open Option
@@ -69,7 +69,7 @@ module CommentInput = {
             (),
           ),
         )
-      | _ => Window.alert("You need to be signed in to comment!")
+      | None => Window.alert("You need to be signed in to comment!")
       }
     }
 
@@ -105,27 +105,25 @@ let make = (~id) => {
     ->query(orderBy("timestamp", ~direction="asc"))
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
-  let {status: signInStatus, data: signInData} = useSigninCheck()
+  let signInData = React.useContext(SignInContext.context)
 
-  switch (docStatus, collectionStatus, signInStatus) {
-  | (#success, #success, #success) =>
+  switch (docStatus, collectionStatus) {
+  | (#success, #success) =>
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
     | (Some({korean, english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
+        let {signedIn, user} = signInData
         <div>
-          {switch signInData {
-          | None | Some({signedIn: false}) => <Navbar signedIn=false />
-          | Some({signedIn: true}) => <Navbar signedIn=true />
-          }}
+          <Navbar signedIn />
           <main className="grid p-5 gap-3 dark:text-white">
             <h1 className="grid gap-1">
               <div className="text-3xl font-bold"> {React.string(english)} </div>
               <div className="text-2xl font-medium"> {React.string(korean)} </div>
             </h1>
-            <CommentInput id signInData />
+            <CommentInput id user />
             <div>
-              <CommentRow jargonID=id siblings=roots.contents />
+              <CommentRow jargonID=id siblings=roots.contents user />
             </div>
           </main>
         </div>

@@ -11,6 +11,7 @@ import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as CommentRow from "./CommentRow.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Belt_HashMapString from "../node_modules/rescript/lib/es6/belt_HashMapString.js";
 import * as Firestore from "firebase/firestore";
@@ -51,7 +52,7 @@ function constructForest(comments) {
 }
 
 function JargonPost$CommentInput(props) {
-  var signInData = props.signInData;
+  var user = props.user;
   var match = React.useState(function () {
         return "";
       });
@@ -67,19 +68,14 @@ function JargonPost$CommentInput(props) {
   var commentsCollection = Firestore.collection(firestore, "jargons/" + props.id + "/comments");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (signInData !== undefined) {
-      if (signInData.signedIn) {
-        var match = signInData.user;
-        var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), Firebase.User.email), match.uid));
-        Firestore.addDoc(commentsCollection, {
-              content: content,
-              user: email,
-              timestamp: Firestore.Timestamp.fromDate(new Date()),
-              parent: ""
-            });
-        return ;
-      }
-      window.alert("You need to be signed in to comment!");
+    if (user !== undefined) {
+      var email = Belt_Option.getWithDefault(user.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(user.providerData, 0), Firebase.User.email), user.uid));
+      Firestore.addDoc(commentsCollection, {
+            content: content,
+            user: email,
+            timestamp: Firestore.Timestamp.fromDate(new Date()),
+            parent: ""
+          });
       return ;
     }
     window.alert("You need to be signed in to comment!");
@@ -122,23 +118,21 @@ function JargonPost(props) {
         idField: "id"
       });
   var comments = match$1.data;
-  var match$2 = Reactfire.useSigninCheck();
-  var signInData = match$2.data;
-  if (match.status === "success" && match$1.status === "success" && match$2.status === "success") {
+  var signInData = React.useContext(SignInContext.context);
+  if (match.status === "success" && match$1.status === "success") {
     if (jargons === undefined) {
       return null;
     }
     if (comments === undefined) {
       return null;
     }
-    var match$3 = constructForest(Caml_option.valFromOption(comments));
+    var match$2 = constructForest(Caml_option.valFromOption(comments));
+    var user = signInData.user;
     return JsxRuntime.jsxs("div", {
                 children: [
-                  signInData !== undefined && signInData.signedIn ? JsxRuntime.jsx(Navbar.make, {
-                          signedIn: true
-                        }) : JsxRuntime.jsx(Navbar.make, {
-                          signedIn: false
-                        }),
+                  JsxRuntime.jsx(Navbar.make, {
+                        signedIn: signInData.signedIn
+                      }),
                   JsxRuntime.jsxs("main", {
                         children: [
                           JsxRuntime.jsxs("h1", {
@@ -156,12 +150,13 @@ function JargonPost(props) {
                               }),
                           JsxRuntime.jsx(JargonPost$CommentInput, {
                                 id: id,
-                                signInData: signInData
+                                user: user
                               }),
                           JsxRuntime.jsx("div", {
                                 children: JsxRuntime.jsx(CommentRow.make, {
                                       jargonID: id,
-                                      siblings: match$3[0].contents
+                                      siblings: match$2[0].contents,
+                                      user: user
                                     })
                               })
                         ],

@@ -26,7 +26,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      102,
+      108,
       4
     ], {
       TAG: /* Module */0,
@@ -41,6 +41,7 @@ function CommentRow$CommentNode(props) {
   var comment = match.comment;
   var jargonID = props.jargonID;
   var children = match.children;
+  var user = props.user;
   var id = Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id));
   var match$1 = React.useState(function () {
         return false;
@@ -57,25 +58,18 @@ function CommentRow$CommentNode(props) {
             return value;
           }));
   };
-  var match$3 = Reactfire.useSigninCheck();
-  var signInData = match$3.data;
   var firestore = Reactfire.useFirestore();
   var commentsCollection = Firestore.collection(firestore, "jargons/" + jargonID + "/comments");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (signInData !== undefined) {
-      if (signInData.signedIn) {
-        var match = signInData.user;
-        var email = Belt_Option.getWithDefault(match.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(match.providerData, 0), Firebase.User.email), match.uid));
-        Firestore.addDoc(commentsCollection, {
-              content: content,
-              user: email,
-              timestamp: Firestore.Timestamp.fromDate(new Date()),
-              parent: id
-            });
-        return ;
-      }
-      window.alert("You need to be signed in to comment!");
+    if (user !== undefined) {
+      var email = Belt_Option.getWithDefault(user.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(user.providerData, 0), Firebase.User.email), user.uid));
+      Firestore.addDoc(commentsCollection, {
+            content: content,
+            user: email,
+            timestamp: Firestore.Timestamp.fromDate(new Date()),
+            parent: id
+          });
       return ;
     }
     window.alert("You need to be signed in to comment!");
@@ -136,7 +130,8 @@ function CommentRow$CommentNode(props) {
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx(CommentSiblings.make, {
                                     jargonID: jargonID,
-                                    siblings: children
+                                    siblings: children,
+                                    user: user
                                   }),
                               className: "flex-initial w-full"
                             })
@@ -158,12 +153,14 @@ Caml_module.update_mod({
     });
 
 function CommentRow$CommentSiblings(props) {
+  var user = props.user;
   var jargonID = props.jargonID;
   return Belt_Array.map(Belt_List.toArray(props.siblings), (function (commentNode) {
                 return JsxRuntime.jsx("div", {
                             children: JsxRuntime.jsx(CommentNode.make, {
                                   jargonID: jargonID,
-                                  commentNode: commentNode
+                                  commentNode: commentNode,
+                                  user: user
                                 })
                           }, Belt_Option.getExn(Caml_option.undefined_to_opt(commentNode.comment.id)));
               }));
@@ -182,7 +179,8 @@ Caml_module.update_mod({
 function CommentRow(props) {
   return JsxRuntime.jsx(CommentSiblings.make, {
               jargonID: props.jargonID,
-              siblings: props.siblings
+              siblings: props.siblings,
+              user: props.user
             });
 }
 
