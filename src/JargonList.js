@@ -4,41 +4,12 @@ import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
+import * as JargonCard from "./JargonCard.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
-
-function makeRow(param, language) {
-  var korean = param.korean;
-  var english = param.english;
-  var id = param.id;
-  var match = language ? [
-      korean,
-      english
-    ] : [
-      english,
-      korean
-    ];
-  return JsxRuntime.jsxs("div", {
-              children: [
-                JsxRuntime.jsx("div", {
-                      children: match[0],
-                      className: "font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200 dark:text-white"
-                    }),
-                JsxRuntime.jsx("div", {
-                      children: match[1],
-                      className: "font-regular text-right text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300"
-                    })
-              ],
-              className: "group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900",
-              onClick: (function (param) {
-                  RescriptReactRouter.push("/jargon/" + id + "");
-                })
-            }, id);
-}
 
 function JargonList(props) {
   var order = props.order;
@@ -80,10 +51,13 @@ function JargonList(props) {
   var rows = Belt_Array.keepMap(Caml_option.valFromOption(jargons), (function (jargon) {
           var match = jargon.english.match(regex);
           var match$1 = jargon.korean.match(regex);
-          if (match !== null || match$1 !== null) {
-            return Caml_option.some(makeRow(jargon, language));
+          if (match === null && match$1 === null) {
+            return ;
           }
-          
+          return Caml_option.some(JsxRuntime.jsx(JargonCard.make, {
+                          jargon: jargon,
+                          language: language
+                        }, jargon.id));
         }));
   return JsxRuntime.jsx("div", {
               children: rows,
@@ -94,7 +68,6 @@ function JargonList(props) {
 var make = JargonList;
 
 export {
-  makeRow ,
   make ,
 }
 /* Loader Not a pure module */
