@@ -84,7 +84,7 @@ function JargonPost$CommentInput(props) {
               children: JsxRuntime.jsxs("div", {
                     children: [
                       JsxRuntime.jsx("textarea", {
-                            className: "h-24 p-1 border place-self-stretch",
+                            className: "h-24 p-1 border place-self-stretch black text-black",
                             id: "comment",
                             name: "comment",
                             placeholder: "여러분의 생각은 어떠신가요?",
@@ -92,7 +92,7 @@ function JargonPost$CommentInput(props) {
                             onChange: handleInputChange
                           }),
                       JsxRuntime.jsx("input", {
-                            className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300",
+                            className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black",
                             type: "submit",
                             value: "Comment"
                           })

@@ -83,10 +83,12 @@ module CommentInput = {
           value={content}
           onChange={handleInputChange}
           placeholder="여러분의 생각은 어떠신가요?"
-          className="h-24 p-1 border place-self-stretch"
+          className="h-24 p-1 border place-self-stretch black text-black"
         />
         <input
-          type_="submit" value="Comment" className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300"
+          type_="submit"
+          value="Comment"
+          className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
         />
       </div>
     </form>
