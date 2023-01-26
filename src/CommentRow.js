@@ -27,7 +27,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      118,
+      121,
       4
     ], {
       TAG: /* Module */0,
@@ -72,6 +72,9 @@ function CommentRow$CommentNode(props) {
       window.alert("You need to be signed in to comment!");
       return ;
     }
+    Curry._1(setShowReply, (function (param) {
+            return false;
+          }));
     var email = Belt_Option.getWithDefault(user.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(user.providerData, 0), Firebase.User.email), user.uid));
     Firestore.addDoc(commentsCollection, {
           content: content,

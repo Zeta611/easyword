@@ -31,6 +31,9 @@ module rec CommentNode: {
 
       switch user->Js.Nullable.toOption {
       | Some({uid, email, providerData}) =>
+        // Hide reply after submit
+        setShowReply(_ => false)
+
         open Firebase
         let email = {
           open Option
