@@ -4,7 +4,7 @@ import * as React from "react";
 
 var context = React.createContext({
       signedIn: false,
-      user: undefined
+      user: null
     });
 
 var make = context.Provider;

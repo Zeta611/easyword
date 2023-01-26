@@ -68,17 +68,17 @@ function CommentRow$CommentNode(props) {
   var commentsCollection = Firestore.collection(firestore, "jargons/" + jargonID + "/comments");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (user !== undefined) {
-      var email = Belt_Option.getWithDefault(user.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(user.providerData, 0), Firebase.User.email), user.uid));
-      Firestore.addDoc(commentsCollection, {
-            content: content,
-            user: email,
-            timestamp: Firestore.Timestamp.fromDate(new Date()),
-            parent: id
-          });
+    if (user == null) {
+      window.alert("You need to be signed in to comment!");
       return ;
     }
-    window.alert("You need to be signed in to comment!");
+    var email = Belt_Option.getWithDefault(user.email, Belt_Option.getWithDefault(Belt_Option.flatMap(Belt_Array.get(user.providerData, 0), Firebase.User.email), user.uid));
+    Firestore.addDoc(commentsCollection, {
+          content: content,
+          user: email,
+          timestamp: Firestore.Timestamp.fromDate(new Date()),
+          parent: id
+        });
   };
   return JsxRuntime.jsxs(JsxRuntime.Fragment, {
               children: [

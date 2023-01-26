@@ -29,7 +29,7 @@ module rec CommentNode: {
       // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
 
-      switch user {
+      switch user->Js.Nullable.toOption {
       | Some({uid, email, providerData}) =>
         open Firebase
         let email = {
