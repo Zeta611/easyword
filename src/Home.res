@@ -18,15 +18,15 @@ module SearchBar = {
 @react.component
 let make = () => {
   // query is set from SearchBar via onChange and passed into Dictionary
-  let (query, setQuery) = React.useState(() => "")
-  let (order, setOrder) = React.useState(() => {
+  let (query, setQuery) = React.Uncurried.useState(() => "")
+  let (order, setOrder) = React.Uncurried.useState(() => {
     open Jargon
     (English, Ascending)
   })
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
-    setQuery(_ => value)
+    setQuery(._ => value)
   }
 
   <div className="grid gap-4 p-5">

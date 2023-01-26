@@ -9,14 +9,14 @@ module rec CommentNode: {
     let {user} = React.useContext(SignInContext.context)
     let id = comment->id->Option.getExn
 
-    let (showReply, setShowReply) = React.useState(() => false)
-    let (showChildren, setShowChildren) = React.useState(() => true)
+    let (showReply, setShowReply) = React.Uncurried.useState(() => false)
+    let (showChildren, setShowChildren) = React.Uncurried.useState(() => true)
 
     // For handling the comment textarea
-    let (content, setContent) = React.useState(() => "")
+    let (content, setContent) = React.Uncurried.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
-      setContent(_ => value)
+      setContent(._ => value)
     }
 
     let commentsCollection = {
@@ -32,7 +32,7 @@ module rec CommentNode: {
       switch user->Js.Nullable.toOption {
       | Some({uid, email, providerData}) =>
         // Hide reply after submit
-        setShowReply(_ => false)
+        setShowReply(._ => false)
 
         open Firebase
         let email = {
@@ -67,7 +67,7 @@ module rec CommentNode: {
         <div>
           <button
             className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
-            onClick={_ => setShowReply(show => !show)}>
+            onClick={_ => setShowReply(.show => !show)}>
             {"Reply"->React.string}
           </button>
         </div>
@@ -97,7 +97,7 @@ module rec CommentNode: {
         <div className="flex">
           <button
             className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
-            onClick={_ => setShowChildren(show => !show)}
+            onClick={_ => setShowChildren(.show => !show)}
           />
           <div className="flex-initial w-full">
             <CommentSiblings jargonID siblings=children />
@@ -107,7 +107,7 @@ module rec CommentNode: {
         <div className="flex">
           <button
             className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
-            onClick={_ => setShowChildren(show => !show)}
+            onClick={_ => setShowChildren(.show => !show)}
           />
           <div className="flex-initial w-full"> {"Expand"->React.string} </div>
         </div>
