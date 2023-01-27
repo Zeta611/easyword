@@ -26,7 +26,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      121,
+      137,
       4
     ], {
       TAG: /* Module */0,
@@ -86,11 +86,16 @@ function CommentRow$CommentNode(props) {
               children: [
                 JsxRuntime.jsxs("div", {
                       children: [
-                        JsxRuntime.jsx("div", {
-                              children: comment.user
-                            }),
-                        JsxRuntime.jsx("div", {
-                              children: comment.timestamp.toDate().toDateString()
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("div", {
+                                      children: comment.user
+                                    }),
+                                JsxRuntime.jsx("div", {
+                                      children: comment.timestamp.toDate().toDateString()
+                                    })
+                              ],
+                              className: "flex gap-x-3"
                             }),
                         JsxRuntime.jsx("div", {
                               children: comment.content
@@ -107,7 +112,7 @@ function CommentRow$CommentNode(props) {
                                   })
                             })
                       ],
-                      className: "grid grid-cols-2"
+                      className: "flex flex-col gap-y-1"
                     }),
                 match$2[0] ? JsxRuntime.jsx("form", {
                         children: JsxRuntime.jsxs("div", {
@@ -187,7 +192,8 @@ function CommentRow$CommentSiblings(props) {
                             children: JsxRuntime.jsx(CommentNode.make, {
                                   jargonID: jargonID,
                                   commentNode: commentNode
-                                })
+                                }),
+                            className: "flex flex-col gap-y-2"
                           }, Belt_Option.getExn(Caml_option.undefined_to_opt(commentNode.comment.id)));
               }));
 }

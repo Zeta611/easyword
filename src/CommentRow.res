@@ -58,10 +58,12 @@ module rec CommentNode: {
     }
 
     <>
-      <div className="grid grid-cols-2">
-        <div> {comment->Comment.user->React.string} </div>
-        <div>
-          {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
+      <div className="flex flex-col gap-y-1">
+        <div className="flex gap-x-3">
+          <div> {comment->Comment.user->React.string} </div>
+          <div>
+            {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
+          </div>
         </div>
         <div> {comment->Comment.content->React.string} </div>
         <div>
@@ -72,6 +74,20 @@ module rec CommentNode: {
           </button>
         </div>
       </div>
+      // <div className="grid grid-cols-2">
+      //   <div> {comment->Comment.user->React.string} </div>
+      //   <div>
+      //     {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
+      //   </div>
+      //   <div> {comment->Comment.content->React.string} </div>
+      //   <div>
+      //     <button
+      //       className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
+      //       onClick={_ => setShowReply(.show => !show)}>
+      //       {"Reply"->React.string}
+      //     </button>
+      //   </div>
+      // </div>
       {if showReply {
         <form onSubmit=handleSubmit>
           <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
@@ -124,7 +140,7 @@ and CommentSiblings: {
     siblings
     ->List.toArray
     ->Array.map(commentNode =>
-      <div key={commentNode.comment->id->Option.getExn}>
+      <div key={commentNode.comment->id->Option.getExn} className="flex flex-col gap-y-2">
         <CommentNode jargonID commentNode />
       </div>
     )
