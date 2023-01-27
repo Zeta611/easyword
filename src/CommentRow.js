@@ -26,7 +26,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      137,
+      123,
       4
     ], {
       TAG: /* Module */0,
@@ -102,7 +102,7 @@ function CommentRow$CommentNode(props) {
                             }),
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx("button", {
-                                    children: "Reply",
+                                    children: "답글",
                                     className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black",
                                     onClick: (function (param) {
                                         setShowReply(function (show) {
@@ -128,7 +128,7 @@ function CommentRow$CommentNode(props) {
                                 JsxRuntime.jsx("input", {
                                       className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black",
                                       type: "submit",
-                                      value: "Reply"
+                                      value: "답글"
                                     })
                               ],
                               className: "p-2 gap-3 grid grid-cols-1 place-items-end"

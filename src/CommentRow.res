@@ -70,24 +70,10 @@ module rec CommentNode: {
           <button
             className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
             onClick={_ => setShowReply(.show => !show)}>
-            {"Reply"->React.string}
+            {"답글"->React.string}
           </button>
         </div>
       </div>
-      // <div className="grid grid-cols-2">
-      //   <div> {comment->Comment.user->React.string} </div>
-      //   <div>
-      //     {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
-      //   </div>
-      //   <div> {comment->Comment.content->React.string} </div>
-      //   <div>
-      //     <button
-      //       className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
-      //       onClick={_ => setShowReply(.show => !show)}>
-      //       {"Reply"->React.string}
-      //     </button>
-      //   </div>
-      // </div>
       {if showReply {
         <form onSubmit=handleSubmit>
           <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
@@ -101,7 +87,7 @@ module rec CommentNode: {
             />
             <input
               type_="submit"
-              value="Reply"
+              value="답글"
               className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
             />
           </div>
