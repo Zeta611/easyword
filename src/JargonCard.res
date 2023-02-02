@@ -14,7 +14,7 @@ let make = (~jargon as {id, english, korean}, ~language) => {
     <div className="flex-none inline-grid grid-cols-2">
       <div className="flex gap-x-2">
         <div className="text-sm"> {"🔥"->React.string} </div>
-        <div className="text-sm dark:text-zinc-100"> {"#PL"->React.string} </div>
+        <div className="badge badge-primary badge-outline badge-md"> {"#PL"->React.string} </div>
       </div>
       <div className="text-right text-xs dark:text-zinc-500">
         {"최근 활동 0분 전"->React.string}

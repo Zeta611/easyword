@@ -26,7 +26,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      123,
+      117,
       4
     ], {
       TAG: /* Module */0,
@@ -103,7 +103,7 @@ function CommentRow$CommentNode(props) {
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx("button", {
                                     children: "답글",
-                                    className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black",
+                                    className: "btn btn-xs",
                                     onClick: (function (param) {
                                         setShowReply(function (show) {
                                               return !show;
@@ -118,7 +118,7 @@ function CommentRow$CommentNode(props) {
                         children: JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("textarea", {
-                                      className: "h-24 p-1 border place-self-stretch text-black",
+                                      className: "textarea textarea-primary textarea-sm place-self-stretch",
                                       id: "comment" + id,
                                       name: "comment" + id,
                                       placeholder: "여러분의 생각은 어떠신가요?",
@@ -126,7 +126,7 @@ function CommentRow$CommentNode(props) {
                                       onChange: handleInputChange
                                     }),
                                 JsxRuntime.jsx("input", {
-                                      className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black",
+                                      className: "btn btn-outline btn-xs",
                                       type: "submit",
                                       value: "답글"
                                     })

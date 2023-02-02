@@ -83,13 +83,9 @@ module CommentInput = {
           value={content}
           onChange={handleInputChange}
           placeholder="여러분의 생각은 어떠신가요?"
-          className="h-24 p-1 border place-self-stretch black text-black"
+          className="textarea textarea-bordered textarea-md place-self-stretch"
         />
-        <input
-          type_="submit"
-          value="Comment"
-          className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
-        />
+        <input type_="submit" value="댓글" className="btn btn-primary btn-sm btn-outline" />
       </div>
     </form>
   }
@@ -120,6 +116,38 @@ let make = (~id) => {
             <div className="text-3xl font-bold"> {React.string(english)} </div>
             <div className="text-2xl font-medium"> {React.string(korean)} </div>
           </h1>
+          <div className="overflow-x-auto">
+            <table className="table w-full">
+              <tbody>
+                <tr className="active">
+                  <th>
+                    <label>
+                      <input type_="radio" name="radio" className="radio radio-primary" />
+                    </label>
+                  </th>
+                  <td>
+                    {"시험 단어"->React.string}
+                    <br />
+                    <progress className="progress progress-primary w-full" value="99" max="100" />
+                  </td>
+                  <td> {"99%"->React.string} </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label>
+                      <input type_="radio" name="radio" className="radio radio-primary" />
+                    </label>
+                  </th>
+                  <td>
+                    {"연습 단어"->React.string}
+                    <br />
+                    <progress className="progress progress-primary w-full" value="1" max="100" />
+                  </td>
+                  <td> {"1%"->React.string} </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <CommentInput id />
           <div>
             <CommentRow jargonID=id siblings=roots.contents />

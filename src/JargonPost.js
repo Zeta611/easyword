@@ -83,7 +83,7 @@ function JargonPost$CommentInput(props) {
               children: JsxRuntime.jsxs("div", {
                     children: [
                       JsxRuntime.jsx("textarea", {
-                            className: "h-24 p-1 border place-self-stretch black text-black",
+                            className: "textarea textarea-bordered textarea-md place-self-stretch",
                             id: "comment",
                             name: "comment",
                             placeholder: "여러분의 생각은 어떠신가요?",
@@ -91,9 +91,9 @@ function JargonPost$CommentInput(props) {
                             onChange: handleInputChange
                           }),
                       JsxRuntime.jsx("input", {
-                            className: "px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black",
+                            className: "btn btn-primary btn-sm btn-outline",
                             type: "submit",
-                            value: "Comment"
+                            value: "댓글"
                           })
                     ],
                     className: "p-2 gap-3 grid grid-cols-1 place-items-end"
@@ -139,6 +139,71 @@ function JargonPost(props) {
                               })
                         ],
                         className: "grid gap-1"
+                      }),
+                  JsxRuntime.jsx("div", {
+                        children: JsxRuntime.jsx("table", {
+                              children: JsxRuntime.jsxs("tbody", {
+                                    children: [
+                                      JsxRuntime.jsxs("tr", {
+                                            children: [
+                                              JsxRuntime.jsx("th", {
+                                                    children: JsxRuntime.jsx("label", {
+                                                          children: JsxRuntime.jsx("input", {
+                                                                className: "radio radio-primary",
+                                                                name: "radio",
+                                                                type: "radio"
+                                                              })
+                                                        })
+                                                  }),
+                                              JsxRuntime.jsxs("td", {
+                                                    children: [
+                                                      "시험 단어",
+                                                      JsxRuntime.jsx("br", {}),
+                                                      JsxRuntime.jsx("progress", {
+                                                            className: "progress progress-primary w-full",
+                                                            max: "100",
+                                                            value: "99"
+                                                          })
+                                                    ]
+                                                  }),
+                                              JsxRuntime.jsx("td", {
+                                                    children: "99%"
+                                                  })
+                                            ],
+                                            className: "active"
+                                          }),
+                                      JsxRuntime.jsxs("tr", {
+                                            children: [
+                                              JsxRuntime.jsx("th", {
+                                                    children: JsxRuntime.jsx("label", {
+                                                          children: JsxRuntime.jsx("input", {
+                                                                className: "radio radio-primary",
+                                                                name: "radio",
+                                                                type: "radio"
+                                                              })
+                                                        })
+                                                  }),
+                                              JsxRuntime.jsxs("td", {
+                                                    children: [
+                                                      "연습 단어",
+                                                      JsxRuntime.jsx("br", {}),
+                                                      JsxRuntime.jsx("progress", {
+                                                            className: "progress progress-primary w-full",
+                                                            max: "100",
+                                                            value: "1"
+                                                          })
+                                                    ]
+                                                  }),
+                                              JsxRuntime.jsx("td", {
+                                                    children: "1%"
+                                                  })
+                                            ]
+                                          })
+                                    ]
+                                  }),
+                              className: "table w-full"
+                            }),
+                        className: "overflow-x-auto"
                       }),
                   JsxRuntime.jsx(JargonPost$CommentInput, {
                         id: id

@@ -67,9 +67,7 @@ module rec CommentNode: {
         </div>
         <div> {comment->Comment.content->React.string} </div>
         <div>
-          <button
-            className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
-            onClick={_ => setShowReply(.show => !show)}>
+          <button className="btn btn-xs" onClick={_ => setShowReply(.show => !show)}>
             {"답글"->React.string}
           </button>
         </div>
@@ -83,13 +81,9 @@ module rec CommentNode: {
               value=content
               onChange=handleInputChange
               placeholder="여러분의 생각은 어떠신가요?"
-              className="h-24 p-1 border place-self-stretch text-black"
+              className="textarea textarea-primary textarea-sm place-self-stretch"
             />
-            <input
-              type_="submit"
-              value="답글"
-              className="px-1 rounded-md bg-zinc-200 hover:bg-zinc-300 text-black"
-            />
+            <input type_="submit" value="답글" className="btn btn-outline btn-xs" />
           </div>
         </form>
       } else {

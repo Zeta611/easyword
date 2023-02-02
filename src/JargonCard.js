@@ -27,7 +27,7 @@ function JargonCard(props) {
                                     }),
                                 JsxRuntime.jsx("div", {
                                       children: "#PL",
-                                      className: "text-sm dark:text-zinc-100"
+                                      className: "badge badge-primary badge-outline badge-md"
                                     })
                               ],
                               className: "flex gap-x-2"
