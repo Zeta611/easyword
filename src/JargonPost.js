@@ -127,18 +127,36 @@ function JargonPost(props) {
     var match$2 = constructForest(Caml_option.valFromOption(comments));
     return JsxRuntime.jsxs("main", {
                 children: [
-                  JsxRuntime.jsxs("h1", {
+                  JsxRuntime.jsxs("div", {
                         children: [
-                          JsxRuntime.jsx("div", {
-                                children: jargons.english,
-                                className: "text-3xl font-bold"
+                          JsxRuntime.jsxs("div", {
+                                children: [
+                                  JsxRuntime.jsxs("div", {
+                                        children: [
+                                          JsxRuntime.jsx("span", {
+                                                children: "🎓",
+                                                className: "indicator-item indicator-start text-2xl"
+                                              }),
+                                          JsxRuntime.jsx("div", {
+                                                children: jargons.english,
+                                                className: "text-3xl font-bold"
+                                              })
+                                        ],
+                                        className: "indicator"
+                                      }),
+                                  JsxRuntime.jsx("div", {
+                                        children: "#PL",
+                                        className: "badge badge-primary badge-outline badge-md"
+                                      })
+                                ],
+                                className: "flex items-center gap-3"
                               }),
                           JsxRuntime.jsx("div", {
                                 children: jargons.korean,
                                 className: "text-2xl font-medium"
                               })
                         ],
-                        className: "grid gap-1"
+                        className: "flex flex-col gap-1"
                       }),
                   JsxRuntime.jsx("div", {
                         children: JsxRuntime.jsx("table", {
@@ -217,7 +235,7 @@ function JargonPost(props) {
                             })
                       })
                 ],
-                className: "grid p-5 gap-3 dark:text-white"
+                className: "flex flex-col gap-4 p-5 gap-3 dark:text-white"
               });
   }
   return JsxRuntime.jsx("div", {

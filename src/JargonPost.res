@@ -111,11 +111,21 @@ let make = (~id) => {
     | (None, _) | (_, None) => React.null
     | (Some({korean, english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
-        <main className="grid p-5 gap-3 dark:text-white">
-          <h1 className="grid gap-1">
-            <div className="text-3xl font-bold"> {React.string(english)} </div>
-            <div className="text-2xl font-medium"> {React.string(korean)} </div>
-          </h1>
+        <main className="flex flex-col gap-4 p-5 gap-3 dark:text-white">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-3">
+              <div className="indicator">
+                <span className="indicator-item indicator-start text-2xl">
+                  {"🎓"->React.string}
+                </span>
+                <div className="text-3xl font-bold"> {english->React.string} </div>
+              </div>
+              <div className="badge badge-primary badge-outline badge-md">
+                {"#PL"->React.string}
+              </div>
+            </div>
+            <div className="text-2xl font-medium"> {korean->React.string} </div>
+          </div>
           <div className="overflow-x-auto">
             <table className="table w-full">
               <tbody>
