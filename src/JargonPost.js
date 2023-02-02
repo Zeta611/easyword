@@ -153,7 +153,8 @@ function JargonPost(props) {
                                                                 name: "radio",
                                                                 type: "radio"
                                                               })
-                                                        })
+                                                        }),
+                                                    className: "w-10"
                                                   }),
                                               JsxRuntime.jsxs("td", {
                                                     children: [
@@ -166,8 +167,9 @@ function JargonPost(props) {
                                                           })
                                                     ]
                                                   }),
-                                              JsxRuntime.jsx("td", {
-                                                    children: "99%"
+                                              JsxRuntime.jsx("th", {
+                                                    children: "99%",
+                                                    className: "w-10"
                                                   })
                                             ],
                                             className: "active"
@@ -194,7 +196,7 @@ function JargonPost(props) {
                                                           })
                                                     ]
                                                   }),
-                                              JsxRuntime.jsx("td", {
+                                              JsxRuntime.jsx("th", {
                                                     children: "1%"
                                                   })
                                             ]

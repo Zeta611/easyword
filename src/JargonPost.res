@@ -120,7 +120,7 @@ let make = (~id) => {
             <table className="table w-full">
               <tbody>
                 <tr className="active">
-                  <th>
+                  <th className="w-10">
                     <label>
                       <input type_="radio" name="radio" className="radio radio-primary" />
                     </label>
@@ -130,7 +130,7 @@ let make = (~id) => {
                     <br />
                     <progress className="progress progress-primary w-full" value="99" max="100" />
                   </td>
-                  <td> {"99%"->React.string} </td>
+                  <th className="w-10"> {"99%"->React.string} </th>
                 </tr>
                 <tr>
                   <th>
@@ -143,7 +143,7 @@ let make = (~id) => {
                     <br />
                     <progress className="progress progress-primary w-full" value="1" max="100" />
                   </td>
-                  <td> {"1%"->React.string} </td>
+                  <th> {"1%"->React.string} </th>
                 </tr>
               </tbody>
             </table>
