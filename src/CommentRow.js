@@ -92,7 +92,8 @@ function CommentRow$CommentNode(props) {
                                       children: comment.user
                                     }),
                                 JsxRuntime.jsx("div", {
-                                      children: comment.timestamp.toDate().toDateString()
+                                      children: comment.timestamp.toDate().toDateString(),
+                                      title: comment.timestamp.toDate().toDateString()
                                     })
                               ],
                               className: "flex gap-x-3"
