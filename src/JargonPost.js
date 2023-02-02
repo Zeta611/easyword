@@ -83,7 +83,7 @@ function JargonPost$CommentInput(props) {
               children: JsxRuntime.jsxs("div", {
                     children: [
                       JsxRuntime.jsx("textarea", {
-                            className: "textarea textarea-bordered textarea-md place-self-stretch",
+                            className: "textarea textarea-bordered textarea-md rounded-lg place-self-stretch",
                             id: "comment",
                             name: "comment",
                             placeholder: "여러분의 생각은 어떠신가요?",

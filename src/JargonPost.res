@@ -83,7 +83,7 @@ module CommentInput = {
           value={content}
           onChange={handleInputChange}
           placeholder="여러분의 생각은 어떠신가요?"
-          className="textarea textarea-bordered textarea-md place-self-stretch"
+          className="textarea textarea-bordered textarea-md rounded-lg place-self-stretch"
         />
         <input type_="submit" value="댓글" className="btn btn-primary btn-sm btn-outline" />
       </div>

@@ -81,7 +81,7 @@ module rec CommentNode: {
               value=content
               onChange=handleInputChange
               placeholder="여러분의 생각은 어떠신가요?"
-              className="textarea textarea-primary textarea-sm place-self-stretch"
+              className="textarea textarea-primary textarea-sm rounded-lg place-self-stretch"
             />
             <input type_="submit" value="답글" className="btn btn-outline btn-xs" />
           </div>

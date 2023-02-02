@@ -118,7 +118,7 @@ function CommentRow$CommentNode(props) {
                         children: JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("textarea", {
-                                      className: "textarea textarea-primary textarea-sm place-self-stretch",
+                                      className: "textarea textarea-primary textarea-sm rounded-lg place-self-stretch",
                                       id: "comment" + id,
                                       name: "comment" + id,
                                       placeholder: "여러분의 생각은 어떠신가요?",
