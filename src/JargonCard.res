@@ -7,6 +7,21 @@ let make = (~jargon as {id, english, korean}, ~language) => {
   | Korean => (korean, english)
   }
 
+  let (commentsCount, setCommentsCount) = React.Uncurried.useState(() => None)
+
+  let firestore = Firebase.useFirestore()
+  let commentsCollection = firestore->Firebase.collection(~path=`jargons/${id}/comments`)
+
+  React.useEffect(() => {
+    let countComments = async (. ()) => {
+      let snapshot = await Firebase.getCountFromServer(commentsCollection)
+      let count = snapshot["data"](.)["count"]
+      setCommentsCount(._ => Some(count))
+    }
+    let _ = countComments(.)
+    None
+  })
+
   <div
     className="flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
     onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
@@ -32,6 +47,12 @@ let make = (~jargon as {id, english, korean}, ~language) => {
       </div>
     </div>
     // third row
-    <div className="flex-none dark:text-zinc-400"> {"댓글 0개"->React.string} </div>
+    {switch commentsCount {
+    | None => React.null
+    | Some(count) =>
+      <div className="flex-none dark:text-zinc-400">
+        {`댓글 ${count->Int.toString}개`->React.string}
+      </div>
+    }}
   </div>
 }
