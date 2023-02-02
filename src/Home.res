@@ -7,7 +7,7 @@ module SearchBar = {
           type_="search"
           value=query
           onChange
-          className="block px-4 h-10 w-full text-base text-zinc-900 bg-zinc-50 rounded-lg border border-solid border-zinc-200 hover:bg-zinc-200 dark:text-zinc-50 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700"
+          className="input input-bordered w-full rounded-lg"
           placeholder="정규식: syntax$"
         />
       </div>
