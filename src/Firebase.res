@@ -70,8 +70,10 @@ external orderBy: (string, ~direction: string) => queryConstraint = "orderBy"
 @module("firebase/firestore")
 external addDoc: (collectionReference, 'a) => Js.Promise.t<documentReference> = "addDoc"
 
+type aggregateSpecData = {count: int}
+type aggregateQuerySnapshot = {data: (. unit) => aggregateSpecData}
 @module("firebase/firestore")
-external getCountFromServer: collectionReference => Js.Promise.t<'aggregateQuerySnapshot> =
+external getCountFromServer: collectionReference => Js.Promise.t<aggregateQuerySnapshot> =
   "getCountFromServer"
 
 @deriving(abstract)

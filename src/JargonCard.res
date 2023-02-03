@@ -15,7 +15,7 @@ let make = (~jargon as {id, english, korean}, ~language) => {
   React.useEffect(() => {
     let countComments = async (. ()) => {
       let snapshot = await Firebase.getCountFromServer(commentsCollection)
-      let count = snapshot["data"](.)["count"]
+      let count = snapshot.data(.).count
       setCommentsCount(._ => Some(count))
     }
     let _ = countComments(.)
