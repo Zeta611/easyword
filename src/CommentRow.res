@@ -36,10 +36,10 @@ module rec CommentNode: {
         // Hide reply after submit
         setShowReply(._ => false)
 
-        let _ = (
+        (
           async () => {
             try {
-              let result = await addComment(({jargonID, content, parent: id}: Comment.write))
+              let result = await addComment(. ({jargonID, content, parent: id}: Comment.write))
               Js.log(result)
               setDisabled(._ => false)
               setContent(._ => "")
@@ -47,7 +47,7 @@ module rec CommentNode: {
             | e => Js.log(e)
             }
           }
-        )()
+        )()->ignore
       | None => Window.alert("You need to be signed in to comment!")
       }
     }

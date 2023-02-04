@@ -55,10 +55,11 @@ module CommentInput = {
       switch user->Js.Nullable.toOption {
       | Some(_) =>
         setDisabled(._ => true)
-        let _ = (
+
+        (
           async () => {
             try {
-              let result = await addComment(({jargonID, content, parent: ""}: Comment.write))
+              let result = await addComment(. ({jargonID, content, parent: ""}: Comment.write))
               Js.log(result)
               setDisabled(._ => false)
               setContent(._ => "")
@@ -66,8 +67,7 @@ module CommentInput = {
             | e => Js.log(e)
             }
           }
-        )()
-
+        )()->ignore
       | None => Window.alert("You need to be signed in to comment!")
       }
     }

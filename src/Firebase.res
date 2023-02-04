@@ -188,4 +188,4 @@ type functions
 external getFunctions: (FirebaseApp.t, @as("asia-northeast3") _) => functions = "getFunctions"
 
 @module("firebase/functions")
-external httpsCallable: (functions, string) => 'a = "httpsCallable"
+external httpsCallable: (functions, string) => (. 'a) => promise<'b> = "httpsCallable"
