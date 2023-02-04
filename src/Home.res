@@ -21,7 +21,7 @@ let make = () => {
   let (query, setQuery) = React.Uncurried.useState(() => "")
   let (order, setOrder) = React.Uncurried.useState(() => {
     open Jargon
-    (English, Ascending)
+    (English, #asc)
   })
 
   let onChange = event => {

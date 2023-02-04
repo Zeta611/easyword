@@ -12,10 +12,6 @@ let make = (~order, ~query as regexQuery) => {
     | English => "english"
     | Korean => "korean"
     }
-    let direction = switch direction {
-    | Ascending => "asc"
-    | Descending => "desc"
-    }
     orderBy(language, ~direction)
   }
   let jargonsQuery = jargonsCollection->query(queryConstraint)

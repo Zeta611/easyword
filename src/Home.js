@@ -33,7 +33,7 @@ function Home(props) {
   var match$1 = React.useState(function () {
         return [
                 /* English */0,
-                /* Ascending */0
+                "asc"
               ];
       });
   var order = match$1[0];

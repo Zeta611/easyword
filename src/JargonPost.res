@@ -102,7 +102,7 @@ let make = (~id) => {
   let commentsCollection = firestore->collection(~path=`jargons/${id}/comments`)
   let {status: collectionStatus, data: comments} =
     commentsCollection
-    ->query(orderBy("timestamp", ~direction="asc"))
+    ->query(orderBy("timestamp", ~direction=#asc))
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
   switch (docStatus, collectionStatus) {
@@ -126,7 +126,7 @@ let make = (~id) => {
             </div>
             <div className="text-2xl font-medium"> {korean->React.string} </div>
           </div>
-          <Poll />
+          <Poll id />
           <CommentInput id />
           <div>
             <CommentRow jargonID=id siblings=roots.contents />

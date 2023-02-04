@@ -16,8 +16,7 @@ function JargonList(props) {
   var language = order[0];
   var jargonsCollection = Firestore.collection(Reactfire.useFirestore(), "jargons");
   var language$1 = language ? "korean" : "english";
-  var direction = order[1] ? "desc" : "asc";
-  var queryConstraint = Firestore.orderBy(language$1, direction);
+  var queryConstraint = Firestore.orderBy(language$1, order[1]);
   var jargonsQuery = Firestore.query(jargonsCollection, queryConstraint);
   var match = Reactfire.useFirestoreCollectionData(jargonsQuery, {
         idField: "id"

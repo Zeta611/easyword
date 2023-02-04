@@ -159,7 +159,9 @@ function JargonPost(props) {
                         ],
                         className: "flex flex-col gap-1"
                       }),
-                  JsxRuntime.jsx(Poll.make, {}),
+                  JsxRuntime.jsx(Poll.make, {
+                        id: id
+                      }),
                   JsxRuntime.jsx(JargonPost$CommentInput, {
                         id: id
                       }),

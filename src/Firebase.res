@@ -65,7 +65,7 @@ type queryConstraint
 external query: (collectionReference, queryConstraint) => query = "query"
 
 @module("firebase/firestore")
-external orderBy: (string, ~direction: string) => queryConstraint = "orderBy"
+external orderBy: (string, ~direction: [#asc | #desc]) => queryConstraint = "orderBy"
 
 @module("firebase/firestore")
 external addDoc: (collectionReference, 'a) => Js.Promise.t<documentReference> = "addDoc"
