@@ -30,7 +30,7 @@ let constructForest = (comments: array<Comment.t>) => {
 
 module CommentInput = {
   @react.component
-  let make = (~id) => {
+  let make = (~jargonID) => {
     let {user} = React.useContext(SignInContext.context)
 
     // For handling the comment textarea
@@ -40,37 +40,34 @@ module CommentInput = {
       setContent(._ => value)
     }
 
-    // Write comment to the Firestore on submit
-    let commentsCollection = {
+    let (disabled, setDisabled) = React.Uncurried.useState(() => false)
+
+    let addComment = {
       open Firebase
-      let firestore = useFirestore()
-      firestore->collection(~path=`jargons/${id}/comments`)
+      let functions = useFirebaseApp()->getFunctions
+      functions->httpsCallable("addComment")
     }
+
     let handleSubmit = event => {
       // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
 
       switch user->Js.Nullable.toOption {
-      | Some({uid, email, providerData}) =>
-        open Firebase
-        let email = {
-          open Option
-          // email doesn't contain data when using other providers (https://stackoverflow.com/a/48815576)
-          // In such case, access it from providerData
-          // If it is absent there, fall back to uid
-          email->getWithDefault(providerData[0]->flatMap(User.email)->getWithDefault(uid))
-        }
+      | Some(_) =>
+        setDisabled(._ => true)
+        let _ = (
+          async () => {
+            try {
+              let result = await addComment(({jargonID, content, parent: ""}: Comment.write))
+              Js.log(result)
+              setDisabled(._ => false)
+              setContent(._ => "")
+            } catch {
+            | e => Js.log(e)
+            }
+          }
+        )()
 
-        let _ = addDoc(
-          commentsCollection,
-          Comment.t(
-            ~content,
-            ~user=email /* TODO: use displayName */,
-            ~timestamp=Js.Date.make()->Timestamp.fromDate,
-            ~parent="",
-            (),
-          ),
-        )
       | None => Window.alert("You need to be signed in to comment!")
       }
     }
@@ -85,21 +82,23 @@ module CommentInput = {
           placeholder="여러분의 생각은 어떠신가요?"
           className="textarea textarea-bordered textarea-md rounded-lg place-self-stretch"
         />
-        <input type_="submit" value="댓글" className="btn btn-primary btn-sm btn-outline" />
+        <input
+          type_="submit" value="댓글" disabled className="btn btn-primary btn-sm btn-outline"
+        />
       </div>
     </form>
   }
 }
 
 @react.component
-let make = (~id) => {
+let make = (~jargonID) => {
   open Firebase
 
   let firestore = useFirestore()
-  let jargonDoc = firestore->doc(~path=`jargons/${id}`)
+  let jargonDoc = firestore->doc(~path=`jargons/${jargonID}`)
   let {status: docStatus, data: jargons} = jargonDoc->useFirestoreDocData
 
-  let commentsCollection = firestore->collection(~path=`jargons/${id}/comments`)
+  let commentsCollection = firestore->collection(~path=`jargons/${jargonID}/comments`)
   let {status: collectionStatus, data: comments} =
     commentsCollection
     ->query(orderBy("timestamp", ~direction=#asc))
@@ -126,10 +125,10 @@ let make = (~id) => {
             </div>
             <div className="text-2xl font-medium"> {korean->React.string} </div>
           </div>
-          <Poll id />
-          <CommentInput id />
+          <Poll jargonID />
+          <CommentInput jargonID />
           <div>
-            <CommentRow jargonID=id siblings=roots.contents />
+            <CommentRow jargonID siblings=roots.contents />
           </div>
         </main>
       }

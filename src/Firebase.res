@@ -183,8 +183,9 @@ module FirebaseCompat = {
   external initializeApp: (firebase, FirebaseOptions.t) => FirebaseApp.t = "initializeApp"
 }
 
+type functions
 @module("firebase/functions")
-external getFunctions: (FirebaseApp.t, @as("asia-northeast3") _) => 'a = "getFunctions"
+external getFunctions: (FirebaseApp.t, @as("asia-northeast3") _) => functions = "getFunctions"
 
 @module("firebase/functions")
-external httpsCallable: ('a, string) => 'a = "httpsCallable"
+external httpsCallable: (functions, string) => 'a = "httpsCallable"

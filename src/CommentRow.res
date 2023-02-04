@@ -19,10 +19,12 @@ module rec CommentNode: {
       setContent(._ => value)
     }
 
-    let commentsCollection = {
+    let (disabled, setDisabled) = React.Uncurried.useState(() => false)
+
+    let addComment = {
       open Firebase
-      let firestore = useFirestore()
-      firestore->collection(~path=`jargons/${jargonID}/comments`)
+      let functions = useFirebaseApp()->getFunctions
+      functions->httpsCallable("addComment")
     }
 
     let handleSubmit = event => {
@@ -30,29 +32,22 @@ module rec CommentNode: {
       ReactEvent.Form.preventDefault(event)
 
       switch user->Js.Nullable.toOption {
-      | Some({uid, email, providerData}) =>
+      | Some(_) =>
         // Hide reply after submit
         setShowReply(._ => false)
 
-        open Firebase
-        let email = {
-          open Option
-          // email doesn't contain data when using other providers (https://stackoverflow.com/a/48815576)
-          // In such case, access it from providerData
-          // If it is absent there, fall back to uid
-          email->getWithDefault(providerData[0]->flatMap(User.email)->getWithDefault(uid))
-        }
-
-        let _ = addDoc(
-          commentsCollection,
-          Comment.t(
-            ~content,
-            ~user=email /* TODO: use displayName */,
-            ~timestamp=Js.Date.make()->Timestamp.fromDate,
-            ~parent=id,
-            (),
-          ),
-        )
+        let _ = (
+          async () => {
+            try {
+              let result = await addComment(({jargonID, content, parent: id}: Comment.write))
+              Js.log(result)
+              setDisabled(._ => false)
+              setContent(._ => "")
+            } catch {
+            | e => Js.log(e)
+            }
+          }
+        )()
       | None => Window.alert("You need to be signed in to comment!")
       }
     }
@@ -83,7 +78,7 @@ module rec CommentNode: {
               placeholder="여러분의 생각은 어떠신가요?"
               className="textarea textarea-primary textarea-sm rounded-lg place-self-stretch"
             />
-            <input type_="submit" value="답글" className="btn btn-outline btn-xs" />
+            <input type_="submit" value="답글" disabled className="btn btn-outline btn-xs" />
           </div>
         </form>
       } else {

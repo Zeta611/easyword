@@ -26,10 +26,10 @@ let makeRows = translations => {
 }
 
 @react.component
-let make = (~id) => {
+let make = (~jargonID) => {
   open Firebase
   let firestore = useFirestore()
-  let translationsCollection = firestore->collection(~path=`jargons/${id}/translations`)
+  let translationsCollection = firestore->collection(~path=`jargons/${jargonID}/translations`)
   let {status, data: translations} =
     translationsCollection
     ->query(orderBy("votes", ~direction=#desc))

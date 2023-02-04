@@ -84,7 +84,7 @@ function App(props) {
       if (path.hd === "jargon") {
         var match$1 = path.tl;
         tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(JargonPost.make, {
-                id: match$1.hd
+                jargonID: match$1.hd
               }) : "404";
       } else {
         tmp$1 = "404";

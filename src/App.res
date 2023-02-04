@@ -63,7 +63,7 @@ let make = () => {
                 <NavbarContainer>
                   {switch path {
                   | list{} => <Home />
-                  | list{"jargon", id} => <JargonPost id />
+                  | list{"jargon", jargonID} => <JargonPost jargonID />
 
                   | _ => React.string("404")
                   }}

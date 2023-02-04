@@ -8,6 +8,12 @@ type t = {
   parent: string,
 }
 
+type write = {
+  jargonID: string,
+  content: string,
+  parent: string,
+}
+
 type rec node = {
   comment: t,
   mutable parent: option<node>,

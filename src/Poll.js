@@ -50,7 +50,7 @@ function makeRows(translations) {
 
 function Poll(props) {
   var firestore = Reactfire.useFirestore();
-  var translationsCollection = Firestore.collection(firestore, "jargons/" + props.id + "/translations");
+  var translationsCollection = Firestore.collection(firestore, "jargons/" + props.jargonID + "/translations");
   var match = Reactfire.useFirestoreCollectionData(Firestore.query(translationsCollection, Firestore.orderBy("votes", "desc")), {
         idField: "id"
       });
