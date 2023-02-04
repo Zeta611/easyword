@@ -38,17 +38,17 @@ module FirestoreProvider = {
 // TODO: Bind TS string union `status`
 type observableStatus<'a> = {status: @string [#loading | #success], data: option<'a>}
 @module("reactfire")
-external useInitFirestore: (FirebaseApp.t => Js.Promise.t<firestore>) => observableStatus<_> =
+external useInitFirestore: (FirebaseApp.t => promise<firestore>) => observableStatus<_> =
   "useInitFirestore"
 
 @module("reactfire")
 external useFirestore: unit => firestore = "useFirestore"
 
 @module("firebase/firestore")
-external enableIndexedDbPersistence: firestore => Js.Promise.t<unit> = "enableIndexedDbPersistence"
+external enableIndexedDbPersistence: firestore => promise<unit> = "enableIndexedDbPersistence"
 
 @module("firebase/firestore")
-external enableMultiTabIndexedDbPersistence: firestore => Js.Promise.t<unit> =
+external enableMultiTabIndexedDbPersistence: firestore => promise<unit> =
   "enableMultiTabIndexedDbPersistence"
 
 type documentReference
@@ -68,12 +68,12 @@ external query: (collectionReference, queryConstraint) => query = "query"
 external orderBy: (string, ~direction: [#asc | #desc]) => queryConstraint = "orderBy"
 
 @module("firebase/firestore")
-external addDoc: (collectionReference, 'a) => Js.Promise.t<documentReference> = "addDoc"
+external addDoc: (collectionReference, 'a) => promise<documentReference> = "addDoc"
 
 type aggregateSpecData = {count: int}
 type aggregateQuerySnapshot = {data: (. unit) => aggregateSpecData}
 @module("firebase/firestore")
-external getCountFromServer: collectionReference => Js.Promise.t<aggregateQuerySnapshot> =
+external getCountFromServer: collectionReference => promise<aggregateQuerySnapshot> =
   "getCountFromServer"
 
 @deriving(abstract)
