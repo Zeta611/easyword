@@ -99,6 +99,9 @@ module Auth = {
   @send
   external onAuthStateChanged: (t, 'user) => 'unsubscribe = "onAuthStateChanged"
 
+  @module("firebase/auth")
+  external signOut: t => promise<unit> = "signOut"
+
   module EmailAuthProvider = {
     let providerID = "password"
   }

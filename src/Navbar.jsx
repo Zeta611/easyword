@@ -31,8 +31,8 @@ function Navbar_(props) {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <LanguageIcon className="block h-8 w-auto lg:hidden text-gray-400"/>
-                  <LanguageIcon className="hidden h-8 w-auto lg:block text-gray-400"/>
+                  <LanguageIcon className="block h-8 w-auto lg:hidden text-gray-400" />
+                  <LanguageIcon className="hidden h-8 w-auto lg:block text-gray-400" />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -66,7 +66,7 @@ function Navbar_(props) {
                   <div>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <UserCircleIcon className="h-6 w-6 text-gray-400"/>
+                      <UserCircleIcon className="h-6 w-6 text-gray-400" />
 
                     </Menu.Button>
                   </div>
@@ -81,25 +81,25 @@ function Navbar_(props) {
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       {// <Menu.Item>
-                      //   {({ active }) => (
-                      //     <a
-                      //       href="#"
-                      //       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                      //     >
-                      //       Your Profile
-                      //     </a>
-                      //   )}
-                      // </Menu.Item>
-                      // <Menu.Item>
-                      //   {({ active }) => (
-                      //     <a
-                      //       href="#"
-                      //       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                      //     >
-                      //       Settings
-                      //     </a>
-                      //   )}
-                      // </Menu.Item>
+                        //   {({ active }) => (
+                        //     <a
+                        //       href="#"
+                        //       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                        //     >
+                        //       Your Profile
+                        //     </a>
+                        //   )}
+                        // </Menu.Item>
+                        // <Menu.Item>
+                        //   {({ active }) => (
+                        //     <a
+                        //       href="#"
+                        //       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                        //     >
+                        //       Settings
+                        //     </a>
+                        //   )}
+                        // </Menu.Item>
                       }
                       <Menu.Item>
                         {({ active }) => (
@@ -111,6 +111,17 @@ function Navbar_(props) {
                           </a>
                         )}
                       </Menu.Item>
+                      {props.signedIn &&
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="/logout"
+                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            >
+                              로그아웃
+                            </a>
+                          )}
+                        </Menu.Item>}
                     </Menu.Items>
                   </Transition>
                 </Menu>
