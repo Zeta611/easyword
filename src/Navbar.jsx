@@ -5,7 +5,7 @@ import * as RescriptReactRouter from "../node_modules/@rescript/react/src/Rescri
 
 const navigation = [
   { name: '홈', href: '/', current: true },
-  { name: '최근', href: '#', current: false },
+  // { name: '최근', href: '#', current: false },
 ]
 
 function classNames(...classes) {
@@ -38,9 +38,9 @@ function Navbar_(props) {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <button
                         key={item.name}
-                        href={item.href}
+                        onClick={() => RescriptReactRouter.replace(item.href)}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'px-3 py-2 rounded-md text-sm font-medium'
@@ -48,7 +48,7 @@ function Navbar_(props) {
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
