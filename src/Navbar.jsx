@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, LanguageIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
 const navigation = [
   { name: '홈', href: '/', current: true },
@@ -103,23 +104,23 @@ function Navbar_(props) {
                       }
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/login"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                          <button
+                            onClick={() => RescriptReactRouter.replace("/login")}
+                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full')}
                           >
                             {props.signedIn ? '내 프로필' : '로그인'}
-                          </a>
+                          </button>
                         )}
                       </Menu.Item>
                       {props.signedIn &&
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href="/logout"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            <button
+                              onClick={() => RescriptReactRouter.replace("/logout")}
+                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700 w-full')}
                             >
                               로그아웃
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>}
                     </Menu.Items>
