@@ -12,10 +12,7 @@ import App from "firebase/compat/app";
 
 var uiConfig = {
   signInFlow: "popup",
-  signInOptions: [
-    Firebase.Auth.EmailAuthProvider.providerID,
-    Firebase.Auth.GithubAuthProvider.providerID
-  ],
+  signInOptions: [Firebase.Auth.GoogleAuthProvider.providerID],
   callbacks: {
     signInSuccessWithAuthResult: (function (param) {
         return false;
@@ -28,7 +25,15 @@ function SignIn(props) {
   var data = match.data;
   React.useEffect((function () {
           if (data !== undefined && data.signedIn) {
-            RescriptReactRouter.replace("/");
+            var user = data.user;
+            if (!(user == null)) {
+              if (user.displayName !== undefined) {
+                RescriptReactRouter.replace("/");
+              } else {
+                RescriptReactRouter.replace("/signup");
+              }
+            }
+            
           }
           
         }), [data]);

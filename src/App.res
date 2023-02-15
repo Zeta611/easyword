@@ -59,6 +59,8 @@ let make = () => {
             <SignInWrapper>
               {switch url.path {
               | list{"login"} => <SignIn />
+              | list{"logout"} => <SignOut />
+              | list{"signup"} => <SignUp />
               | path =>
                 <NavbarContainer>
                   {switch path {

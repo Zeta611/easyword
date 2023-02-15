@@ -20,9 +20,14 @@ var GithubAuthProvider = {
   providerID: "github.com"
 };
 
+var GoogleAuthProvider = {
+  providerID: "google.com"
+};
+
 var Auth = {
   EmailAuthProvider: EmailAuthProvider,
-  GithubAuthProvider: GithubAuthProvider
+  GithubAuthProvider: GithubAuthProvider,
+  GoogleAuthProvider: GoogleAuthProvider
 };
 
 var AuthProvider = {};

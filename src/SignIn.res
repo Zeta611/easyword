@@ -2,7 +2,7 @@ open Firebase
 
 let uiConfig = {
   "signInFlow": "popup",
-  "signInOptions": [Auth.EmailAuthProvider.providerID, Auth.GithubAuthProvider.providerID],
+  "signInOptions": [Auth.GoogleAuthProvider.providerID],
   "callbacks": {
     "signInSuccessWithAuthResult": () => false,
   },
@@ -13,11 +13,20 @@ let make = () => {
   let {status, data} = useSigninCheck()
 
   React.useEffect1(() => {
+    // Js.Console.log(data)
     switch data {
     | None => ()
-    | Some({signedIn}) =>
+    | Some({signedIn, user}) =>
       if signedIn {
-        RescriptReactRouter.replace(`/`)
+        switch user->Js.Nullable.toOption {
+        | Some({displayName}) =>
+          switch displayName {
+          | Some(_) => RescriptReactRouter.replace("/")
+          | None => RescriptReactRouter.replace("/signup")
+          }
+
+        | None => () // Something went wrong
+        }
       }
     }
     None

@@ -4,6 +4,8 @@ import * as Home from "./Home.js";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
+import * as SignUp from "./SignUp.js";
+import * as SignOut from "./SignOut.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as JargonPost from "./JargonPost.js";
@@ -73,8 +75,32 @@ function App(props) {
   var path = url.path;
   var tmp;
   var exit = 0;
-  if (path && path.hd === "login" && !path.tl) {
-    tmp = JsxRuntime.jsx(SignIn.make, {});
+  if (path) {
+    switch (path.hd) {
+      case "login" :
+          if (path.tl) {
+            exit = 1;
+          } else {
+            tmp = JsxRuntime.jsx(SignIn.make, {});
+          }
+          break;
+      case "logout" :
+          if (path.tl) {
+            exit = 1;
+          } else {
+            tmp = JsxRuntime.jsx(SignOut.make, {});
+          }
+          break;
+      case "signup" :
+          if (path.tl) {
+            exit = 1;
+          } else {
+            tmp = JsxRuntime.jsx(SignUp.make, {});
+          }
+          break;
+      default:
+        exit = 1;
+    }
   } else {
     exit = 1;
   }

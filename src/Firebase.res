@@ -108,6 +108,9 @@ module Auth = {
   module GithubAuthProvider = {
     let providerID = "github.com"
   }
+  module GoogleAuthProvider = {
+    let providerID = "google.com"
+  }
 }
 
 @module("firebase/auth")
