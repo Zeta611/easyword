@@ -9,7 +9,4 @@
   html {
     -webkit-appearance: none;
   }
-  body {
-    @apply bg-[#f8f9fa] dark:bg-black; 
-  }
 }

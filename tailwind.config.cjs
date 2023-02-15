@@ -28,7 +28,7 @@ module.exports = {
       ]
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
     themes: ["emerald", "forest"],
     darkTheme: "forest",

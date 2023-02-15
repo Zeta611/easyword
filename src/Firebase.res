@@ -93,14 +93,35 @@ external useFirestoreCollectionData: (
   unit,
 ) => observableStatus<_> = "useFirestoreCollectionData"
 
+module User = {
+  @deriving(accessors)
+  type info = {
+    uid: string,
+    providerId: string,
+    displayName: option<string>,
+    email: option<string>,
+  }
+  type t = {
+    uid: string,
+    displayName: option<string>,
+    email: option<string>,
+    emailVerified: bool,
+    providerData: array<info>,
+  }
+}
+
 module Auth = {
   type t = {app: FirebaseApp.t}
+  type update = {displayName?: string, photoURL?: string}
 
   @send
   external onAuthStateChanged: (t, 'user) => 'unsubscribe = "onAuthStateChanged"
 
   @module("firebase/auth")
   external signOut: t => promise<unit> = "signOut"
+
+  @module("firebase/auth")
+  external updateProfile: (User.t, update) => promise<unit> = "updateProfile"
 
   module EmailAuthProvider = {
     let providerID = "password"
@@ -123,23 +144,6 @@ module AuthProvider = {
 
 @module("reactfire")
 external useAuth: unit => Auth.t = "useAuth"
-
-module User = {
-  @deriving(accessors)
-  type info = {
-    uid: string,
-    providerId: string,
-    displayName: option<string>,
-    email: option<string>,
-  }
-  type t = {
-    uid: string,
-    displayName: option<string>,
-    email: option<string>,
-    emailVerified: bool,
-    providerData: array<info>,
-  }
-}
 
 // TODO: The domain modeling seems a bit off--what does it mean when signedIn is false and there is a user?
 type signInCheckResult = {signedIn: bool, user: Js.Nullable.t<User.t>}

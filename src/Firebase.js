@@ -12,26 +12,6 @@ var FirebaseApp = {};
 
 var FirestoreProvider = {};
 
-var EmailAuthProvider = {
-  providerID: "password"
-};
-
-var GithubAuthProvider = {
-  providerID: "github.com"
-};
-
-var GoogleAuthProvider = {
-  providerID: "google.com"
-};
-
-var Auth = {
-  EmailAuthProvider: EmailAuthProvider,
-  GithubAuthProvider: GithubAuthProvider,
-  GoogleAuthProvider: GoogleAuthProvider
-};
-
-var AuthProvider = {};
-
 function uid(param) {
   return param.uid;
 }
@@ -55,6 +35,26 @@ var User = {
   email: email
 };
 
+var EmailAuthProvider = {
+  providerID: "password"
+};
+
+var GithubAuthProvider = {
+  providerID: "github.com"
+};
+
+var GoogleAuthProvider = {
+  providerID: "google.com"
+};
+
+var Auth = {
+  EmailAuthProvider: EmailAuthProvider,
+  GithubAuthProvider: GithubAuthProvider,
+  GoogleAuthProvider: GoogleAuthProvider
+};
+
+var AuthProvider = {};
+
 var appCheckToken = FirebaseConfig.APP_CHECK_TOKEN;
 
 var AppCheckProvider = {};
@@ -71,9 +71,9 @@ export {
   FirebaseOptions ,
   FirebaseApp ,
   FirestoreProvider ,
+  User ,
   Auth ,
   AuthProvider ,
-  User ,
   appCheckToken ,
   AppCheckProvider ,
   Timestamp ,

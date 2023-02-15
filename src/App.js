@@ -4,7 +4,7 @@ import * as Home from "./Home.js";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
-import * as SignUp from "./SignUp.js";
+import * as Profile from "./Profile.js";
 import * as SignOut from "./SignOut.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
@@ -91,13 +91,6 @@ function App(props) {
             tmp = JsxRuntime.jsx(SignOut.make, {});
           }
           break;
-      case "signup" :
-          if (path.tl) {
-            exit = 1;
-          } else {
-            tmp = JsxRuntime.jsx(SignUp.make, {});
-          }
-          break;
       default:
         exit = 1;
     }
@@ -107,13 +100,18 @@ function App(props) {
   if (exit === 1) {
     var tmp$1;
     if (path) {
-      if (path.hd === "jargon") {
-        var match$1 = path.tl;
-        tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(JargonPost.make, {
-                jargonID: match$1.hd
-              }) : "404";
-      } else {
-        tmp$1 = "404";
+      switch (path.hd) {
+        case "jargon" :
+            var match$1 = path.tl;
+            tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(JargonPost.make, {
+                    jargonID: match$1.hd
+                  }) : "404";
+            break;
+        case "profile" :
+            tmp$1 = path.tl ? "404" : JsxRuntime.jsx(Profile.make, {});
+            break;
+        default:
+          tmp$1 = "404";
       }
     } else {
       tmp$1 = JsxRuntime.jsx(Home.make, {});

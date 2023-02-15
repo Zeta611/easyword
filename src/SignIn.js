@@ -30,7 +30,7 @@ function SignIn(props) {
               if (user.displayName !== undefined) {
                 RescriptReactRouter.replace("/");
               } else {
-                RescriptReactRouter.replace("/signup");
+                RescriptReactRouter.replace("/profile");
               }
             }
             

@@ -22,7 +22,7 @@ let make = () => {
         | Some({displayName}) =>
           switch displayName {
           | Some(_) => RescriptReactRouter.replace("/")
-          | None => RescriptReactRouter.replace("/signup")
+          | None => RescriptReactRouter.replace("/profile")
           }
 
         | None => () // Something went wrong

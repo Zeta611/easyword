@@ -60,11 +60,11 @@ let make = () => {
               {switch url.path {
               | list{"login"} => <SignIn />
               | list{"logout"} => <SignOut />
-              | list{"signup"} => <SignUp />
               | path =>
                 <NavbarContainer>
                   {switch path {
                   | list{} => <Home />
+                  | list{"profile"} => <Profile />
                   | list{"jargon", jargonID} => <JargonPost jargonID />
 
                   | _ => React.string("404")
