@@ -1,4 +1,4 @@
-type t = {id: string, english: string, korean: string}
+type t = {id: string, english: string, korean: string, timestamp: option<Firebase.Timestamp.t>}
 type translation = {id: string, korean: string, votes: int}
 
 type language = English | Korean

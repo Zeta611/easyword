@@ -9,16 +9,21 @@ let make = (~jargon as {id, english, korean}, ~language) => {
 
   let (commentsCount, setCommentsCount) = React.Uncurried.useState(() => None)
 
-  let firestore = Firebase.useFirestore()
-  let commentsCollection = firestore->Firebase.collection(~path=`jargons/${id}/comments`)
+  open Firebase
+  let firestore = useFirestore()
+  let jargonDoc = firestore->doc(~path=`jargons/${id}`)
+  let {data: jargon} = jargonDoc->useFirestoreDocData
+
+  let commentsCollection = firestore->collection(~path=`jargons/${id}/comments`)
 
   React.useEffect(() => {
     let countComments = async (. ()) => {
-      let snapshot = await Firebase.getCountFromServer(commentsCollection)
+      let snapshot = await getCountFromServer(commentsCollection)
       let count = snapshot.data(.).count
       setCommentsCount(._ => Some(count))
     }
     let _ = countComments(.)
+
     None
   })
 
@@ -31,9 +36,13 @@ let make = (~jargon as {id, english, korean}, ~language) => {
         <div className="text-sm"> {"🔥"->React.string} </div>
         <div className="badge badge-primary badge-outline badge-md"> {"#PL"->React.string} </div>
       </div>
-      <div className="text-right text-xs dark:text-zinc-500">
-        {"최근 활동 0분 전"->React.string}
-      </div>
+      {switch jargon {
+      | Some({timestamp: Some(timestamp)}) =>
+        <div className="text-right text-xs dark:text-zinc-500">
+          {`최근 활동 ${timestamp->Timestamp.toDate->DateFormat.timeAgo}`->React.string}
+        </div>
+      | _ => React.null
+      }}
     </div>
     // second row
     <div className="flex-none inline-grid grid-cols-2">
@@ -50,9 +59,7 @@ let make = (~jargon as {id, english, korean}, ~language) => {
     {switch commentsCount {
     | None => React.null
     | Some(count) =>
-      <div className="flex-none dark:text-zinc-400">
-        {`댓글 ${count->Int.toString}개`->React.string}
-      </div>
+      <div className="flex-none dark:text-zinc-400"> {j`댓글 $count개`->React.string} </div>
     }}
   </div>
 }

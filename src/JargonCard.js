@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import * as Reactfire from "reactfire";
+import * as DateFormat from "./DateFormat.js";
+import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
@@ -24,6 +26,9 @@ function JargonCard(props) {
   var setCommentsCount = match$2[1];
   var commentsCount = match$2[0];
   var firestore = Reactfire.useFirestore();
+  var jargonDoc = Firestore.doc(firestore, "jargons/" + id + "");
+  var match$3 = Reactfire.useFirestoreDocData(jargonDoc);
+  var jargon = match$3.data;
   var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
   React.useEffect(function () {
         var countComments = async function () {
@@ -35,6 +40,16 @@ function JargonCard(props) {
         };
         countComments();
       });
+  var tmp;
+  if (jargon !== undefined) {
+    var timestamp = jargon.timestamp;
+    tmp = timestamp !== undefined ? JsxRuntime.jsx("div", {
+            children: "최근 활동 " + DateFormat.timeAgo(Caml_option.valFromOption(timestamp).toDate()) + "",
+            className: "text-right text-xs dark:text-zinc-500"
+          }) : null;
+  } else {
+    tmp = null;
+  }
   return JsxRuntime.jsxs("div", {
               children: [
                 JsxRuntime.jsxs("div", {
@@ -52,10 +67,7 @@ function JargonCard(props) {
                               ],
                               className: "flex gap-x-2"
                             }),
-                        JsxRuntime.jsx("div", {
-                              children: "최근 활동 0분 전",
-                              className: "text-right text-xs dark:text-zinc-500"
-                            })
+                        tmp
                       ],
                       className: "flex-none inline-grid grid-cols-2"
                     }),
@@ -73,7 +85,7 @@ function JargonCard(props) {
                       className: "flex-none inline-grid grid-cols-2"
                     }),
                 commentsCount !== undefined ? JsxRuntime.jsx("div", {
-                        children: "댓글 " + String(commentsCount) + "개",
+                        children: "댓글 " + commentsCount + "개",
                         className: "flex-none dark:text-zinc-400"
                       }) : null
               ],
