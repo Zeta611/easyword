@@ -88,7 +88,7 @@ function Home(props) {
                                                     ],
                                                     onClick: (function (param) {
                                                         setOrder(function (order) {
-                                                              if (order[1] === "asc") {
+                                                              if (order[0] && order[1] === "asc") {
                                                                 return [
                                                                         /* Korean */1,
                                                                         "desc"
@@ -117,15 +117,15 @@ function Home(props) {
                                                     ],
                                                     onClick: (function (param) {
                                                         setOrder(function (order) {
-                                                              if (order[1] === "asc") {
+                                                              if (order[0] || order[1] !== "asc") {
                                                                 return [
                                                                         /* English */0,
-                                                                        "desc"
+                                                                        "asc"
                                                                       ];
                                                               } else {
                                                                 return [
                                                                         /* English */0,
-                                                                        "asc"
+                                                                        "desc"
                                                                       ];
                                                               }
                                                             });

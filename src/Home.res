@@ -57,8 +57,8 @@ let make = () => {
               onClick={_ =>
                 setOrder(.order => {
                   switch order {
-                  | (_, #asc) => (Korean, #desc)
-                  | (_, #desc) => (Korean, #asc)
+                  | (English, _) | (Korean, #desc) => (Korean, #asc)
+                  | (Korean, #asc) => (Korean, #desc)
                   }
                 })}>
               {"한영"->React.string}
@@ -80,8 +80,8 @@ let make = () => {
               onClick={_ =>
                 setOrder(.order => {
                   switch order {
-                  | (_, #asc) => (English, #desc)
-                  | (_, #desc) => (English, #asc)
+                  | (Korean, _) | (English, #desc) => (English, #asc)
+                  | (English, #asc) => (English, #desc)
                   }
                 })}>
               {"영한"->React.string}
