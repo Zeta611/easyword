@@ -73,7 +73,10 @@ let make = () => {
               <span className="label-text"> {"이메일"->React.string} </span>
             </label>
             <input
-              type_="email" value={email} className="input input-bordered input-disabled w-full"
+              type_="email"
+              value={email}
+              readOnly={true}
+              className="input input-bordered input-disabled w-full"
             />
           </label>
           <input type_="submit" value="저장" disabled className="btn btn-primary" />

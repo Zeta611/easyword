@@ -109,6 +109,7 @@ function Profile(props) {
                                             }),
                                         JsxRuntime.jsx("input", {
                                               className: "input input-bordered input-disabled w-full",
+                                              readOnly: true,
                                               type: "email",
                                               value: match$2[0]
                                             })
