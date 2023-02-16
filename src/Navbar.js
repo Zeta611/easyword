@@ -31,7 +31,7 @@ function Navbar(props) {
                                             }),
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsx("button", {
-                                                    children: "용어 추가",
+                                                    children: "번역 제안",
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.replace("/new-jargon");
                                                       })
@@ -45,7 +45,7 @@ function Navbar(props) {
                               className: "dropdown"
                             }),
                         JsxRuntime.jsx("button", {
-                              children: "EKO",
+                              children: "EKO: 쉬운 우리말 번역",
                               className: "btn btn-ghost normal-case text-xl",
                               onClick: (function (param) {
                                   RescriptReactRouter.replace("/");
@@ -67,7 +67,7 @@ function Navbar(props) {
                                   }),
                               JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
-                                          children: "용어 추가",
+                                          children: "번역 제안",
                                           onClick: (function (param) {
                                               RescriptReactRouter.replace("/new-jargon");
                                             })

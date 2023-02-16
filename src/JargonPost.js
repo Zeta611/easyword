@@ -199,7 +199,7 @@ function JargonPost(props) {
                             })
                       })
                 ],
-                className: "flex flex-col gap-4 p-5 gap-3 dark:text-white"
+                className: "flex flex-col p-5 gap-3"
               });
   }
   return JsxRuntime.jsx("div", {

@@ -47,7 +47,7 @@ let make = (~jargon as {id, english, korean}, ~language) => {
     // second row
     <div className="flex-none inline-grid grid-cols-2">
       <div
-        className="w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200 dark:text-white">
+        className="w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200">
         {primary->React.string}
       </div>
       <div

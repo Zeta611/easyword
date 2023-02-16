@@ -65,6 +65,7 @@ let make = () => {
                   {switch path {
                   | list{} => <Home />
                   | list{"profile"} => <Profile />
+                  | list{"new-jargon"} => <NewJargon />
                   | list{"jargon", jargonID} => <JargonPost jargonID />
 
                   | _ => React.string("404")

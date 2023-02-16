@@ -110,7 +110,7 @@ let make = (~jargonID) => {
     | (None, _) | (_, None) => React.null
     | (Some({korean, english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
-        <main className="flex flex-col gap-4 p-5 gap-3 dark:text-white">
+        <main className="flex flex-col p-5 gap-3">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-3">
               <div className="indicator">

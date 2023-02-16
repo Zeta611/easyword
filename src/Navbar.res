@@ -14,7 +14,7 @@ let make = (~signedIn: bool) => {
           </li>
           <li>
             <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
-              {"용어 추가"->React.string}
+              {"번역 제안"->React.string}
             </button>
           </li>
         </ul>
@@ -22,7 +22,7 @@ let make = (~signedIn: bool) => {
       <button
         className="btn btn-ghost normal-case text-xl"
         onClick={_ => RescriptReactRouter.replace("/")}>
-        {"EKO"->React.string}
+        {"EKO: 쉬운 우리말 번역"->React.string}
       </button>
     </div>
     <div className="navbar-center hidden lg:flex">
@@ -32,7 +32,7 @@ let make = (~signedIn: bool) => {
         </li>
         <li>
           <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
-            {"용어 추가"->React.string}
+            {"번역 제안"->React.string}
           </button>
         </li>
       </ul>

@@ -7,6 +7,7 @@ import * as SignIn from "./SignIn.js";
 import * as Profile from "./Profile.js";
 import * as SignOut from "./SignOut.js";
 import * as Firebase from "./Firebase.js";
+import * as NewJargon from "./NewJargon.js";
 import * as Reactfire from "reactfire";
 import * as JargonPost from "./JargonPost.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
@@ -106,6 +107,9 @@ function App(props) {
             tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(JargonPost.make, {
                     jargonID: match$1.hd
                   }) : "404";
+            break;
+        case "new-jargon" :
+            tmp$1 = path.tl ? "404" : JsxRuntime.jsx(NewJargon.make, {});
             break;
         case "profile" :
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(Profile.make, {});

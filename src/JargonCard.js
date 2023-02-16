@@ -75,7 +75,7 @@ function JargonCard(props) {
                       children: [
                         JsxRuntime.jsx("div", {
                               children: match$1[0],
-                              className: "w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200 dark:text-white"
+                              className: "w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200"
                             }),
                         JsxRuntime.jsx("div", {
                               children: match$1[1],

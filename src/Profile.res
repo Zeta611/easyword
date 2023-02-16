@@ -18,21 +18,25 @@ let make = () => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    switch user->Js.Nullable.toOption {
-    | Some(user) =>
-      setDisabled(._ => true)
+    if signedIn {
+      switch user->Js.Nullable.toOption {
+      | Some(user) =>
+        setDisabled(._ => true)
 
-      (
-        async () => {
-          try {
-            await user->Auth.updateProfile({displayName: displayName})
-            setDisabled(._ => false)
-          } catch {
-          | e => Js.log(e)
+        (
+          async () => {
+            try {
+              await user->Auth.updateProfile({displayName: displayName})
+              setDisabled(._ => false)
+            } catch {
+            | e => Js.log(e)
+            }
           }
-        }
-      )()->ignore
-    | None => RescriptReactRouter.replace("/login")
+        )()->ignore
+      | None => RescriptReactRouter.replace("/logout") // Something went wrong
+      }
+    } else {
+      RescriptReactRouter.replace("/login")
     }
   }
 
@@ -43,7 +47,7 @@ let make = () => {
         setDisplayName(._ => displayName->Option.getWithDefault(""))
         setEmail(._ => email->Option.getWithDefault(""))
 
-      | None => RescriptReactRouter.replace("/login") // Something went wrong
+      | None => RescriptReactRouter.replace("/logout") // Something went wrong
       }
     } else {
       RescriptReactRouter.replace("/login")
