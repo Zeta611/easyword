@@ -30,7 +30,15 @@ module.exports = {
   },
   plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: ["emerald", "forest"],
-    darkTheme: "forest",
+    themes: [
+      "emerald",
+      {
+        myForest: {
+          ...require("daisyui/src/colors/themes")["[data-theme=forest]"],
+          "--rounded-btn": "0.5rem",
+        },
+      },
+    ],
+    darkTheme: "myForest",
   },
 }

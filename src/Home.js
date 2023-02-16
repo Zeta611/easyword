@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as JargonList from "./JargonList.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as Solid from "@heroicons/react/20/solid";
+import * as Solid from "@heroicons/react/24/solid";
 
 function Home$SearchBar(props) {
   return JsxRuntime.jsx("form", {

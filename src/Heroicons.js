@@ -7,13 +7,23 @@ var ArrowDownIcon = {};
 
 var ArrowUpIcon = {};
 
+var Bars3Icon = {};
+
 var Solid = {
   ChevronDownIcon: ChevronDownIcon,
   ArrowDownIcon: ArrowDownIcon,
-  ArrowUpIcon: ArrowUpIcon
+  ArrowUpIcon: ArrowUpIcon,
+  Bars3Icon: Bars3Icon
+};
+
+var UserCircleIcon = {};
+
+var Outline = {
+  UserCircleIcon: UserCircleIcon
 };
 
 export {
   Solid ,
+  Outline ,
 }
 /* No side effect */
