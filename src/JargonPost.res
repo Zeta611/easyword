@@ -127,6 +127,7 @@ let make = (~jargonID) => {
           </div>
           <Poll jargonID />
           <CommentInput jargonID />
+          <div className="divider -my-2" />
           <div>
             <CommentRow jargonID siblings=roots.contents />
           </div>

@@ -190,6 +190,9 @@ function JargonPost(props) {
                         jargonID: jargonID
                       }),
                   JsxRuntime.jsx("div", {
+                        className: "divider -my-2"
+                      }),
+                  JsxRuntime.jsx("div", {
                         children: JsxRuntime.jsx(CommentRow.make, {
                               jargonID: jargonID,
                               siblings: match$2[0].contents
