@@ -16,16 +16,28 @@ let make = () => {
 
   let (disabled, setDisabled) = React.Uncurried.useState(() => false)
 
-  let (jargon, setJargon) = React.Uncurried.useState(() => "")
+  let (english, setJargon) = React.Uncurried.useState(() => "")
   let handleJargonChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
     setJargon(._ => value)
   }
 
-  let (translation, setTranslation) = React.Uncurried.useState(() => "")
+  let (korean, setTranslation) = React.Uncurried.useState(() => "")
   let handleTranslationChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
     setTranslation(._ => value)
+  }
+
+  let (comment, setComment) = React.Uncurried.useState(() => "")
+  let handleCommentChange = event => {
+    let value = ReactEvent.Form.currentTarget(event)["value"]
+    setComment(._ => value)
+  }
+
+  let addJargon = {
+    open Firebase
+    let functions = useFirebaseApp()->getFunctions
+    functions->httpsCallable("addJargon")
   }
 
   let handleSubmit = event => {
@@ -34,14 +46,14 @@ let make = () => {
 
     if signedIn {
       switch user->Js.Nullable.toOption {
-      | Some(user) =>
+      | Some(_) =>
         setDisabled(._ => true)
 
         (
           async () => {
             try {
-              // await user->Auth.updateProfile({displayName: displayName})
-              setDisabled(._ => false)
+              let result = await addJargon(. ({english, korean, comment}: Jargon.add))
+              RescriptReactRouter.replace(`/jargon/${result.data["jargonID"]}`)
             } catch {
             | e => Js.log(e)
             }
@@ -65,7 +77,7 @@ let make = () => {
             </label>
             <input
               type_="text"
-              value={jargon}
+              value={english}
               onChange={handleJargonChange}
               placeholder="separated sum"
               className="input input-bordered w-full"
@@ -77,7 +89,7 @@ let make = () => {
             </label>
             <input
               type_="text"
-              value={translation}
+              value={korean}
               onChange={handleTranslationChange}
               placeholder="출신을 기억하는 합"
               className="input input-bordered w-full"
@@ -88,7 +100,10 @@ let make = () => {
               <span className="label-text"> {"의견"->React.string} </span>
             </label>
             <textarea
-              placeholder="첫 댓글로 달려요" className="textarea textarea-bordered w-full"
+              value={comment}
+              onChange={handleCommentChange}
+              placeholder="첫 댓글로 달려요"
+              className="textarea textarea-bordered w-full"
             />
           </label>
           <input type_="submit" value="제안하기" disabled className="btn btn-primary" />

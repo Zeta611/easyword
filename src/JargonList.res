@@ -37,7 +37,7 @@ let make = (~order, ~query as regexQuery) => {
           }
         }
       }
-      let rows = jargons->Array.keepMap(({english, korean} as jargon) => {
+      let rows = jargons->Array.keepMap(({english, korean} as jargon: Jargon.t) => {
         switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
         | (None, None) => None
         | _ => Some(<JargonCard jargon language key={jargon.id} />)
