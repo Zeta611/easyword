@@ -31,9 +31,17 @@ function Navbar(props) {
                                             }),
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsx("button", {
-                                                    children: "번역 제안",
+                                                    children: "용어 제안",
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.replace("/new-jargon");
+                                                      })
+                                                  })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsx("button", {
+                                                    children: "취지",
+                                                    onClick: (function (param) {
+                                                        RescriptReactRouter.replace("/why");
                                                       })
                                                   })
                                             })
@@ -74,9 +82,17 @@ function Navbar(props) {
                                   }),
                               JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
-                                          children: "번역 제안",
+                                          children: "용어 제안",
                                           onClick: (function (param) {
                                               RescriptReactRouter.replace("/new-jargon");
+                                            })
+                                        })
+                                  }),
+                              JsxRuntime.jsx("li", {
+                                    children: JsxRuntime.jsx("button", {
+                                          children: "취지",
+                                          onClick: (function (param) {
+                                              RescriptReactRouter.replace("/why");
                                             })
                                         })
                                   })

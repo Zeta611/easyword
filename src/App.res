@@ -68,6 +68,7 @@ let make = () => {
                   | list{"new-jargon"} => <NewJargon />
                   | list{"new-translation", jargonID} => <NewTranslation jargonID />
                   | list{"jargon", jargonID} => <JargonPost jargonID />
+                  | list{"why"} => <Why />
 
                   | _ => React.string("404")
                   }}
