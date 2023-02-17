@@ -188,9 +188,9 @@ function JargonPost(props) {
                               siblings: match$2[0].contents
                             })
                       ],
-                      className: "flex flex-col p-5 gap-4"
+                      className: "flex flex-col p-5 gap-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg"
                     }),
-                className: "px-2 max-w-xl mx-auto md:max-w-4xl text-sm"
+                className: "px-3 max-w-xl mx-auto md:max-w-4xl text-sm"
               });
   }
   return JsxRuntime.jsx("div", {
