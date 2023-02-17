@@ -9,6 +9,8 @@ module rec CommentNode: {
     let {user} = React.useContext(SignInContext.context)
     let id = comment->id->Option.getExn
 
+    let (commentUser, setCommentUser) = React.Uncurried.useState(() => "")
+
     let (showReply, setShowReply) = React.Uncurried.useState(() => false)
     let (showChildren, setShowChildren) = React.Uncurried.useState(() => true)
 
@@ -20,6 +22,23 @@ module rec CommentNode: {
     }
 
     let (disabled, setDisabled) = React.Uncurried.useState(() => false)
+
+    let firestore = Firebase.useFirestore()
+    React.useEffect0(() => {
+      (
+        async () => {
+          open Firebase
+          let commentUserDocRef = firestore->doc(~path=`users/${comment->Comment.user}`)
+          let commentUserDoc = await commentUserDocRef->getDoc
+          if commentUserDoc.exists(.) {
+            setCommentUser(._ => commentUserDoc.data(.)["displayName"])
+          } else {
+            setCommentUser(._ => "탈퇴한 회원")
+          }
+        }
+      )()->ignore
+      None
+    })
 
     let addComment = {
       open Firebase
@@ -55,7 +74,7 @@ module rec CommentNode: {
     <>
       <div className="flex flex-col gap-y-1">
         <div className="flex gap-x-3">
-          <div> {comment->Comment.user->React.string} </div>
+          <div> {commentUser->React.string} </div>
           <div title={comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString}>
             {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
           </div>

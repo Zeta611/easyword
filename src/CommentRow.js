@@ -10,6 +10,7 @@ import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
+import * as Firestore from "firebase/firestore";
 import * as Functions from "firebase/functions";
 
 var CommentNode = Caml_module.init_mod([
@@ -26,7 +27,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      112,
+      131,
       4
     ], {
       TAG: /* Module */0,
@@ -45,28 +46,48 @@ function CommentRow$CommentNode(props) {
   var user = match$1.user;
   var id = Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id));
   var match$2 = React.useState(function () {
-        return false;
-      });
-  var setShowReply = match$2[1];
-  var match$3 = React.useState(function () {
-        return true;
-      });
-  var setShowChildren = match$3[1];
-  var match$4 = React.useState(function () {
         return "";
       });
-  var setContent = match$4[1];
-  var content = match$4[0];
+  var setCommentUser = match$2[1];
+  var match$3 = React.useState(function () {
+        return false;
+      });
+  var setShowReply = match$3[1];
+  var match$4 = React.useState(function () {
+        return true;
+      });
+  var setShowChildren = match$4[1];
+  var match$5 = React.useState(function () {
+        return "";
+      });
+  var setContent = match$5[1];
+  var content = match$5[0];
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setContent(function (param) {
           return value;
         });
   };
-  var match$5 = React.useState(function () {
+  var match$6 = React.useState(function () {
         return false;
       });
-  var setDisabled = match$5[1];
+  var setDisabled = match$6[1];
+  var firestore = Reactfire.useFirestore();
+  React.useEffect((function () {
+          ((async function (param) {
+                  var commentUserDocRef = Firestore.doc(firestore, "users/" + comment.user + "");
+                  var commentUserDoc = await Firestore.getDoc(commentUserDocRef);
+                  if (commentUserDoc.exists()) {
+                    return setCommentUser(function (param) {
+                                return commentUserDoc.data().displayName;
+                              });
+                  } else {
+                    return setCommentUser(function (param) {
+                                return "탈퇴한 회원";
+                              });
+                  }
+                })(undefined));
+        }), []);
   var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");
   var addComment = Functions.httpsCallable(functions, "addComment");
   var handleSubmit = function ($$event) {
@@ -107,7 +128,7 @@ function CommentRow$CommentNode(props) {
                         JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("div", {
-                                      children: comment.user
+                                      children: match$2[0]
                                     }),
                                 JsxRuntime.jsx("div", {
                                       children: comment.timestamp.toDate().toDateString(),
@@ -133,7 +154,7 @@ function CommentRow$CommentNode(props) {
                       ],
                       className: "flex flex-col gap-y-1"
                     }),
-                match$2[0] ? JsxRuntime.jsx("form", {
+                match$3[0] ? JsxRuntime.jsx("form", {
                         children: JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("textarea", {
@@ -146,7 +167,7 @@ function CommentRow$CommentNode(props) {
                                     }),
                                 JsxRuntime.jsx("input", {
                                       className: "btn btn-outline btn-xs",
-                                      disabled: match$5[0],
+                                      disabled: match$6[0],
                                       type: "submit",
                                       value: "답글"
                                     })
@@ -155,7 +176,7 @@ function CommentRow$CommentNode(props) {
                             }),
                         onSubmit: handleSubmit
                       }) : null,
-                match$3[0] ? JsxRuntime.jsxs("div", {
+                match$4[0] ? JsxRuntime.jsxs("div", {
                         children: [
                           JsxRuntime.jsx("button", {
                                 className: "flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600",

@@ -67,9 +67,9 @@ external query: (collectionReference, queryConstraint) => query = "query"
 @module("firebase/firestore")
 external orderBy: (string, ~direction: [#asc | #desc]) => queryConstraint = "orderBy"
 
-type documentSnapshot = {exists: (. unit) => bool}
+type documentSnapshot<'a> = {exists: (. unit) => bool, data: (. unit) => 'a}
 @module("firebase/firestore")
-external getDoc: documentReference => promise<documentSnapshot> = "getDoc"
+external getDoc: documentReference => promise<documentSnapshot<'a>> = "getDoc"
 
 @module("firebase/firestore")
 external setDoc: (documentReference, 'a) => promise<unit> = "setDoc"
