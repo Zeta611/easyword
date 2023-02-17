@@ -72,36 +72,42 @@ module rec CommentNode: {
     }
 
     <>
-      <div className="flex flex-col gap-y-1">
-        <div className="flex gap-x-3">
-          <div
+      <div className="flex flex-col gap-y-1 place-items-start text-zinc-500">
+        // header
+        <div className="flex gap-x-1 text-xs">
+          <span
             id
-            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2">
+            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium">
             {commentUser->React.string}
-          </div>
-          <div title={comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString}>
+          </span>
+          {"·"->React.string}
+          <span title={comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString}>
             {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
-          </div>
+          </span>
         </div>
-        <div> {comment->Comment.content->React.string} </div>
-        <div>
-          <button className="btn btn-xs" onClick={_ => setShowReply(.show => !show)}>
-            {"답글"->React.string}
-          </button>
-        </div>
+        // comment
+        <div className="text-base-content"> {comment->Comment.content->React.string} </div>
+        // footer
+        <button className="btn btn-ghost btn-xs gap-1" onClick={_ => setShowReply(.show => !show)}>
+          <Heroicons.Outline.ChatBubbleLeftIcon className="h-5 w-5" />
+          {"답글"->React.string}
+        </button>
       </div>
+      // reply
       {if showReply {
         <form onSubmit=handleSubmit>
-          <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
+          <div className="p-2 gap-1 grid grid-cols-1 place-items-start">
             <textarea
               name={"comment" ++ id}
               id={"comment" ++ id}
               value=content
               onChange=handleInputChange
               placeholder="여러분의 생각은 어떠신가요?"
-              className="textarea textarea-primary textarea-sm rounded-lg place-self-stretch"
+              className="textarea textarea-bordered textarea-sm rounded-lg place-self-stretch"
             />
-            <input type_="submit" value="답글" disabled className="btn btn-outline btn-xs" />
+            <input
+              type_="submit" value="답글" disabled className="btn btn-primary btn-outline btn-xs"
+            />
           </div>
         </form>
       } else {

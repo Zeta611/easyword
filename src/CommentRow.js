@@ -12,6 +12,7 @@ import * as JsxRuntime from "react/jsx-runtime";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
 import * as Functions from "firebase/functions";
+import * as Outline from "@heroicons/react/24/outline";
 
 var CommentNode = Caml_module.init_mod([
       "CommentRow.res",
@@ -27,7 +28,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      135,
+      141,
       4
     ], {
       TAG: /* Module */0,
@@ -127,40 +128,45 @@ function CommentRow$CommentNode(props) {
                       children: [
                         JsxRuntime.jsxs("div", {
                               children: [
-                                JsxRuntime.jsx("div", {
+                                JsxRuntime.jsx("span", {
                                       children: match$2[0],
-                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2",
+                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium",
                                       id: id
                                     }),
-                                JsxRuntime.jsx("div", {
+                                "·",
+                                JsxRuntime.jsx("span", {
                                       children: comment.timestamp.toDate().toDateString(),
                                       title: comment.timestamp.toDate().toDateString()
                                     })
                               ],
-                              className: "flex gap-x-3"
+                              className: "flex gap-x-1 text-xs"
                             }),
                         JsxRuntime.jsx("div", {
-                              children: comment.content
+                              children: comment.content,
+                              className: "text-base-content"
                             }),
-                        JsxRuntime.jsx("div", {
-                              children: JsxRuntime.jsx("button", {
-                                    children: "답글",
-                                    className: "btn btn-xs",
-                                    onClick: (function (param) {
-                                        setShowReply(function (show) {
-                                              return !show;
-                                            });
-                                      })
-                                  })
+                        JsxRuntime.jsxs("button", {
+                              children: [
+                                JsxRuntime.jsx(Outline.ChatBubbleLeftIcon, {
+                                      className: "h-5 w-5"
+                                    }),
+                                "답글"
+                              ],
+                              className: "btn btn-ghost btn-xs gap-1",
+                              onClick: (function (param) {
+                                  setShowReply(function (show) {
+                                        return !show;
+                                      });
+                                })
                             })
                       ],
-                      className: "flex flex-col gap-y-1"
+                      className: "flex flex-col gap-y-1 place-items-start text-zinc-500"
                     }),
                 match$3[0] ? JsxRuntime.jsx("form", {
                         children: JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("textarea", {
-                                      className: "textarea textarea-primary textarea-sm rounded-lg place-self-stretch",
+                                      className: "textarea textarea-bordered textarea-sm rounded-lg place-self-stretch",
                                       id: "comment" + id,
                                       name: "comment" + id,
                                       placeholder: "여러분의 생각은 어떠신가요?",
@@ -168,13 +174,13 @@ function CommentRow$CommentNode(props) {
                                       onChange: handleInputChange
                                     }),
                                 JsxRuntime.jsx("input", {
-                                      className: "btn btn-outline btn-xs",
+                                      className: "btn btn-primary btn-outline btn-xs",
                                       disabled: match$6[0],
                                       type: "submit",
                                       value: "답글"
                                     })
                               ],
-                              className: "p-2 gap-3 grid grid-cols-1 place-items-end"
+                              className: "p-2 gap-1 grid grid-cols-1 place-items-start"
                             }),
                         onSubmit: handleSubmit
                       }) : null,

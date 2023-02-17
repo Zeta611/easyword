@@ -73,7 +73,7 @@ module CommentInput = {
     }
 
     <form onSubmit={handleSubmit}>
-      <div className="p-2 gap-3 grid grid-cols-1 place-items-end">
+      <div className="gap-1 grid grid-cols-1 place-items-start">
         <textarea
           name="comment"
           id="comment"
@@ -83,7 +83,7 @@ module CommentInput = {
           className="textarea textarea-bordered textarea-md rounded-lg place-self-stretch"
         />
         <input
-          type_="submit" value="댓글" disabled className="btn btn-primary btn-sm btn-outline"
+          type_="submit" value="댓글" disabled className="btn btn-primary btn-xs btn-outline"
         />
       </div>
     </form>
@@ -110,33 +110,28 @@ let make = (~jargonID) => {
     | (None, _) | (_, None) => React.null
     | (Some({korean, english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
-        <main className="flex flex-col p-5 gap-3">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-3">
-              <div className="indicator">
-                <span className="indicator-item indicator-start text-2xl">
-                  {"🎓"->React.string}
-                </span>
-                <div className="text-3xl font-bold"> {english->React.string} </div>
-              </div>
-              <div className="badge badge-primary badge-outline badge-md">
-                {"#PL"->React.string}
-              </div>
+        <div className="px-2 max-w-xl mx-auto md:max-w-4xl text-sm">
+          <main className="flex flex-col p-5 gap-4">
+            // Jargon
+            <div className="flex flex-col gap-1">
+              <div className="text-3xl font-bold"> {english->React.string} </div>
+              <div className="text-2xl font-medium"> {korean->React.string} </div>
             </div>
-            <div className="text-2xl font-medium"> {korean->React.string} </div>
-          </div>
-          <Poll jargonID />
-          <button
-            className="btn btn-primary"
-            onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
-            {"새 번역 제안하기"->React.string}
-          </button>
-          <CommentInput jargonID />
-          <div className="divider -my-2" />
-          <div>
+            // Poll
+            <Poll jargonID />
+            // New translation
+            <button
+              className="btn btn-primary"
+              onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
+              {"새 번역 제안하기"->React.string}
+            </button>
+            // New comment
+            <CommentInput jargonID />
+            <div className="divider -my-2" />
+            // Comments
             <CommentRow jargonID siblings=roots.contents />
-          </div>
-        </main>
+          </main>
+        </div>
       }
     }
   | _ =>

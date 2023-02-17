@@ -116,13 +116,13 @@ function JargonPost$CommentInput(props) {
                             onChange: handleInputChange
                           }),
                       JsxRuntime.jsx("input", {
-                            className: "btn btn-primary btn-sm btn-outline",
+                            className: "btn btn-primary btn-xs btn-outline",
                             disabled: match$2[0],
                             type: "submit",
                             value: "댓글"
                           })
                     ],
-                    className: "p-2 gap-3 grid grid-cols-1 place-items-end"
+                    className: "gap-1 grid grid-cols-1 place-items-start"
                   }),
               onSubmit: handleSubmit
             });
@@ -151,63 +151,46 @@ function JargonPost(props) {
       return null;
     }
     var match$2 = constructForest(Caml_option.valFromOption(comments));
-    return JsxRuntime.jsxs("main", {
-                children: [
-                  JsxRuntime.jsxs("div", {
-                        children: [
-                          JsxRuntime.jsxs("div", {
-                                children: [
-                                  JsxRuntime.jsxs("div", {
-                                        children: [
-                                          JsxRuntime.jsx("span", {
-                                                children: "🎓",
-                                                className: "indicator-item indicator-start text-2xl"
-                                              }),
-                                          JsxRuntime.jsx("div", {
-                                                children: jargons.english,
-                                                className: "text-3xl font-bold"
-                                              })
-                                        ],
-                                        className: "indicator"
-                                      }),
-                                  JsxRuntime.jsx("div", {
-                                        children: "#PL",
-                                        className: "badge badge-primary badge-outline badge-md"
-                                      })
-                                ],
-                                className: "flex items-center gap-3"
-                              }),
-                          JsxRuntime.jsx("div", {
-                                children: jargons.korean,
-                                className: "text-2xl font-medium"
-                              })
-                        ],
-                        className: "flex flex-col gap-1"
-                      }),
-                  JsxRuntime.jsx(Poll.make, {
-                        jargonID: jargonID
-                      }),
-                  JsxRuntime.jsx("button", {
-                        children: "새 번역 제안하기",
-                        className: "btn btn-primary",
-                        onClick: (function (param) {
-                            RescriptReactRouter.replace("/new-translation/" + jargonID + "");
-                          })
-                      }),
-                  JsxRuntime.jsx(JargonPost$CommentInput, {
-                        jargonID: jargonID
-                      }),
-                  JsxRuntime.jsx("div", {
-                        className: "divider -my-2"
-                      }),
-                  JsxRuntime.jsx("div", {
-                        children: JsxRuntime.jsx(CommentRow.make, {
+    return JsxRuntime.jsx("div", {
+                children: JsxRuntime.jsxs("main", {
+                      children: [
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("div", {
+                                      children: jargons.english,
+                                      className: "text-3xl font-bold"
+                                    }),
+                                JsxRuntime.jsx("div", {
+                                      children: jargons.korean,
+                                      className: "text-2xl font-medium"
+                                    })
+                              ],
+                              className: "flex flex-col gap-1"
+                            }),
+                        JsxRuntime.jsx(Poll.make, {
+                              jargonID: jargonID
+                            }),
+                        JsxRuntime.jsx("button", {
+                              children: "새 번역 제안하기",
+                              className: "btn btn-primary",
+                              onClick: (function (param) {
+                                  RescriptReactRouter.replace("/new-translation/" + jargonID + "");
+                                })
+                            }),
+                        JsxRuntime.jsx(JargonPost$CommentInput, {
+                              jargonID: jargonID
+                            }),
+                        JsxRuntime.jsx("div", {
+                              className: "divider -my-2"
+                            }),
+                        JsxRuntime.jsx(CommentRow.make, {
                               jargonID: jargonID,
                               siblings: match$2[0].contents
                             })
-                      })
-                ],
-                className: "flex flex-col p-5 gap-3"
+                      ],
+                      className: "flex flex-col p-5 gap-4"
+                    }),
+                className: "px-2 max-w-xl mx-auto md:max-w-4xl text-sm"
               });
   }
   return JsxRuntime.jsx("div", {

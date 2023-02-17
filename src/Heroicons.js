@@ -18,8 +18,11 @@ var Solid = {
 
 var UserCircleIcon = {};
 
+var ChatBubbleLeftIcon = {};
+
 var Outline = {
-  UserCircleIcon: UserCircleIcon
+  UserCircleIcon: UserCircleIcon,
+  ChatBubbleLeftIcon: ChatBubbleLeftIcon
 };
 
 export {
