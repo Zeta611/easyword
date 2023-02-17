@@ -7,6 +7,7 @@ import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
 import * as ReactFirebaseui from "react-firebaseui";
 import * as JsxRuntime from "react/jsx-runtime";
+import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 import App from "firebase/compat/app";
 
@@ -23,15 +24,29 @@ var uiConfig = {
 function SignIn(props) {
   var match = Reactfire.useSigninCheck();
   var data = match.data;
+  var firestore = Reactfire.useFirestore();
   React.useEffect((function () {
           if (data !== undefined && data.signedIn) {
             var user = data.user;
             if (!(user == null)) {
-              if (user.displayName !== undefined) {
-                RescriptReactRouter.replace("/");
-              } else {
-                RescriptReactRouter.replace("/profile");
-              }
+              var email = user.email;
+              var displayName = user.displayName;
+              var uid = user.uid;
+              ((async function (param) {
+                      var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
+                      var userDoc = await Firestore.getDoc(userDocRef);
+                      if (!userDoc.exists()) {
+                        await Firestore.setDoc(userDocRef, {
+                              displayName: displayName,
+                              email: email
+                            });
+                      }
+                      if (displayName !== undefined) {
+                        return RescriptReactRouter.replace("/");
+                      } else {
+                        return RescriptReactRouter.replace("/profile");
+                      }
+                    })(undefined));
             }
             
           }

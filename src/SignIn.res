@@ -12,6 +12,8 @@ let uiConfig = {
 let make = () => {
   let {status, data} = useSigninCheck()
 
+  let firestore = useFirestore()
+
   React.useEffect1(() => {
     // Js.Console.log(data)
     switch data {
@@ -19,11 +21,24 @@ let make = () => {
     | Some({signedIn, user}) =>
       if signedIn {
         switch user->Js.Nullable.toOption {
-        | Some({displayName}) =>
-          switch displayName {
-          | Some(_) => RescriptReactRouter.replace("/")
-          | None => RescriptReactRouter.replace("/profile")
-          }
+        | Some({uid, displayName, email}) =>
+          // Set uid. This is safe due to the security rule:
+          // allow write: if request.auth.uid == uid;
+
+          (
+            async () => {
+              let userDocRef = firestore->doc(~path=`users/${uid}`)
+              let userDoc = await userDocRef->getDoc
+              if !userDoc.exists(.) {
+                await userDocRef->setDoc({"displayName": displayName, "email": email})
+              }
+
+              switch displayName {
+              | Some(_) => RescriptReactRouter.replace("/")
+              | None => RescriptReactRouter.replace("/profile")
+              }
+            }
+          )()->ignore
 
         | None => () // Something went wrong
         }

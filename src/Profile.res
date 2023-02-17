@@ -14,19 +14,30 @@ let make = () => {
 
   let (disabled, setDisabled) = React.Uncurried.useState(() => false)
 
+  let firestore = useFirestore()
+
   let handleSubmit = event => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
     if signedIn {
       switch user->Js.Nullable.toOption {
-      | Some(user) =>
+      | Some({uid, email} as user) =>
         setDisabled(._ => true)
 
         (
           async () => {
             try {
               await user->Auth.updateProfile({displayName: displayName})
+
+              let userDocRef = firestore->doc(~path=`users/${uid}`)
+              let userDoc = await userDocRef->getDoc
+              if !userDoc.exists(.) {
+                await userDocRef->setDoc({"displayName": displayName, "email": email})
+              } else {
+                await userDocRef->updateDoc({"displayName": displayName})
+              }
+
               setDisabled(._ => false)
             } catch {
             | e => Js.log(e)
