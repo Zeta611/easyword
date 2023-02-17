@@ -31,14 +31,10 @@ let make = (~jargon as {id, english, korean}, ~language) => {
     className="flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
     onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
     // first row
-    <div className="flex-none inline-grid grid-cols-2">
-      <div className="flex gap-x-2">
-        <div className="text-sm"> {"🔥"->React.string} </div>
-        <div className="badge badge-primary badge-outline badge-md"> {"#PL"->React.string} </div>
-      </div>
+    <div className="flex-none">
       {switch jargon {
       | Some({timestamp: Some(timestamp)}) =>
-        <div className="text-right text-xs dark:text-zinc-500">
+        <div className="text-xs dark:text-zinc-500">
           {`최근 활동 ${timestamp->Timestamp.toDate->DateFormat.timeAgo}`->React.string}
         </div>
       | _ => React.null
@@ -59,7 +55,9 @@ let make = (~jargon as {id, english, korean}, ~language) => {
     {switch commentsCount {
     | None => React.null
     | Some(count) =>
-      <div className="flex-none dark:text-zinc-400"> {j`댓글 $count개`->React.string} </div>
+      <div className="flex-none text-xs dark:text-zinc-400">
+        {j`댓글 $count개`->React.string}
+      </div>
     }}
   </div>
 }

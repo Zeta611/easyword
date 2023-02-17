@@ -38,15 +38,22 @@ function Navbar(props) {
                                                   })
                                             })
                                       ],
-                                      className: "menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52",
+                                      className: "menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
                                       tabIndex: 0
                                     })
                               ],
-                              className: "dropdown"
+                              className: "dropdown dropdown-hover"
                             }),
                         JsxRuntime.jsx("button", {
-                              children: "EKO: 쉬운 우리말 번역",
-                              className: "btn btn-ghost normal-case text-xl",
+                              children: "EKO",
+                              className: "btn btn-ghost text-xl lg:hidden",
+                              onClick: (function (param) {
+                                  RescriptReactRouter.replace("/");
+                                })
+                            }),
+                        JsxRuntime.jsx("button", {
+                              children: "EKO: 쉬운 컴퓨터 분야 전문용어 번역",
+                              className: "btn btn-ghost text-xl hidden lg:flex",
                               onClick: (function (param) {
                                   RescriptReactRouter.replace("/");
                                 })
@@ -116,11 +123,11 @@ function Navbar(props) {
                                                     })
                                                 })
                                           }),
-                                    className: "menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52",
+                                    className: "menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
                                     tabIndex: 0
                                   })
                             ],
-                            className: "dropdown dropdown-end"
+                            className: "dropdown dropdown-hover dropdown-end"
                           }),
                       className: "navbar-end"
                     })

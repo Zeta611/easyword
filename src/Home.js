@@ -6,17 +6,15 @@ import * as JsxRuntime from "react/jsx-runtime";
 import * as Solid from "@heroicons/react/24/solid";
 
 function Home$SearchBar(props) {
-  return JsxRuntime.jsx("form", {
-              children: JsxRuntime.jsx("div", {
-                    children: JsxRuntime.jsx("input", {
-                          className: "input input-bordered w-full rounded-lg",
-                          placeholder: "정규식: syntax$",
-                          type: "search",
-                          value: props.query,
-                          onChange: props.onChange
-                        }),
-                    className: "relative"
-                  })
+  return JsxRuntime.jsx("div", {
+              children: JsxRuntime.jsx("input", {
+                    className: "input input-bordered w-full rounded-lg text-sm",
+                    placeholder: "정규식으로 검색해보세요",
+                    type: "search",
+                    value: props.query,
+                    onChange: props.onChange
+                  }),
+              className: "relative"
             });
 }
 
@@ -60,17 +58,35 @@ function Home(props) {
                                 JsxRuntime.jsxs("label", {
                                       children: [
                                         order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-                                                className: "-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
+                                                className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
                                               }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-                                                className: "-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
+                                                className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
                                               }),
                                         order[0] ? "한영" : "영한",
                                         JsxRuntime.jsx(Solid.ChevronDownIcon, {
                                               className: "ml-2 -mr-1 h-5 w-5"
                                             })
                                       ],
-                                      className: "btn",
-                                      tabIndex: 0
+                                      className: "btn btn-primary",
+                                      tabIndex: 0,
+                                      onClick: (function (param) {
+                                          var lang = order[0];
+                                          if (order[1] === "asc") {
+                                            return setOrder(function (param) {
+                                                        return [
+                                                                lang,
+                                                                "desc"
+                                                              ];
+                                                      });
+                                          } else {
+                                            return setOrder(function (param) {
+                                                        return [
+                                                                lang,
+                                                                "asc"
+                                                              ];
+                                                      });
+                                          }
+                                        })
                                     }),
                                 JsxRuntime.jsxs("ul", {
                                       children: [
@@ -80,9 +96,9 @@ function Home(props) {
                                                       "한영",
                                                       order[0] ? (
                                                           order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-                                                                  className: "-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
+                                                                  className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-                                                                  className: "-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
+                                                                  className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 })
                                                         ) : null
                                                     ],
@@ -109,9 +125,9 @@ function Home(props) {
                                                       "영한",
                                                       order[0] ? null : (
                                                           order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-                                                                  className: "-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
+                                                                  className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-                                                                  className: "-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
+                                                                  className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 })
                                                         )
                                                     ],
@@ -133,11 +149,11 @@ function Home(props) {
                                                   })
                                             })
                                       ],
-                                      className: "menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4",
+                                      className: "menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
                                       tabIndex: 0
                                     })
                               ],
-                              className: "dropdown dropdown-end"
+                              className: "dropdown dropdown-hover dropdown-end"
                             })
                       ],
                       className: "flex items-center space-x-2"
@@ -147,7 +163,7 @@ function Home(props) {
                       query: query
                     })
               ],
-              className: "grid gap-4 p-5"
+              className: "grid gap-4 p-5 text-sm"
             });
 }
 

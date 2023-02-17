@@ -45,31 +45,16 @@ function JargonCard(props) {
     var timestamp = jargon.timestamp;
     tmp = timestamp !== undefined ? JsxRuntime.jsx("div", {
             children: "최근 활동 " + DateFormat.timeAgo(Caml_option.valFromOption(timestamp).toDate()) + "",
-            className: "text-right text-xs dark:text-zinc-500"
+            className: "text-xs dark:text-zinc-500"
           }) : null;
   } else {
     tmp = null;
   }
   return JsxRuntime.jsxs("div", {
               children: [
-                JsxRuntime.jsxs("div", {
-                      children: [
-                        JsxRuntime.jsxs("div", {
-                              children: [
-                                JsxRuntime.jsx("div", {
-                                      children: "🔥",
-                                      className: "text-sm"
-                                    }),
-                                JsxRuntime.jsx("div", {
-                                      children: "#PL",
-                                      className: "badge badge-primary badge-outline badge-md"
-                                    })
-                              ],
-                              className: "flex gap-x-2"
-                            }),
-                        tmp
-                      ],
-                      className: "flex-none inline-grid grid-cols-2"
+                JsxRuntime.jsx("div", {
+                      children: tmp,
+                      className: "flex-none"
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [
@@ -86,7 +71,7 @@ function JargonCard(props) {
                     }),
                 commentsCount !== undefined ? JsxRuntime.jsx("div", {
                         children: "댓글 " + commentsCount + "개",
-                        className: "flex-none dark:text-zinc-400"
+                        className: "flex-none text-xs dark:text-zinc-400"
                       }) : null
               ],
               className: "flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900",

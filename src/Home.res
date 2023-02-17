@@ -1,17 +1,15 @@
 module SearchBar = {
   @react.component
   let make = (~query, ~onChange) => {
-    <form>
-      <div className="relative">
-        <input
-          type_="search"
-          value=query
-          onChange
-          className="input input-bordered w-full rounded-lg"
-          placeholder="정규식: syntax$"
-        />
-      </div>
-    </form>
+    <div className="relative">
+      <input
+        type_="search"
+        value=query
+        onChange
+        className="input input-bordered w-full rounded-lg text-sm"
+        placeholder="정규식으로 검색해보세요"
+      />
+    </div>
   }
 }
 
@@ -30,18 +28,24 @@ let make = () => {
   }
 
   open Heroicons
-  <div className="grid gap-4 p-5">
+  <div className="grid gap-4 p-5 text-sm">
     <div className="flex items-center space-x-2">
       <div className="flex-auto">
         <SearchBar query onChange />
       </div>
-      <div className="dropdown dropdown-end">
-        <label tabIndex={0} className="btn">
+      <div className="dropdown dropdown-hover dropdown-end">
+        <label
+          tabIndex={0}
+          className="btn btn-primary"
+          onClick={_ => {
+            switch order {
+            | (lang, #asc) => setOrder(._ => (lang, #desc))
+            | (lang, #desc) => setOrder(._ => (lang, #asc))
+            }
+          }}>
           {switch order {
-          | (_, #asc) =>
-            <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100" />
-          | (_, #desc) =>
-            <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100" />
+          | (_, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
+          | (_, #desc) => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           }}
           {switch order {
           | (English, _) => "영한"->React.string
@@ -51,7 +55,7 @@ let make = () => {
         </label>
         <ul
           tabIndex={0}
-          className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+          className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
             <button
               onClick={_ =>
@@ -63,14 +67,9 @@ let make = () => {
                 })}>
               {"한영"->React.string}
               {switch order {
-              | (Korean, #asc) =>
-                <Solid.ArrowUpIcon
-                  className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
-                />
+              | (Korean, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | (Korean, #desc) =>
-                <Solid.ArrowDownIcon
-                  className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
-                />
+                <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | _ => React.null
               }}
             </button>
@@ -86,14 +85,9 @@ let make = () => {
                 })}>
               {"영한"->React.string}
               {switch order {
-              | (English, #asc) =>
-                <Solid.ArrowUpIcon
-                  className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
-                />
+              | (English, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | (English, #desc) =>
-                <Solid.ArrowDownIcon
-                  className="-ml-2 mr-1 h-5 w-5 text-teal-200 hover:text-teal-100"
-                />
+                <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | _ => React.null
               }}
             </button>

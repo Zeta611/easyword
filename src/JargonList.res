@@ -44,7 +44,7 @@ let make = (~order, ~query as regexQuery) => {
         }
       })
 
-      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2">
         {rows->React.array}
       </div>
     }

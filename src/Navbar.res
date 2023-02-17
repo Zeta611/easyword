@@ -2,13 +2,13 @@
 let make = (~signedIn: bool) => {
   <div className="navbar bg-base-100">
     <div className="navbar-start">
-      <div className="dropdown">
+      <div className="dropdown dropdown-hover">
         <label tabIndex={0} className="btn btn-ghost lg:hidden">
           <Heroicons.Solid.Bars3Icon className="h-5 w-5" />
         </label>
         <ul
           tabIndex={0}
-          className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+          className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
             <button onClick={_ => RescriptReactRouter.replace("/")}> {"홈"->React.string} </button>
           </li>
@@ -20,9 +20,13 @@ let make = (~signedIn: bool) => {
         </ul>
       </div>
       <button
-        className="btn btn-ghost normal-case text-xl"
+        className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.replace("/")}>
+        {"EKO"->React.string}
+      </button>
+      <button
+        className="btn btn-ghost text-xl hidden lg:flex"
         onClick={_ => RescriptReactRouter.replace("/")}>
-        {"EKO: 쉬운 우리말 번역"->React.string}
+        {"EKO: 쉬운 컴퓨터 분야 전문용어 번역"->React.string}
       </button>
     </div>
     <div className="navbar-center hidden lg:flex">
@@ -38,13 +42,13 @@ let make = (~signedIn: bool) => {
       </ul>
     </div>
     <div className="navbar-end">
-      <div className="dropdown dropdown-end">
+      <div className="dropdown dropdown-hover dropdown-end">
         <label tabIndex={0} className="btn btn-circle btn-ghost">
           <Heroicons.Outline.UserCircleIcon className="h-6 w-6" />
         </label>
         <ul
           tabIndex={0}
-          className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+          className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           {if signedIn {
             <>
               <li>

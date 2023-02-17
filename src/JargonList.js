@@ -60,7 +60,7 @@ function JargonList(props) {
         }));
   return JsxRuntime.jsx("div", {
               children: rows,
-              className: "grid sm:grid-cols-2 xl:grid-cols-3 gap-x-6 gap-y-2"
+              className: "grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2"
             });
 }
 

@@ -11,10 +11,10 @@ function getVotesRatio(votes, allVotes) {
 }
 
 function makeRows(translations) {
-  var allVotes = Belt_Array.reduceU(translations, 0, (function (cnt, x) {
-          return x.votes + cnt | 0;
+  var allVotes = Belt_Array.reduceU(translations, 0, (function (cnt, t) {
+          return t.votes + cnt | 0;
         }));
-  return Belt_Array.mapU(translations, (function (x) {
+  return Belt_Array.mapU(translations, (function (translation) {
                 return JsxRuntime.jsxs("tr", {
                             children: [
                               JsxRuntime.jsx("th", {
@@ -30,24 +30,24 @@ function makeRows(translations) {
                               JsxRuntime.jsxs("td", {
                                     children: [
                                       JsxRuntime.jsx("a", {
-                                            children: x.korean,
-                                            href: "#" + x.associated_comment + ""
+                                            children: translation.korean,
+                                            href: "#" + translation.associated_comment + ""
                                           }),
                                       JsxRuntime.jsx("br", {}),
                                       JsxRuntime.jsx("progress", {
                                             className: "progress progress-primary w-full",
                                             max: "1",
-                                            value: String(x.votes / allVotes)
+                                            value: String(translation.votes / allVotes)
                                           })
                                     ]
                                   }),
                               JsxRuntime.jsx("th", {
-                                    children: String(x.votes) + "표",
+                                    children: String(translation.votes) + "표",
                                     className: "w-10"
                                   })
                             ],
                             className: "active"
-                          }, x.id);
+                          }, translation.id);
               }));
 }
 
