@@ -15,6 +15,7 @@ import * as Belt_HashMapString from "../node_modules/rescript/lib/es6/belt_HashM
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
 import * as Functions from "firebase/functions";
+import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
 function constructForest(comments) {
   var roots = {
@@ -185,6 +186,13 @@ function JargonPost(props) {
                       }),
                   JsxRuntime.jsx(Poll.make, {
                         jargonID: jargonID
+                      }),
+                  JsxRuntime.jsx("button", {
+                        children: "새 번역 제안하기",
+                        className: "btn btn-primary",
+                        onClick: (function (param) {
+                            RescriptReactRouter.replace("/new-translation/" + jargonID + "");
+                          })
                       }),
                   JsxRuntime.jsx(JargonPost$CommentInput, {
                         jargonID: jargonID

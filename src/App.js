@@ -14,6 +14,7 @@ import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Auth from "firebase/auth";
+import * as NewTranslation from "./NewTranslation.js";
 import * as NavbarContainer from "./NavbarContainer.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
@@ -110,6 +111,12 @@ function App(props) {
             break;
         case "new-jargon" :
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(NewJargon.make, {});
+            break;
+        case "new-translation" :
+            var match$2 = path.tl;
+            tmp$1 = match$2 && !match$2.tl ? JsxRuntime.jsx(NewTranslation.make, {
+                    jargonID: match$2.hd
+                  }) : "404";
             break;
         case "profile" :
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(Profile.make, {});

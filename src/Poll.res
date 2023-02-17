@@ -11,7 +11,7 @@ let makeRows = translations => {
         </label>
       </th>
       <td>
-        <a href={`#${x.associated_comment}`}> {x.korean->React.string} </a>
+        <a href={`#${x.associatedComment}`}> {x.korean->React.string} </a>
         <br />
         <progress
           className="progress progress-primary w-full"

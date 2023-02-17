@@ -126,6 +126,11 @@ let make = (~jargonID) => {
             <div className="text-2xl font-medium"> {korean->React.string} </div>
           </div>
           <Poll jargonID />
+          <button
+            className="btn btn-primary"
+            onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
+            {"새 번역 제안하기"->React.string}
+          </button>
           <CommentInput jargonID />
           <div className="divider -my-2" />
           <div>

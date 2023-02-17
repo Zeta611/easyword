@@ -1,6 +1,12 @@
 type t = {id: string, english: string, korean: string, timestamp: option<Firebase.Timestamp.t>}
-type translation = {id: string, korean: string, votes: int, associated_comment: string}
+type translation = {
+  id: string,
+  korean: string,
+  votes: int,
+  @as("associated_comment") associatedComment: string,
+}
 type add = {english: string, korean: string, comment: string}
+type addTranslation = {id: string, korean: string, comment: string}
 
 type language = English | Korean
 type direction = [#asc | #desc]
