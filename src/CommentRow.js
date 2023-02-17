@@ -27,7 +27,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      131,
+      135,
       4
     ], {
       TAG: /* Module */0,
@@ -128,7 +128,9 @@ function CommentRow$CommentNode(props) {
                         JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("div", {
-                                      children: match$2[0]
+                                      children: match$2[0],
+                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2",
+                                      id: id
                                     }),
                                 JsxRuntime.jsx("div", {
                                       children: comment.timestamp.toDate().toDateString(),

@@ -74,7 +74,11 @@ module rec CommentNode: {
     <>
       <div className="flex flex-col gap-y-1">
         <div className="flex gap-x-3">
-          <div> {commentUser->React.string} </div>
+          <div
+            id
+            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2">
+            {commentUser->React.string}
+          </div>
           <div title={comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString}>
             {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
           </div>
