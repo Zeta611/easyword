@@ -44,13 +44,19 @@ let make = () => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if signedIn {
+    if english->String.length < 3 || korean->String.length < 3 {
+      Window.alert("용어는 세 글자 이상이어야 해요")
+    } else if signedIn {
       switch user->Js.Nullable.toOption {
       | Some(_) =>
         setDisabled(._ => true)
 
         (
           async () => {
+            let comment = switch comment {
+            | "" => `${korean->Util.eulLeul} 제안합니다.`
+            | _ => comment
+            }
             try {
               let result = await addJargon(. ({english, korean, comment}: Jargon.add))
               RescriptReactRouter.replace(`/jargon/${result.data["jargonID"]}`)
@@ -68,7 +74,7 @@ let make = () => {
 
   if signedIn {
     <div className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">
-      <h1> {"쉬운 번역 제안하기"->React.string} </h1>
+      <h1> {"쉬운 전문용어 제안하기"->React.string} </h1>
       <form className="mt-8 max-w-md" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">

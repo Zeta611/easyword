@@ -82,7 +82,7 @@ module rec CommentNode: {
           </span>
           {"·"->React.string}
           <span title={comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString}>
-            {comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString->React.string}
+            {comment->timestamp->Firebase.Timestamp.toDate->DateFormat.timeAgo->React.string}
           </span>
         </div>
         // comment

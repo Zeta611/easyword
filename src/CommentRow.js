@@ -4,6 +4,7 @@ import * as React from "react";
 import * as Belt_List from "../node_modules/rescript/lib/es6/belt_List.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
+import * as DateFormat from "./DateFormat.js";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_module from "../node_modules/rescript/lib/es6/caml_module.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
@@ -135,7 +136,7 @@ function CommentRow$CommentNode(props) {
                                     }),
                                 "·",
                                 JsxRuntime.jsx("span", {
-                                      children: comment.timestamp.toDate().toDateString(),
+                                      children: DateFormat.timeAgo(comment.timestamp.toDate()),
                                       title: comment.timestamp.toDate().toDateString()
                                     })
                               ],
