@@ -29,7 +29,10 @@ function makeRows(translations) {
                                   }),
                               JsxRuntime.jsxs("td", {
                                     children: [
-                                      x.korean,
+                                      JsxRuntime.jsx("a", {
+                                            children: x.korean,
+                                            href: "#" + x.associated_comment + ""
+                                          }),
                                       JsxRuntime.jsx("br", {}),
                                       JsxRuntime.jsx("progress", {
                                             className: "progress progress-primary w-full",
