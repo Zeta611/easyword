@@ -116,7 +116,7 @@ function Navbar(props) {
                                                     })
                                                 })
                                           }),
-                                    className: "menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4",
+                                    className: "menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52",
                                     tabIndex: 0
                                   })
                             ],

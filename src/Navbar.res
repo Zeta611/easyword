@@ -42,7 +42,9 @@ let make = (~signedIn: bool) => {
         <label tabIndex={0} className="btn btn-circle btn-ghost">
           <Heroicons.Outline.UserCircleIcon className="h-6 w-6" />
         </label>
-        <ul tabIndex={0} className="menu dropdown-content shadow bg-base-100 rounded-box w-52 mt-4">
+        <ul
+          tabIndex={0}
+          className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
           {if signedIn {
             <>
               <li>
