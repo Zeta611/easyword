@@ -53,7 +53,7 @@ function Navbar(props) {
                               className: "dropdown dropdown-hover"
                             }),
                         JsxRuntime.jsx("button", {
-                              children: "EKO",
+                              children: "쉬운 전문용어",
                               className: "btn btn-ghost text-xl lg:hidden",
                               onClick: (function (param) {
                                   RescriptReactRouter.replace("/");
