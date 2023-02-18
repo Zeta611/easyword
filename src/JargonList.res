@@ -15,7 +15,7 @@ let make = (~order, ~query as regexQuery) => {
     }
     orderBy(language, ~direction)
   }
-  let jargonsQuery = jargonsCollection->query(queryConstraint)
+  let jargonsQuery = jargonsCollection->query([queryConstraint])
   let {status, data: jargons} =
     jargonsQuery->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 

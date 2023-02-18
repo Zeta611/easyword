@@ -61,8 +61,8 @@ external collection: (firestore, ~path: string) => collectionReference = "collec
 
 type query
 type queryConstraint
-@module("firebase/firestore")
-external query: (collectionReference, queryConstraint) => query = "query"
+@module("firebase/firestore") @variadic
+external query: (collectionReference, array<queryConstraint>) => query = "query"
 
 @module("firebase/firestore")
 external orderBy: (string, ~direction: [#asc | #desc]) => queryConstraint = "orderBy"

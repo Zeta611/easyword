@@ -101,7 +101,7 @@ let make = (~jargonID) => {
   let commentsCollection = firestore->collection(~path=`jargons/${jargonID}/comments`)
   let {status: collectionStatus, data: comments} =
     commentsCollection
-    ->query(orderBy("timestamp", ~direction=#asc))
+    ->query([orderBy("timestamp", ~direction=#asc)])
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
   switch (docStatus, collectionStatus) {

@@ -12,11 +12,13 @@ let getVotesRatio = (votes, allVotes) =>
 module PollRow = {
   @react.component
   let make = (
+    ~jargonID: string,
     ~translation: Jargon.translation,
     ~allVotes,
     ~checkedItemHandler,
-    ~checkedItems,
-    ~votes,
+    ~isChecked,
+    ~votesCount,
+    ~setVotesCount,
   ) => {
     let (checked, setChecked) = React.Uncurried.useState(() => false)
     let checkHandler = () => {
@@ -25,34 +27,69 @@ module PollRow = {
     }
 
     React.useEffect(() => {
-      if checkedItems->Set.String.has(translation.id) {
-        setChecked(._ => true)
-      }
+      setChecked(._ => isChecked)
       None
     })
 
-    <tr className="active">
-      <th className="w-10">
-        <label>
-          <input
-            type_="checkbox"
-            checked
-            onChange={_ => checkHandler()}
-            className="checkbox checkbox-primary"
+    let {signedIn, user} = React.useContext(SignInContext.context)
+    open Firebase
+    let firestore = useFirestore()
+    let votesCollection =
+      firestore->collection(~path=`jargons/${jargonID}/translations/${translation.id}/votes`)
+    let {status, data: votes} =
+      votesCollection
+      ->query([])
+      ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
+
+    React.useEffect1(() => {
+      switch votes {
+      | None => ()
+      | Some(votes) =>
+        setVotesCount(.votesCount =>
+          votesCount->Map.String.update(translation.id, _ => Some(votes->Array.size))
+        )
+
+        if signedIn {
+          switch user->Js.Nullable.toOption {
+          | Some({uid}) =>
+            if votes->Js.Array2.find(x => x["id"] == uid)->Option.isSome {
+              checkedItemHandler(translation.id, true)
+            }
+
+          | None => ()
+          }
+        }
+      }
+      None
+    }, [votes])
+
+    switch (status, votes) {
+    | (#success, Some(votes)) =>
+      let votes = votesCount->Map.String.getWithDefault(translation.id, votes->Array.size)
+      <tr className="active">
+        <th className="w-10">
+          <label>
+            <input
+              type_="checkbox"
+              checked
+              onChange={_ => checkHandler()}
+              className="checkbox checkbox-primary"
+            />
+          </label>
+        </th>
+        <td>
+          <a href={`#${translation.associatedComment}`}> {translation.korean->React.string} </a>
+          <br />
+          <progress
+            className="progress progress-primary w-full"
+            value={getVotesRatio(votes, allVotes)->Float.toString}
+            max="1"
           />
-        </label>
-      </th>
-      <td>
-        <a href={`#${translation.associatedComment}`}> {translation.korean->React.string} </a>
-        <br />
-        <progress
-          className="progress progress-primary w-full"
-          value={getVotesRatio(votes, allVotes)->Float.toString}
-          max="1"
-        />
-      </td>
-      <th className="w-10"> {(votes->Int.toString ++ "표")->React.string} </th>
-    </tr>
+        </td>
+        <th className="w-10"> {`${votes->Int.toString}표`->React.string} </th>
+      </tr>
+    | _ => React.null
+    }
   }
 }
 
@@ -63,7 +100,7 @@ let make = (~jargonID) => {
   let translationsCollection = firestore->collection(~path=`jargons/${jargonID}/translations`)
   let {status: translationsStatus, data: translations} =
     translationsCollection
-    ->query(orderBy("korean", ~direction=#asc))
+    ->query([orderBy("korean", ~direction=#asc)])
     ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
 
   let (checkedItems, setCheckedItems) = React.Uncurried.useState(() => Set.String.empty)
@@ -77,80 +114,56 @@ let make = (~jargonID) => {
   }
 
   let (votesCount, setVotesCount) = React.Uncurried.useState(() => Map.String.empty)
-  React.useEffect1(() => {
-    switch translations {
-    | Some(translations) =>
-      translations->Array.forEach((translation: Jargon.translation) => {
-        let votesCollection =
-          firestore->collection(~path=`jargons/${jargonID}/translations/${translation.id}/votes`)
 
-        (
-          async () => {
-            let snapshot = await getCountFromServer(votesCollection)
-            let count = snapshot.data(.).count
-
-            setVotesCount(.
-              votesCount => votesCount->Map.String.update(translation.id, _ => Some(count)),
-            )
-          }
-        )()->ignore
-      })
-
-    | None => ()
-    }
-
-    None
-  }, [translations])
+  let (isLoading, setIsLoading) = React.Uncurried.useState(() => false)
 
   let {signedIn, user} = React.useContext(SignInContext.context)
-
-  if signedIn {
-    switch user->Js.Nullable.toOption {
-    | Some({uid}) =>
-      let votesDocRef = firestore->doc(~path=`jargons/${jargonID}/votes/${uid}`)
-      React.useEffect0(() => {
-        (
-          async () => {
-            let votesDoc = await votesDocRef->getDoc
-            if votesDoc.exists(.) {
-              let translations = votesDoc.data(.)["translations"]
-              if translations != None {
-                setCheckedItems(._ => translations->Set.String.fromArray)
-              }
-            }
-          }
-        )()->ignore
-
-        None
-      })
-    | None => ()
-    }
-  }
-
+  let functions = useFirebaseApp()->getFunctions
   let onVoteButtonTapped = () => {
     if signedIn {
       switch user->Js.Nullable.toOption {
-      | Some({uid}) =>
-        let votesDocRef = firestore->doc(~path=`jargons/${jargonID}/votes/${uid}`)
+      | Some(_) =>
+        setIsLoading(._ => true)
 
         (
           async () => {
-            await votesDocRef->setDoc({"translations": checkedItems->Set.String.toArray})
-            window["location"]["reload"](.)
+            let vote = functions->httpsCallable("vote")
+            let result = await vote(.
+              (
+                {
+                  jargonID,
+                  translations: checkedItems->Set.String.toArray,
+                }: Jargon.vote
+              ),
+            )
+
+            result.data
+            ->Js.Dict.entries
+            ->Array.forEach(((translationID, diff)) =>
+              setVotesCount(.votesCount =>
+                votesCount->Map.String.update(
+                  translationID,
+                  cnt =>
+                    switch cnt {
+                    | None => Some(diff)
+                    | Some(cnt) => Some(cnt + diff)
+                    },
+                )
+              )
+            )
+
+            setIsLoading(._ => false)
           }
         )()->ignore
-      | None => ()
+      | None => Window.alert("You need to be signed in to vote!")
       }
+    } else {
+      Window.alert("You need to be signed in to vote!")
     }
   }
 
   switch (translationsStatus, translations) {
   | (#success, Some(translations)) =>
-    let allVotes =
-      translations->Array.reduce(0, (cnt, t: Jargon.translation) =>
-        votesCount->Map.String.getWithDefault(t.id, 0) + cnt
-      )
-
     <div className="overflow-x-auto">
       <table className="table w-full">
         <tbody>
@@ -158,17 +171,25 @@ let make = (~jargonID) => {
           ->Array.map((translation: Jargon.translation) =>
             <PollRow
               key={translation.id}
+              jargonID
               translation
-              allVotes
+              allVotes={votesCount->Map.String.reduce(0, (prev, _, votes) => prev + votes)}
               checkedItemHandler
-              checkedItems
-              votes={votesCount->Map.String.getWithDefault(translation.id, 0)}
+              isChecked={checkedItems->Set.String.has(translation.id)}
+              votesCount
+              setVotesCount
             />
           )
           ->React.array}
         </tbody>
       </table>
-      <button className="btn btn-primary w-full" onClick={_ => onVoteButtonTapped()}>
+      <button
+        className={`btn btn-primary w-full ${if isLoading {
+            "loading"
+          } else {
+            ""
+          }}`}
+        onClick={_ => onVoteButtonTapped()}>
         {"투표하기"->React.string}
       </button>
     </div>

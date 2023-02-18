@@ -2,14 +2,17 @@
 
 import * as Curry from "../node_modules/rescript/lib/es6/curry.js";
 import * as React from "react";
+import * as Js_dict from "../node_modules/rescript/lib/es6/js_dict.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
+import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Belt_MapString from "../node_modules/rescript/lib/es6/belt_MapString.js";
 import * as Belt_SetString from "../node_modules/rescript/lib/es6/belt_SetString.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Firestore from "firebase/firestore";
+import * as Functions from "firebase/functions";
 
 function getVotesRatio(votes, allVotes) {
   return votes / (
@@ -18,8 +21,8 @@ function getVotesRatio(votes, allVotes) {
 }
 
 function Poll$PollRow(props) {
-  var votes = props.votes;
-  var checkedItems = props.checkedItems;
+  var setVotesCount = props.setVotesCount;
+  var isChecked = props.isChecked;
   var checkedItemHandler = props.checkedItemHandler;
   var translation = props.translation;
   var match = React.useState(function () {
@@ -28,13 +31,47 @@ function Poll$PollRow(props) {
   var setChecked = match[1];
   var checked = match[0];
   React.useEffect(function () {
-        if (Belt_SetString.has(checkedItems, translation.id)) {
-          setChecked(function (param) {
-                return true;
-              });
-        }
-        
+        setChecked(function (param) {
+              return isChecked;
+            });
       });
+  var match$1 = React.useContext(SignInContext.context);
+  var user = match$1.user;
+  var signedIn = match$1.signedIn;
+  var firestore = Reactfire.useFirestore();
+  var votesCollection = Firestore.collection(firestore, "jargons/" + props.jargonID + "/translations/" + translation.id + "/votes");
+  var match$2 = Reactfire.useFirestoreCollectionData(Firestore.query(votesCollection), {
+        idField: "id"
+      });
+  var votes = match$2.data;
+  React.useEffect((function () {
+          if (votes !== undefined) {
+            var votes$1 = Caml_option.valFromOption(votes);
+            setVotesCount(function (votesCount) {
+                  return Belt_MapString.update(votesCount, translation.id, (function (param) {
+                                return votes$1.length;
+                              }));
+                });
+            if (signedIn && !(user == null)) {
+              var uid = user.uid;
+              if (Belt_Option.isSome(Caml_option.undefined_to_opt(votes$1.find(function (x) {
+                              return x.id === uid;
+                            })))) {
+                Curry._2(checkedItemHandler, translation.id, true);
+              }
+              
+            }
+            
+          }
+          
+        }), [votes]);
+  if (match$2.status !== "success") {
+    return null;
+  }
+  if (votes === undefined) {
+    return null;
+  }
+  var votes$1 = Belt_MapString.getWithDefault(props.votesCount, translation.id, Caml_option.valFromOption(votes).length);
   return JsxRuntime.jsxs("tr", {
               children: [
                 JsxRuntime.jsx("th", {
@@ -63,12 +100,12 @@ function Poll$PollRow(props) {
                         JsxRuntime.jsx("progress", {
                               className: "progress progress-primary w-full",
                               max: "1",
-                              value: String(getVotesRatio(votes, props.allVotes))
+                              value: String(getVotesRatio(votes$1, props.allVotes))
                             })
                       ]
                     }),
                 JsxRuntime.jsx("th", {
-                      children: String(votes) + "표",
+                      children: "" + String(votes$1) + "표",
                       className: "w-10"
                     })
               ],
@@ -111,92 +148,79 @@ function Poll(props) {
       });
   var setVotesCount = match$2[1];
   var votesCount = match$2[0];
-  React.useEffect((function () {
-          if (translations !== undefined) {
-            Belt_Array.forEach(Caml_option.valFromOption(translations), (function (translation) {
-                    var votesCollection = Firestore.collection(firestore, "jargons/" + jargonID + "/translations/" + translation.id + "/votes");
-                    ((async function (param) {
-                            var snapshot = await Firestore.getCountFromServer(votesCollection);
-                            var count = snapshot.data().count;
-                            return setVotesCount(function (votesCount) {
-                                        return Belt_MapString.update(votesCount, translation.id, (function (param) {
-                                                      return count;
-                                                    }));
-                                      });
-                          })(undefined));
-                  }));
-          }
-          
-        }), [translations]);
-  var match$3 = React.useContext(SignInContext.context);
-  var user = match$3.user;
-  var signedIn = match$3.signedIn;
-  if (signedIn && !(user == null)) {
-    var votesDocRef = Firestore.doc(firestore, "jargons/" + jargonID + "/votes/" + user.uid + "");
-    React.useEffect((function () {
-            ((async function (param) {
-                    var votesDoc = await Firestore.getDoc(votesDocRef);
-                    if (!votesDoc.exists()) {
-                      return ;
-                    }
-                    var translations = votesDoc.data().translations;
-                    if (translations !== undefined) {
-                      return setCheckedItems(function (param) {
-                                  return Belt_SetString.fromArray(translations);
-                                });
-                    }
-                    
-                  })(undefined));
-          }), []);
-  }
-  if (match.status !== "success") {
+  var match$3 = React.useState(function () {
+        return false;
+      });
+  var setIsLoading = match$3[1];
+  var match$4 = React.useContext(SignInContext.context);
+  var user = match$4.user;
+  var signedIn = match$4.signedIn;
+  var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");
+  if (match.status === "success" && translations !== undefined) {
+    return JsxRuntime.jsxs("div", {
+                children: [
+                  JsxRuntime.jsx("table", {
+                        children: JsxRuntime.jsx("tbody", {
+                              children: Belt_Array.map(Caml_option.valFromOption(translations), (function (translation) {
+                                      return JsxRuntime.jsx(Poll$PollRow, {
+                                                  jargonID: jargonID,
+                                                  translation: translation,
+                                                  allVotes: Belt_MapString.reduce(votesCount, 0, (function (prev, param, votes) {
+                                                          return prev + votes | 0;
+                                                        })),
+                                                  checkedItemHandler: checkedItemHandler,
+                                                  isChecked: Belt_SetString.has(checkedItems, translation.id),
+                                                  votesCount: votesCount,
+                                                  setVotesCount: setVotesCount
+                                                }, translation.id);
+                                    }))
+                            }),
+                        className: "table w-full"
+                      }),
+                  JsxRuntime.jsx("button", {
+                        children: "투표하기",
+                        className: "btn btn-primary w-full " + (
+                          match$3[0] ? "loading" : ""
+                        ) + "",
+                        onClick: (function (param) {
+                            if (signedIn && !(user == null)) {
+                              setIsLoading(function (param) {
+                                    return true;
+                                  });
+                              ((async function (param) {
+                                      var vote = Functions.httpsCallable(functions, "vote");
+                                      var result = await vote({
+                                            jargonID: jargonID,
+                                            translations: Belt_SetString.toArray(checkedItems)
+                                          });
+                                      Belt_Array.forEach(Js_dict.entries(result.data), (function (param) {
+                                              var diff = param[1];
+                                              var translationID = param[0];
+                                              setVotesCount(function (votesCount) {
+                                                    return Belt_MapString.update(votesCount, translationID, (function (cnt) {
+                                                                  if (cnt !== undefined) {
+                                                                    return cnt + diff | 0;
+                                                                  } else {
+                                                                    return diff;
+                                                                  }
+                                                                }));
+                                                  });
+                                            }));
+                                      return setIsLoading(function (param) {
+                                                  return false;
+                                                });
+                                    })(undefined));
+                            } else {
+                              window.alert("You need to be signed in to vote!");
+                            }
+                          })
+                      })
+                ],
+                className: "overflow-x-auto"
+              });
+  } else {
     return null;
   }
-  if (translations === undefined) {
-    return null;
-  }
-  var translations$1 = Caml_option.valFromOption(translations);
-  var allVotes = Belt_Array.reduce(translations$1, 0, (function (cnt, t) {
-          return Belt_MapString.getWithDefault(votesCount, t.id, 0) + cnt | 0;
-        }));
-  return JsxRuntime.jsxs("div", {
-              children: [
-                JsxRuntime.jsx("table", {
-                      children: JsxRuntime.jsx("tbody", {
-                            children: Belt_Array.map(translations$1, (function (translation) {
-                                    return JsxRuntime.jsx(Poll$PollRow, {
-                                                translation: translation,
-                                                allVotes: allVotes,
-                                                checkedItemHandler: checkedItemHandler,
-                                                checkedItems: checkedItems,
-                                                votes: Belt_MapString.getWithDefault(votesCount, translation.id, 0)
-                                              }, translation.id);
-                                  }))
-                          }),
-                      className: "table w-full"
-                    }),
-                JsxRuntime.jsx("button", {
-                      children: "투표하기",
-                      className: "btn btn-primary w-full",
-                      onClick: (function (param) {
-                          if (!signedIn) {
-                            return ;
-                          }
-                          if (user == null) {
-                            return ;
-                          }
-                          var votesDocRef = Firestore.doc(firestore, "jargons/" + jargonID + "/votes/" + user.uid + "");
-                          ((async function (param) {
-                                  await Firestore.setDoc(votesDocRef, {
-                                        translations: Belt_SetString.toArray(checkedItems)
-                                      });
-                                  return window.location.reload();
-                                })(undefined));
-                        })
-                    })
-              ],
-              className: "overflow-x-auto"
-            });
 }
 
 var make = Poll;
