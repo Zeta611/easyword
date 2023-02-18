@@ -132,11 +132,11 @@ function Poll(props) {
   var checkedItems = match$1[0];
   var checkedItemHandler = function (id, isChecked) {
     if (isChecked) {
-      return setCheckedItems(function (param) {
+      return setCheckedItems(function (checkedItems) {
                   return Belt_SetString.add(checkedItems, id);
                 });
     } else if (Belt_SetString.has(checkedItems, id)) {
-      return setCheckedItems(function (param) {
+      return setCheckedItems(function (checkedItems) {
                   return Belt_SetString.remove(checkedItems, id);
                 });
     } else {

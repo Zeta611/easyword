@@ -107,9 +107,9 @@ let make = (~jargonID) => {
   let checkedItemHandler = (id, isChecked) => {
     open Set.String
     if isChecked {
-      setCheckedItems(._ => checkedItems->add(id))
+      setCheckedItems(.checkedItems => checkedItems->add(id))
     } else if checkedItems->has(id) {
-      setCheckedItems(._ => checkedItems->remove(id))
+      setCheckedItems(.checkedItems => checkedItems->remove(id))
     }
   }
 
