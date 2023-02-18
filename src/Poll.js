@@ -118,12 +118,11 @@ function Poll(props) {
                     ((async function (param) {
                             var snapshot = await Firestore.getCountFromServer(votesCollection);
                             var count = snapshot.data().count;
-                            setVotesCount(function (votesCount) {
-                                  return Belt_MapString.update(votesCount, translation.id, (function (param) {
-                                                return count;
-                                              }));
-                                });
-                            console.log(translation.korean, Belt_MapString.getUndefined(votesCount, translation.id));
+                            return setVotesCount(function (votesCount) {
+                                        return Belt_MapString.update(votesCount, translation.id, (function (param) {
+                                                      return count;
+                                                    }));
+                                      });
                           })(undefined));
                   }));
           }

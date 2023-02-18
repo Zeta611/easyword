@@ -39,17 +39,20 @@ let make = () => {
           className="btn btn-primary"
           onClick={_ => {
             switch order {
+            | (Chrono, _) => setOrder(._ => (Chrono, #desc))
             | (lang, #asc) => setOrder(._ => (lang, #desc))
             | (lang, #desc) => setOrder(._ => (lang, #asc))
             }
           }}>
           {switch order {
+          | (Chrono, _) => React.null
           | (_, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           | (_, #desc) => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           }}
           {switch order {
           | (English, _) => "영한"->React.string
           | (Korean, _) => "한영"->React.string
+          | (Chrono, _) => "최근"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
         </label>
@@ -61,7 +64,7 @@ let make = () => {
               onClick={_ =>
                 setOrder(.order => {
                   switch order {
-                  | (English, _) | (Korean, #desc) => (Korean, #asc)
+                  | (English, _) | (Chrono, _) | (Korean, #desc) => (Korean, #asc)
                   | (Korean, #asc) => (Korean, #desc)
                   }
                 })}>
@@ -79,7 +82,7 @@ let make = () => {
               onClick={_ =>
                 setOrder(.order => {
                   switch order {
-                  | (Korean, _) | (English, #desc) => (English, #asc)
+                  | (Korean, _) | (Chrono, _) | (English, #desc) => (English, #asc)
                   | (English, #asc) => (English, #desc)
                   }
                 })}>
@@ -90,6 +93,11 @@ let make = () => {
                 <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | _ => React.null
               }}
+            </button>
+          </li>
+          <li>
+            <button onClick={_ => setOrder(._ => (Chrono, #desc))}>
+              {"최근"->React.string}
             </button>
           </li>
         </ul>

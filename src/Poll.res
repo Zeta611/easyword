@@ -92,7 +92,6 @@ let make = (~jargonID) => {
             setVotesCount(.
               votesCount => votesCount->Map.String.update(translation.id, _ => Some(count)),
             )
-            Js.Console.log2(translation.korean, votesCount->Map.String.getUndefined(translation.id))
           }
         )()->ignore
       })

@@ -1,9 +1,9 @@
 open Jargon
 
 @react.component
-let make = (~jargon as {id, english, korean}, ~language) => {
-  let (primary, secondary) = switch language {
-  | English => (english, korean)
+let make = (~jargon as {id, english, korean}, ~axis) => {
+  let (primary, secondary) = switch axis {
+  | Chrono | English => (english, korean)
   | Korean => (korean, english)
   }
 

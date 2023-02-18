@@ -13,12 +13,12 @@ function JargonCard(props) {
   var korean = match.korean;
   var english = match.english;
   var id = match.id;
-  var match$1 = props.language ? [
-      korean,
-      english
-    ] : [
+  var match$1 = props.axis !== 1 ? [
       english,
       korean
+    ] : [
+      korean,
+      english
     ];
   var match$2 = React.useState(function () {
         

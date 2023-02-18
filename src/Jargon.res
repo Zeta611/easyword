@@ -7,6 +7,6 @@ type translation = {
 type add = {english: string, korean: string, comment: string}
 type addTranslation = {id: string, korean: string, comment: string}
 
-type language = English | Korean
+type axis = English | Korean | Chrono
 type direction = [#asc | #desc]
-type order = (language, direction)
+type order = (axis, direction)

@@ -2,15 +2,16 @@ open Jargon
 
 @react.component
 let make = (~order, ~query as regexQuery) => {
-  let (language, direction) = order
+  let (axis, direction) = order
 
   open Firebase
 
   let jargonsCollection = useFirestore()->collection(~path="jargons")
   let queryConstraint = {
-    let language = switch language {
+    let language = switch axis {
     | English => "english"
     | Korean => "korean"
+    | Chrono => "timestamp"
     }
     orderBy(language, ~direction)
   }
@@ -40,7 +41,7 @@ let make = (~order, ~query as regexQuery) => {
       let rows = jargons->Array.keepMap(({english, korean} as jargon: Jargon.t) => {
         switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
         | (None, None) => None
-        | _ => Some(<JargonCard jargon language key={jargon.id} />)
+        | _ => Some(<JargonCard jargon axis key={jargon.id} />)
         }
       })
 

@@ -42,6 +42,19 @@ function Home(props) {
           return value;
         });
   };
+  var tmp;
+  switch (order[0]) {
+    case /* English */0 :
+        tmp = "영한";
+        break;
+    case /* Korean */1 :
+        tmp = "한영";
+        break;
+    case /* Chrono */2 :
+        tmp = "최근";
+        break;
+    
+  }
   return JsxRuntime.jsxs("div", {
               children: [
                 JsxRuntime.jsxs("div", {
@@ -57,12 +70,14 @@ function Home(props) {
                               children: [
                                 JsxRuntime.jsxs("label", {
                                       children: [
-                                        order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-                                                className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
-                                              }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-                                                className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
-                                              }),
-                                        order[0] ? "한영" : "영한",
+                                        order[0] >= 2 ? null : (
+                                            order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
+                                                    className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
+                                                  }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
+                                                    className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
+                                                  })
+                                          ),
+                                        tmp,
                                         JsxRuntime.jsx(Solid.ChevronDownIcon, {
                                               className: "ml-2 -mr-1 h-5 w-5"
                                             })
@@ -71,7 +86,14 @@ function Home(props) {
                                       tabIndex: 0,
                                       onClick: (function (param) {
                                           var lang = order[0];
-                                          if (order[1] === "asc") {
+                                          if (lang >= 2) {
+                                            return setOrder(function (param) {
+                                                        return [
+                                                                /* Chrono */2,
+                                                                "desc"
+                                                              ];
+                                                      });
+                                          } else if (order[1] === "asc") {
                                             return setOrder(function (param) {
                                                         return [
                                                                 lang,
@@ -94,25 +116,25 @@ function Home(props) {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
                                                       "한영",
-                                                      order[0] ? (
+                                                      order[0] !== 1 ? null : (
                                                           order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
                                                                   className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
                                                                   className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 })
-                                                        ) : null
+                                                        )
                                                     ],
                                                     onClick: (function (param) {
                                                         setOrder(function (order) {
-                                                              if (order[0] && order[1] === "asc") {
+                                                              if (order[0] !== 1 || order[1] !== "asc") {
                                                                 return [
                                                                         /* Korean */1,
-                                                                        "desc"
+                                                                        "asc"
                                                                       ];
                                                               } else {
                                                                 return [
                                                                         /* Korean */1,
-                                                                        "asc"
+                                                                        "desc"
                                                                       ];
                                                               }
                                                             });
@@ -123,7 +145,7 @@ function Home(props) {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
                                                       "영한",
-                                                      order[0] ? null : (
+                                                      order[0] !== 0 ? null : (
                                                           order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
                                                                   className: "-ml-2 mr-1 h-5 w-5 text-primary"
                                                                 }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
@@ -133,7 +155,7 @@ function Home(props) {
                                                     ],
                                                     onClick: (function (param) {
                                                         setOrder(function (order) {
-                                                              if (order[0] || order[1] !== "asc") {
+                                                              if (order[0] !== 0 || order[1] !== "asc") {
                                                                 return [
                                                                         /* English */0,
                                                                         "asc"
@@ -144,6 +166,19 @@ function Home(props) {
                                                                         "desc"
                                                                       ];
                                                               }
+                                                            });
+                                                      })
+                                                  })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsx("button", {
+                                                    children: "최근",
+                                                    onClick: (function (param) {
+                                                        setOrder(function (param) {
+                                                              return [
+                                                                      /* Chrono */2,
+                                                                      "desc"
+                                                                    ];
                                                             });
                                                       })
                                                   })

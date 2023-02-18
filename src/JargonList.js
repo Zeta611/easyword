@@ -13,10 +13,22 @@ import * as Firestore from "firebase/firestore";
 
 function JargonList(props) {
   var order = props.order;
-  var language = order[0];
+  var axis = order[0];
   var jargonsCollection = Firestore.collection(Reactfire.useFirestore(), "jargons");
-  var language$1 = language ? "korean" : "english";
-  var queryConstraint = Firestore.orderBy(language$1, order[1]);
+  var language;
+  switch (axis) {
+    case /* English */0 :
+        language = "english";
+        break;
+    case /* Korean */1 :
+        language = "korean";
+        break;
+    case /* Chrono */2 :
+        language = "timestamp";
+        break;
+    
+  }
+  var queryConstraint = Firestore.orderBy(language, order[1]);
   var jargonsQuery = Firestore.query(jargonsCollection, queryConstraint);
   var match = Reactfire.useFirestoreCollectionData(jargonsQuery, {
         idField: "id"
@@ -55,7 +67,7 @@ function JargonList(props) {
           }
           return Caml_option.some(JsxRuntime.jsx(JargonCard.make, {
                           jargon: jargon,
-                          language: language
+                          axis: axis
                         }, jargon.id));
         }));
   return JsxRuntime.jsx("div", {
