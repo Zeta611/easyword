@@ -121,7 +121,7 @@ let make = (~jargonID) => {
             <Poll jargonID />
             // New translation
             <button
-              className="btn btn-primary"
+              className="btn btn-primary btn-outline"
               onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
               {"새 번역 제안하기"->React.string}
             </button>

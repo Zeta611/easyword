@@ -172,7 +172,7 @@ function JargonPost(props) {
                             }),
                         JsxRuntime.jsx("button", {
                               children: "새 번역 제안하기",
-                              className: "btn btn-primary",
+                              className: "btn btn-primary btn-outline",
                               onClick: (function (param) {
                                   RescriptReactRouter.replace("/new-translation/" + jargonID + "");
                                 })

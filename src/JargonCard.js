@@ -30,16 +30,16 @@ function JargonCard(props) {
   var match$3 = Reactfire.useFirestoreDocData(jargonDoc);
   var jargon = match$3.data;
   var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
-  React.useEffect(function () {
-        var countComments = async function () {
-          var snapshot = await Firestore.getCountFromServer(commentsCollection);
-          var count = snapshot.data().count;
-          return setCommentsCount(function (param) {
-                      return count;
-                    });
-        };
-        countComments();
-      });
+  React.useEffect((function () {
+          var countComments = async function () {
+            var snapshot = await Firestore.getCountFromServer(commentsCollection);
+            var count = snapshot.data().count;
+            return setCommentsCount(function (param) {
+                        return count;
+                      });
+          };
+          countComments();
+        }), []);
   var tmp;
   if (jargon !== undefined) {
     var timestamp = jargon.timestamp;

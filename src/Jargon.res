@@ -2,7 +2,6 @@ type t = {id: string, english: string, korean: string, timestamp: option<Firebas
 type translation = {
   id: string,
   korean: string,
-  votes: int,
   @as("associated_comment") associatedComment: string,
 }
 type add = {english: string, korean: string, comment: string}

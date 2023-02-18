@@ -16,7 +16,7 @@ let make = (~jargon as {id, english, korean}, ~language) => {
 
   let commentsCollection = firestore->collection(~path=`jargons/${id}/comments`)
 
-  React.useEffect(() => {
+  React.useEffect0(() => {
     let countComments = async (. ()) => {
       let snapshot = await getCountFromServer(commentsCollection)
       let count = snapshot.data(.).count
