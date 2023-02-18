@@ -6,15 +6,35 @@ import * as JsxRuntime from "react/jsx-runtime";
 import * as Solid from "@heroicons/react/24/solid";
 
 function Home$SearchBar(props) {
-  return JsxRuntime.jsx("div", {
-              children: JsxRuntime.jsx("input", {
-                    className: "input input-bordered w-full rounded-lg text-sm",
-                    placeholder: "정규식으로 검색해보세요",
-                    type: "search",
-                    value: props.query,
-                    onChange: props.onChange
-                  }),
-              className: "relative"
+  var setCaseSensitivity = props.setCaseSensitivity;
+  var caseSensitivity = props.caseSensitivity;
+  return JsxRuntime.jsxs("div", {
+              children: [
+                JsxRuntime.jsx("input", {
+                      className: "input input-bordered w-full rounded-lg text-sm",
+                      placeholder: "정규식으로 검색해보세요",
+                      type: "search",
+                      value: props.query,
+                      onChange: props.onChange
+                    }),
+                JsxRuntime.jsxs("div", {
+                      children: [
+                        "/re/i",
+                        JsxRuntime.jsx("input", {
+                              className: "checkbox checkbox-secondary",
+                              checked: caseSensitivity,
+                              type: "checkbox",
+                              onChange: (function (param) {
+                                  setCaseSensitivity(function (param) {
+                                        return !caseSensitivity;
+                                      });
+                                })
+                            })
+                      ],
+                      className: "flex flex-col text-xs place-items-center"
+                    })
+              ],
+              className: "relative flex place-items-center gap-1"
             });
 }
 
@@ -36,6 +56,10 @@ function Home(props) {
       });
   var setOrder = match$1[1];
   var order = match$1[0];
+  var match$2 = React.useState(function () {
+        return false;
+      });
+  var caseSensitivity = match$2[0];
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setQuery(function (param) {
@@ -62,6 +86,8 @@ function Home(props) {
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx(Home$SearchBar, {
                                     query: query,
+                                    caseSensitivity: caseSensitivity,
+                                    setCaseSensitivity: match$2[1],
                                     onChange: onChange
                                   }),
                               className: "flex-auto"
@@ -195,7 +221,8 @@ function Home(props) {
                     }),
                 JsxRuntime.jsx(JargonList.make, {
                       order: order,
-                      query: query
+                      query: query,
+                      caseSensitivity: caseSensitivity
                     })
               ],
               className: "grid gap-4 p-5 text-sm"

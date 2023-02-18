@@ -46,7 +46,7 @@ function JargonList(props) {
   var matchAll = /.*/;
   var regex;
   try {
-    regex = new RegExp(props.query);
+    regex = new RegExp(props.query, props.caseSensitivity ? "i" : "");
   }
   catch (raw_obj){
     var obj = Caml_js_exceptions.internalToOCamlException(raw_obj);

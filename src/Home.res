@@ -1,7 +1,7 @@
 module SearchBar = {
   @react.component
-  let make = (~query, ~onChange) => {
-    <div className="relative">
+  let make = (~query, ~caseSensitivity, ~setCaseSensitivity, ~onChange) => {
+    <div className="relative flex place-items-center gap-1">
       <input
         type_="search"
         value=query
@@ -9,6 +9,15 @@ module SearchBar = {
         className="input input-bordered w-full rounded-lg text-sm"
         placeholder="정규식으로 검색해보세요"
       />
+      <div className="flex flex-col text-xs place-items-center">
+        {"/re/i"->React.string}
+        <input
+          type_="checkbox"
+          className="checkbox checkbox-secondary"
+          checked={caseSensitivity}
+          onChange={_ => setCaseSensitivity(._ => !caseSensitivity)}
+        />
+      </div>
     </div>
   }
 }
@@ -22,6 +31,8 @@ let make = () => {
     (Chrono, #desc)
   })
 
+  let (caseSensitivity, setCaseSensitivity) = React.Uncurried.useState(() => false)
+
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
     setQuery(._ => value)
@@ -31,7 +42,7 @@ let make = () => {
   <div className="grid gap-4 p-5 text-sm">
     <div className="flex items-center space-x-2">
       <div className="flex-auto">
-        <SearchBar query onChange />
+        <SearchBar query caseSensitivity setCaseSensitivity onChange />
       </div>
       <div className="dropdown dropdown-hover dropdown-end">
         <label
@@ -103,6 +114,6 @@ let make = () => {
         </ul>
       </div>
     </div>
-    <JargonList order query />
+    <JargonList order query caseSensitivity />
   </div>
 }

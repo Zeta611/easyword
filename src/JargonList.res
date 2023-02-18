@@ -1,7 +1,7 @@
 open Jargon
 
 @react.component
-let make = (~order, ~query as regexQuery) => {
+let make = (~order, ~query as regexQuery, ~caseSensitivity) => {
   let (axis, direction) = order
 
   open Firebase
@@ -31,7 +31,16 @@ let make = (~order, ~query as regexQuery) => {
     | Some(jargons) =>
       let regex = {
         let matchAll = %re("/.*/")
-        try Js.Re.fromString(regexQuery) catch {
+        try Js.Re.fromStringWithFlags(
+          regexQuery,
+          ~flags={
+            if !caseSensitivity {
+              ""
+            } else {
+              "i"
+            }
+          },
+        ) catch {
         | Js.Exn.Error(obj) => {
             obj->Js.Exn.message->Option.forEach(Js.log)
             matchAll
