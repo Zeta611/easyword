@@ -113,7 +113,10 @@ let make = (~jargonID) => {
           async () => {
             let votesDoc = await votesDocRef->getDoc
             if votesDoc.exists(.) {
-              setCheckedItems(._ => votesDoc.data(.)["translations"]->Set.String.fromArray)
+              let translations = votesDoc.data(.)["translations"]
+              if translations != None {
+                setCheckedItems(._ => translations->Set.String.fromArray)
+              }
             }
           }
         )()->ignore

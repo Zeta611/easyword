@@ -136,9 +136,13 @@ function Poll(props) {
     React.useEffect((function () {
             ((async function (param) {
                     var votesDoc = await Firestore.getDoc(votesDocRef);
-                    if (votesDoc.exists()) {
+                    if (!votesDoc.exists()) {
+                      return ;
+                    }
+                    var translations = votesDoc.data().translations;
+                    if (translations !== undefined) {
                       return setCheckedItems(function (param) {
-                                  return Belt_SetString.fromArray(votesDoc.data().translations);
+                                  return Belt_SetString.fromArray(translations);
                                 });
                     }
                     
