@@ -19,7 +19,7 @@ let make = () => {
   let (query, setQuery) = React.Uncurried.useState(() => "")
   let (order, setOrder) = React.Uncurried.useState(() => {
     open Jargon
-    (English, #asc)
+    (Chrono, #desc)
   })
 
   let onChange = event => {
@@ -60,6 +60,11 @@ let make = () => {
           tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
+            <button onClick={_ => setOrder(._ => (Chrono, #desc))}>
+              {"최근"->React.string}
+            </button>
+          </li>
+          <li>
             <button
               onClick={_ =>
                 setOrder(.order => {
@@ -93,11 +98,6 @@ let make = () => {
                 <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | _ => React.null
               }}
-            </button>
-          </li>
-          <li>
-            <button onClick={_ => setOrder(._ => (Chrono, #desc))}>
-              {"최근"->React.string}
             </button>
           </li>
         </ul>

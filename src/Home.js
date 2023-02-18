@@ -30,8 +30,8 @@ function Home(props) {
   var query = match[0];
   var match$1 = React.useState(function () {
         return [
-                /* English */0,
-                "asc"
+                /* Chrono */2,
+                "desc"
               ];
       });
   var setOrder = match$1[1];
@@ -113,6 +113,19 @@ function Home(props) {
                                 JsxRuntime.jsxs("ul", {
                                       children: [
                                         JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsx("button", {
+                                                    children: "최근",
+                                                    onClick: (function (param) {
+                                                        setOrder(function (param) {
+                                                              return [
+                                                                      /* Chrono */2,
+                                                                      "desc"
+                                                                    ];
+                                                            });
+                                                      })
+                                                  })
+                                            }),
+                                        JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
                                                       "한영",
@@ -166,19 +179,6 @@ function Home(props) {
                                                                         "desc"
                                                                       ];
                                                               }
-                                                            });
-                                                      })
-                                                  })
-                                            }),
-                                        JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsx("button", {
-                                                    children: "최근",
-                                                    onClick: (function (param) {
-                                                        setOrder(function (param) {
-                                                              return [
-                                                                      /* Chrono */2,
-                                                                      "desc"
-                                                                    ];
                                                             });
                                                       })
                                                   })
