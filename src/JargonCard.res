@@ -1,10 +1,12 @@
 open Jargon
 
+type displayMode = DisplayEnglishAsPrimary | DisplayKoreanAsPrimary
+
 @react.component
 let make = (~jargon as {id, english, korean}, ~axis) => {
-  let (primary, secondary) = switch axis {
-  | Chrono | English => (english, korean)
-  | Korean => (korean, english)
+  let displayMode = switch axis {
+  | Chrono | English => DisplayEnglishAsPrimary
+  | Korean => DisplayKoreanAsPrimary
   }
 
   let (commentsCount, setCommentsCount) = React.Uncurried.useState(() => None)
@@ -14,8 +16,8 @@ let make = (~jargon as {id, english, korean}, ~axis) => {
   let jargonDoc = firestore->doc(~path=`jargons/${id}`)
   let {data: jargon} = jargonDoc->useFirestoreDocData
 
+  // Only for getting the aggregated count of the votes
   let commentsCollection = firestore->collection(~path=`jargons/${id}/comments`)
-
   React.useEffect0(() => {
     let countComments = async (. ()) => {
       let snapshot = await getCountFromServer(commentsCollection)
@@ -44,11 +46,21 @@ let make = (~jargon as {id, english, korean}, ~axis) => {
     <div className="flex-none inline-grid grid-cols-2">
       <div
         className="w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200">
-        {primary->React.string}
+        {{
+          switch displayMode {
+          | DisplayKoreanAsPrimary => korean
+          | DisplayEnglishAsPrimary => english
+          }
+        }->React.string}
       </div>
       <div
         className="w-full overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
-        {secondary->React.string}
+        {{
+          switch displayMode {
+          | DisplayKoreanAsPrimary => english
+          | DisplayEnglishAsPrimary => korean
+          }
+        }->React.string}
       </div>
     </div>
     // third row

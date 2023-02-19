@@ -13,22 +13,16 @@ function JargonCard(props) {
   var korean = match.korean;
   var english = match.english;
   var id = match.id;
-  var match$1 = props.axis !== 1 ? [
-      english,
-      korean
-    ] : [
-      korean,
-      english
-    ];
-  var match$2 = React.useState(function () {
+  var displayMode = props.axis !== 1 ? /* DisplayEnglishAsPrimary */0 : /* DisplayKoreanAsPrimary */1;
+  var match$1 = React.useState(function () {
         
       });
-  var setCommentsCount = match$2[1];
-  var commentsCount = match$2[0];
+  var setCommentsCount = match$1[1];
+  var commentsCount = match$1[0];
   var firestore = Reactfire.useFirestore();
   var jargonDoc = Firestore.doc(firestore, "jargons/" + id + "");
-  var match$3 = Reactfire.useFirestoreDocData(jargonDoc);
-  var jargon = match$3.data;
+  var match$2 = Reactfire.useFirestoreDocData(jargonDoc);
+  var jargon = match$2.data;
   var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
   React.useEffect((function () {
           var countComments = async function () {
@@ -59,11 +53,11 @@ function JargonCard(props) {
                 JsxRuntime.jsxs("div", {
                       children: [
                         JsxRuntime.jsx("div", {
-                              children: match$1[0],
+                              children: displayMode ? korean : english,
                               className: "w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200"
                             }),
                         JsxRuntime.jsx("div", {
-                              children: match$1[1],
+                              children: displayMode ? english : korean,
                               className: "w-full overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300"
                             })
                       ],
