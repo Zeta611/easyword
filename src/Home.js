@@ -17,21 +17,23 @@ function Home$SearchBar(props) {
                       value: props.query,
                       onChange: props.onChange
                     }),
-                JsxRuntime.jsxs("div", {
-                      children: [
-                        "/re/i",
-                        JsxRuntime.jsx("input", {
-                              className: "checkbox checkbox-secondary",
-                              checked: caseSensitivity,
-                              type: "checkbox",
-                              onChange: (function (param) {
-                                  setCaseSensitivity(function (param) {
-                                        return !caseSensitivity;
-                                      });
+                React.cloneElement(JsxRuntime.jsxs("div", {
+                          children: [
+                            "/re/i",
+                            JsxRuntime.jsx("input", {
+                                  className: "checkbox checkbox-secondary",
+                                  checked: caseSensitivity,
+                                  type: "checkbox",
+                                  onChange: (function (param) {
+                                      setCaseSensitivity(function (param) {
+                                            return !caseSensitivity;
+                                          });
+                                    })
                                 })
-                            })
-                      ],
-                      className: "flex flex-col text-xs place-items-center"
+                          ],
+                          className: "flex flex-col text-xs place-items-center tooltip tooltip-bottom"
+                        }), {
+                      "data-tip": "대소문자 구분 여부"
                     })
               ],
               className: "relative flex place-items-center gap-1"

@@ -9,15 +9,18 @@ module SearchBar = {
         className="input input-bordered w-full rounded-lg text-sm"
         placeholder="정규식으로 검색해보세요"
       />
-      <div className="flex flex-col text-xs place-items-center">
-        {"/re/i"->React.string}
-        <input
-          type_="checkbox"
-          className="checkbox checkbox-secondary"
-          checked={caseSensitivity}
-          onChange={_ => setCaseSensitivity(._ => !caseSensitivity)}
-        />
-      </div>
+      {React.cloneElement(
+        <div className="flex flex-col text-xs place-items-center tooltip tooltip-bottom">
+          {"/re/i"->React.string}
+          <input
+            type_="checkbox"
+            className="checkbox checkbox-secondary"
+            checked={caseSensitivity}
+            onChange={_ => setCaseSensitivity(._ => !caseSensitivity)}
+          />
+        </div>,
+        {"data-tip": "대소문자 구분 여부"},
+      )}
     </div>
   }
 }
