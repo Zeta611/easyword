@@ -26,7 +26,10 @@ let make = (~signedIn: bool) => {
       </div>
       <button
         className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.replace("/")}>
-        {"쉬운 전문용어"->React.string}
+        <div className="flex items-baseline gap-1">
+          <span> {"쉬운 전문용어"->React.string} </span>
+          <span className="text-xs"> {"컴퓨터학"->React.string} </span>
+        </div>
       </button>
       <button
         className="btn btn-ghost text-xl hidden lg:flex"

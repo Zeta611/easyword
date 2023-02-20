@@ -53,7 +53,18 @@ function Navbar(props) {
                               className: "dropdown dropdown-hover"
                             }),
                         JsxRuntime.jsx("button", {
-                              children: "쉬운 전문용어",
+                              children: JsxRuntime.jsxs("div", {
+                                    children: [
+                                      JsxRuntime.jsx("span", {
+                                            children: "쉬운 전문용어"
+                                          }),
+                                      JsxRuntime.jsx("span", {
+                                            children: "컴퓨터학",
+                                            className: "text-xs"
+                                          })
+                                    ],
+                                    className: "flex items-baseline gap-1"
+                                  }),
                               className: "btn btn-ghost text-xl lg:hidden",
                               onClick: (function (param) {
                                   RescriptReactRouter.replace("/");
