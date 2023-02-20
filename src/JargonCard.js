@@ -11,10 +11,8 @@ import * as RescriptReactRouter from "../node_modules/@rescript/react/src/Rescri
 
 function JargonCard(props) {
   var match = props.jargon;
-  var english = match.english;
   var id = match.id;
   var translations = Jargon.convertTranslations(match.translations);
-  var displayMode = props.axis !== 1 ? /* DisplayEnglishAsPrimary */0 : /* DisplayKoreanAsPrimary */1;
   var match$1 = React.useState(function () {
         
       });
@@ -54,11 +52,11 @@ function JargonCard(props) {
                 JsxRuntime.jsxs("div", {
                       children: [
                         JsxRuntime.jsx("div", {
-                              children: displayMode ? translations : english,
+                              children: match.english,
                               className: "w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200"
                             }),
                         JsxRuntime.jsx("div", {
-                              children: displayMode ? english : translations,
+                              children: translations,
                               className: "w-full overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300"
                             })
                       ],

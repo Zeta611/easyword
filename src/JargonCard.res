@@ -1,6 +1,6 @@
 open Jargon
 
-type displayMode = DisplayEnglishAsPrimary | DisplayKoreanAsPrimary
+type displayMode = DisplayEnglishAsPrimary /* | DisplayKoreanAsPrimary */
 
 @react.component
 let make = (~jargon as {id, english, translations}, ~axis) => {
@@ -8,7 +8,7 @@ let make = (~jargon as {id, english, translations}, ~axis) => {
 
   let displayMode = switch axis {
   | Chrono | English => DisplayEnglishAsPrimary
-  | Korean => DisplayKoreanAsPrimary
+  // | Korean => DisplayKoreanAsPrimary
   }
 
   let (commentsCount, setCommentsCount) = React.Uncurried.useState(() => None)
@@ -50,7 +50,7 @@ let make = (~jargon as {id, english, translations}, ~axis) => {
         className="w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200">
         {{
           switch displayMode {
-          | DisplayKoreanAsPrimary => translations
+          // | DisplayKoreanAsPrimary => translations
           | DisplayEnglishAsPrimary => english
           }
         }->React.string}
@@ -59,7 +59,7 @@ let make = (~jargon as {id, english, translations}, ~axis) => {
         className="w-full overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
         {{
           switch displayMode {
-          | DisplayKoreanAsPrimary => english
+          // | DisplayKoreanAsPrimary => english
           | DisplayEnglishAsPrimary => translations
           }
         }->React.string}

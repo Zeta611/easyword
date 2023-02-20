@@ -10,7 +10,7 @@ let make = (~order, ~query as regexQuery, ~caseSensitivity) => {
   let queryConstraint = {
     let language = switch axis {
     | English => "english"
-    | Korean => "korean"
+    // | Korean => "translations"
     | Chrono => "timestamp"
     }
     orderBy(language, ~direction)

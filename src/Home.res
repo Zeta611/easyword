@@ -65,7 +65,7 @@ let make = () => {
           }}
           {switch order {
           | (English, _) => "영한"->React.string
-          | (Korean, _) => "한영"->React.string
+          // | (Korean, _) => "한영"->React.string
           | (Chrono, _) => "최근"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
@@ -78,30 +78,30 @@ let make = () => {
               {"최근"->React.string}
             </button>
           </li>
+          // <li>
+          //   <button
+          //     onClick={_ =>
+          //       setOrder(.order => {
+          //         switch order {
+          //         | (English, _) | (Chrono, _) | (Korean, #desc) => (Korean, #asc)
+          //         | (Korean, #asc) => (Korean, #desc)
+          //         }
+          //       })}>
+          //     {"한영"->React.string}
+          //     {switch order {
+          //     | (Korean, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
+          //     | (Korean, #desc) =>
+          //       <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
+          //     | _ => React.null
+          //     }}
+          //   </button>
+          // </li>
           <li>
             <button
               onClick={_ =>
                 setOrder(.order => {
                   switch order {
-                  | (English, _) | (Chrono, _) | (Korean, #desc) => (Korean, #asc)
-                  | (Korean, #asc) => (Korean, #desc)
-                  }
-                })}>
-              {"한영"->React.string}
-              {switch order {
-              | (Korean, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-              | (Korean, #desc) =>
-                <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-              | _ => React.null
-              }}
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={_ =>
-                setOrder(.order => {
-                  switch order {
-                  | (Korean, _) | (Chrono, _) | (English, #desc) => (English, #asc)
+                  /* | (Korean, _) */ | (Chrono, _) | (English, #desc) => (English, #asc)
                   | (English, #asc) => (English, #desc)
                   }
                 })}>

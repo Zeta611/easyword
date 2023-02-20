@@ -16,19 +16,7 @@ function JargonList(props) {
   var order = props.order;
   var axis = order[0];
   var jargonsCollection = Firestore.collection(Reactfire.useFirestore(), "jargons");
-  var language;
-  switch (axis) {
-    case /* English */0 :
-        language = "english";
-        break;
-    case /* Korean */1 :
-        language = "korean";
-        break;
-    case /* Chrono */2 :
-        language = "timestamp";
-        break;
-    
-  }
+  var language = axis ? "timestamp" : "english";
   var queryConstraint = Firestore.orderBy(language, order[1]);
   var jargonsQuery = Firestore.query(jargonsCollection, queryConstraint);
   var match = Reactfire.useFirestoreCollectionData(jargonsQuery, {
