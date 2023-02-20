@@ -2,9 +2,29 @@ open Jargon
 
 type displayMode = DisplayEnglishAsPrimary /* | DisplayKoreanAsPrimary */
 
+let reactListOfTranslations = translations => {
+  <ol>
+    {translations
+    ->Js.Dict.entries
+    ->Js.Array2.sortInPlaceWith(((k1, v1), (k2, v2)) => {
+      if v2 - v1 != 0 {
+        v2 - v1
+      } else if k1 > k2 {
+        1
+      } else if k1 < k2 {
+        -1
+      } else {
+        0
+      }
+    })
+    ->Array.map(((k, _)) => <li key={k}> {k->React.string} </li>)
+    ->React.array}
+  </ol>
+}
+
 @react.component
 let make = (~jargon as {id, english, translations}, ~axis) => {
-  let translations = translations->Jargon.convertTranslations
+  let translations = translations->reactListOfTranslations
 
   let displayMode = switch axis {
   | Chrono | English => DisplayEnglishAsPrimary
@@ -45,9 +65,8 @@ let make = (~jargon as {id, english, translations}, ~axis) => {
       }}
     </div>
     // second row
-    <div className="flex-none inline-grid grid-cols-2">
-      <div
-        className="w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200">
+    <div className="flex-none inline-grid grid-cols-1">
+      <div className="font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200">
         {{
           switch displayMode {
           // | DisplayKoreanAsPrimary => translations
@@ -56,13 +75,11 @@ let make = (~jargon as {id, english, translations}, ~axis) => {
         }->React.string}
       </div>
       <div
-        className="w-full overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
-        {{
-          switch displayMode {
-          // | DisplayKoreanAsPrimary => english
-          | DisplayEnglishAsPrimary => translations
-          }
-        }->React.string}
+        className="overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
+        {switch displayMode {
+        // | DisplayKoreanAsPrimary => english
+        | DisplayEnglishAsPrimary => translations
+        }}
       </div>
     </div>
     // third row

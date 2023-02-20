@@ -49,7 +49,7 @@ function JargonList(props) {
     }
   }
   var rows = Belt_Array.keepMap(Caml_option.valFromOption(jargons), (function (jargon) {
-          var translations = Jargon.convertTranslations(jargon.translations);
+          var translations = Jargon.joinTranslations(jargon.translations);
           var match = jargon.english.match(regex);
           var match$1 = translations.match(regex);
           if (match === null && match$1 === null) {

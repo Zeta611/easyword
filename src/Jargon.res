@@ -5,7 +5,7 @@ type t = {
   timestamp: option<Firebase.Timestamp.t>,
 }
 
-let convertTranslations = translations =>
+let joinTranslations = translations =>
   translations
   ->Js.Dict.entries
   ->Js.Array2.sortInPlaceWith(((k1, v1), (k2, v2)) => {

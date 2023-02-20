@@ -3,7 +3,7 @@
 import * as Js_dict from "../node_modules/rescript/lib/es6/js_dict.js";
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 
-function convertTranslations(translations) {
+function joinTranslations(translations) {
   return Belt_Array.map(Js_dict.entries(translations).sort(function (param, param$1) {
                     var v2 = param$1[1];
                     var v1 = param[1];
@@ -25,6 +25,6 @@ function convertTranslations(translations) {
 }
 
 export {
-  convertTranslations ,
+  joinTranslations ,
 }
 /* No side effect */
