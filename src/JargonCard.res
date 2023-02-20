@@ -3,7 +3,9 @@ open Jargon
 type displayMode = DisplayEnglishAsPrimary | DisplayKoreanAsPrimary
 
 @react.component
-let make = (~jargon as {id, english, korean}, ~axis) => {
+let make = (~jargon as {id, english, translations}, ~axis) => {
+  let translations = translations->Jargon.convertTranslations
+
   let displayMode = switch axis {
   | Chrono | English => DisplayEnglishAsPrimary
   | Korean => DisplayKoreanAsPrimary
@@ -48,7 +50,7 @@ let make = (~jargon as {id, english, korean}, ~axis) => {
         className="w-full font-semibold group-hover:text-teal-700 dark:group-hover:text-teal-200">
         {{
           switch displayMode {
-          | DisplayKoreanAsPrimary => korean
+          | DisplayKoreanAsPrimary => translations
           | DisplayEnglishAsPrimary => english
           }
         }->React.string}
@@ -58,7 +60,7 @@ let make = (~jargon as {id, english, korean}, ~axis) => {
         {{
           switch displayMode {
           | DisplayKoreanAsPrimary => english
-          | DisplayEnglishAsPrimary => korean
+          | DisplayEnglishAsPrimary => translations
           }
         }->React.string}
       </div>

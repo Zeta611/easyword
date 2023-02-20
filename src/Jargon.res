@@ -1,4 +1,27 @@
-type t = {id: string, english: string, korean: string, timestamp: option<Firebase.Timestamp.t>}
+type t = {
+  id: string,
+  english: string,
+  translations: Js.Dict.t<int>,
+  timestamp: option<Firebase.Timestamp.t>,
+}
+
+let convertTranslations = translations =>
+  translations
+  ->Js.Dict.entries
+  ->Js.Array2.sortInPlaceWith(((k1, v1), (k2, v2)) => {
+    if v2 - v1 != 0 {
+      v2 - v1
+    } else if k1 > k2 {
+      1
+    } else if k1 < k2 {
+      -1
+    } else {
+      0
+    }
+  })
+  ->Array.map(((k, _)) => k)
+  ->Js.Array2.joinWith(",")
+
 type translation = {
   id: string,
   korean: string,

@@ -108,14 +108,14 @@ let make = (~jargonID) => {
   | (#success, #success) =>
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
-    | (Some({korean, english}: Jargon.t), Some(comments)) => {
+    | (Some({english}: Jargon.t), Some(comments)) => {
         let (roots, commentNodeTable) = constructForest(comments)
         <div className="px-3 max-w-xl mx-auto md:max-w-4xl text-sm">
           <main className="flex flex-col p-5 gap-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
             // Jargon
             <div className="flex flex-col gap-1">
               <div className="text-3xl font-bold"> {english->React.string} </div>
-              <div className="text-2xl font-medium"> {korean->React.string} </div>
+              // <div className="text-2xl font-medium"> {korean->React.string} </div>
             </div>
             // Poll
             <Poll jargonID />

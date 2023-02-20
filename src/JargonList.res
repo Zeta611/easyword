@@ -47,8 +47,9 @@ let make = (~order, ~query as regexQuery, ~caseSensitivity) => {
           }
         }
       }
-      let rows = jargons->Array.keepMap(({english, korean} as jargon: Jargon.t) => {
-        switch (english->Js.String2.match_(regex), korean->Js.String2.match_(regex)) {
+      let rows = jargons->Array.keepMap(({english, translations} as jargon: Jargon.t) => {
+        let translations = translations->Jargon.convertTranslations
+        switch (english->Js.String2.match_(regex), translations->Js.String2.match_(regex)) {
         | (None, None) => None
         | _ => Some(<JargonCard jargon axis key={jargon.id} />)
         }

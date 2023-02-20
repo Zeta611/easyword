@@ -154,17 +154,11 @@ function JargonPost(props) {
     return JsxRuntime.jsx("div", {
                 children: JsxRuntime.jsxs("main", {
                       children: [
-                        JsxRuntime.jsxs("div", {
-                              children: [
-                                JsxRuntime.jsx("div", {
-                                      children: jargons.english,
-                                      className: "text-3xl font-bold"
-                                    }),
-                                JsxRuntime.jsx("div", {
-                                      children: jargons.korean,
-                                      className: "text-2xl font-medium"
-                                    })
-                              ],
+                        JsxRuntime.jsx("div", {
+                              children: JsxRuntime.jsx("div", {
+                                    children: jargons.english,
+                                    className: "text-3xl font-bold"
+                                  }),
                               className: "flex flex-col gap-1"
                             }),
                         JsxRuntime.jsx(Poll.make, {
