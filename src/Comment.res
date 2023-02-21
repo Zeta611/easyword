@@ -19,3 +19,10 @@ type rec node = {
   mutable parent: option<node>,
   mutable children: list<node>,
 }
+
+let rec countDescendents = children => {
+  switch children {
+  | list{} => 0
+  | list{{children}, ...tl} => 1 + countDescendents(children) + countDescendents(tl)
+  }
+}

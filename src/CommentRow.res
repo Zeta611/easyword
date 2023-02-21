@@ -124,12 +124,15 @@ module rec CommentNode: {
           </div>
         </div>
       } else {
-        <div className="flex">
-          <button
-            className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 hover:border-zinc-600"
-            onClick={_ => setShowChildren(.show => !show)}
+        <div
+          className="group flex cursor-pointer border-zinc-300"
+          onClick={_ => setShowChildren(.show => !show)}>
+          <div
+            className="flex-none mr-3 w-3 border-r-[2px] border-zinc-300 group-hover:border-zinc-600"
           />
-          <div className="flex-initial w-full"> {"Expand"->React.string} </div>
+          <div className="flex-initial w-full text-zinc-500 group-hover:text-zinc-600">
+            {`댓글 ${children->Comment.countDescendents->Int.toString}개 열기`->React.string}
+          </div>
         </div>
       }}
     </>
