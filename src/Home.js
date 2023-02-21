@@ -8,7 +8,7 @@ import * as Solid from "@heroicons/react/24/solid";
 function Home$SearchBar(props) {
   return JsxRuntime.jsx("div", {
               children: JsxRuntime.jsx("input", {
-                    className: "input input-bordered w-full rounded-lg text-sm",
+                    className: "input input-bordered w-full rounded-lg text-sm shadow-lg",
                     placeholder: "정규식으로 검색해보세요",
                     type: "search",
                     value: props.query,
@@ -152,10 +152,10 @@ function Home(props) {
                                       tabIndex: 0
                                     })
                               ],
-                              className: "dropdown dropdown-hover dropdown-end"
+                              className: "dropdown dropdown-hover dropdown-end shadow-lg rounded-lg"
                             })
                       ],
-                      className: "flex items-center space-x-2"
+                      className: "flex items-center space-x-2 sticky top-[4rem] -mt-5 mb-5 z-50 bg-base-100"
                     }),
                 JsxRuntime.jsx(JargonList.make, {
                       order: order,
@@ -163,7 +163,7 @@ function Home(props) {
                       caseSensitivity: caseSensitivity
                     })
               ],
-              className: "grid gap-4 p-5 text-sm"
+              className: "grid p-5 text-sm"
             });
 }
 

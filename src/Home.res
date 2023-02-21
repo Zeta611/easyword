@@ -6,7 +6,7 @@ module SearchBar = {
         type_="search"
         value=query
         onChange
-        className="input input-bordered w-full rounded-lg text-sm"
+        className="input input-bordered w-full rounded-lg text-sm shadow-lg"
         placeholder="정규식으로 검색해보세요"
       />
       // {React.cloneElement(
@@ -42,12 +42,12 @@ let make = () => {
   }
 
   open Heroicons
-  <div className="grid gap-4 p-5 text-sm">
-    <div className="flex items-center space-x-2">
+  <div className="grid p-5 text-sm">
+    <div className="flex items-center space-x-2 sticky top-[4rem] -mt-5 mb-5 z-50 bg-base-100">
       <div className="flex-auto">
         <SearchBar query caseSensitivity setCaseSensitivity onChange />
       </div>
-      <div className="dropdown dropdown-hover dropdown-end">
+      <div className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
         <label
           tabIndex={0}
           className="btn btn-primary"
