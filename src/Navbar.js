@@ -59,7 +59,7 @@ function Navbar(props) {
                                             children: "쉬운 전문용어"
                                           }),
                                       JsxRuntime.jsx("span", {
-                                            children: "컴퓨터학",
+                                            children: "컴퓨터과학/컴퓨터공학",
                                             className: "text-xs"
                                           })
                                     ],

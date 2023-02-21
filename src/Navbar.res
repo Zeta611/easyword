@@ -28,7 +28,7 @@ let make = (~signedIn: bool) => {
         className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.replace("/")}>
         <div className="flex items-baseline gap-1">
           <span> {"쉬운 전문용어"->React.string} </span>
-          <span className="text-xs"> {"컴퓨터학"->React.string} </span>
+          <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>
       <button
