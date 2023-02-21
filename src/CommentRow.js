@@ -30,7 +30,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      144,
+      151,
       4
     ], {
       TAG: /* Module */0,
@@ -74,7 +74,8 @@ function CommentRow$CommentNode(props) {
   var match$6 = React.useState(function () {
         return false;
       });
-  var setDisabled = match$6[1];
+  var setIsLoading = match$6[1];
+  var isLoading = match$6[0];
   var firestore = Reactfire.useFirestore();
   React.useEffect((function () {
           ((async function (param) {
@@ -98,8 +99,8 @@ function CommentRow$CommentNode(props) {
     if (user == null) {
       window.alert("You need to be signed in to comment!");
     } else {
-      setShowReply(function (param) {
-            return false;
+      setIsLoading(function (param) {
+            return true;
           });
       ((async function (param) {
               try {
@@ -109,7 +110,10 @@ function CommentRow$CommentNode(props) {
                       parent: id
                     });
                 console.log(result);
-                setDisabled(function (param) {
+                setIsLoading(function (param) {
+                      return false;
+                    });
+                setShowReply(function (param) {
                       return false;
                     });
                 return setContent(function (param) {
@@ -176,8 +180,10 @@ function CommentRow$CommentNode(props) {
                                       onChange: handleInputChange
                                     }),
                                 JsxRuntime.jsx("input", {
-                                      className: "btn btn-primary btn-outline btn-xs",
-                                      disabled: match$6[0],
+                                      className: "btn btn-primary btn-outline btn-xs " + (
+                                        isLoading ? "loading" : ""
+                                      ) + "",
+                                      disabled: isLoading,
                                       type: "submit",
                                       value: "답글"
                                     })

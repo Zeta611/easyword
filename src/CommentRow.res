@@ -21,7 +21,7 @@ module rec CommentNode: {
       setContent(._ => value)
     }
 
-    let (disabled, setDisabled) = React.Uncurried.useState(() => false)
+    let (isLoading, setIsLoading) = React.Uncurried.useState(() => false)
 
     let firestore = Firebase.useFirestore()
     React.useEffect0(() => {
@@ -52,15 +52,15 @@ module rec CommentNode: {
 
       switch user->Js.Nullable.toOption {
       | Some(_) =>
-        // Hide reply after submit
-        setShowReply(._ => false)
+        setIsLoading(._ => true)
 
         (
           async () => {
             try {
               let result = await addComment(. ({jargonID, content, parent: id}: Comment.write))
               Js.log(result)
-              setDisabled(._ => false)
+              setIsLoading(._ => false)
+              setShowReply(._ => false)
               setContent(._ => "")
             } catch {
             | e => Js.log(e)
@@ -106,7 +106,14 @@ module rec CommentNode: {
               className="textarea textarea-bordered textarea-sm rounded-lg place-self-stretch"
             />
             <input
-              type_="submit" value="답글" disabled className="btn btn-primary btn-outline btn-xs"
+              type_="submit"
+              value="답글"
+              disabled={isLoading}
+              className={`btn btn-primary btn-outline btn-xs ${if isLoading {
+                  "loading"
+                } else {
+                  ""
+                }}`}
             />
           </div>
         </form>
