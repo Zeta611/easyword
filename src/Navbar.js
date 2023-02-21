@@ -159,7 +159,7 @@ function Navbar(props) {
                       className: "navbar-end"
                     })
               ],
-              className: "navbar bg-base-100"
+              className: "navbar sticky top-0 z-50 bg-base-100"
             });
 }
 
