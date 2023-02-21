@@ -36,6 +36,10 @@ function Profile(props) {
   var firestore = Reactfire.useFirestore();
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
+    if (displayName.length < 3) {
+      window.alert("필명은 세 글자 이상이어야 해요");
+      return ;
+    }
     if (!signedIn) {
       return RescriptReactRouter.replace("/login");
     }

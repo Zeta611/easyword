@@ -20,7 +20,9 @@ let make = () => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if signedIn {
+    if displayName->String.length < 3 {
+      Window.alert("필명은 세 글자 이상이어야 해요")
+    } else if signedIn {
       switch user->Js.Nullable.toOption {
       | Some({uid, email} as user) =>
         setDisabled(._ => true)

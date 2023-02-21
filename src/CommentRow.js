@@ -30,7 +30,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      170,
+      174,
       4
     ], {
       TAG: /* Module */0,
@@ -106,7 +106,9 @@ function CommentRow$CommentNode(props) {
   var addComment = Functions.httpsCallable(functions, "addComment");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (user == null) {
+    if (content.length < 5) {
+      window.alert("댓글은 다섯 글자 이상이어야 해요");
+    } else if (user == null) {
       window.alert("You need to be signed in to comment!");
     } else {
       setIsLoading(function (param) {

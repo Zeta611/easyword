@@ -62,24 +62,28 @@ module rec CommentNode: {
       // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
 
-      switch user->Js.Nullable.toOption {
-      | Some(_) =>
-        setIsLoading(._ => true)
+      if content->String.length < 5 {
+        Window.alert("댓글은 다섯 글자 이상이어야 해요")
+      } else {
+        switch user->Js.Nullable.toOption {
+        | Some(_) =>
+          setIsLoading(._ => true)
 
-        (
-          async () => {
-            try {
-              let result = await addComment(. ({jargonID, content, parent: id}: Comment.write))
-              Js.log(result)
-              setIsLoading(._ => false)
-              setShowReply(._ => false)
-              setContent(._ => "")
-            } catch {
-            | e => Js.log(e)
+          (
+            async () => {
+              try {
+                let result = await addComment(. ({jargonID, content, parent: id}: Comment.write))
+                Js.log(result)
+                setIsLoading(._ => false)
+                setShowReply(._ => false)
+                setContent(._ => "")
+              } catch {
+              | e => Js.log(e)
+              }
             }
-          }
-        )()->ignore
-      | None => Window.alert("You need to be signed in to comment!")
+          )()->ignore
+        | None => Window.alert("You need to be signed in to comment!")
+        }
       }
     }
 

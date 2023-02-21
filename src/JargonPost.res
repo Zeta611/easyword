@@ -51,24 +51,27 @@ module CommentInput = {
     let handleSubmit = event => {
       // Prevent a page refresh, we are already listening for updates
       ReactEvent.Form.preventDefault(event)
+      if content->String.length < 5 {
+        Window.alert("댓글은 다섯 글자 이상이어야 해요")
+      } else {
+        switch user->Js.Nullable.toOption {
+        | Some(_) =>
+          setDisabled(._ => true)
 
-      switch user->Js.Nullable.toOption {
-      | Some(_) =>
-        setDisabled(._ => true)
-
-        (
-          async () => {
-            try {
-              let result = await addComment(. ({jargonID, content, parent: ""}: Comment.write))
-              Js.log(result)
-              setDisabled(._ => false)
-              setContent(._ => "")
-            } catch {
-            | e => Js.log(e)
+          (
+            async () => {
+              try {
+                let result = await addComment(. ({jargonID, content, parent: ""}: Comment.write))
+                Js.log(result)
+                setDisabled(._ => false)
+                setContent(._ => "")
+              } catch {
+              | e => Js.log(e)
+              }
             }
-          }
-        )()->ignore
-      | None => Window.alert("You need to be signed in to comment!")
+          )()->ignore
+        | None => Window.alert("You need to be signed in to comment!")
+        }
       }
     }
 
