@@ -37,7 +37,7 @@ module CommentInput = {
     let (content, setContent) = React.Uncurried.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
-      setContent(._ => value)
+      setContent(._ => value->Js.String2.trim)
     }
 
     let (disabled, setDisabled) = React.Uncurried.useState(() => false)

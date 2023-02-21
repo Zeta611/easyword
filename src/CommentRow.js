@@ -72,7 +72,7 @@ function CommentRow$CommentNode(props) {
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setContent(function (param) {
-          return value;
+          return value.trim();
         });
   };
   var match$6 = React.useState(function () {
@@ -86,14 +86,14 @@ function CommentRow$CommentNode(props) {
                   var commentUserDocRef = Firestore.doc(firestore, "users/" + comment.user + "");
                   var commentUserDoc = await Firestore.getDoc(commentUserDocRef);
                   if (commentUserDoc.exists()) {
-                    return setCommentUser(function (user) {
+                    return setCommentUser(function (param) {
                                 return {
                                         displayName: commentUserDoc.data().displayName,
                                         photoURL: commentUserDoc.data().photoURL
                                       };
                               });
                   } else {
-                    return setCommentUser(function (user) {
+                    return setCommentUser(function (param) {
                                 return {
                                         displayName: "탈퇴한 회원",
                                         photoURL: undefined

@@ -47,12 +47,12 @@ function NewTranslation(props) {
   var match$3 = React.useState(function () {
         return "";
       });
-  var setTranslation = match$3[1];
+  var setKorean = match$3[1];
   var korean = match$3[0];
   var handleTranslationChange = function ($$event) {
     var value = $$event.currentTarget.value;
-    setTranslation(function (param) {
-          return value;
+    setKorean(function (param) {
+          return value.trim();
         });
   };
   var match$4 = React.useState(function () {
@@ -63,7 +63,7 @@ function NewTranslation(props) {
   var handleCommentChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setComment(function (param) {
-          return value;
+          return value.trim();
         });
   };
   var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");

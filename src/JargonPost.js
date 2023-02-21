@@ -64,7 +64,7 @@ function JargonPost$CommentInput(props) {
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setContent(function (param) {
-          return value;
+          return value.trim();
         });
   };
   var match$2 = React.useState(function () {

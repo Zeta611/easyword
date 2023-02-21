@@ -20,7 +20,7 @@ module rec CommentNode: {
     let (content, setContent) = React.Uncurried.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
-      setContent(._ => value)
+      setContent(._ => value->Js.String2.trim)
     }
 
     let (isLoading, setIsLoading) = React.Uncurried.useState(() => false)
@@ -33,14 +33,14 @@ module rec CommentNode: {
           let commentUserDocRef = firestore->doc(~path=`users/${comment->Comment.user}`)
           let commentUserDoc = await commentUserDocRef->getDoc
           if commentUserDoc.exists(.) {
-            setCommentUser(.user =>
+            setCommentUser(._ =>
               {
                 "displayName": commentUserDoc.data(.)["displayName"],
                 "photoURL": commentUserDoc.data(.)["photoURL"],
               }
             )
           } else {
-            setCommentUser(.user =>
+            setCommentUser(._ =>
               {
                 "displayName": "탈퇴한 회원",
                 "photoURL": None,

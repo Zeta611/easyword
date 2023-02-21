@@ -32,16 +32,16 @@ let make = (~jargonID: string) => {
 
   let (disabled, setDisabled) = React.Uncurried.useState(() => false)
 
-  let (korean, setTranslation) = React.Uncurried.useState(() => "")
+  let (korean, setKorean) = React.Uncurried.useState(() => "")
   let handleTranslationChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setTranslation(._ => value)
+    setKorean(._ => value->Js.String2.trim)
   }
 
   let (comment, setComment) = React.Uncurried.useState(() => "")
   let handleCommentChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setComment(._ => value)
+    setComment(._ => value->Js.String2.trim)
   }
 
   let addTranslation = {
