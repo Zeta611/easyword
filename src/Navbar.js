@@ -46,7 +46,7 @@ function Navbar(props) {
                                                   })
                                             })
                                       ],
-                                      className: "menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
+                                      className: "menu menu-compact dropdown-content p-2 w-[7rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
                                       tabIndex: 0
                                     })
                               ],
