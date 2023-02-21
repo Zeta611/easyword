@@ -155,7 +155,7 @@ function Home(props) {
                               className: "dropdown dropdown-hover dropdown-end shadow-lg rounded-lg"
                             })
                       ],
-                      className: "flex items-center space-x-2 sticky top-[4rem] -mt-5 mb-5 z-50 bg-base-100"
+                      className: "flex items-center space-x-2 sticky top-[4rem] -mt-5 mb-5 z-40 bg-base-100"
                     }),
                 JsxRuntime.jsx(JargonList.make, {
                       order: order,
