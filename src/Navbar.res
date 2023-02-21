@@ -14,12 +14,12 @@ let make = (~signedIn: bool) => {
           </li>
           <li>
             <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
-              {"용어 제안"->React.string}
+              {"용어제안"->React.string}
             </button>
           </li>
           <li>
             <button onClick={_ => RescriptReactRouter.replace("/why")}>
-              {"취지"->React.string}
+              {"배경/원칙"->React.string}
             </button>
           </li>
         </ul>
@@ -44,12 +44,12 @@ let make = (~signedIn: bool) => {
         </li>
         <li>
           <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
-            {"용어 제안"->React.string}
+            {"용어제안"->React.string}
           </button>
         </li>
         <li>
           <button onClick={_ => RescriptReactRouter.replace("/why")}>
-            {"취지"->React.string}
+            {"배경/원칙"->React.string}
           </button>
         </li>
       </ul>

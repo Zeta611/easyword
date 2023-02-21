@@ -6,36 +6,14 @@ import * as JsxRuntime from "react/jsx-runtime";
 import * as Solid from "@heroicons/react/24/solid";
 
 function Home$SearchBar(props) {
-  var setCaseSensitivity = props.setCaseSensitivity;
-  var caseSensitivity = props.caseSensitivity;
-  return JsxRuntime.jsxs("div", {
-              children: [
-                JsxRuntime.jsx("input", {
-                      className: "input input-bordered w-full rounded-lg text-sm",
-                      placeholder: "정규식으로 검색해보세요",
-                      type: "search",
-                      value: props.query,
-                      onChange: props.onChange
-                    }),
-                React.cloneElement(JsxRuntime.jsxs("div", {
-                          children: [
-                            "/re/i",
-                            JsxRuntime.jsx("input", {
-                                  className: "checkbox checkbox-secondary",
-                                  checked: caseSensitivity,
-                                  type: "checkbox",
-                                  onChange: (function (param) {
-                                      setCaseSensitivity(function (param) {
-                                            return !caseSensitivity;
-                                          });
-                                    })
-                                })
-                          ],
-                          className: "flex flex-col text-xs place-items-center tooltip tooltip-bottom"
-                        }), {
-                      "data-tip": "대소문자 구분 여부"
-                    })
-              ],
+  return JsxRuntime.jsx("div", {
+              children: JsxRuntime.jsx("input", {
+                    className: "input input-bordered w-full rounded-lg text-sm",
+                    placeholder: "정규식으로 검색해보세요",
+                    type: "search",
+                    value: props.query,
+                    onChange: props.onChange
+                  }),
               className: "relative flex place-items-center gap-1"
             });
 }
@@ -59,7 +37,7 @@ function Home(props) {
   var setOrder = match$1[1];
   var order = match$1[0];
   var match$2 = React.useState(function () {
-        return false;
+        return true;
       });
   var caseSensitivity = match$2[0];
   var onChange = function ($$event) {
