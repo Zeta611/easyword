@@ -53,21 +53,27 @@ function Profile(props) {
         });
     ((async function (param) {
             try {
-              await Auth.updateProfile(user, {
+              var authUpdate = Auth.updateProfile(user, {
                     displayName: displayName
                   });
-              var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
-              var userDoc = await Firestore.getDoc(userDocRef);
-              if (userDoc.exists()) {
-                await Firestore.updateDoc(userDocRef, {
-                      displayName: displayName
-                    });
-              } else {
-                await Firestore.setDoc(userDocRef, {
-                      displayName: displayName,
-                      email: email
-                    });
-              }
+              var docUpdate = (async function (param) {
+                    var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
+                    var userDoc = await Firestore.getDoc(userDocRef);
+                    if (userDoc.exists()) {
+                      return await Firestore.updateDoc(userDocRef, {
+                                  displayName: displayName
+                                });
+                    } else {
+                      return await Firestore.setDoc(userDocRef, {
+                                  displayName: displayName,
+                                  email: email
+                                });
+                    }
+                  })(undefined);
+              await Promise.all([
+                    authUpdate,
+                    docUpdate
+                  ]);
               return setDisabled(function (param) {
                           return false;
                         });

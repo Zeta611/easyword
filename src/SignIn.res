@@ -28,7 +28,7 @@ let make = () => {
           (
             async () => {
               let userDocRef = firestore->doc(~path=`users/${uid}`)
-              let userDoc = await userDocRef->getDoc
+              // let userDoc = await userDocRef->getDoc
               // if !userDoc.exists(.) {
               await userDocRef->setDoc({
                 "displayName": displayName,

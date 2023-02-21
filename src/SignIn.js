@@ -35,7 +35,6 @@ function SignIn(props) {
               var uid = user.uid;
               ((async function (param) {
                       var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
-                      await Firestore.getDoc(userDocRef);
                       await Firestore.setDoc(userDocRef, {
                             displayName: displayName,
                             email: email,

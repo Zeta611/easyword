@@ -30,15 +30,21 @@ let make = () => {
         (
           async () => {
             try {
-              await user->Auth.updateProfile({displayName: displayName})
+              let authUpdate = user->Auth.updateProfile({displayName: displayName})
 
-              let userDocRef = firestore->doc(~path=`users/${uid}`)
-              let userDoc = await userDocRef->getDoc
-              if !userDoc.exists(.) {
-                await userDocRef->setDoc({"displayName": displayName, "email": email})
-              } else {
-                await userDocRef->updateDoc({"displayName": displayName})
-              }
+              let docUpdate = {
+                async () => {
+                  let userDocRef = firestore->doc(~path=`users/${uid}`)
+                  let userDoc = await userDocRef->getDoc
+                  if !userDoc.exists(.) {
+                    await userDocRef->setDoc({"displayName": displayName, "email": email})
+                  } else {
+                    await userDocRef->updateDoc({"displayName": displayName})
+                  }
+                }
+              }()
+
+              (await Js.Promise2.all([authUpdate, docUpdate]))->ignore
 
               setDisabled(._ => false)
             } catch {
