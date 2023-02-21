@@ -1,5 +1,10 @@
 @react.component
-let make = (~signedIn: bool) => {
+let make = () => {
+  let {signedIn, user} = React.useContext(SignInContext.context)
+  let photoURL = switch user->Js.Nullable.toOption {
+  | None => None
+  | Some({photoURL}) => photoURL
+  }
   <div className="navbar sticky top-0 z-50 bg-base-100">
     <div className="navbar-start">
       <div className="dropdown dropdown-hover">
@@ -56,9 +61,16 @@ let make = (~signedIn: bool) => {
     </div>
     <div className="navbar-end">
       <div className="dropdown dropdown-hover dropdown-end">
-        <label tabIndex={0} className="btn btn-circle btn-ghost">
-          <Heroicons.Outline.UserCircleIcon className="h-6 w-6" />
-        </label>
+        {switch photoURL {
+        | None =>
+          <label tabIndex={0} className="btn btn-circle btn-ghost">
+            <Heroicons.Outline.UserCircleIcon className="h-6 w-6" />
+          </label>
+        | Some(photoURL) =>
+          <img
+            tabIndex={0} className="mask mask-squircle h-8 w-8 m-2 cursor-pointer" src={photoURL}
+          />
+        }}
         <ul
           tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">

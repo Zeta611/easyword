@@ -30,7 +30,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      151,
+      170,
       4
     ], {
       TAG: /* Module */0,
@@ -49,9 +49,13 @@ function CommentRow$CommentNode(props) {
   var user = match$1.user;
   var id = Belt_Option.getExn(Caml_option.undefined_to_opt(comment.id));
   var match$2 = React.useState(function () {
-        return "";
+        return {
+                displayName: "",
+                photoURL: undefined
+              };
       });
   var setCommentUser = match$2[1];
+  var commentUser = match$2[0];
   var match$3 = React.useState(function () {
         return false;
       });
@@ -82,12 +86,18 @@ function CommentRow$CommentNode(props) {
                   var commentUserDocRef = Firestore.doc(firestore, "users/" + comment.user + "");
                   var commentUserDoc = await Firestore.getDoc(commentUserDocRef);
                   if (commentUserDoc.exists()) {
-                    return setCommentUser(function (param) {
-                                return commentUserDoc.data().displayName;
+                    return setCommentUser(function (user) {
+                                return {
+                                        displayName: commentUserDoc.data().displayName,
+                                        photoURL: commentUserDoc.data().photoURL
+                                      };
                               });
                   } else {
-                    return setCommentUser(function (param) {
-                                return "탈퇴한 회원";
+                    return setCommentUser(function (user) {
+                                return {
+                                        displayName: "탈퇴한 회원",
+                                        photoURL: undefined
+                                      };
                               });
                   }
                 })(undefined));
@@ -128,6 +138,7 @@ function CommentRow$CommentNode(props) {
             })(undefined));
     }
   };
+  var photoURL = commentUser.photoURL;
   return JsxRuntime.jsxs(JsxRuntime.Fragment, {
               children: [
                 JsxRuntime.jsxs("div", {
@@ -135,7 +146,15 @@ function CommentRow$CommentNode(props) {
                         JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("span", {
-                                      children: match$2[0],
+                                      children: photoURL !== undefined ? JsxRuntime.jsx("img", {
+                                              className: "mask mask-squircle h-4 w-4",
+                                              src: photoURL
+                                            }) : JsxRuntime.jsx(Outline.UserCircleIcon, {
+                                              className: "h-4 w-4"
+                                            })
+                                    }),
+                                JsxRuntime.jsx("span", {
+                                      children: commentUser.displayName,
                                       className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium",
                                       id: id
                                     }),
@@ -145,7 +164,7 @@ function CommentRow$CommentNode(props) {
                                       title: comment.timestamp.toDate().toDateString()
                                     })
                               ],
-                              className: "flex gap-x-1 text-xs"
+                              className: "flex items-center gap-x-1 text-xs"
                             }),
                         JsxRuntime.jsx("div", {
                               children: comment.content,

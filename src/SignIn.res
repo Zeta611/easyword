@@ -21,7 +21,7 @@ let make = () => {
     | Some({signedIn, user}) =>
       if signedIn {
         switch user->Js.Nullable.toOption {
-        | Some({uid, displayName, email}) =>
+        | Some({uid, displayName, email, photoURL}) =>
           // Set uid. This is safe due to the security rule:
           // allow write: if request.auth.uid == uid;
 
@@ -29,9 +29,13 @@ let make = () => {
             async () => {
               let userDocRef = firestore->doc(~path=`users/${uid}`)
               let userDoc = await userDocRef->getDoc
-              if !userDoc.exists(.) {
-                await userDocRef->setDoc({"displayName": displayName, "email": email})
-              }
+              // if !userDoc.exists(.) {
+              await userDocRef->setDoc({
+                "displayName": displayName,
+                "email": email,
+                "photoURL": photoURL,
+              })
+              // }
 
               switch displayName {
               | Some(_) => RescriptReactRouter.replace("/")

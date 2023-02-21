@@ -116,6 +116,7 @@ module User = {
     displayName: option<string>,
     email: option<string>,
     emailVerified: bool,
+    photoURL: option<string>,
     providerData: array<info>,
   }
 }

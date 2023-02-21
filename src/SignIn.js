@@ -29,18 +29,18 @@ function SignIn(props) {
           if (data !== undefined && data.signedIn) {
             var user = data.user;
             if (!(user == null)) {
+              var photoURL = user.photoURL;
               var email = user.email;
               var displayName = user.displayName;
               var uid = user.uid;
               ((async function (param) {
                       var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
-                      var userDoc = await Firestore.getDoc(userDocRef);
-                      if (!userDoc.exists()) {
-                        await Firestore.setDoc(userDocRef, {
-                              displayName: displayName,
-                              email: email
-                            });
-                      }
+                      await Firestore.getDoc(userDocRef);
+                      await Firestore.setDoc(userDocRef, {
+                            displayName: displayName,
+                            email: email,
+                            photoURL: photoURL
+                          });
                       if (displayName !== undefined) {
                         return RescriptReactRouter.replace("/");
                       } else {

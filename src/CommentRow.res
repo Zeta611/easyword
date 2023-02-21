@@ -9,7 +9,9 @@ module rec CommentNode: {
     let {user} = React.useContext(SignInContext.context)
     let id = comment->id->Option.getExn
 
-    let (commentUser, setCommentUser) = React.Uncurried.useState(() => "")
+    let (commentUser, setCommentUser) = React.Uncurried.useState(() =>
+      {"displayName": "", "photoURL": None}
+    )
 
     let (showReply, setShowReply) = React.Uncurried.useState(() => false)
     let (showChildren, setShowChildren) = React.Uncurried.useState(() => true)
@@ -31,9 +33,19 @@ module rec CommentNode: {
           let commentUserDocRef = firestore->doc(~path=`users/${comment->Comment.user}`)
           let commentUserDoc = await commentUserDocRef->getDoc
           if commentUserDoc.exists(.) {
-            setCommentUser(._ => commentUserDoc.data(.)["displayName"])
+            setCommentUser(.user =>
+              {
+                "displayName": commentUserDoc.data(.)["displayName"],
+                "photoURL": commentUserDoc.data(.)["photoURL"],
+              }
+            )
           } else {
-            setCommentUser(._ => "탈퇴한 회원")
+            setCommentUser(.user =>
+              {
+                "displayName": "탈퇴한 회원",
+                "photoURL": None,
+              }
+            )
           }
         }
       )()->ignore
@@ -74,11 +86,18 @@ module rec CommentNode: {
     <>
       <div className="flex flex-col gap-y-1 place-items-start text-zinc-500">
         // header
-        <div className="flex gap-x-1 text-xs">
+        <div className="flex items-center gap-x-1 text-xs">
+          <span>
+            {switch commentUser["photoURL"] {
+            | None => <Heroicons.Outline.UserCircleIcon className="h-4 w-4" />
+
+            | Some(photoURL) => <img className="mask mask-squircle h-4 w-4" src={photoURL} />
+            }}
+          </span>
           <span
             id
             className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium">
-            {commentUser->React.string}
+            {commentUser["displayName"]->React.string}
           </span>
           {"·"->React.string}
           <span title={comment->timestamp->Firebase.Timestamp.toDate->Js.Date.toDateString}>
