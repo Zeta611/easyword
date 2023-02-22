@@ -72,7 +72,7 @@ function CommentRow$CommentNode(props) {
   var handleInputChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setContent(function (param) {
-          return value.trim();
+          return value;
         });
   };
   var match$6 = React.useState(function () {

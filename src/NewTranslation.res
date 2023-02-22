@@ -35,13 +35,13 @@ let make = (~jargonID: string) => {
   let (korean, setKorean) = React.Uncurried.useState(() => "")
   let handleTranslationChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setKorean(._ => value->Js.String2.trim)
+    setKorean(._ => value)
   }
 
   let (comment, setComment) = React.Uncurried.useState(() => "")
   let handleCommentChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setComment(._ => value->Js.String2.trim)
+    setComment(._ => value)
   }
 
   let addTranslation = {

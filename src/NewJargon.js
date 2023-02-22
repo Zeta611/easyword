@@ -35,7 +35,7 @@ function NewJargon(props) {
   var handleJargonChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setEnglish(function (param) {
-          return value.trim();
+          return value;
         });
   };
   var match$3 = React.useState(function () {
@@ -46,7 +46,7 @@ function NewJargon(props) {
   var handleTranslationChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setKorean(function (param) {
-          return value.trim();
+          return value;
         });
   };
   var match$4 = React.useState(function () {
@@ -57,7 +57,7 @@ function NewJargon(props) {
   var handleCommentChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setComment(function (param) {
-          return value.trim();
+          return value;
         });
   };
   var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");

@@ -52,7 +52,7 @@ function NewTranslation(props) {
   var handleTranslationChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setKorean(function (param) {
-          return value.trim();
+          return value;
         });
   };
   var match$4 = React.useState(function () {
@@ -63,7 +63,7 @@ function NewTranslation(props) {
   var handleCommentChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setComment(function (param) {
-          return value.trim();
+          return value;
         });
   };
   var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");

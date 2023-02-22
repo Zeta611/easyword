@@ -20,7 +20,7 @@ module rec CommentNode: {
     let (content, setContent) = React.Uncurried.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
-      setContent(._ => value->Js.String2.trim)
+      setContent(._ => value)
     }
 
     let (isLoading, setIsLoading) = React.Uncurried.useState(() => false)
