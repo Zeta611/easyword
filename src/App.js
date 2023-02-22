@@ -7,7 +7,6 @@ import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
 import * as Profile from "./Profile.js";
 import * as SignOut from "./SignOut.js";
-import * as Firebase from "./Firebase.js";
 import * as NewJargon from "./NewJargon.js";
 import * as Reactfire from "reactfire";
 import * as JargonPost from "./JargonPost.js";
@@ -19,7 +18,6 @@ import * as NewTranslation from "./NewTranslation.js";
 import * as NavbarContainer from "./NavbarContainer.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
-import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 
@@ -45,10 +43,6 @@ var SignInWrapper = {
 function App(props) {
   var app = Reactfire.useFirebaseApp();
   var auth = Auth.getAuth(app);
-  var appCheck = AppCheck.initializeAppCheck(app, {
-        provider: new AppCheck.ReCaptchaV3Provider(Firebase.appCheckToken),
-        isTokenAutoRefreshEnabled: true
-      });
   var match = Reactfire.useInitFirestore(async function (app) {
         var firestore = Firestore.getFirestore(app);
         try {
@@ -135,15 +129,12 @@ function App(props) {
           children: tmp$1
         });
   }
-  return JsxRuntime.jsx(Reactfire.AppCheckProvider, {
-              sdk: appCheck,
-              children: JsxRuntime.jsx(Reactfire.AuthProvider, {
-                    sdk: auth,
-                    children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
-                          sdk: Caml_option.valFromOption(firestore),
-                          children: JsxRuntime.jsx(App$SignInWrapper, {
-                                children: tmp
-                              })
+  return JsxRuntime.jsx(Reactfire.AuthProvider, {
+              sdk: auth,
+              children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
+                    sdk: Caml_option.valFromOption(firestore),
+                    children: JsxRuntime.jsx(App$SignInWrapper, {
+                          children: tmp
                         })
                   })
             });

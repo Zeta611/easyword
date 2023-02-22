@@ -126,3 +126,6 @@ sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/macOS,React,ReasonML,Emacs,yarn
 n
+
+# Local Netlify folder
+.netlify

@@ -23,13 +23,13 @@ let make = () => {
 
   // let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
 
-  let appCheck = initializeAppCheck(
-    app,
-    {
-      provider: createReCaptchaV3Provider(appCheckToken),
-      isTokenAutoRefreshEnabled: true,
-    },
-  )
+  // let appCheck = initializeAppCheck(
+  //   app,
+  //   {
+  //     provider: createReCaptchaV3Provider(appCheckToken),
+  //     isTokenAutoRefreshEnabled: true,
+  //   },
+  // )
 
   let {status, data: firestore} = useInitFirestore(async app => {
     let firestore = app->getFirestore
@@ -53,31 +53,31 @@ let make = () => {
     switch firestore {
     | None => React.null
     | Some(firestore) =>
-      <AppCheckProvider sdk=appCheck>
-        <AuthProvider sdk=auth>
-          <FirestoreProvider sdk=firestore>
-            <SignInWrapper>
-              {switch url.path {
-              | list{"login"} => <SignIn />
-              | list{"logout"} => <SignOut />
-              | path =>
-                <NavbarContainer>
-                  {switch path {
-                  | list{} => <Home />
-                  | list{"profile"} => <Profile />
-                  | list{"new-jargon"} => <NewJargon />
-                  | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                  | list{"jargon", jargonID} => <JargonPost jargonID />
-                  | list{"why"} => <Why />
+      // <AppCheckProvider sdk=appCheck>
+      <AuthProvider sdk=auth>
+        <FirestoreProvider sdk=firestore>
+          <SignInWrapper>
+            {switch url.path {
+            | list{"login"} => <SignIn />
+            | list{"logout"} => <SignOut />
+            | path =>
+              <NavbarContainer>
+                {switch path {
+                | list{} => <Home />
+                | list{"profile"} => <Profile />
+                | list{"new-jargon"} => <NewJargon />
+                | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                | list{"jargon", jargonID} => <JargonPost jargonID />
+                | list{"why"} => <Why />
 
-                  | _ => React.string("404")
-                  }}
-                </NavbarContainer>
-              }}
-            </SignInWrapper>
-          </FirestoreProvider>
-        </AuthProvider>
-      </AppCheckProvider>
+                | _ => React.string("404")
+                }}
+              </NavbarContainer>
+            }}
+          </SignInWrapper>
+        </FirestoreProvider>
+      </AuthProvider>
+    // </AppCheckProvider>
     }
   }
 }
