@@ -76,7 +76,18 @@ function Navbar(props) {
                                 })
                             }),
                         JsxRuntime.jsx("button", {
-                              children: "EKO: 쉬운 컴퓨터 분야 전문용어 번역",
+                              children: JsxRuntime.jsxs("div", {
+                                    children: [
+                                      JsxRuntime.jsx("span", {
+                                            children: "쉬운 전문용어"
+                                          }),
+                                      JsxRuntime.jsx("span", {
+                                            children: "컴퓨터과학/컴퓨터공학",
+                                            className: "text-xs"
+                                          })
+                                    ],
+                                    className: "flex items-baseline gap-1"
+                                  }),
                               className: "btn btn-ghost text-xl hidden lg:flex",
                               onClick: (function (param) {
                                   RescriptReactRouter.replace("/");
