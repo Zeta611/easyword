@@ -64,9 +64,9 @@ let make = () => {
           | (_, #desc) => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           }}
           {switch order {
-          | (English, _) => "영한"->React.string
+          | (English, _) => "ABC순"->React.string
           // | (Korean, _) => "한영"->React.string
-          | (Chrono, _) => "최근"->React.string
+          | (Chrono, _) => "최근순"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
         </label>
@@ -75,7 +75,7 @@ let make = () => {
           className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
             <button onClick={_ => setOrder(._ => (Chrono, #desc))}>
-              {"최근"->React.string}
+              {"최근순"->React.string}
             </button>
           </li>
           // <li>
@@ -105,7 +105,7 @@ let make = () => {
                   | (English, #asc) => (English, #desc)
                   }
                 })}>
-              {"영한"->React.string}
+              {"ABC순"->React.string}
               {switch order {
               | (English, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | (English, #desc) =>

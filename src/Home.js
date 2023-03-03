@@ -70,7 +70,7 @@ function Home(props) {
                                                     className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
                                                   })
                                           ),
-                                        order[0] ? "최근" : "영한",
+                                        order[0] ? "최근순" : "ABC순",
                                         JsxRuntime.jsx(Solid.ChevronDownIcon, {
                                               className: "ml-2 -mr-1 h-5 w-5"
                                             })
@@ -107,7 +107,7 @@ function Home(props) {
                                       children: [
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsx("button", {
-                                                    children: "최근",
+                                                    children: "최근순",
                                                     onClick: (function (param) {
                                                         setOrder(function (param) {
                                                               return [
@@ -121,7 +121,7 @@ function Home(props) {
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
-                                                      "영한",
+                                                      "ABC순",
                                                       order[0] ? null : (
                                                           order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
                                                                   className: "-ml-2 mr-1 h-5 w-5 text-primary"
