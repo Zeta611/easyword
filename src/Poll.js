@@ -156,12 +156,19 @@ function Poll(props) {
   var user = match$4.user;
   var signedIn = match$4.signedIn;
   var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");
-  if (match.status === "success" && translations !== undefined) {
+  if (match.status !== "success") {
+    return null;
+  }
+  if (translations === undefined) {
+    return null;
+  }
+  var translations$1 = Caml_option.valFromOption(translations);
+  if (translations$1.length !== 0) {
     return JsxRuntime.jsxs("div", {
                 children: [
                   JsxRuntime.jsx("table", {
                         children: JsxRuntime.jsx("tbody", {
-                              children: Belt_Array.map(Caml_option.valFromOption(translations), (function (translation) {
+                              children: Belt_Array.map(translations$1, (function (translation) {
                                       return JsxRuntime.jsx(Poll$PollRow, {
                                                   jargonID: jargonID,
                                                   translation: translation,

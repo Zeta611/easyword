@@ -27,7 +27,7 @@ type translation = {
   korean: string,
   @as("associated_comment") associatedComment: string,
 }
-type add = {english: string, korean: string, comment: string}
+type add = {english: string, korean: string, comment: string, withoutKorean: bool}
 type addTranslation = {id: string, korean: string, comment: string}
 
 type vote = {jargonID: string, translations: array<string>}

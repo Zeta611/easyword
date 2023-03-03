@@ -28,6 +28,8 @@ let make = () => {
     setKorean(._ => value)
   }
 
+  let (withoutKorean, setWithoutKorean) = React.Uncurried.useState(() => false)
+
   let (comment, setComment) = React.Uncurried.useState(() => "")
   let handleCommentChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
@@ -44,7 +46,7 @@ let make = () => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if english->String.length < 3 || korean->String.length < 3 {
+    if english->String.length < 3 || (!withoutKorean && korean->String.length < 3) {
       Window.alert("용어는 세 글자 이상이어야 해요")
     } else if signedIn {
       switch user->Js.Nullable.toOption {
@@ -54,11 +56,18 @@ let make = () => {
         (
           async () => {
             let comment = switch comment {
-            | "" => `${korean->Util.eulLeul} 제안합니다.`
+            | "" =>
+              if !withoutKorean {
+                `${korean->Util.eulLeul} 제안합니다.`
+              } else {
+                `"${english}" 용어의 번역이 필요합니다.`
+              }
             | _ => comment
             }
             try {
-              let result = await addJargon(. ({english, korean, comment}: Jargon.add))
+              let result = await addJargon(.
+                ({english, korean, comment, withoutKorean}: Jargon.add),
+              )
               RescriptReactRouter.replace(`/jargon/${result.data["jargonID"]}`)
             } catch {
             | e => Js.log(e)
@@ -92,10 +101,23 @@ let make = () => {
           <label className="block">
             <label className="label">
               <span className="label-text"> {"번역"->React.string} </span>
+              {React.cloneElement(
+                <div className="flex gap-1 text-xs place-items-center tooltip tooltip-bottom">
+                  <input
+                    type_="checkbox"
+                    className="checkbox checkbox-secondary"
+                    checked={withoutKorean}
+                    onChange={_ => setWithoutKorean(.v => !v)}
+                  />
+                  {"번역 없이 제안하기"->React.string}
+                </div>,
+                {"data-tip": "번역을 제안하지 않고 용어를 추가해보세요"},
+              )}
             </label>
             <input
               type_="text"
               value={korean}
+              disabled={withoutKorean}
               onChange={handleTranslationChange}
               placeholder="출신을 기억하는 합"
               className="input input-bordered w-full"

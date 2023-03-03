@@ -164,35 +164,39 @@ let make = (~jargonID) => {
 
   switch (translationsStatus, translations) {
   | (#success, Some(translations)) =>
-    <div className="overflow-x-auto">
-      <table className="table w-full">
-        <tbody>
-          {translations
-          ->Array.map((translation: Jargon.translation) =>
-            <PollRow
-              key={translation.id}
-              jargonID
-              translation
-              allVotes={votesCount->Map.String.reduce(0, (prev, _, votes) => prev + votes)}
-              checkedItemHandler
-              isChecked={checkedItems->Set.String.has(translation.id)}
-              votesCount
-              setVotesCount
-            />
-          )
-          ->React.array}
-        </tbody>
-      </table>
-      <button
-        className={`btn btn-primary w-full ${if isLoading {
-            "loading"
-          } else {
-            ""
-          }}`}
-        onClick={_ => onVoteButtonTapped()}>
-        {"투표하기"->React.string}
-      </button>
-    </div>
+    if translations->Array.size > 0 {
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <tbody>
+            {translations
+            ->Array.map((translation: Jargon.translation) =>
+              <PollRow
+                key={translation.id}
+                jargonID
+                translation
+                allVotes={votesCount->Map.String.reduce(0, (prev, _, votes) => prev + votes)}
+                checkedItemHandler
+                isChecked={checkedItems->Set.String.has(translation.id)}
+                votesCount
+                setVotesCount
+              />
+            )
+            ->React.array}
+          </tbody>
+        </table>
+        <button
+          className={`btn btn-primary w-full ${if isLoading {
+              "loading"
+            } else {
+              ""
+            }}`}
+          onClick={_ => onVoteButtonTapped()}>
+          {"투표하기"->React.string}
+        </button>
+      </div>
+    } else {
+      React.null
+    }
   | _ => React.null
   }
 }

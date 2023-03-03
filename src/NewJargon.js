@@ -50,10 +50,15 @@ function NewJargon(props) {
         });
   };
   var match$4 = React.useState(function () {
+        return false;
+      });
+  var setWithoutKorean = match$4[1];
+  var withoutKorean = match$4[0];
+  var match$5 = React.useState(function () {
         return "";
       });
-  var setComment = match$4[1];
-  var comment = match$4[0];
+  var setComment = match$5[1];
+  var comment = match$5[0];
   var handleCommentChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setComment(function (param) {
@@ -64,7 +69,7 @@ function NewJargon(props) {
   var addJargon = Functions.httpsCallable(functions, "addJargon");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (english.length < 3 || korean.length < 3) {
+    if (english.length < 3 || !withoutKorean && korean.length < 3) {
       window.alert("용어는 세 글자 이상이어야 해요");
       return ;
     } else if (signedIn) {
@@ -75,12 +80,15 @@ function NewJargon(props) {
               return true;
             });
         ((async function (param) {
-                var comment$1 = comment === "" ? "" + Util.eulLeul(korean) + " 제안합니다." : comment;
+                var comment$1 = comment === "" ? (
+                    withoutKorean ? "\"" + english + "\" 용어의 번역이 필요합니다." : "" + Util.eulLeul(korean) + " 제안합니다."
+                  ) : comment;
                 try {
                   var result = await addJargon({
                         english: english,
                         korean: korean,
-                        comment: comment$1
+                        comment: comment$1,
+                        withoutKorean: withoutKorean
                       });
                   return RescriptReactRouter.replace("/jargon/" + result.data.jargonID + "");
                 }
@@ -126,15 +134,36 @@ function NewJargon(props) {
                                     }),
                                 JsxRuntime.jsxs("label", {
                                       children: [
-                                        JsxRuntime.jsx("label", {
-                                              children: JsxRuntime.jsx("span", {
-                                                    children: "번역",
-                                                    className: "label-text"
-                                                  }),
+                                        JsxRuntime.jsxs("label", {
+                                              children: [
+                                                JsxRuntime.jsx("span", {
+                                                      children: "번역",
+                                                      className: "label-text"
+                                                    }),
+                                                React.cloneElement(JsxRuntime.jsxs("div", {
+                                                          children: [
+                                                            JsxRuntime.jsx("input", {
+                                                                  className: "checkbox checkbox-secondary",
+                                                                  checked: withoutKorean,
+                                                                  type: "checkbox",
+                                                                  onChange: (function (param) {
+                                                                      setWithoutKorean(function (v) {
+                                                                            return !v;
+                                                                          });
+                                                                    })
+                                                                }),
+                                                            "번역 없이 제안하기"
+                                                          ],
+                                                          className: "flex gap-1 text-xs place-items-center tooltip tooltip-bottom"
+                                                        }), {
+                                                      "data-tip": "번역을 제안하지 않고 용어를 추가해보세요"
+                                                    })
+                                              ],
                                               className: "label"
                                             }),
                                         JsxRuntime.jsx("input", {
                                               className: "input input-bordered w-full",
+                                              disabled: withoutKorean,
                                               placeholder: "출신을 기억하는 합",
                                               type: "text",
                                               value: korean,
