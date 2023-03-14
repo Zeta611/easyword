@@ -20,9 +20,12 @@ var UserCircleIcon = {};
 
 var ChatBubbleLeftIcon = {};
 
+var ChartBarSquareIcon = {};
+
 var Outline = {
   UserCircleIcon: UserCircleIcon,
-  ChatBubbleLeftIcon: ChatBubbleLeftIcon
+  ChatBubbleLeftIcon: ChatBubbleLeftIcon,
+  ChartBarSquareIcon: ChartBarSquareIcon
 };
 
 export {

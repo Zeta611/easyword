@@ -5,6 +5,23 @@ let make = () => {
   | None => None
   | Some({photoURL}) => photoURL
   }
+
+  let (jargonsCount, setJargonsCount) = React.Uncurried.useState(() => None)
+
+  open Firebase
+  let firestore = useFirestore()
+  let jargonsCollection = firestore->collection(~path=`jargons`)
+  React.useEffect0(() => {
+    let countJargons = async (. ()) => {
+      let snapshot = await getCountFromServer(jargonsCollection)
+      let count = snapshot.data(.).count
+      setJargonsCount(._ => Some(count))
+    }
+    let _ = countJargons(.)
+
+    None
+  })
+
   <div className="navbar sticky top-0 z-50 bg-base-100">
     <div className="navbar-start">
       <div className="dropdown dropdown-hover">
@@ -62,7 +79,15 @@ let make = () => {
         </li>
       </ul>
     </div>
-    <div className="navbar-end">
+    <div className="navbar-end gap-2">
+      {switch jargonsCount {
+      | None => React.null
+      | Some(jargonsCount) =>
+        <div className="flex items-center gap-1 text-xs text-teal-800">
+          <Heroicons.Outline.ChartBarSquareIcon className="h-5 w-5" />
+          {`용어 ${jargonsCount->Int.toString}개`->React.string}
+        </div>
+      }}
       <div className="dropdown dropdown-hover dropdown-end">
         {switch photoURL {
         | None =>
