@@ -154,7 +154,11 @@ function Navbar(props) {
                                   JsxRuntime.jsx(Outline.ChartBarSquareIcon, {
                                         className: "h-5 w-5"
                                       }),
-                                  "" + String(jargonsCount) + " 용어"
+                                  String(jargonsCount),
+                                  JsxRuntime.jsx("div", {
+                                        children: "용어",
+                                        className: "ml-0 hidden sm:flex"
+                                      })
                                 ],
                                 className: "flex items-center sm:gap-1 text-xs text-teal-800"
                               }) : null,
