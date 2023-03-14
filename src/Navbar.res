@@ -79,13 +79,13 @@ let make = () => {
         </li>
       </ul>
     </div>
-    <div className="navbar-end gap-2">
+    <div className="navbar-end sm:gap-2">
       {switch jargonsCount {
       | None => React.null
       | Some(jargonsCount) =>
-        <div className="flex items-center gap-1 text-xs text-teal-800">
+        <div className="flex items-center sm:gap-1 text-xs text-teal-800">
           <Heroicons.Outline.ChartBarSquareIcon className="h-5 w-5" />
-          {`용어 ${jargonsCount->Int.toString}개`->React.string}
+          {`${jargonsCount->Int.toString} 용어`->React.string}
         </div>
       }}
       <div className="dropdown dropdown-hover dropdown-end">

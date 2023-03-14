@@ -154,9 +154,9 @@ function Navbar(props) {
                                   JsxRuntime.jsx(Outline.ChartBarSquareIcon, {
                                         className: "h-5 w-5"
                                       }),
-                                  "용어 " + String(jargonsCount) + "개"
+                                  "" + String(jargonsCount) + " 용어"
                                 ],
-                                className: "flex items-center gap-1 text-xs text-teal-800"
+                                className: "flex items-center sm:gap-1 text-xs text-teal-800"
                               }) : null,
                         JsxRuntime.jsxs("div", {
                               children: [
@@ -206,7 +206,7 @@ function Navbar(props) {
                               className: "dropdown dropdown-hover dropdown-end"
                             })
                       ],
-                      className: "navbar-end gap-2"
+                      className: "navbar-end sm:gap-2"
                     })
               ],
               className: "navbar sticky top-0 z-50 bg-base-100"
