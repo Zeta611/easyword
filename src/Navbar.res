@@ -84,9 +84,8 @@ let make = () => {
       | None => React.null
       | Some(jargonsCount) =>
         <div className="flex items-center sm:gap-1 text-xs text-teal-800">
-          <Heroicons.Outline.ChartBarSquareIcon className="h-5 w-5" />
-          {jargonsCount->Int.toString->React.string}
-          <div className="ml-0 hidden sm:flex"> {"용어"->React.string} </div>
+          <Heroicons.Outline.ChartBarSquareIcon className="h-5 w-5 hidden sm:flex" />
+          <div className="ml-0"> {`총 ${jargonsCount->Int.toString}개`->React.string} </div>
         </div>
       }}
       <div className="dropdown dropdown-hover dropdown-end">

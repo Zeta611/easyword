@@ -152,12 +152,11 @@ function Navbar(props) {
                         jargonsCount !== undefined ? JsxRuntime.jsxs("div", {
                                 children: [
                                   JsxRuntime.jsx(Outline.ChartBarSquareIcon, {
-                                        className: "h-5 w-5"
+                                        className: "h-5 w-5 hidden sm:flex"
                                       }),
-                                  String(jargonsCount),
                                   JsxRuntime.jsx("div", {
-                                        children: "용어",
-                                        className: "ml-0 hidden sm:flex"
+                                        children: "총 " + String(jargonsCount) + "개",
+                                        className: "ml-0"
                                       })
                                 ],
                                 className: "flex items-center sm:gap-1 text-xs text-teal-800"
