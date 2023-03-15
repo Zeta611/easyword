@@ -9,6 +9,13 @@ function Why(props) {
                       children: "쉬운 전문용어"
                     }),
                 JsxRuntime.jsx("div", {
+                      children: JsxRuntime.jsx("a", {
+                            children: "서울대학교 컴퓨터공학부 이광근",
+                            href: "http://kwangkeunyi.snu.ac.kr"
+                          }),
+                      className: "text-right text-sm"
+                    }),
+                JsxRuntime.jsx("div", {
                       className: "divider"
                     }),
                 JsxRuntime.jsx("h2", {

@@ -2,6 +2,11 @@
 let make = () => {
   <article className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">
     <h1> {"쉬운 전문용어"->React.string} </h1>
+    <div className="text-right text-sm">
+      <a href="http://kwangkeunyi.snu.ac.kr">
+        {"서울대학교 컴퓨터공학부 이광근"->React.string}
+      </a>
+    </div>
     <div className="divider" />
     <h2> {"배경"->React.string} </h2>
     <p>
