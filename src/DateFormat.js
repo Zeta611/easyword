@@ -2,7 +2,7 @@
 
 
 function timeAgo(date) {
-  var seconds = (Date.now() - date.getTime() | 0) / 1000 | 0;
+  var seconds = (Date.now() - date.getTime()) / 1000 | 0;
   var minutes = seconds / 60 | 0;
   var hours = minutes / 60 | 0;
   var days = hours / 24 | 0;
