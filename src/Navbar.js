@@ -68,6 +68,14 @@ function Navbar(props) {
                                                         RescriptReactRouter.replace("/why");
                                                       })
                                                   })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsx("button", {
+                                                    children: "제작기",
+                                                    onClick: (function (param) {
+                                                        RescriptReactRouter.replace("/colophon");
+                                                      })
+                                                  })
                                             })
                                       ],
                                       className: "menu menu-compact dropdown-content p-2 w-[7rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
@@ -139,6 +147,14 @@ function Navbar(props) {
                                           children: "배경/원칙",
                                           onClick: (function (param) {
                                               RescriptReactRouter.replace("/why");
+                                            })
+                                        })
+                                  }),
+                              JsxRuntime.jsx("li", {
+                                    children: JsxRuntime.jsx("button", {
+                                          children: "제작기",
+                                          onClick: (function (param) {
+                                              RescriptReactRouter.replace("/colophon");
                                             })
                                         })
                                   })

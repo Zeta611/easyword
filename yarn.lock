@@ -1639,13 +1639,11 @@ __metadata:
     autoprefixer: ^10.4.8
     daisyui: ^2.50.0
     firebase: ^9.16.0
-    gentype: ^4.5.0
     postcss: ^8.4.16
     react: ^18.2.0
     react-dom: ^18.2.0
     react-firebaseui: ^6.0.0
     reactfire: ^4.2.2
-    reanalyze: ^2.23.0
     rescript: ^10.1.0
     tailwindcss: ^3.1.8
     vite: ^3.0.4
@@ -2092,24 +2090,6 @@ __metadata:
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
   checksum: a7437e58c6be12aa6c90f7730eac7fa9833dc78872b4ad2963d2031b00a3367a93f98aec75f9aaac7220848e4026d67a8655e870b24f20a543d103c0d65952ec
-  languageName: node
-  linkType: hard
-
-"gentype@npm:4.5.0":
-  version: 4.5.0
-  resolution: "gentype@npm:4.5.0"
-  bin:
-    gentype: gentype.exe
-  checksum: 982241d3046cb681db6e3196019059d2d450d902a94255bcc18dceff7f27f422839aaddf6605c851337b61aeda8afa534049e68e60213012c4bd05954129d34d
-  languageName: node
-  linkType: hard
-
-"gentype@patch:gentype@npm:4.5.0#.yarn/patches/gentype-npm-4.5.0-63ecd6ea92.patch::locator=eko%40workspace%3A.":
-  version: 4.5.0
-  resolution: "gentype@patch:gentype@npm%3A4.5.0#.yarn/patches/gentype-npm-4.5.0-63ecd6ea92.patch::version=4.5.0&hash=a61ee9&locator=eko%40workspace%3A."
-  bin:
-    gentype: gentype.exe
-  checksum: 20bca486ef1f87150706c249f198f7d8aa0c3049fb1e17b89939e6ef7de6c7778e72fb8341962e779823249411e24ec200d37eb1e561aa27d36a7283e70b14f2
   languageName: node
   linkType: hard
 
@@ -3073,24 +3053,6 @@ __metadata:
   dependencies:
     picomatch: ^2.2.1
   checksum: 1ced032e6e45670b6d7352d71d21ce7edf7b9b928494dcaba6f11fba63180d9da6cd7061ebc34175ffda6ff529f481818c962952004d273178acd70f7059b320
-  languageName: node
-  linkType: hard
-
-"reanalyze@npm:2.23.0":
-  version: 2.23.0
-  resolution: "reanalyze@npm:2.23.0"
-  bin:
-    reanalyze: reanalyze.exe
-  checksum: 7571efb05d2fdadfc7d29bfbed81213e7fc5fab837c5070a6d4e09f5dcba7886a5d9001eb013957ddbed6810f645697758c25f09575980fc638989a2dc5650c4
-  languageName: node
-  linkType: hard
-
-"reanalyze@patch:reanalyze@npm:2.23.0#.yarn/patches/reanalyze-npm-2.23.0-ffd66894f7.patch::locator=eko%40workspace%3A.":
-  version: 2.23.0
-  resolution: "reanalyze@patch:reanalyze@npm%3A2.23.0#.yarn/patches/reanalyze-npm-2.23.0-ffd66894f7.patch::version=2.23.0&hash=caf03f&locator=eko%40workspace%3A."
-  bin:
-    reanalyze: reanalyze.exe
-  checksum: d3d638fc1685de39dc047bfaa3fb6e1673ad20cfb65f3bc6655180bbd7abe67aa20afad37acf16afb6ac314368152259d0fd1a4510ecafca8ae937178135efde
   languageName: node
   linkType: hard
 

@@ -44,6 +44,11 @@ let make = () => {
               {"배경/원칙"->React.string}
             </button>
           </li>
+          <li>
+            <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
+              {"제작기"->React.string}
+            </button>
+          </li>
         </ul>
       </div>
       <button
@@ -75,6 +80,11 @@ let make = () => {
         <li>
           <button onClick={_ => RescriptReactRouter.replace("/why")}>
             {"배경/원칙"->React.string}
+          </button>
+        </li>
+        <li>
+          <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
+            {"제작기"->React.string}
           </button>
         </li>
       </ul>

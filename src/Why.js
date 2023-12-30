@@ -36,36 +36,34 @@ function Why(props) {
                 JsxRuntime.jsx("h2", {
                       children: "원칙"
                     }),
-                JsxRuntime.jsxs("p", {
+                JsxRuntime.jsx("p", {
+                      children: "쉬운 전문용어를 만들때 원칙은 다음과 같다."
+                    }),
+                JsxRuntime.jsxs("ul", {
                       children: [
-                        "쉬운 전문용어를 만들때 원칙은 다음과 같다.",
-                        JsxRuntime.jsxs("ul", {
-                              children: [
-                                JsxRuntime.jsx("li", {
-                                      children: "전문용어의 의미를 정확히 이해하도록 한다."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "그 의미가 정확히 전달되는 쉬운말을 찾는다."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "이때, 어깨에 힘을 뺀다. 지레 겁먹게하는 용어(불필요한 한문투)를 피하고, 가능하면 쉬운말을 찾는다."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "전문용어 하나에 쉬운 한글용어 하나가 일대일 대응일 필요가 없이, 상황에 따라서 다양하게 풀어쓸 수 있다. 중요한 것은 의미의 명확한 전개."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "원문 전문용어는 해당 우리말 다음에 괄호안에 항상 따라붙인다."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "도저히 우리말을 찾을 수 없을 땐, 소리나는대로 쓰고 괄호안에 원문 전문용어를 따라붙인다."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "기존의 권위에 얽매이지 않는다. 기존 용어사전이나 이미 널리퍼진 용어지만 쉽지않다면, 보다 쉬운 전문용어를 찾고 실험한다."
-                                    }),
-                                JsxRuntime.jsx("li", {
-                                      children: "쉬운말은 순수 우리말을 뜻하지 않는다. 외래어라도 널리 쉽게 받아들여진다면 사용한다."
-                                    })
-                              ]
+                        JsxRuntime.jsx("li", {
+                              children: "전문용어의 의미를 정확히 이해하도록 한다."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "그 의미가 정확히 전달되는 쉬운말을 찾는다."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "이때, 어깨에 힘을 뺀다. 지레 겁먹게하는 용어(불필요한 한문투)를 피하고, 가능하면 쉬운말을 찾는다."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "전문용어 하나에 쉬운 한글용어 하나가 일대일 대응일 필요가 없이, 상황에 따라서 다양하게 풀어쓸 수 있다. 중요한 것은 의미의 명확한 전개."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "원문 전문용어는 해당 우리말 다음에 괄호안에 항상 따라붙인다."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "도저히 우리말을 찾을 수 없을 땐, 소리나는대로 쓰고 괄호안에 원문 전문용어를 따라붙인다."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "기존의 권위에 얽매이지 않는다. 기존 용어사전이나 이미 널리퍼진 용어지만 쉽지않다면, 보다 쉬운 전문용어를 찾고 실험한다."
+                            }),
+                        JsxRuntime.jsx("li", {
+                              children: "쉬운말은 순수 우리말을 뜻하지 않는다. 외래어라도 널리 쉽게 받아들여진다면 사용한다."
                             })
                       ]
                     })

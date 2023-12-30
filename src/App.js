@@ -7,6 +7,7 @@ import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
 import * as Profile from "./Profile.js";
 import * as SignOut from "./SignOut.js";
+import * as Colophon from "./Colophon.js";
 import * as Firebase from "./Firebase.js";
 import * as NewJargon from "./NewJargon.js";
 import * as Reactfire from "reactfire";
@@ -104,6 +105,9 @@ function App(props) {
     var tmp$1;
     if (path) {
       switch (path.hd) {
+        case "colophon" :
+            tmp$1 = path.tl ? "404" : JsxRuntime.jsx(Colophon.make, {});
+            break;
         case "jargon" :
             var match$1 = path.tl;
             tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(JargonPost.make, {
