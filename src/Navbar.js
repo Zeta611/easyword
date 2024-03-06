@@ -54,7 +54,7 @@ function Navbar(props) {
                                                       "배경/원칙"
                                                     ],
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/why");
+                                                        RescriptReactRouter.push("/why");
                                                       })
                                                   })
                                             }),
@@ -67,7 +67,7 @@ function Navbar(props) {
                                                       "용어제안"
                                                     ],
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/new-jargon");
+                                                        RescriptReactRouter.push("/new-jargon");
                                                       })
                                                   })
                                             }),
@@ -80,7 +80,7 @@ function Navbar(props) {
                                                       "제작기"
                                                     ],
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/colophon");
+                                                        RescriptReactRouter.push("/colophon");
                                                       })
                                                   })
                                             })
@@ -106,7 +106,7 @@ function Navbar(props) {
                                   }),
                               className: "btn btn-ghost text-xl lg:hidden",
                               onClick: (function (param) {
-                                  RescriptReactRouter.replace("/");
+                                  RescriptReactRouter.push("/");
                                 })
                             }),
                         JsxRuntime.jsx("button", {
@@ -124,7 +124,7 @@ function Navbar(props) {
                                   }),
                               className: "btn btn-ghost text-xl hidden lg:flex",
                               onClick: (function (param) {
-                                  RescriptReactRouter.replace("/");
+                                  RescriptReactRouter.push("/");
                                 })
                             })
                       ],
@@ -145,7 +145,7 @@ function Navbar(props) {
                                                 className: "grid justify-items-center"
                                               }),
                                           onClick: (function (param) {
-                                              RescriptReactRouter.replace("/why");
+                                              RescriptReactRouter.push("/why");
                                             })
                                         })
                                   }),
@@ -161,7 +161,7 @@ function Navbar(props) {
                                                 className: "grid justify-items-center"
                                               }),
                                           onClick: (function (param) {
-                                              RescriptReactRouter.replace("/new-jargon");
+                                              RescriptReactRouter.push("/new-jargon");
                                             })
                                         })
                                   }),
@@ -177,7 +177,7 @@ function Navbar(props) {
                                                 className: "grid justify-items-center"
                                               }),
                                           onClick: (function (param) {
-                                              RescriptReactRouter.replace("/colophon");
+                                              RescriptReactRouter.push("/colophon");
                                             })
                                         })
                                   })
@@ -220,7 +220,7 @@ function Navbar(props) {
                                                       children: JsxRuntime.jsx("button", {
                                                             children: "내 프로필",
                                                             onClick: (function (param) {
-                                                                RescriptReactRouter.replace("/profile");
+                                                                RescriptReactRouter.push("/profile");
                                                               })
                                                           })
                                                     }),
@@ -228,7 +228,7 @@ function Navbar(props) {
                                                       children: JsxRuntime.jsx("button", {
                                                             children: "로그아웃",
                                                             onClick: (function (param) {
-                                                                RescriptReactRouter.replace("/logout");
+                                                                RescriptReactRouter.push("/logout");
                                                               })
                                                           })
                                                     })
@@ -237,7 +237,7 @@ function Navbar(props) {
                                               children: JsxRuntime.jsx("button", {
                                                     children: "로그인",
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/login");
+                                                        RescriptReactRouter.push("/login");
                                                       })
                                                   })
                                             }),

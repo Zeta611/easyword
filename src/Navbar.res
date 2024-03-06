@@ -32,19 +32,19 @@ let make = () => {
           tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[9rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/why")}>
+            <button onClick={_ => RescriptReactRouter.push("/why")}>
               <Heroicons.Solid.StarIcon className="h-4 w-4" />
               {"배경/원칙"->React.string}
             </button>
           </li>
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
+            <button onClick={_ => RescriptReactRouter.push("/new-jargon")}>
               <Heroicons.Outline.PencilSquareIcon className="h-4 w-4" />
               {"용어제안"->React.string}
             </button>
           </li>
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
+            <button onClick={_ => RescriptReactRouter.push("/colophon")}>
               <Heroicons.Outline.WrenchIcon className="h-4 w-4" />
               {"제작기"->React.string}
             </button>
@@ -52,7 +52,7 @@ let make = () => {
         </ul>
       </div>
       <button
-        className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.replace("/")}>
+        className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
           <span> {"쉬운 전문용어"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
@@ -60,7 +60,7 @@ let make = () => {
       </button>
       <button
         className="btn btn-ghost text-xl hidden lg:flex"
-        onClick={_ => RescriptReactRouter.replace("/")}>
+        onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
           <span> {"쉬운 전문용어"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
@@ -70,7 +70,7 @@ let make = () => {
     <div className="navbar-center hidden md:flex text-sm">
       <ul className="menu menu-horizontal px-1">
         <li>
-          <button onClick={_ => RescriptReactRouter.replace("/why")}>
+          <button onClick={_ => RescriptReactRouter.push("/why")}>
             <div className="grid justify-items-center">
               <Heroicons.Solid.StarIcon className="h-6 w-6 hidden sm:flex" />
               {"배경/원칙"->React.string}
@@ -78,7 +78,7 @@ let make = () => {
           </button>
         </li>
         <li>
-          <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
+          <button onClick={_ => RescriptReactRouter.push("/new-jargon")}>
             <div className="grid justify-items-center">
               <Heroicons.Outline.PencilSquareIcon className="h-6 w-6 hidden sm:flex" />
               {"용어제안"->React.string}
@@ -86,7 +86,7 @@ let make = () => {
           </button>
         </li>
         <li>
-          <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
+          <button onClick={_ => RescriptReactRouter.push("/colophon")}>
             <div className="grid justify-items-center">
               <Heroicons.Outline.WrenchIcon className="h-6 w-6 hidden sm:flex" />
               {"제작기"->React.string}
@@ -121,19 +121,19 @@ let make = () => {
           {if signedIn {
             <>
               <li>
-                <button onClick={_ => RescriptReactRouter.replace("/profile")}>
+                <button onClick={_ => RescriptReactRouter.push("/profile")}>
                   {"내 프로필"->React.string}
                 </button>
               </li>
               <li>
-                <button onClick={_ => RescriptReactRouter.replace("/logout")}>
+                <button onClick={_ => RescriptReactRouter.push("/logout")}>
                   {"로그아웃"->React.string}
                 </button>
               </li>
             </>
           } else {
             <li>
-              <button onClick={_ => RescriptReactRouter.replace("/login")}>
+              <button onClick={_ => RescriptReactRouter.push("/login")}>
                 {"로그인"->React.string}
               </button>
             </li>
