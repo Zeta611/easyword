@@ -46,39 +46,59 @@ function Navbar(props) {
                                 JsxRuntime.jsxs("ul", {
                                       children: [
                                         JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsx("button", {
-                                                    children: "홈",
+                                              children: JsxRuntime.jsxs("button", {
+                                                    children: [
+                                                      JsxRuntime.jsx(Outline.HomeIcon, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "홈"
+                                                    ],
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.replace("/");
                                                       })
                                                   })
                                             }),
                                         JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsx("button", {
-                                                    children: "용어제안",
+                                              children: JsxRuntime.jsxs("button", {
+                                                    children: [
+                                                      JsxRuntime.jsx(Outline.PencilSquareIcon, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "용어제안"
+                                                    ],
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.replace("/new-jargon");
                                                       })
                                                   })
                                             }),
                                         JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsx("button", {
-                                                    children: "배경/원칙",
-                                                    onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/why");
-                                                      })
-                                                  })
-                                            }),
-                                        JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsx("button", {
-                                                    children: "제작기",
+                                              children: JsxRuntime.jsxs("button", {
+                                                    children: [
+                                                      JsxRuntime.jsx(Outline.WrenchIcon, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "제작기"
+                                                    ],
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.replace("/colophon");
                                                       })
                                                   })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsxs("button", {
+                                                    children: [
+                                                      JsxRuntime.jsx(Solid.StarIcon, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "배경/원칙"
+                                                    ],
+                                                    onClick: (function (param) {
+                                                        RescriptReactRouter.replace("/why");
+                                                      })
+                                                  })
                                             })
                                       ],
-                                      className: "menu menu-compact dropdown-content p-2 w-[7rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
+                                      className: "menu menu-compact dropdown-content p-2 w-[9rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box",
                                       tabIndex: 0
                                     })
                               ],
@@ -200,14 +220,14 @@ function Navbar(props) {
                         jargonsCount !== undefined ? JsxRuntime.jsxs("div", {
                                 children: [
                                   JsxRuntime.jsx(Outline.ChartBarSquareIcon, {
-                                        className: "h-5 w-5 hidden sm:flex"
+                                        className: "h-5 w-5"
                                       }),
                                   JsxRuntime.jsx("div", {
                                         children: "총 " + String(jargonsCount) + "개",
                                         className: "ml-0"
                                       })
                                 ],
-                                className: "flex items-center sm:gap-1 text-xs text-teal-800"
+                                className: "items-center sm:gap-1 text-xs text-teal-800 hidden sm:flex"
                               }) : null,
                         JsxRuntime.jsxs("div", {
                               children: [

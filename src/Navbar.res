@@ -30,23 +30,29 @@ let make = () => {
         </label>
         <ul
           tabIndex={0}
-          className="menu menu-compact dropdown-content p-2 w-[7rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
+          className="menu menu-compact dropdown-content p-2 w-[9rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/")}> {"홈"->React.string} </button>
+            <button onClick={_ => RescriptReactRouter.replace("/")}>
+              <Heroicons.Outline.HomeIcon className="h-4 w-4" />
+              {"홈"->React.string}
+            </button>
           </li>
           <li>
             <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
+              <Heroicons.Outline.PencilSquareIcon className="h-4 w-4" />
               {"용어제안"->React.string}
             </button>
           </li>
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/why")}>
-              {"배경/원칙"->React.string}
+            <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
+              <Heroicons.Outline.WrenchIcon className="h-4 w-4" />
+              {"제작기"->React.string}
             </button>
           </li>
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
-              {"제작기"->React.string}
+            <button onClick={_ => RescriptReactRouter.replace("/why")}>
+              <Heroicons.Solid.StarIcon className="h-4 w-4" />
+              {"배경/원칙"->React.string}
             </button>
           </li>
         </ul>
@@ -107,8 +113,8 @@ let make = () => {
       {switch jargonsCount {
       | None => React.null
       | Some(jargonsCount) =>
-        <div className="flex items-center sm:gap-1 text-xs text-teal-800">
-          <Heroicons.Outline.ChartBarSquareIcon className="h-5 w-5 hidden sm:flex" />
+        <div className="items-center sm:gap-1 text-xs text-teal-800 hidden sm:flex">
+          <Heroicons.Outline.ChartBarSquareIcon className="h-5 w-5" />
           <div className="ml-0"> {`총 ${jargonsCount->Int.toString}개`->React.string} </div>
         </div>
       }}

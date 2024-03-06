@@ -43,7 +43,8 @@ let make = () => {
 
   open Heroicons
   <div className="grid p-5 text-sm">
-    <div className="flex items-center space-x-2 sticky top-[5.5rem] -mt-5 mb-5 z-40 bg-base-100">
+    <div
+      className="flex items-center space-x-2 sticky top-[4rem] lg:top-[5.5rem] -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
         <SearchBar query caseSensitivity setCaseSensitivity onChange />
       </div>
