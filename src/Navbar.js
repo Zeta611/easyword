@@ -40,7 +40,7 @@ function Navbar(props) {
                                       children: JsxRuntime.jsx(Solid.Bars3Icon, {
                                             className: "h-5 w-5"
                                           }),
-                                      className: "btn btn-ghost lg:hidden",
+                                      className: "btn btn-ghost md:hidden",
                                       tabIndex: 0
                                     }),
                                 JsxRuntime.jsxs("ul", {
@@ -184,7 +184,7 @@ function Navbar(props) {
                             ],
                             className: "menu menu-horizontal px-1"
                           }),
-                      className: "navbar-center hidden lg:flex"
+                      className: "navbar-center hidden md:flex text-sm"
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [

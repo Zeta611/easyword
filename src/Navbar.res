@@ -25,7 +25,7 @@ let make = () => {
   <div className="navbar sticky top-0 z-50 bg-base-100">
     <div className="navbar-start">
       <div className="dropdown dropdown-hover">
-        <label tabIndex={0} className="btn btn-ghost lg:hidden">
+        <label tabIndex={0} className="btn btn-ghost md:hidden">
           <Heroicons.Solid.Bars3Icon className="h-5 w-5" />
         </label>
         <ul
@@ -67,7 +67,7 @@ let make = () => {
         </div>
       </button>
     </div>
-    <div className="navbar-center hidden lg:flex">
+    <div className="navbar-center hidden md:flex text-sm">
       <ul className="menu menu-horizontal px-1">
         <li>
           <button onClick={_ => RescriptReactRouter.replace("/why")}>
