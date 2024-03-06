@@ -32,9 +32,9 @@ let make = () => {
           tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[9rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
-            <button onClick={_ => RescriptReactRouter.replace("/")}>
-              <Heroicons.Outline.HomeIcon className="h-4 w-4" />
-              {"홈"->React.string}
+            <button onClick={_ => RescriptReactRouter.replace("/why")}>
+              <Heroicons.Solid.StarIcon className="h-4 w-4" />
+              {"배경/원칙"->React.string}
             </button>
           </li>
           <li>
@@ -47,12 +47,6 @@ let make = () => {
             <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
               <Heroicons.Outline.WrenchIcon className="h-4 w-4" />
               {"제작기"->React.string}
-            </button>
-          </li>
-          <li>
-            <button onClick={_ => RescriptReactRouter.replace("/why")}>
-              <Heroicons.Solid.StarIcon className="h-4 w-4" />
-              {"배경/원칙"->React.string}
             </button>
           </li>
         </ul>
@@ -76,10 +70,10 @@ let make = () => {
     <div className="navbar-center hidden lg:flex">
       <ul className="menu menu-horizontal px-1">
         <li>
-          <button onClick={_ => RescriptReactRouter.replace("/")}>
+          <button onClick={_ => RescriptReactRouter.replace("/why")}>
             <div className="grid justify-items-center">
-              <Heroicons.Outline.HomeIcon className="h-6 w-6 hidden sm:flex" />
-              {"홈"->React.string}
+              <Heroicons.Solid.StarIcon className="h-6 w-6 hidden sm:flex" />
+              {"배경/원칙"->React.string}
             </div>
           </button>
         </li>
@@ -96,14 +90,6 @@ let make = () => {
             <div className="grid justify-items-center">
               <Heroicons.Outline.WrenchIcon className="h-6 w-6 hidden sm:flex" />
               {"제작기"->React.string}
-            </div>
-          </button>
-        </li>
-        <li>
-          <button onClick={_ => RescriptReactRouter.replace("/why")}>
-            <div className="grid justify-items-center">
-              <Heroicons.Solid.StarIcon className="h-6 w-6 hidden sm:flex" />
-              {"배경/원칙"->React.string}
             </div>
           </button>
         </li>

@@ -48,13 +48,13 @@ function Navbar(props) {
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
-                                                      JsxRuntime.jsx(Outline.HomeIcon, {
+                                                      JsxRuntime.jsx(Solid.StarIcon, {
                                                             className: "h-4 w-4"
                                                           }),
-                                                      "홈"
+                                                      "배경/원칙"
                                                     ],
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/");
+                                                        RescriptReactRouter.replace("/why");
                                                       })
                                                   })
                                             }),
@@ -81,19 +81,6 @@ function Navbar(props) {
                                                     ],
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.replace("/colophon");
-                                                      })
-                                                  })
-                                            }),
-                                        JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsxs("button", {
-                                                    children: [
-                                                      JsxRuntime.jsx(Solid.StarIcon, {
-                                                            className: "h-4 w-4"
-                                                          }),
-                                                      "배경/원칙"
-                                                    ],
-                                                    onClick: (function (param) {
-                                                        RescriptReactRouter.replace("/why");
                                                       })
                                                   })
                                             })
@@ -150,15 +137,15 @@ function Navbar(props) {
                                     children: JsxRuntime.jsx("button", {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
-                                                  JsxRuntime.jsx(Outline.HomeIcon, {
+                                                  JsxRuntime.jsx(Solid.StarIcon, {
                                                         className: "h-6 w-6 hidden sm:flex"
                                                       }),
-                                                  "홈"
+                                                  "배경/원칙"
                                                 ],
                                                 className: "grid justify-items-center"
                                               }),
                                           onClick: (function (param) {
-                                              RescriptReactRouter.replace("/");
+                                              RescriptReactRouter.replace("/why");
                                             })
                                         })
                                   }),
@@ -191,22 +178,6 @@ function Navbar(props) {
                                               }),
                                           onClick: (function (param) {
                                               RescriptReactRouter.replace("/colophon");
-                                            })
-                                        })
-                                  }),
-                              JsxRuntime.jsx("li", {
-                                    children: JsxRuntime.jsx("button", {
-                                          children: JsxRuntime.jsxs("div", {
-                                                children: [
-                                                  JsxRuntime.jsx(Solid.StarIcon, {
-                                                        className: "h-6 w-6 hidden sm:flex"
-                                                      }),
-                                                  "배경/원칙"
-                                                ],
-                                                className: "grid justify-items-center"
-                                              }),
-                                          onClick: (function (param) {
-                                              RescriptReactRouter.replace("/why");
                                             })
                                         })
                                   })
