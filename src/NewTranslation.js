@@ -70,8 +70,8 @@ function NewTranslation(props) {
   var addTranslation = Functions.httpsCallable(functions, "addTranslation");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (korean.length < 3) {
-      window.alert("용어는 세 글자 이상이어야 해요");
+    if (korean.length < 1) {
+      window.alert("번역을 입력해주세요");
       return ;
     } else if (signedIn) {
       if (user == null) {

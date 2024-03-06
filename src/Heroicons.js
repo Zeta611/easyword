@@ -9,11 +9,14 @@ var ArrowUpIcon = {};
 
 var Bars3Icon = {};
 
+var StarIcon = {};
+
 var Solid = {
   ChevronDownIcon: ChevronDownIcon,
   ArrowDownIcon: ArrowDownIcon,
   ArrowUpIcon: ArrowUpIcon,
-  Bars3Icon: Bars3Icon
+  Bars3Icon: Bars3Icon,
+  StarIcon: StarIcon
 };
 
 var UserCircleIcon = {};
@@ -22,10 +25,19 @@ var ChatBubbleLeftIcon = {};
 
 var ChartBarSquareIcon = {};
 
+var HomeIcon = {};
+
+var PencilSquareIcon = {};
+
+var WrenchIcon = {};
+
 var Outline = {
   UserCircleIcon: UserCircleIcon,
   ChatBubbleLeftIcon: ChatBubbleLeftIcon,
-  ChartBarSquareIcon: ChartBarSquareIcon
+  ChartBarSquareIcon: ChartBarSquareIcon,
+  HomeIcon: HomeIcon,
+  PencilSquareIcon: PencilSquareIcon,
+  WrenchIcon: WrenchIcon
 };
 
 export {

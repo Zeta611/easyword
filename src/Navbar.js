@@ -128,7 +128,15 @@ function Navbar(props) {
                             children: [
                               JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
-                                          children: "홈",
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Outline.HomeIcon, {
+                                                        className: "h-6 w-6 hidden sm:flex"
+                                                      }),
+                                                  "홈"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
                                           onClick: (function (param) {
                                               RescriptReactRouter.replace("/");
                                             })
@@ -136,7 +144,15 @@ function Navbar(props) {
                                   }),
                               JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
-                                          children: "용어제안",
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Outline.PencilSquareIcon, {
+                                                        className: "h-6 w-6 hidden sm:flex"
+                                                      }),
+                                                  "용어제안"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
                                           onClick: (function (param) {
                                               RescriptReactRouter.replace("/new-jargon");
                                             })
@@ -144,17 +160,33 @@ function Navbar(props) {
                                   }),
                               JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
-                                          children: "배경/원칙",
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Outline.WrenchIcon, {
+                                                        className: "h-6 w-6 hidden sm:flex"
+                                                      }),
+                                                  "제작기"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
                                           onClick: (function (param) {
-                                              RescriptReactRouter.replace("/why");
+                                              RescriptReactRouter.replace("/colophon");
                                             })
                                         })
                                   }),
                               JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
-                                          children: "제작기",
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Solid.StarIcon, {
+                                                        className: "h-6 w-6 hidden sm:flex"
+                                                      }),
+                                                  "배경/원칙"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
                                           onClick: (function (param) {
-                                              RescriptReactRouter.replace("/colophon");
+                                              RescriptReactRouter.replace("/why");
                                             })
                                         })
                                   })

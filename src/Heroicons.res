@@ -17,6 +17,11 @@ module Solid = {
     @module("@heroicons/react/24/solid") @react.component
     external make: (~className: string=?) => React.element = "Bars3Icon"
   }
+
+  module StarIcon = {
+    @module("@heroicons/react/24/solid") @react.component
+    external make: (~className: string=?) => React.element = "StarIcon"
+  }
 }
 
 module Outline = {
@@ -33,5 +38,20 @@ module Outline = {
   module ChartBarSquareIcon = {
     @module("@heroicons/react/24/outline") @react.component
     external make: (~className: string=?) => React.element = "ChartBarSquareIcon"
+  }
+
+  module HomeIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "HomeIcon"
+  }
+
+  module PencilSquareIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "PencilSquareIcon"
+  }
+
+  module WrenchIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "WrenchIcon"
   }
 }

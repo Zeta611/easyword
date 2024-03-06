@@ -70,21 +70,35 @@ let make = () => {
     <div className="navbar-center hidden lg:flex">
       <ul className="menu menu-horizontal px-1">
         <li>
-          <button onClick={_ => RescriptReactRouter.replace("/")}> {"홈"->React.string} </button>
-        </li>
-        <li>
-          <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
-            {"용어제안"->React.string}
+          <button onClick={_ => RescriptReactRouter.replace("/")}>
+            <div className="grid justify-items-center">
+              <Heroicons.Outline.HomeIcon className="h-6 w-6 hidden sm:flex" />
+              {"홈"->React.string}
+            </div>
           </button>
         </li>
         <li>
-          <button onClick={_ => RescriptReactRouter.replace("/why")}>
-            {"배경/원칙"->React.string}
+          <button onClick={_ => RescriptReactRouter.replace("/new-jargon")}>
+            <div className="grid justify-items-center">
+              <Heroicons.Outline.PencilSquareIcon className="h-6 w-6 hidden sm:flex" />
+              {"용어제안"->React.string}
+            </div>
           </button>
         </li>
         <li>
           <button onClick={_ => RescriptReactRouter.replace("/colophon")}>
-            {"제작기"->React.string}
+            <div className="grid justify-items-center">
+              <Heroicons.Outline.WrenchIcon className="h-6 w-6 hidden sm:flex" />
+              {"제작기"->React.string}
+            </div>
+          </button>
+        </li>
+        <li>
+          <button onClick={_ => RescriptReactRouter.replace("/why")}>
+            <div className="grid justify-items-center">
+              <Heroicons.Solid.StarIcon className="h-6 w-6 hidden sm:flex" />
+              {"배경/원칙"->React.string}
+            </div>
           </button>
         </li>
       </ul>

@@ -46,8 +46,10 @@ let make = () => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if english->String.length < 3 || (!withoutKorean && korean->String.length < 3) {
+    if english->String.length < 3 {
       Window.alert("용어는 세 글자 이상이어야 해요")
+    } else if !withoutKorean && korean->String.length < 1 {
+      Window.alert("번역을 입력해주세요")
     } else if signedIn {
       switch user->Js.Nullable.toOption {
       | Some(_) =>

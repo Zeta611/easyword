@@ -69,8 +69,11 @@ function NewJargon(props) {
   var addJargon = Functions.httpsCallable(functions, "addJargon");
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (english.length < 3 || !withoutKorean && korean.length < 3) {
+    if (english.length < 3) {
       window.alert("용어는 세 글자 이상이어야 해요");
+      return ;
+    } else if (!withoutKorean && korean.length < 1) {
+      window.alert("번역을 입력해주세요");
       return ;
     } else if (signedIn) {
       if (user == null) {
