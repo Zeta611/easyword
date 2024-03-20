@@ -95,7 +95,7 @@ function Navbar(props) {
                               children: JsxRuntime.jsxs("div", {
                                     children: [
                                       JsxRuntime.jsx("span", {
-                                            children: "쉬운 전문용어"
+                                            children: "쉬운 전문용어 𝛼"
                                           }),
                                       JsxRuntime.jsx("span", {
                                             children: "컴퓨터과학/컴퓨터공학",
@@ -113,7 +113,7 @@ function Navbar(props) {
                               children: JsxRuntime.jsxs("div", {
                                     children: [
                                       JsxRuntime.jsx("span", {
-                                            children: "쉬운 전문용어"
+                                            children: "쉬운 전문용어 𝛼"
                                           }),
                                       JsxRuntime.jsx("span", {
                                             children: "컴퓨터과학/컴퓨터공학",
