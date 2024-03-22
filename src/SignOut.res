@@ -2,7 +2,7 @@ open Firebase
 
 @react.component
 let make = () => {
-  let auth = useFirebaseApp()->getAuth
+  let auth = useAuth()
 
   React.useEffect(() => {
     let signOut = async () => {

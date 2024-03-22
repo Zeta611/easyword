@@ -21,7 +21,7 @@ function Navbar(props) {
   var firestore = Reactfire.useFirestore();
   var jargonsCollection = Firestore.collection(firestore, "jargons");
   React.useEffect((function () {
-          var countJargons = async function () {
+          var countJargons = async function (param) {
             var snapshot = await Firestore.getCountFromServer(jargonsCollection);
             var count = snapshot.data().count;
             return setJargonsCount(function (param) {

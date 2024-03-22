@@ -1,25 +1,9 @@
-module SignInWrapper = {
-  @react.component
-  let make = (~children: React.element) => {
-    let {status, data: signInData} = Firebase.useSigninCheck()
-
-    switch status {
-    | #loading =>
-      <div className="h-screen grid justify-center content-center">
-        <Loader />
-      </div>
-    | #success =>
-      <SignInContext.Provider value={signInData->Option.getExn}> children </SignInContext.Provider>
-    }
-  }
-}
-
 @react.component
 let make = () => {
   open Firebase
 
   let app = useFirebaseApp()
-  let auth = app->getAuth
+  let auth = app->Auth.getAuth
 
   // let () = %raw(`self.FIREBASE_APPCHECK_DEBUG_TOKEN = true`)
 

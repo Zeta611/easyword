@@ -51,7 +51,7 @@ function JargonCard(props) {
   var jargon = match$2.data;
   var commentsCollection = Firestore.collection(firestore, "jargons/" + id + "/comments");
   React.useEffect((function () {
-          var countComments = async function () {
+          var countComments = async function (param) {
             var snapshot = await Firestore.getCountFromServer(commentsCollection);
             var count = snapshot.data().count;
             return setCommentsCount(function (param) {

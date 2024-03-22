@@ -12,10 +12,22 @@
   "suffix": ".js",
   "jsx": { "version": 4, "mode": "automatic" },
   "bs-dependencies": [
-    "@rescript/react"
+    "@rescript/react",
+    "rescript-apollo-client",
+    "@reasonml-community/graphql-ppx"
   ],
   "warnings": {
     "error" : "+101"
   },
-  "bsc-flags": ["-open Belt"]
+  "bsc-flags": ["-open Belt"],
+  "ppx-flags": ["@reasonml-community/graphql-ppx/ppx"],
+  "graphql": {
+    "apolloMode": true,
+    "extendMutation": "ApolloClient.GraphQL_PPX.ExtendMutation",
+    "extendQuery": "ApolloClient.GraphQL_PPX.ExtendQuery",
+    "extendSubscription": "ApolloClient.GraphQL_PPX.ExtendSubscription",
+    "templateTagReturnType": "ApolloClient.GraphQL_PPX.templateTagReturnType",
+    "templateTagImport": "gql",
+    "templateTagLocation": "@apollo/client"
+  }
 }
