@@ -13,6 +13,7 @@ import * as NewJargon from "./NewJargon.js";
 import * as Reactfire from "reactfire";
 import * as JargonPost from "./JargonPost.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as ApolloWrapper from "./ApolloWrapper.js";
 import * as SignInWrapper from "./SignInWrapper.js";
 import * as Auth from "firebase/auth";
 import * as NewTranslation from "./NewTranslation.js";
@@ -126,7 +127,9 @@ function App(props) {
                     children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
                           sdk: Caml_option.valFromOption(firestore),
                           children: JsxRuntime.jsx(SignInWrapper.make, {
-                                children: tmp
+                                children: JsxRuntime.jsx(ApolloWrapper.make, {
+                                      children: tmp
+                                    })
                               })
                         })
                   })

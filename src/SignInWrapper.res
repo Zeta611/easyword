@@ -5,7 +5,8 @@ let make = (~children: React.element) => {
   let {status, data: signInData} = Firebase.useSigninCheck()
   let firestore = useFirestore()
   let auth = useAuth()
-  let (_token, setToken) = React.Uncurried.useState(() => None)
+  let (token, setToken) = React.Uncurried.useState(() => None)
+  Js.log(`token: ${token->Option.getWithDefault("None")}`)
 
   React.useEffect(() => {
     let userDocUnsub = ref(None)
@@ -67,6 +68,8 @@ let make = (~children: React.element) => {
       <Loader />
     </div>
   | #success =>
-    <SignInContext.Provider value={signInData->Option.getExn}> children </SignInContext.Provider>
+    <SignInContext.Provider value={signInData->Option.getExn}>
+      <TokenContext.Provider value={token}> children </TokenContext.Provider>
+    </SignInContext.Provider>
   }
 }

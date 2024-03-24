@@ -6,6 +6,7 @@ import * as Loader from "./Loader.js";
 import * as Js_dict from "../node_modules/rescript/lib/es6/js_dict.js";
 import * as Reactfire from "reactfire";
 import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
+import * as TokenContext from "./TokenContext.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Auth from "firebase/auth";
 import * as JsxRuntime from "react/jsx-runtime";
@@ -19,6 +20,8 @@ function SignInWrapper(props) {
         
       });
   var setToken = match$1[1];
+  var token = match$1[0];
+  console.log("token: " + Belt_Option.getWithDefault(token, "None") + "");
   React.useEffect(function () {
         var userDocUnsub = {
           contents: undefined
@@ -61,7 +64,10 @@ function SignInWrapper(props) {
   if (match.status === "success") {
     return JsxRuntime.jsx(SignInContext.Provider.make, {
                 value: Belt_Option.getExn(match.data),
-                children: props.children
+                children: JsxRuntime.jsx(TokenContext.Provider.make, {
+                      value: token,
+                      children: props.children
+                    })
               });
   } else {
     return JsxRuntime.jsx("div", {

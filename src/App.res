@@ -41,24 +41,27 @@ let make = () => {
         <AuthProvider sdk=auth>
           <FirestoreProvider sdk=firestore>
             <SignInWrapper>
-              {switch url.path {
-              | list{"login"} => <SignIn />
-              | list{"logout"} => <SignOut />
-              | path =>
-                <NavbarContainer>
-                  {switch path {
-                  | list{} => <Home />
-                  | list{"profile"} => <Profile />
-                  | list{"new-jargon"} => <NewJargon />
-                  | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                  | list{"jargon", jargonID} => <JargonPost jargonID />
-                  | list{"why"} => <Why />
-                  | list{"colophon"} => <Colophon />
+              <ApolloWrapper>
+                {switch url.path {
+                | list{"login"} => <SignIn />
+                | list{"logout"} => <SignOut />
 
-                  | _ => React.string("404")
-                  }}
-                </NavbarContainer>
-              }}
+                | path =>
+                  <NavbarContainer>
+                    {switch path {
+                    | list{} => <Home />
+                    | list{"profile"} => <Profile />
+                    | list{"new-jargon"} => <NewJargon />
+                    | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                    | list{"jargon", jargonID} => <JargonPost jargonID />
+                    | list{"why"} => <Why />
+                    | list{"colophon"} => <Colophon />
+
+                    | _ => React.string("404")
+                    }}
+                  </NavbarContainer>
+                }}
+              </ApolloWrapper>
             </SignInWrapper>
           </FirestoreProvider>
         </AuthProvider>
