@@ -1,30 +1,36 @@
-open Firebase
-
-@react.component
-let make = () => {
-  let {signedIn, user} = React.useContext(SignInContext.context)
-
-  let (displayName, setDisplayName) = React.Uncurried.useState(() => "")
-  let handleDisplayNameChange = event => {
-    let value = ReactEvent.Form.currentTarget(event)["value"]
-    setDisplayName(._ => value)
+module DisplayNameMutation = %graphql(`
+  mutation ($uid: String!, $displayName: String!) {
+    update_user_by_pk(pk_columns: {id: $uid}, _set: {display_name: $displayName}) {
+      id
+    }
   }
+`)
 
-  let (email, setEmail) = React.Uncurried.useState(() => "")
+module SignedInProfile = {
+  @react.component
+  let make = (~user: Firebase.User.t) => {
+    open Firebase
+    let firestore = useFirestore()
 
-  let (disabled, setDisabled) = React.Uncurried.useState(() => false)
+    let (mutate, _result) = DisplayNameMutation.use()
 
-  let firestore = useFirestore()
+    let (displayName, setDisplayName) = React.Uncurried.useState(() =>
+      user.displayName->Option.getWithDefault("")
+    )
+    let handleDisplayNameChange = event => {
+      let value = ReactEvent.Form.currentTarget(event)["value"]
+      setDisplayName(._ => value)
+    }
 
-  let handleSubmit = event => {
-    // Prevent a page refresh, we are already listening for updates
-    ReactEvent.Form.preventDefault(event)
+    let (disabled, setDisabled) = React.Uncurried.useState(() => false)
 
-    if displayName->String.length < 3 {
-      Window.alert("필명은 세 글자 이상이어야 해요")
-    } else if signedIn {
-      switch user->Js.Nullable.toOption {
-      | Some({uid, email} as user) =>
+    let handleSubmit = event => {
+      // Prevent a page refresh, we are already listening for updates
+      ReactEvent.Form.preventDefault(event)
+
+      if displayName->String.length <= 0 {
+        Window.alert("필명을 입력해주세요")
+      } else {
         setDisabled(._ => true)
 
         (
@@ -34,48 +40,30 @@ let make = () => {
 
               let docUpdate = {
                 async () => {
-                  let userDocRef = firestore->doc(~path=`users/${uid}`)
+                  let userDocRef = firestore->doc(~path=`users/${user.uid}`)
                   let userDoc = await userDocRef->getDoc
                   if !userDoc.exists(.) {
-                    await userDocRef->setDoc({"displayName": displayName, "email": email})
+                    Js.Console.warn("User document does not exist!")
+                    await userDocRef->setDoc({"displayName": displayName, "email": user.email})
                   } else {
                     await userDocRef->updateDoc({"displayName": displayName})
                   }
                 }
               }()
 
-              (await Js.Promise2.all([authUpdate, docUpdate]))->ignore
+              let dbUpdate =
+                mutate({uid: user.uid, displayName})->Js.Promise2.then(_ => Js.Promise2.resolve())
 
-              setDisabled(._ => false)
+              (await Js.Promise2.all([authUpdate, docUpdate, dbUpdate]))->ignore
             } catch {
-            | e => Js.log(e)
+            | e => Js.Console.warn(e)
             }
+            setDisabled(._ => false)
           }
         )()->ignore
-      | None => RescriptReactRouter.replace("/logout") // Something went wrong
       }
-    } else {
-      RescriptReactRouter.replace("/login")
-    }
-  }
-
-  React.useEffect0(() => {
-    if signedIn {
-      switch user->Js.Nullable.toOption {
-      | Some({displayName, email}) =>
-        setDisplayName(._ => displayName->Option.getWithDefault(""))
-        setEmail(._ => email->Option.getWithDefault(""))
-
-      | None => RescriptReactRouter.replace("/logout") // Something went wrong
-      }
-    } else {
-      RescriptReactRouter.replace("/login")
     }
 
-    None
-  })
-
-  if signedIn {
     <div className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">
       <h1> {"내 정보"->React.string} </h1>
       <form className="mt-8 max-w-md" onSubmit={handleSubmit}>
@@ -97,7 +85,7 @@ let make = () => {
             </label>
             <input
               type_="email"
-              value={email}
+              value={user.email->Option.getWithDefault("")}
               readOnly={true}
               className="input input-bordered input-disabled w-full"
             />
@@ -106,7 +94,17 @@ let make = () => {
         </div>
       </form>
     </div>
-  } else {
-    React.null
+  }
+}
+
+@react.component
+let make = () => {
+  let {signedIn, user} = React.useContext(SignInContext.context)
+  switch (signedIn, user->Js.Nullable.toOption) {
+  | (false, _) | (_, None) => {
+      RescriptReactRouter.replace("/login")
+      React.null
+    }
+  | (true, Some(user)) => <SignedInProfile user />
   }
 }
