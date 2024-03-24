@@ -112,19 +112,19 @@ let make = (~jargonID) => {
     switch (jargons, comments) {
     | (None, _) | (_, None) => React.null
     | (Some({english}: Jargon.t), Some(comments)) => {
-        let (roots, commentNodeTable) = constructForest(comments)
+        let (roots, _commentNodeTable) = constructForest(comments)
         <div className="px-3 max-w-xl mx-auto md:max-w-4xl text-sm">
           <main className="flex flex-col p-5 gap-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
             // Jargon
             <div className="flex flex-col gap-1">
-              <div className="text-3xl font-bold"> {english->React.string} </div>
+              <div className="text-2xl font-bold"> {english->React.string} </div>
               // <div className="text-2xl font-medium"> {korean->React.string} </div>
             </div>
-            // Poll
-            <Poll jargonID />
+            // Translation
+            <Translation jargonID />
             // New translation
             <button
-              className="btn btn-primary btn-outline"
+              className="btn btn-primary"
               onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
               {"새 번역 제안하기"->React.string}
             </button>

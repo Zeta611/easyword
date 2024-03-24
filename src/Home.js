@@ -39,7 +39,6 @@ function Home(props) {
   var match$2 = React.useState(function () {
         return true;
       });
-  var caseSensitivity = match$2[0];
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setQuery(function (param) {
@@ -53,8 +52,6 @@ function Home(props) {
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx(Home$SearchBar, {
                                     query: query,
-                                    caseSensitivity: caseSensitivity,
-                                    setCaseSensitivity: match$2[1],
                                     onChange: onChange
                                   }),
                               className: "flex-auto"
@@ -160,7 +157,7 @@ function Home(props) {
                 JsxRuntime.jsx(JargonList.make, {
                       order: order,
                       query: query,
-                      caseSensitivity: caseSensitivity
+                      caseSensitivity: match$2[0]
                     })
               ],
               className: "grid p-5 text-sm"

@@ -1,6 +1,6 @@
 module SearchBar = {
   @react.component
-  let make = (~query, ~caseSensitivity, ~setCaseSensitivity, ~onChange) => {
+  let make = (~query, ~onChange) => {
     <div className="relative flex place-items-center gap-1">
       <input
         type_="search"
@@ -34,7 +34,7 @@ let make = () => {
     (Chrono, #desc)
   })
 
-  let (caseSensitivity, setCaseSensitivity) = React.Uncurried.useState(() => true)
+  let (caseSensitivity, _setCaseSensitivity) = React.Uncurried.useState(() => true)
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
@@ -46,7 +46,7 @@ let make = () => {
     <div
       className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.22rem] -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
-        <SearchBar query caseSensitivity setCaseSensitivity onChange />
+        <SearchBar query onChange />
       </div>
       <div className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
         <label

@@ -21,7 +21,7 @@
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@reasonml-community/graphql-ppx": "^1.2.3",
-    "daisyui": "^2.50.0",
+    "daisyui": "^4.8.0",
     "firebase": "^9.16.0",
     "graphql": "^16.8.1",
     "react": "^18.2.0",
