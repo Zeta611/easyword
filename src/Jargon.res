@@ -32,6 +32,6 @@ type addTranslation = {id: string, korean: string, comment: string}
 
 type vote = {jargonID: string, translations: array<string>}
 
-type axis = English /* | Korean */ | Chrono
-type direction = [#asc | #desc]
-type order = (axis, direction)
+type axis = English | Chrono
+type direction<'a> = [> #asc | #desc] as 'a
+type order<'a> = (axis, direction<'a>)
