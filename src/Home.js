@@ -13,13 +13,15 @@ function Home(props) {
   var setQuery = match[1];
   var query = match[0];
   var match$1 = React.useState(function () {
-        return [
-                /* Chrono */1,
-                "desc"
-              ];
+        return /* Chrono */1;
       });
-  var setOrder = match$1[1];
-  var order = match$1[0];
+  var setAxis = match$1[1];
+  var axis = match$1[0];
+  var match$2 = React.useState(function () {
+        return "desc";
+      });
+  var setDirection = match$2[1];
+  var direction = match$2[0];
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setQuery(function (param) {
@@ -41,14 +43,14 @@ function Home(props) {
                               children: [
                                 JsxRuntime.jsxs("label", {
                                       children: [
-                                        order[0] ? null : (
-                                            order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
+                                        axis ? null : (
+                                            direction === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
                                                     className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
                                                   }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
                                                     className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
                                                   })
                                           ),
-                                        order[0] ? "최근순" : "ABC순",
+                                        axis ? "최근순" : "ABC순",
                                         JsxRuntime.jsx(Solid.ChevronDownIcon, {
                                               className: "ml-2 -mr-1 h-5 w-5"
                                             })
@@ -56,27 +58,17 @@ function Home(props) {
                                       className: "btn btn-primary",
                                       tabIndex: 0,
                                       onClick: (function (param) {
-                                          var lang = order[0];
-                                          if (lang) {
-                                            return setOrder(function (param) {
-                                                        return [
-                                                                /* Chrono */1,
-                                                                "desc"
-                                                              ];
+                                          if (axis) {
+                                            return setDirection(function (param) {
+                                                        return "desc";
                                                       });
-                                          } else if (order[1] === "asc") {
-                                            return setOrder(function (param) {
-                                                        return [
-                                                                lang,
-                                                                "desc"
-                                                              ];
+                                          } else if (direction === "asc") {
+                                            return setDirection(function (param) {
+                                                        return "desc";
                                                       });
                                           } else {
-                                            return setOrder(function (param) {
-                                                        return [
-                                                                lang,
-                                                                "asc"
-                                                              ];
+                                            return setDirection(function (param) {
+                                                        return "asc";
                                                       });
                                           }
                                         })
@@ -87,11 +79,11 @@ function Home(props) {
                                               children: JsxRuntime.jsx("button", {
                                                     children: "최근순",
                                                     onClick: (function (param) {
-                                                        setOrder(function (param) {
-                                                              return [
-                                                                      /* Chrono */1,
-                                                                      "desc"
-                                                                    ];
+                                                        setAxis(function (param) {
+                                                              return /* Chrono */1;
+                                                            });
+                                                        setDirection(function (param) {
+                                                              return "desc";
                                                             });
                                                       })
                                                   })
@@ -100,26 +92,21 @@ function Home(props) {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
                                                       "ABC순",
-                                                      order[0] ? null : (
-                                                          order[1] === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-                                                                  className: "-ml-2 mr-1 h-5 w-5 text-primary"
-                                                                }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-                                                                  className: "-ml-2 mr-1 h-5 w-5 text-primary"
-                                                                })
-                                                        )
+                                                      direction === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
+                                                              className: "-ml-2 mr-1 h-5 w-5 text-primary"
+                                                            }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
+                                                              className: "-ml-2 mr-1 h-5 w-5 text-primary"
+                                                            })
                                                     ],
                                                     onClick: (function (param) {
-                                                        setOrder(function (order) {
-                                                              if (order[0] || order[1] !== "asc") {
-                                                                return [
-                                                                        /* English */0,
-                                                                        "asc"
-                                                                      ];
+                                                        setAxis(function (param) {
+                                                              return /* English */0;
+                                                            });
+                                                        setDirection(function (direction) {
+                                                              if (direction === "asc") {
+                                                                return "desc";
                                                               } else {
-                                                                return [
-                                                                        /* English */0,
-                                                                        "desc"
-                                                                      ];
+                                                                return "asc";
                                                               }
                                                             });
                                                       })
@@ -136,7 +123,8 @@ function Home(props) {
                       className: "flex items-center space-x-2 sticky top-[4rem] md:top-[5.75rem] -mt-5 mb-5 z-40 bg-base-100"
                     }),
                 JsxRuntime.jsx(JargonList.make, {
-                      order: order,
+                      axis: axis,
+                      direction: direction,
                       query: query
                     })
               ],

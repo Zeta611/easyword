@@ -5,6 +5,14 @@ type t = {
   timestamp: option<Firebase.Timestamp.t>,
 }
 
+type card = {
+  id: int,
+  name: string,
+  updated_at: Js.Date.t,
+  translations: array<(int, string)>,
+  commentsCount: int,
+}
+
 let joinTranslations = translations =>
   translations
   ->Js.Dict.entries
@@ -33,5 +41,3 @@ type addTranslation = {id: string, korean: string, comment: string}
 type vote = {jargonID: string, translations: array<string>}
 
 type axis = English | Chrono
-type direction<'a> = [> #asc | #desc] as 'a
-type order<'a> = (axis, direction<'a>)
