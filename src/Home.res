@@ -9,18 +9,6 @@ module SearchBar = {
         className="input input-bordered w-full rounded-lg text-sm shadow-lg"
         placeholder="정규식으로 검색해보세요"
       />
-      // {React.cloneElement(
-      //   <div className="flex flex-col text-xs place-items-center tooltip tooltip-bottom">
-      //     {"/re/i"->React.string}
-      //     <input
-      //       type_="checkbox"
-      //       className="checkbox checkbox-secondary"
-      //       checked={caseSensitivity}
-      //       onChange={_ => setCaseSensitivity(._ => !caseSensitivity)}
-      //     />
-      //   </div>,
-      //   {"data-tip": "대소문자 구분 여부"},
-      // )}
     </div>
   }
 }
@@ -44,7 +32,7 @@ let make = () => {
   open Heroicons
   <div className="grid p-5 text-sm">
     <div
-      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.22rem] -mt-5 mb-5 z-40 bg-base-100">
+      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.75rem] -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
         <SearchBar query onChange />
       </div>
@@ -66,7 +54,6 @@ let make = () => {
           }}
           {switch order {
           | (English, _) => "ABC순"->React.string
-          // | (Korean, _) => "한영"->React.string
           | (Chrono, _) => "최근순"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
@@ -79,30 +66,12 @@ let make = () => {
               {"최근순"->React.string}
             </button>
           </li>
-          // <li>
-          //   <button
-          //     onClick={_ =>
-          //       setOrder(.order => {
-          //         switch order {
-          //         | (English, _) | (Chrono, _) | (Korean, #desc) => (Korean, #asc)
-          //         | (Korean, #asc) => (Korean, #desc)
-          //         }
-          //       })}>
-          //     {"한영"->React.string}
-          //     {switch order {
-          //     | (Korean, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-          //     | (Korean, #desc) =>
-          //       <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-          //     | _ => React.null
-          //     }}
-          //   </button>
-          // </li>
           <li>
             <button
               onClick={_ =>
                 setOrder(.order => {
                   switch order {
-                  /* | (Korean, _) */ | (Chrono, _) | (English, #desc) => (English, #asc)
+                  | (Chrono, _) | (English, #desc) => (English, #asc)
                   | (English, #asc) => (English, #desc)
                   }
                 })}>
