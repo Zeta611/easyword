@@ -41,27 +41,32 @@ let make = () => {
         <AuthProvider sdk=auth>
           <FirestoreProvider sdk=firestore>
             <SignInWrapper>
-              <ApolloWrapper>
+              <RelayWrapper>
                 {switch url.path {
                 | list{"login"} => <SignIn />
                 | list{"logout"} => <SignOut />
 
                 | path =>
-                  <NavbarContainer>
-                    {switch path {
-                    | list{} => <Home />
-                    | list{"profile"} => <Profile />
-                    | list{"new-jargon"} => <NewJargon />
-                    | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                    | list{"jargon", jargonID} => <JargonPost jargonID />
-                    | list{"why"} => <Why />
-                    | list{"colophon"} => <Colophon />
+                  <React.Suspense
+                    fallback={<div className="h-screen grid justify-center content-center">
+                      <Loader />
+                    </div>}>
+                    <NavbarContainer>
+                      {switch path {
+                      | list{} => <Home />
+                      | list{"profile"} => <Profile />
+                      | list{"new-jargon"} => <NewJargon />
+                      | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                      | list{"jargon", jargonID} => <JargonPost jargonID />
+                      | list{"why"} => <Why />
+                      | list{"colophon"} => <Colophon />
 
-                    | _ => React.string("404")
-                    }}
-                  </NavbarContainer>
+                      | _ => React.string("404")
+                      }}
+                    </NavbarContainer>
+                  </React.Suspense>
                 }}
-              </ApolloWrapper>
+              </RelayWrapper>
             </SignInWrapper>
           </FirestoreProvider>
         </AuthProvider>

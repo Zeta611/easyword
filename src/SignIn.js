@@ -14,7 +14,7 @@ var uiConfig = {
   signInFlow: "popup",
   signInOptions: [Firebase.Auth.GoogleAuthProvider.providerID],
   callbacks: {
-    signInSuccessWithAuthResult: (function (param) {
+    signInSuccessWithAuthResult: (function () {
         return false;
       })
   }
@@ -32,8 +32,8 @@ function SignIn(props) {
               var email = user.email;
               var displayName = user.displayName;
               var uid = user.uid;
-              ((async function (param) {
-                      var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
+              ((async function () {
+                      var userDocRef = Firestore.doc(firestore, "users/" + uid);
                       await Firestore.setDoc(userDocRef, {
                             displayName: displayName,
                             email: email,
@@ -46,7 +46,7 @@ function SignIn(props) {
                       } else {
                         return RescriptReactRouter.replace("/profile");
                       }
-                    })(undefined));
+                    })());
             }
             
           }

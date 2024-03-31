@@ -83,7 +83,7 @@ function JargonPost$CommentInput(props) {
       setDisabled(function (param) {
             return true;
           });
-      ((async function (param) {
+      ((async function () {
               try {
                 var result = await addComment({
                       jargonID: jargonID,
@@ -103,7 +103,7 @@ function JargonPost$CommentInput(props) {
                 console.log(e);
                 return ;
               }
-            })(undefined));
+            })());
     }
   };
   return JsxRuntime.jsx("form", {
@@ -137,7 +137,7 @@ var CommentInput = {
 function JargonPost(props) {
   var jargonID = props.jargonID;
   var firestore = Reactfire.useFirestore();
-  var jargonDoc = Firestore.doc(firestore, "jargons/" + jargonID + "");
+  var jargonDoc = Firestore.doc(firestore, "jargons/" + jargonID);
   var match = Reactfire.useFirestoreDocData(jargonDoc);
   var jargons = match.data;
   var commentsCollection = Firestore.collection(firestore, "jargons/" + jargonID + "/comments");
@@ -170,7 +170,7 @@ function JargonPost(props) {
                               children: "새 번역 제안하기",
                               className: "btn btn-primary",
                               onClick: (function (param) {
-                                  RescriptReactRouter.replace("/new-translation/" + jargonID + "");
+                                  RescriptReactRouter.replace("/new-translation/" + jargonID);
                                 })
                             }),
                         JsxRuntime.jsx(JargonPost$CommentInput, {

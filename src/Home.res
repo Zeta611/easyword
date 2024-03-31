@@ -7,7 +7,7 @@ let make = () => {
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
-    setQuery(._ => value)
+    setQuery(_ => value)
   }
 
   open Heroicons
@@ -23,9 +23,9 @@ let make = () => {
           className="btn btn-primary"
           onClick={_ => {
             switch (axis, direction) {
-            | (Chrono, _) => setDirection(._ => #desc)
-            | (_, #asc) => setDirection(._ => #desc)
-            | (_, #desc) => setDirection(._ => #asc)
+            | (Chrono, _) => setDirection(_ => #desc)
+            | (_, #asc) => setDirection(_ => #desc)
+            | (_, #desc) => setDirection(_ => #asc)
             }
           }}>
           {switch (axis, direction) {
@@ -45,8 +45,8 @@ let make = () => {
           <li>
             <button
               onClick={_ => {
-                setAxis(._ => Chrono)
-                setDirection(._ => #desc)
+                setAxis(_ => Chrono)
+                setDirection(_ => #desc)
               }}>
               {"최근순"->React.string}
             </button>
@@ -54,8 +54,8 @@ let make = () => {
           <li>
             <button
               onClick={_ => {
-                setAxis(._ => English)
-                setDirection(.direction => {
+                setAxis(_ => English)
+                setDirection(direction => {
                   // If axis was Chrono, the direction was always #desc
                   switch direction {
                   | #asc => #desc
@@ -73,6 +73,11 @@ let make = () => {
         </ul>
       </div>
     </div>
-    <JargonList axis direction={direction->Obj.magic} query />
+    <React.Suspense
+      fallback={<div className="h-screen grid justify-center content-center">
+        <Loader />
+      </div>}>
+      <JargonList axis direction={direction->Obj.magic} query />
+    </React.Suspense>
   </div>
 }

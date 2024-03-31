@@ -6,10 +6,10 @@ type t = {
 }
 
 type card = {
-  id: int,
+  id: string,
   name: string,
   updated_at: Js.Date.t,
-  translations: array<(int, string)>,
+  translations: array<(string, string)>,
   commentsCount: int,
 }
 

@@ -39,7 +39,7 @@ function JargonCard(props) {
               children: [
                 JsxRuntime.jsx("div", {
                       children: JsxRuntime.jsx("div", {
-                            children: "최근 활동 " + DateFormat.timeAgo(match.updated_at) + "",
+                            children: "최근 활동 " + DateFormat.timeAgo(match.updated_at),
                             className: "text-xs dark:text-zinc-500"
                           }),
                       className: "flex-none"
@@ -55,7 +55,7 @@ function JargonCard(props) {
                                     children: Belt_Array.map(match.translations, (function (param) {
                                             return JsxRuntime.jsx("li", {
                                                         children: param[1]
-                                                      }, String(param[0]));
+                                                      }, param[0]);
                                           }))
                                   }),
                               className: "overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300"
@@ -70,7 +70,7 @@ function JargonCard(props) {
               ],
               className: "flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900",
               onClick: (function (param) {
-                  RescriptReactRouter.push("/jargon/" + String(id) + "");
+                  RescriptReactRouter.push("/jargon/" + id);
                 })
             });
 }

@@ -82,9 +82,9 @@ function NewJargon(props) {
         setDisabled(function (param) {
               return true;
             });
-        ((async function (param) {
+        ((async function () {
                 var comment$1 = comment === "" ? (
-                    withoutKorean ? "\"" + english + "\" 용어의 번역이 필요합니다." : "" + Util.eulLeul(korean) + " 제안합니다."
+                    withoutKorean ? "\"" + english + "\" 용어의 번역이 필요합니다." : Util.eulLeul(korean) + " 제안합니다."
                   ) : comment;
                 try {
                   var result = await addJargon({
@@ -93,14 +93,14 @@ function NewJargon(props) {
                         comment: comment$1,
                         withoutKorean: withoutKorean
                       });
-                  return RescriptReactRouter.replace("/jargon/" + result.data.jargonID + "");
+                  return RescriptReactRouter.replace("/jargon/" + result.data.jargonID);
                 }
                 catch (raw_e){
                   var e = Caml_js_exceptions.internalToOCamlException(raw_e);
                   console.log(e);
                   return ;
                 }
-              })(undefined));
+              })());
         return ;
       }
     } else {

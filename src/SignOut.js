@@ -8,11 +8,11 @@ import * as RescriptReactRouter from "../node_modules/@rescript/react/src/Rescri
 function SignOut(props) {
   var auth = Reactfire.useAuth();
   React.useEffect(function () {
-        var signOut = async function (param) {
+        var signOut = async function () {
           await Auth.signOut(auth);
           return RescriptReactRouter.replace("/");
         };
-        signOut(undefined);
+        signOut();
       });
   return null;
 }

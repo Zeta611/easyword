@@ -1,5 +1,5 @@
-module DisplayNameMutation = %graphql(`
-  mutation ($uid: String!, $displayName: String!) {
+module DisplayNameMutation = %relay(`
+  mutation ProfileDisplayNameMutation($uid: String!, $displayName: String!) {
     update_user_by_pk(pk_columns: {id: $uid}, _set: {display_name: $displayName}) {
       id
     }
@@ -12,14 +12,14 @@ module SignedInProfile = {
     open Firebase
     let firestore = useFirestore()
 
-    let (mutate, _result) = DisplayNameMutation.use()
+    let (mutate, _isMutating) = DisplayNameMutation.use()
 
     let (displayName, setDisplayName) = React.Uncurried.useState(() =>
       user.displayName->Option.getWithDefault("")
     )
     let handleDisplayNameChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
-      setDisplayName(._ => value)
+      setDisplayName(_ => value)
     }
 
     let (disabled, setDisabled) = React.Uncurried.useState(() => false)
@@ -31,7 +31,7 @@ module SignedInProfile = {
       if displayName->String.length <= 0 {
         Window.alert("필명을 입력해주세요")
       } else {
-        setDisabled(._ => true)
+        setDisabled(_ => true)
 
         (
           async () => {
@@ -42,7 +42,7 @@ module SignedInProfile = {
                 async () => {
                   let userDocRef = firestore->doc(~path=`users/${user.uid}`)
                   let userDoc = await userDocRef->getDoc
-                  if !userDoc.exists(.) {
+                  if !userDoc.exists() {
                     Js.Console.warn("User document does not exist!")
                     await userDocRef->setDoc({"displayName": displayName, "email": user.email})
                   } else {
@@ -51,14 +51,13 @@ module SignedInProfile = {
                 }
               }()
 
-              let dbUpdate =
-                mutate({uid: user.uid, displayName})->Js.Promise2.then(_ => Js.Promise2.resolve())
+              mutate(~variables={uid: user.uid, displayName})->ignore
 
-              (await Js.Promise2.all([authUpdate, docUpdate, dbUpdate]))->ignore
+              (await Js.Promise2.all([authUpdate, docUpdate]))->ignore
             } catch {
             | e => Js.Console.warn(e)
             }
-            setDisabled(._ => false)
+            setDisabled(_ => false)
           }
         )()->ignore
       }

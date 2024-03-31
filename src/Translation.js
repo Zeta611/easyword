@@ -12,7 +12,7 @@ function Translation$TranslationRow(props) {
               children: JsxRuntime.jsx("td", {
                     children: JsxRuntime.jsx("a", {
                           children: translation.korean,
-                          href: "#" + translation.associated_comment + ""
+                          href: "#" + translation.associated_comment
                         })
                   })
             });

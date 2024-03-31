@@ -21,9 +21,9 @@ var CommentNode = Caml_module.init_mod([
       6,
       4
     ], {
-      TAG: /* Module */0,
+      TAG: "Module",
       _0: [[
-          /* Function */0,
+          "Function",
           "make"
         ]]
     });
@@ -33,9 +33,9 @@ var CommentSiblings = Caml_module.init_mod([
       174,
       4
     ], {
-      TAG: /* Module */0,
+      TAG: "Module",
       _0: [[
-          /* Function */0,
+          "Function",
           "make"
         ]]
     });
@@ -82,8 +82,8 @@ function CommentRow$CommentNode(props) {
   var isLoading = match$6[0];
   var firestore = Reactfire.useFirestore();
   React.useEffect((function () {
-          ((async function (param) {
-                  var commentUserDocRef = Firestore.doc(firestore, "users/" + comment.user + "");
+          ((async function () {
+                  var commentUserDocRef = Firestore.doc(firestore, "users/" + comment.user);
                   var commentUserDoc = await Firestore.getDoc(commentUserDocRef);
                   if (commentUserDoc.exists()) {
                     return setCommentUser(function (param) {
@@ -100,7 +100,7 @@ function CommentRow$CommentNode(props) {
                                       };
                               });
                   }
-                })(undefined));
+                })());
         }), []);
   var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");
   var addComment = Functions.httpsCallable(functions, "addComment");
@@ -114,7 +114,7 @@ function CommentRow$CommentNode(props) {
       setIsLoading(function (param) {
             return true;
           });
-      ((async function (param) {
+      ((async function () {
               try {
                 var result = await addComment({
                       jargonID: jargonID,
@@ -137,7 +137,7 @@ function CommentRow$CommentNode(props) {
                 console.log(e);
                 return ;
               }
-            })(undefined));
+            })());
     }
   };
   var photoURL = commentUser.photoURL;
@@ -203,7 +203,7 @@ function CommentRow$CommentNode(props) {
                                 JsxRuntime.jsx("input", {
                                       className: "btn btn-primary btn-outline btn-xs " + (
                                         isLoading ? "loading" : ""
-                                      ) + "",
+                                      ),
                                       disabled: isLoading,
                                       type: "submit",
                                       value: "답글"
@@ -254,9 +254,9 @@ function CommentRow$CommentNode(props) {
 }
 
 Caml_module.update_mod({
-      TAG: /* Module */0,
+      TAG: "Module",
       _0: [[
-          /* Function */0,
+          "Function",
           "make"
         ]]
     }, CommentNode, {
@@ -277,9 +277,9 @@ function CommentRow$CommentSiblings(props) {
 }
 
 Caml_module.update_mod({
-      TAG: /* Module */0,
+      TAG: "Module",
       _0: [[
-          /* Function */0,
+          "Function",
           "make"
         ]]
     }, CommentSiblings, {

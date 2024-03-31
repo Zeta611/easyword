@@ -24,7 +24,7 @@ let reactListOfTranslations = translations => {
 let make = (~jargon as {id, name, updated_at, translations, commentsCount}) => {
   <div
     className="flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
-    onClick={_ => RescriptReactRouter.push(`/jargon/${id->Int.toString}`)}>
+    onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
     // first row
     <div className="flex-none">
       {<div className="text-xs dark:text-zinc-500">
@@ -40,7 +40,7 @@ let make = (~jargon as {id, name, updated_at, translations, commentsCount}) => {
         className="overflow-hidden group-hover:overflow-visible whitespace-nowrap group-hover:whitespace-normal text-ellipsis font-regular text-zinc-500 group-hover:text-teal-600 dark:text-zinc-400 dark:group-hover:text-teal-300">
         <ol>
           {translations
-          ->Array.map(((i, t)) => <li key={i->Int.toString}> {t->React.string} </li>)
+          ->Array.map(((i, t)) => <li key={i}> {t->React.string} </li>)
           ->React.array}
         </ol>
       </div>

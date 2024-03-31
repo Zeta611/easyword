@@ -2,6 +2,7 @@
 
 import * as Why from "./Why.js";
 import * as Home from "./Home.js";
+import * as React from "react";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
 import * as SignIn from "./SignIn.js";
@@ -13,7 +14,7 @@ import * as NewJargon from "./NewJargon.js";
 import * as Reactfire from "reactfire";
 import * as JargonPost from "./JargonPost.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
-import * as ApolloWrapper from "./ApolloWrapper.js";
+import * as RelayWrapper from "./RelayWrapper.js";
 import * as SignInWrapper from "./SignInWrapper.js";
 import * as Auth from "firebase/auth";
 import * as NewTranslation from "./NewTranslation.js";
@@ -116,8 +117,14 @@ function App(props) {
     } else {
       tmp$1 = JsxRuntime.jsx(Home.make, {});
     }
-    tmp = JsxRuntime.jsx(NavbarContainer.make, {
-          children: tmp$1
+    tmp = JsxRuntime.jsx(React.Suspense, {
+          children: Caml_option.some(JsxRuntime.jsx(NavbarContainer.make, {
+                    children: tmp$1
+                  })),
+          fallback: Caml_option.some(JsxRuntime.jsx("div", {
+                    children: JsxRuntime.jsx(Loader.make, {}),
+                    className: "h-screen grid justify-center content-center"
+                  }))
         });
   }
   return JsxRuntime.jsx(Reactfire.AppCheckProvider, {
@@ -127,7 +134,7 @@ function App(props) {
                     children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
                           sdk: Caml_option.valFromOption(firestore),
                           children: JsxRuntime.jsx(SignInWrapper.make, {
-                                children: JsxRuntime.jsx(ApolloWrapper.make, {
+                                children: JsxRuntime.jsx(RelayWrapper.make, {
                                       children: tmp
                                     })
                               })

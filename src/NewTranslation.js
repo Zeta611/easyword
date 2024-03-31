@@ -29,8 +29,8 @@ function NewTranslation(props) {
           } else {
             RescriptReactRouter.replace("/login");
           }
-          ((async function (param) {
-                  var jargonDocRef = Firestore.doc(firestore, "jargons/" + jargonID + "");
+          ((async function () {
+                  var jargonDocRef = Firestore.doc(firestore, "jargons/" + jargonID);
                   var jargonDoc = await Firestore.getDoc(jargonDocRef);
                   if (jargonDoc.exists()) {
                     return setEnglish(function (param) {
@@ -38,7 +38,7 @@ function NewTranslation(props) {
                               });
                   }
                   
-                })(undefined));
+                })());
         }), []);
   var match$2 = React.useState(function () {
         return false;
@@ -80,22 +80,22 @@ function NewTranslation(props) {
         setDisabled(function (param) {
               return true;
             });
-        ((async function (param) {
-                var comment$1 = comment === "" ? "" + Util.eulLeul(korean) + " 제안합니다." : comment;
+        ((async function () {
+                var comment$1 = comment === "" ? Util.eulLeul(korean) + " 제안합니다." : comment;
                 try {
                   await addTranslation({
                         id: jargonID,
                         korean: korean,
                         comment: comment$1
                       });
-                  return RescriptReactRouter.replace("/jargon/" + jargonID + "");
+                  return RescriptReactRouter.replace("/jargon/" + jargonID);
                 }
                 catch (raw_e){
                   var e = Caml_js_exceptions.internalToOCamlException(raw_e);
                   console.log(e);
                   return ;
                 }
-              })(undefined));
+              })());
         return ;
       }
     } else {
@@ -106,7 +106,7 @@ function NewTranslation(props) {
     return JsxRuntime.jsxs("div", {
                 children: [
                   JsxRuntime.jsx("h2", {
-                        children: "" + match$1[0] + "의 쉬운 전문용어 제안하기"
+                        children: match$1[0] + "의 쉬운 전문용어 제안하기"
                       }),
                   JsxRuntime.jsx("form", {
                         children: JsxRuntime.jsxs("div", {
