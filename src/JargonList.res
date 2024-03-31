@@ -4,17 +4,7 @@ module JargonListChronoOrderQuery = %relay(`
       edges {
         node {
           id
-          name
-          updated_at
-          translations(order_by: {name: asc}, limit: 20) {
-            id
-            name
-          }
-          comments_aggregate {
-            aggregate {
-              count
-            }
-          }
+          ...JargonCard_jargon
         }
       }
     }
@@ -26,17 +16,7 @@ module JargonListABCOrderQuery = %relay(`
       edges {
         node {
           id
-          name
-          updated_at
-          translations(order_by: {name: asc}, limit: 20) {
-            id
-            name
-          }
-          comments_aggregate {
-            aggregate {
-              count
-            }
-          }
+          ...JargonCard_jargon
         }
       }
     }
@@ -52,43 +32,17 @@ let make = (~axis, ~direction, ~query) => {
       let {jargon_connection: {edges}} = JargonListChronoOrderQuery.use(
         ~variables={direction: direction},
       )
-      edges
-      ->Array.map(({node: jargon}) => {
-        id: jargon.id,
-        name: jargon.name,
-        updated_at: jargon.updated_at->Js.Date.fromString,
-        translations: jargon.translations->Array.map(translation => (
-          translation.id,
-          translation.name,
-        )),
-        commentsCount: jargon.comments_aggregate.aggregate
-        ->Option.flatMap(x => Some(x.count))
-        ->Option.getWithDefault(0),
-      })
-      ->Array.map(jargon => <JargonCard key={jargon.id} jargon />)
+      edges->Array.map(({node}) => (node.id, node.fragmentRefs))
     }
   | English => {
       let {jargon_connection: {edges}} = JargonListABCOrderQuery.use(
         ~variables={direction: direction},
       )
-      edges
-      ->Array.map(({node: jargon}) => {
-        id: jargon.id,
-        name: jargon.name,
-        updated_at: jargon.updated_at->Js.Date.fromString,
-        translations: jargon.translations->Array.map(translation => (
-          translation.id,
-          translation.name,
-        )),
-        commentsCount: jargon.comments_aggregate.aggregate
-        ->Option.flatMap(x => Some(x.count))
-        ->Option.getWithDefault(0),
-      })
-      ->Array.map(jargon => <JargonCard key={jargon.id} jargon />)
+      edges->Array.map(({node}) => (node.id, node.fragmentRefs))
     }
   }
 
   <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2">
-    {rows->React.array}
+    {rows->Array.map(((key, jargon)) => <JargonCard key jargon />)->React.array}
   </div>
 }

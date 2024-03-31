@@ -4,22 +4,9 @@
 module Types = {
   @@warning("-30")
 
-  type rec response_jargon_connection_edges_node_comments_aggregate_aggregate = {
-    count: int,
-  }
-  and response_jargon_connection_edges_node_comments_aggregate = {
-    aggregate: option<response_jargon_connection_edges_node_comments_aggregate_aggregate>,
-  }
-  and response_jargon_connection_edges_node_translations = {
+  type rec response_jargon_connection_edges_node = {
     @live id: string,
-    name: string,
-  }
-  and response_jargon_connection_edges_node = {
-    comments_aggregate: response_jargon_connection_edges_node_comments_aggregate,
-    @live id: string,
-    name: string,
-    translations: array<response_jargon_connection_edges_node_translations>,
-    updated_at: string,
+    fragmentRefs: RescriptRelay.fragmentRefs<[ | #JargonCard_jargon]>,
   }
   and response_jargon_connection_edges = {
     node: response_jargon_connection_edges_node,
@@ -68,7 +55,7 @@ module Internal = {
   type wrapResponseRaw
   @live
   let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"jargon_connection_edges_node_updated_at":{"b":""}}}`
+    json`{"__root":{"jargon_connection_edges_node":{"f":""}}}`
   )
   @live
   let wrapResponseConverterMap = ()
@@ -82,7 +69,7 @@ module Internal = {
   type responseRaw
   @live
   let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"jargon_connection_edges_node_updated_at":{"b":""}}}`
+    json`{"__root":{"jargon_connection_edges_node":{"f":""}}}`
   )
   @live
   let responseConverterMap = ()
@@ -136,127 +123,186 @@ var v0 = [
 v1 = {
   "name": "asc"
 },
-v2 = {
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 40
+  },
+  {
+    "items": [
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "updated_at",
+            "variableName": "direction"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "order_by.0"
+      },
+      {
+        "kind": "Literal",
+        "name": "order_by.1",
+        "value": (v1/*: any*/)
+      }
+    ],
+    "kind": "ListValue",
+    "name": "order_by"
+  }
+],
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v4 = [
-  {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "first",
-        "value": 40
-      },
-      {
-        "items": [
-          {
-            "fields": [
-              {
-                "kind": "Variable",
-                "name": "updated_at",
-                "variableName": "direction"
-              }
-            ],
-            "kind": "ObjectValue",
-            "name": "order_by.0"
-          },
-          {
-            "kind": "Literal",
-            "name": "order_by.1",
-            "value": (v1/*: any*/)
-          }
-        ],
-        "kind": "ListValue",
-        "name": "order_by"
-      }
-    ],
-    "concreteType": "jargonConnection",
-    "kind": "LinkedField",
-    "name": "jargon_connection",
-    "plural": false,
+};
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "JargonListChronoOrderQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "jargonEdge",
+        "args": (v2/*: any*/),
+        "concreteType": "jargonConnection",
         "kind": "LinkedField",
-        "name": "edges",
-        "plural": true,
+        "name": "jargon_connection",
+        "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "jargon",
+            "concreteType": "jargonEdge",
             "kind": "LinkedField",
-            "name": "node",
-            "plural": false,
+            "name": "edges",
+            "plural": true,
             "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "updated_at",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "limit",
-                    "value": 20
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "order_by",
-                    "value": (v1/*: any*/)
-                  }
-                ],
-                "concreteType": "translation",
+                "concreteType": "jargon",
                 "kind": "LinkedField",
-                "name": "translations",
-                "plural": true,
-                "selections": [
-                  (v2/*: any*/),
-                  (v3/*: any*/)
-                ],
-                "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "comment_aggregate",
-                "kind": "LinkedField",
-                "name": "comments_aggregate",
+                "name": "node",
                 "plural": false,
                 "selections": [
+                  (v3/*: any*/),
+                  {
+                    "args": null,
+                    "kind": "FragmentSpread",
+                    "name": "JargonCard_jargon"
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ],
+    "type": "query_root",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Operation",
+    "name": "JargonListChronoOrderQuery",
+    "selections": [
+      {
+        "alias": null,
+        "args": (v2/*: any*/),
+        "concreteType": "jargonConnection",
+        "kind": "LinkedField",
+        "name": "jargon_connection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "jargonEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "jargon",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "comment_aggregate_fields",
+                    "kind": "ScalarField",
+                    "name": "updated_at",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "limit",
+                        "value": 20
+                      },
+                      {
+                        "kind": "Literal",
+                        "name": "order_by",
+                        "value": (v1/*: any*/)
+                      }
+                    ],
+                    "concreteType": "translation",
                     "kind": "LinkedField",
-                    "name": "aggregate",
+                    "name": "translations",
+                    "plural": true,
+                    "selections": [
+                      (v3/*: any*/),
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "comment_aggregate",
+                    "kind": "LinkedField",
+                    "name": "comments_aggregate",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "count",
+                        "concreteType": "comment_aggregate_fields",
+                        "kind": "LinkedField",
+                        "name": "aggregate",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "count",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       }
                     ],
@@ -271,34 +317,15 @@ v4 = [
         ],
         "storageKey": null
       }
-    ],
-    "storageKey": null
-  }
-];
-return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "JargonListChronoOrderQuery",
-    "selections": (v4/*: any*/),
-    "type": "query_root",
-    "abstractKey": null
-  },
-  "kind": "Request",
-  "operation": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Operation",
-    "name": "JargonListChronoOrderQuery",
-    "selections": (v4/*: any*/)
+    ]
   },
   "params": {
-    "cacheID": "f39142c287bf78e2e2335880c929b0c3",
+    "cacheID": "c4424d3d513175af77e44c19f80e2994",
     "id": null,
     "metadata": {},
     "name": "JargonListChronoOrderQuery",
     "operationKind": "query",
-    "text": "query JargonListChronoOrderQuery(\n  $direction: order_by!\n) @cached {\n  jargon_connection(order_by: [{updated_at: $direction}, {name: asc}], first: 40) {\n    edges {\n      node {\n        id\n        name\n        updated_at\n        translations(order_by: {name: asc}, limit: 20) {\n          id\n          name\n        }\n        comments_aggregate {\n          aggregate {\n            count\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query JargonListChronoOrderQuery(\n  $direction: order_by!\n) @cached {\n  jargon_connection(order_by: [{updated_at: $direction}, {name: asc}], first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
   }
 };
 })() `)

@@ -20,5 +20,10 @@
     "error" : "+101"
   },
   "bsc-flags": ["-open Belt"],
-  "ppx-flags": ["rescript-relay/ppx"]
+  "ppx-flags": [
+    [
+      "rescript-relay/ppx",
+      "-uncurried"
+    ]
+  ]
 }

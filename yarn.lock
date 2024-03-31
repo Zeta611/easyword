@@ -2012,17 +2012,17 @@ __metadata:
     daisyui: ^4.8.0
     firebase: ^9.16.0
     postcss: ^8.4.16
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    react: 18.2.0
+    react-dom: 18.2.0
     react-firebaseui: ^6.0.0
     react-relay: 16.1.0
     react-social-login-buttons: ^4.1.0
     reactfire: ^4.2.2
     relay-runtime: 16.1.0
-    rescript: ^11.0.0
-    rescript-relay: 3.0.0-rc.3
+    rescript: ^11.0.1
+    rescript-relay: 3.0.0-rc.4
     tailwindcss: ^3.1.8
-    vite: ^5.2.2
+    vite: ^5.2.7
   languageName: unknown
   linkType: soft
 
@@ -3366,7 +3366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.36":
+"postcss@npm:^8.4.38":
   version: 8.4.38
   resolution: "postcss@npm:8.4.38"
   dependencies:
@@ -3462,7 +3462,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.2.0":
+"react-dom@npm:18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -3517,7 +3517,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.2.0":
+"react@npm:18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -3611,24 +3611,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rescript-relay@npm:3.0.0-rc.3":
-  version: 3.0.0-rc.3
-  resolution: "rescript-relay@npm:3.0.0-rc.3"
+"rescript-relay@npm:3.0.0-rc.4":
+  version: 3.0.0-rc.4
+  resolution: "rescript-relay@npm:3.0.0-rc.4"
   dependencies:
     detect-libc: ^2.0.1
   peerDependencies:
-    "@rescript/react": ^0.12.0
-    react-relay: ">=16.0.0"
+    "@rescript/react": ^0.12.1
+    react-relay: 16.0.0
     relay-runtime: "*"
     rescript: ^11.0.0
   bin:
     rescript-relay-cli: cli/cli.js
     rescript-relay-compiler: compiler.js
-  checksum: e16d191982b4d9dbbec6ff8a6bf46cfebb7316afa30fb4cc2110316b24338aafa3fd2dfad8e1ef63b8d20ef1492910ea80d2599575825ab58352c162c94db845
+  checksum: f94f4b5c046c2799a4b798a49f7ce6fdfe3105131fd2fb992ff03f8501e0089072ba2eaaf676fd561848e7fd713457b80551c26991691cd3c25d1b7e76df63d1
   languageName: node
   linkType: hard
 
-"rescript@npm:^11.0.0":
+"rescript@npm:^11.0.1":
   version: 11.0.1
   resolution: "rescript@npm:11.0.1"
   bin:
@@ -4220,13 +4220,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "vite@npm:5.2.2"
+"vite@npm:^5.2.7":
+  version: 5.2.7
+  resolution: "vite@npm:5.2.7"
   dependencies:
     esbuild: ^0.20.1
     fsevents: ~2.3.3
-    postcss: ^8.4.36
+    postcss: ^8.4.38
     rollup: ^4.13.0
   peerDependencies:
     "@types/node": ^18.0.0 || >=20.0.0
@@ -4256,7 +4256,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: ef20480a0d4145f05378d33d295917995679c75205c19872346f18ad847cca8ac90794b7cfb280f787c0db60a90afcc1ae2c2e5ccedfe4751fb4a3c0ff07be69
+  checksum: 66b4243f0ce147a1871e9bea772e5bd4842410ec9f3aa71d21e9427836f79a15b00f5cb7f023003f169249bc6ead20f68ee31ce6a326e091670ffd3b5441d131
   languageName: node
   linkType: hard
 

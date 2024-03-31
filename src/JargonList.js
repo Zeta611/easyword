@@ -2,7 +2,6 @@
 
 import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as JargonCard from "./JargonCard.js";
-import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
 import * as JargonListABCOrderQuery_graphql from "./__generated__/JargonListABCOrderQuery_graphql.js";
@@ -99,55 +98,31 @@ function JargonList(props) {
     var match = use$1({
           direction: direction
         }, undefined, undefined, undefined);
-    rows = Belt_Array.map(Belt_Array.map(match.jargon_connection.edges, (function (param) {
-                var jargon = param.node;
-                return {
-                        id: jargon.id,
-                        name: jargon.name,
-                        updated_at: new Date(jargon.updated_at),
-                        translations: Belt_Array.map(jargon.translations, (function (translation) {
-                                return [
-                                        translation.id,
-                                        translation.name
-                                      ];
-                              })),
-                        commentsCount: Belt_Option.getWithDefault(Belt_Option.flatMap(jargon.comments_aggregate.aggregate, (function (x) {
-                                    return x.count;
-                                  })), 0)
-                      };
-              })), (function (jargon) {
-            return JsxRuntime.jsx(JargonCard.make, {
-                        jargon: jargon
-                      }, jargon.id);
+    rows = Belt_Array.map(match.jargon_connection.edges, (function (param) {
+            var node = param.node;
+            return [
+                    node.id,
+                    node.fragmentRefs
+                  ];
           }));
   } else {
     var match$1 = use({
           direction: direction
         }, undefined, undefined, undefined);
-    rows = Belt_Array.map(Belt_Array.map(match$1.jargon_connection.edges, (function (param) {
-                var jargon = param.node;
-                return {
-                        id: jargon.id,
-                        name: jargon.name,
-                        updated_at: new Date(jargon.updated_at),
-                        translations: Belt_Array.map(jargon.translations, (function (translation) {
-                                return [
-                                        translation.id,
-                                        translation.name
-                                      ];
-                              })),
-                        commentsCount: Belt_Option.getWithDefault(Belt_Option.flatMap(jargon.comments_aggregate.aggregate, (function (x) {
-                                    return x.count;
-                                  })), 0)
-                      };
-              })), (function (jargon) {
-            return JsxRuntime.jsx(JargonCard.make, {
-                        jargon: jargon
-                      }, jargon.id);
+    rows = Belt_Array.map(match$1.jargon_connection.edges, (function (param) {
+            var node = param.node;
+            return [
+                    node.id,
+                    node.fragmentRefs
+                  ];
           }));
   }
   return JsxRuntime.jsx("div", {
-              children: rows,
+              children: Belt_Array.map(rows, (function (param) {
+                      return JsxRuntime.jsx(JargonCard.make, {
+                                  jargon: param[1]
+                                }, param[0]);
+                    })),
               className: "grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2"
             });
 }
