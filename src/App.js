@@ -24,6 +24,7 @@ import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_ex
 import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as ReactErrorBoundary from "react-error-boundary";
 
 function App(props) {
   var app = Reactfire.useFirebaseApp();
@@ -92,8 +93,16 @@ function App(props) {
             break;
         case "jargon" :
             var match$1 = path.tl;
-            tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(JargonPost.make, {
-                    jargonID: match$1.hd
+            tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
+                    children: JsxRuntime.jsx(JargonPost.make, {
+                          jargonID: match$1.hd
+                        }),
+                    fallbackRender: (function (_e) {
+                        return JsxRuntime.jsx("div", {
+                                    children: "앗! 404",
+                                    className: "text-3xl px-5 py-5"
+                                  });
+                      })
                   }) : "404";
             break;
         case "new-jargon" :

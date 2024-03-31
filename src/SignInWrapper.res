@@ -6,7 +6,7 @@ let make = (~children: React.element) => {
   let firestore = useFirestore()
   let auth = useAuth()
   let (token, setToken) = React.Uncurried.useState(() => None)
-  // Js.log(`token: ${token->Option.getWithDefault("None")}`)
+  Js.log(`token: ${token->Option.getWithDefault("None")}`)
 
   React.useEffect(() => {
     let userDocUnsub = ref(None)
@@ -25,7 +25,7 @@ let make = (~children: React.element) => {
             // Js.log(
             //   `Claim found! ${_hasuraClaim->Js.Json.stringifyAny->Option.getWithDefault("None")}`,
             // )
-            setToken(. _ => Some(token))
+            setToken(_ => Some(token))
 
           | None => {
               let userDocRef = firestore->doc(~path=`users/${user.uid}`)
@@ -33,11 +33,11 @@ let make = (~children: React.element) => {
               userDocUnsub :=
                 userDocRef->onSnapshot(
                   async userDoc => {
-                    switch userDoc.data(.)->Js.Dict.get("refreshTime") {
+                    switch userDoc.data()->Js.Dict.get("refreshTime") {
                     | Some(_) => {
                         let token = await user->Auth.AuthUser.getIdToken(~forceRefresh=true)
                         // Js.log(`New token: ${token}`)
-                        setToken(. _ => Some(token))
+                        setToken(_ => Some(token))
                       }
                     | None => () // Js.log("refreshTime not yet found")
                     }
@@ -46,7 +46,7 @@ let make = (~children: React.element) => {
             }
           }
         }
-      | None => setToken(. _ => None)
+      | None => setToken(_ => None)
       }
     })
 

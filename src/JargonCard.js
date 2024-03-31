@@ -28,7 +28,7 @@ var JargonCardFragment = {
 };
 
 function JargonCard(props) {
-  var match = use(props.jargon);
+  var match = use(props.jargonCardRef);
   var id = match.id;
   return JsxRuntime.jsxs("div", {
               children: [
@@ -59,7 +59,7 @@ function JargonCard(props) {
                       className: "flex-none inline-grid grid-cols-1"
                     }),
                 JsxRuntime.jsx("div", {
-                      children: "댓글 " + String(Belt_Option.getWithDefault(Belt_Option.flatMap(match.comments_aggregate.aggregate, (function (x) {
+                      children: "댓글 " + String(Belt_Option.getWithDefault(Belt_Option.map(match.comments_aggregate.aggregate, (function (x) {
                                       return x.count;
                                     })), 0)) + "개",
                       className: "flex-none text-xs dark:text-zinc-400"

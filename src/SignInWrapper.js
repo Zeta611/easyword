@@ -19,6 +19,8 @@ function SignInWrapper(props) {
         
       });
   var setToken = match$1[1];
+  var token = match$1[0];
+  console.log("token: " + Belt_Option.getWithDefault(token, "None"));
   React.useEffect(function () {
         var userDocUnsub = {
           contents: undefined
@@ -62,7 +64,7 @@ function SignInWrapper(props) {
     return JsxRuntime.jsx(SignInContext.Provider.make, {
                 value: Belt_Option.getExn(match.data),
                 children: JsxRuntime.jsx(TokenContext.Provider.make, {
-                      value: match$1[0],
+                      value: token,
                       children: props.children
                     })
               });

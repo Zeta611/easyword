@@ -16,8 +16,10 @@ module JargonCardFragment = %relay(`
 `)
 
 @react.component
-let make = (~jargon) => {
-  let {id, name, updated_at, translations, comments_aggregate} = JargonCardFragment.use(jargon)
+let make = (~jargonCardRef) => {
+  let {id, name, updated_at, translations, comments_aggregate} = JargonCardFragment.use(
+    jargonCardRef,
+  )
 
   <div
     className="flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
@@ -45,7 +47,7 @@ let make = (~jargon) => {
     // third row
     <div className="flex-none text-xs dark:text-zinc-400">
       {`댓글 ${comments_aggregate.aggregate
-        ->Option.flatMap(x => Some(x.count))
+        ->Option.map(x => x.count)
         ->Option.getWithDefault(0)
         ->Int.toString}개`->React.string}
     </div>

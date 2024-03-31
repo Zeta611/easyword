@@ -1,41 +1,45 @@
+module TranslationFragment = %relay(`
+  fragment Translation_jargon on jargon {
+    translations {
+      id
+      name
+      comment {
+        id
+      }
+    }
+  }
+`)
+
 module TranslationRow = {
   @react.component
-  let make = (~translation: Jargon.translation) => {
+  let make = (~name, ~commentID) => {
     <tr>
       <td>
-        <a href={`#${translation.associatedComment}`}> {translation.korean->React.string} </a>
+        <a href={`#${commentID}`}> {name->React.string} </a>
       </td>
     </tr>
   }
 }
 
 @react.component
-let make = (~jargonID) => {
-  open Firebase
-  let firestore = useFirestore()
-  let translationsCollection = firestore->collection(~path=`jargons/${jargonID}/translations`)
-  let {status: translationsStatus, data: translations} =
-    translationsCollection
-    ->query([orderBy("korean", ~direction=#asc)])
-    ->useFirestoreCollectionData(~options=reactFireOptions(~idField="id", ()), ())
+let make = (~translationRefs) => {
+  let {translations} = TranslationFragment.use(translationRefs)
 
-  switch (translationsStatus, translations) {
-  | (#success, Some(translations)) =>
-    if translations->Array.size > 0 {
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          <tbody>
-            {translations
-            ->Array.map((translation: Jargon.translation) =>
-              <TranslationRow key={translation.id} translation />
-            )
-            ->React.array}
-          </tbody>
-        </table>
-      </div>
-    } else {
-      React.null
-    }
-  | _ => React.null
+  if translations->Array.size > 0 {
+    <div className="overflow-x-auto">
+      <table className="table w-full">
+        <tbody>
+          {translations
+          ->Array.map(({id, name, comment}) =>
+            <TranslationRow
+              key={id} name commentID={comment->Option.map(x => x.id)->Option.getWithDefault("")}
+            />
+          )
+          ->React.array}
+        </tbody>
+      </table>
+    </div>
+  } else {
+    React.null
   }
 }

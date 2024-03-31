@@ -57,7 +57,14 @@ let make = () => {
                       | list{"profile"} => <Profile />
                       | list{"new-jargon"} => <NewJargon />
                       | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                      | list{"jargon", jargonID} => <JargonPost jargonID />
+                      | list{"jargon", jargonID} =>
+                        <ErrorBoundary
+                          fallbackRender={_e => {
+                            <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
+                          }}>
+                          <JargonPost jargonID />
+                        </ErrorBoundary>
+
                       | list{"why"} => <Why />
                       | list{"colophon"} => <Colophon />
 

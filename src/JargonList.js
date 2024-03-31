@@ -120,7 +120,7 @@ function JargonList(props) {
   return JsxRuntime.jsx("div", {
               children: Belt_Array.map(rows, (function (param) {
                       return JsxRuntime.jsx(JargonCard.make, {
-                                  jargon: param[1]
+                                  jargonCardRef: param[1]
                                 }, param[0]);
                     })),
               className: "grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2"
