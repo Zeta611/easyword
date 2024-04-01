@@ -53,7 +53,13 @@ let make = () => {
                     </div>}>
                     <NavbarContainer>
                       {switch path {
-                      | list{} => <Home />
+                      | list{} =>
+                        <React.Suspense
+                          fallback={<div className="h-screen grid justify-center content-center">
+                            <Loader />
+                          </div>}>
+                          <Home />
+                        </React.Suspense>
                       | list{"profile"} => <Profile />
                       | list{"new-jargon"} => <NewJargon />
                       | list{"new-translation", jargonID} => <NewTranslation jargonID />

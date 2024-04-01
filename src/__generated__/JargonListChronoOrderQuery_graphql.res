@@ -4,368 +4,237 @@
 module Types = {
   @@warning("-30")
 
-  type rec response_jargon_connection_edges_node = {
+  type rec fragment_jargon_connection_edges_node = {
     @live id: string,
     fragmentRefs: RescriptRelay.fragmentRefs<[ | #JargonCard_jargon]>,
   }
-  and response_jargon_connection_edges = {
-    node: response_jargon_connection_edges_node,
+  and fragment_jargon_connection_edges = {
+    node: fragment_jargon_connection_edges_node,
   }
-  and response_jargon_connection = {
-    edges: array<response_jargon_connection_edges>,
+  and fragment_jargon_connection = {
+    edges: array<fragment_jargon_connection_edges>,
   }
-  type response = {
-    jargon_connection: response_jargon_connection,
+  type fragment = {
+    jargon_connection: fragment_jargon_connection,
   }
-  @live
-  type rawResponse = response
-  @live
-  type variables = {
-    direction: RelaySchemaAssets_graphql.enum_order_by_input,
-  }
-  @live
-  type refetchVariables = {
-    direction: option<RelaySchemaAssets_graphql.enum_order_by_input>,
-  }
-  @live let makeRefetchVariables = (
-    ~direction=?,
-  ): refetchVariables => {
-    direction: direction
-  }
-
 }
-
-
-type queryRef
 
 module Internal = {
   @live
-  let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
-  )
+  type fragmentRaw
   @live
-  let variablesConverterMap = ()
-  @live
-  let convertVariables = v => v->RescriptRelay.convertObj(
-    variablesConverter,
-    variablesConverterMap,
-    Js.undefined
-  )
-  @live
-  type wrapResponseRaw
-  @live
-  let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
+  let fragmentConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
     json`{"__root":{"jargon_connection_edges_node":{"f":""}}}`
   )
   @live
-  let wrapResponseConverterMap = ()
+  let fragmentConverterMap = ()
   @live
-  let convertWrapResponse = v => v->RescriptRelay.convertObj(
-    wrapResponseConverter,
-    wrapResponseConverterMap,
-    Js.null
-  )
-  @live
-  type responseRaw
-  @live
-  let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"jargon_connection_edges_node":{"f":""}}}`
-  )
-  @live
-  let responseConverterMap = ()
-  @live
-  let convertResponse = v => v->RescriptRelay.convertObj(
-    responseConverter,
-    responseConverterMap,
+  let convertFragment = v => v->RescriptRelay.convertObj(
+    fragmentConverter,
+    fragmentConverterMap,
     Js.undefined
   )
-  type wrapRawResponseRaw = wrapResponseRaw
-  @live
-  let convertWrapRawResponse = convertWrapResponse
-  type rawResponseRaw = responseRaw
-  @live
-  let convertRawResponse = convertResponse
-  type rawPreloadToken<'response> = {source: Js.Nullable.t<RescriptRelay.Observable.t<'response>>}
-  external tokenToRaw: queryRef => rawPreloadToken<Types.response> = "%identity"
+}
+
+type t
+type fragmentRef
+external getFragmentRef:
+  RescriptRelay.fragmentRefs<[> | #JargonListChronoOrderQuery]> => fragmentRef = "%identity"
+
+@live
+@inline
+let connectionKey = "JargonListChronoOrderQuery_jargon_connection"
+
+%%private(
+  @live @module("relay-runtime") @scope("ConnectionHandler")
+  external internal_makeConnectionId: (RescriptRelay.dataId, @as("JargonListChronoOrderQuery_jargon_connection") _, 'arguments) => RescriptRelay.dataId = "getConnectionID"
+)
+
+@live
+let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~direction: option<RelaySchemaAssets_graphql.enum_order_by>=?) => {
+  let args = {"order_by": [RescriptRelay_Internal.Arg({"updated_at": direction}), RescriptRelay_Internal.Arg(Some({"name": Some("asc")}))]}
+  internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
   @@warning("-33")
   open Types
+
   @live
-  external order_by_toString: RelaySchemaAssets_graphql.enum_order_by => string = "%identity"
-  @live
-  external order_by_input_toString: RelaySchemaAssets_graphql.enum_order_by_input => string = "%identity"
-  @live
-  let order_by_decode = (enum: RelaySchemaAssets_graphql.enum_order_by): option<RelaySchemaAssets_graphql.enum_order_by_input> => {
-    switch enum {
-      | FutureAddedValue(_) => None
-      | valid => Some(Obj.magic(valid))
-    }
-  }
-  @live
-  let order_by_fromString = (str: string): option<RelaySchemaAssets_graphql.enum_order_by_input> => {
-    order_by_decode(Obj.magic(str))
-  }
+  let getConnectionNodes: Types.fragment_jargon_connection => array<Types.fragment_jargon_connection_edges_node> = connection => 
+  connection.edges
+    ->Belt.Array.keepMap(edge => 
+Some(edge.node)
+    )
+
+
 }
 
 type relayOperationNode
-type operationType = RescriptRelay.queryNode<relayOperationNode>
+type operationType = RescriptRelay.fragmentNode<relayOperationNode>
 
 
-let node: operationType = %raw(json` (function(){
+%%private(let makeNode = (rescript_graphql_node_JargonListChronoOrderRefetchQuery): operationType => {
+  ignore(rescript_graphql_node_JargonListChronoOrderRefetchQuery)
+  %raw(json`(function(){
 var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "direction"
-  }
-],
-v1 = {
-  "name": "asc"
-},
-v2 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 40
-  },
-  {
-    "items": [
-      {
-        "fields": [
-          {
-            "kind": "Variable",
-            "name": "updated_at",
-            "variableName": "direction"
-          }
-        ],
-        "kind": "ObjectValue",
-        "name": "order_by.0"
-      },
-      {
-        "kind": "Literal",
-        "name": "order_by.1",
-        "value": (v1/*: any*/)
-      }
-    ],
-    "kind": "ListValue",
-    "name": "order_by"
-  }
-],
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-};
+  "jargon_connection"
+];
 return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "JargonListChronoOrderQuery",
-    "selections": [
+  "argumentDefinitions": [
+    {
+      "defaultValue": 40,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "cursor"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "direction"
+    }
+  ],
+  "kind": "Fragment",
+  "metadata": {
+    "connection": [
       {
-        "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "jargonConnection",
-        "kind": "LinkedField",
-        "name": "jargon_connection",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "jargonEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "jargon",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "JargonCard_jargon"
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": (v0/*: any*/)
       }
     ],
-    "type": "query_root",
-    "abstractKey": null
-  },
-  "kind": "Request",
-  "operation": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Operation",
-    "name": "JargonListChronoOrderQuery",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "jargonConnection",
-        "kind": "LinkedField",
-        "name": "jargon_connection",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "jargonEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "jargon",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v3/*: any*/),
-                  (v4/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "updated_at",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "limit",
-                        "value": 20
-                      },
-                      {
-                        "kind": "Literal",
-                        "name": "order_by",
-                        "value": (v1/*: any*/)
-                      }
-                    ],
-                    "concreteType": "translation",
-                    "kind": "LinkedField",
-                    "name": "translations",
-                    "plural": true,
-                    "selections": [
-                      (v3/*: any*/),
-                      (v4/*: any*/)
-                    ],
-                    "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "comment_aggregate",
-                    "kind": "LinkedField",
-                    "name": "comments_aggregate",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "comment_aggregate_fields",
-                        "kind": "LinkedField",
-                        "name": "aggregate",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "count",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
-  },
-  "params": {
-    "cacheID": "c4424d3d513175af77e44c19f80e2994",
-    "id": null,
-    "metadata": {},
-    "name": "JargonListChronoOrderQuery",
-    "operationKind": "query",
-    "text": "query JargonListChronoOrderQuery(\n  $direction: order_by!\n) @cached {\n  jargon_connection(order_by: [{updated_at: $direction}, {name: asc}], first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
-  }
-};
-})() `)
-
-let load: (
-  ~environment: RescriptRelay.Environment.t,
-  ~variables: Types.variables,
-  ~fetchPolicy: RescriptRelay.fetchPolicy=?,
-  ~fetchKey: string=?,
-  ~networkCacheConfig: RescriptRelay.cacheConfig=?,
-) => queryRef = (
-  ~environment,
-  ~variables,
-  ~fetchPolicy=?,
-  ~fetchKey=?,
-  ~networkCacheConfig=?,
-) =>
-  RescriptRelay.loadQuery(
-    environment,
-    node,
-    variables->Internal.convertVariables,
-    {
-      fetchKey,
-      fetchPolicy,
-      networkCacheConfig,
-    },
-  )
-  
-let queryRefToObservable = token => {
-  let raw = token->Internal.tokenToRaw
-  raw.source->Js.Nullable.toOption
-}
-  
-let queryRefToPromise = token => {
-  Js.Promise.make((~resolve, ~reject as _) => {
-    switch token->queryRefToObservable {
-    | None => resolve(Error())
-    | Some(o) =>
-      open RescriptRelay.Observable
-      let _: subscription = o->subscribe(makeObserver(~complete=() => resolve(Ok())))
+    "refetch": {
+      "connection": {
+        "forward": {
+          "count": "count",
+          "cursor": "cursor"
+        },
+        "backward": null,
+        "path": (v0/*: any*/)
+      },
+      "fragmentPathInResult": [],
+      "operation": rescript_graphql_node_JargonListChronoOrderRefetchQuery
     }
-  })
-}
+  },
+  "name": "JargonListChronoOrderQuery",
+  "selections": [
+    {
+      "alias": "jargon_connection",
+      "args": [
+        {
+          "items": [
+            {
+              "fields": [
+                {
+                  "kind": "Variable",
+                  "name": "updated_at",
+                  "variableName": "direction"
+                }
+              ],
+              "kind": "ObjectValue",
+              "name": "order_by.0"
+            },
+            {
+              "kind": "Literal",
+              "name": "order_by.1",
+              "value": {
+                "name": "asc"
+              }
+            }
+          ],
+          "kind": "ListValue",
+          "name": "order_by"
+        }
+      ],
+      "concreteType": "jargonConnection",
+      "kind": "LinkedField",
+      "name": "__JargonListChronoOrderQuery_jargon_connection_connection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "jargonEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "jargon",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "JargonCard_jargon"
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "type": "query_root",
+  "abstractKey": null
+};
+})()`)
+})
+let node: operationType = makeNode(JargonListChronoOrderRefetchQuery_graphql.node)
+

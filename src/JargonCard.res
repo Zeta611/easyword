@@ -21,9 +21,7 @@ let make = (~jargonCardRef) => {
     jargonCardRef,
   )
 
-  <div
-    className="flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900"
-    onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
+  <div onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
     // first row
     <div className="flex-none">
       {<div className="text-xs dark:text-zinc-500">

@@ -1,21 +1,11 @@
-/* @sourceLoc JargonList.res */
+/* @sourceLoc Home.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
   @@warning("-30")
 
-  type rec response_jargon_connection_edges_node = {
-    @live id: string,
-    fragmentRefs: RescriptRelay.fragmentRefs<[ | #JargonCard_jargon]>,
-  }
-  and response_jargon_connection_edges = {
-    node: response_jargon_connection_edges_node,
-  }
-  and response_jargon_connection = {
-    edges: array<response_jargon_connection_edges>,
-  }
   type response = {
-    jargon_connection: response_jargon_connection,
+    fragmentRefs: RescriptRelay.fragmentRefs<[ | #JargonListChronoOrderQuery]>,
   }
   @live
   type rawResponse = response
@@ -55,7 +45,7 @@ module Internal = {
   type wrapResponseRaw
   @live
   let wrapResponseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"jargon_connection_edges_node":{"f":""}}}`
+    json`{"__root":{"":{"f":""}}}`
   )
   @live
   let wrapResponseConverterMap = ()
@@ -69,7 +59,7 @@ module Internal = {
   type responseRaw
   @live
   let responseConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"jargon_connection_edges_node":{"f":""}}}`
+    json`{"__root":{"":{"f":""}}}`
   )
   @live
   let responseConverterMap = ()
@@ -120,7 +110,10 @@ var v0 = [
     "name": "direction"
   }
 ],
-v1 = [
+v1 = {
+  "name": "asc"
+},
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -132,7 +125,7 @@ v1 = [
         "fields": [
           {
             "kind": "Variable",
-            "name": "name",
+            "name": "updated_at",
             "variableName": "direction"
           }
         ],
@@ -142,23 +135,21 @@ v1 = [
       {
         "kind": "Literal",
         "name": "order_by.1",
-        "value": {
-          "updated_at": "desc"
-        }
+        "value": (v1/*: any*/)
       }
     ],
     "kind": "ListValue",
     "name": "order_by"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -170,46 +161,12 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "JargonListABCOrderQuery",
+    "name": "HomeQuery",
     "selections": [
       {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "jargonConnection",
-        "kind": "LinkedField",
-        "name": "jargon_connection",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "jargonEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "jargon",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v2/*: any*/),
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "JargonCard_jargon"
-                  }
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "JargonListChronoOrderQuery"
       }
     ],
     "type": "query_root",
@@ -219,11 +176,11 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "JargonListABCOrderQuery",
+    "name": "HomeQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "jargon_connection",
@@ -245,8 +202,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
                   (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -265,9 +222,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": {
-                          "name": "asc"
-                        }
+                        "value": (v1/*: any*/)
                       }
                     ],
                     "concreteType": "translation",
@@ -275,8 +230,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/)
+                      (v3/*: any*/),
+                      (v4/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -308,8 +263,47 @@ return {
                       }
                     ],
                     "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "__typename",
+                    "storageKey": null
                   }
                 ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "cursor",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "PageInfo",
+            "kind": "LinkedField",
+            "name": "pageInfo",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "endCursor",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "hasNextPage",
                 "storageKey": null
               }
             ],
@@ -317,16 +311,27 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": (v2/*: any*/),
+        "filters": [
+          "order_by"
+        ],
+        "handle": "connection",
+        "key": "JargonListChronoOrderQuery_jargon_connection",
+        "kind": "LinkedHandle",
+        "name": "jargon_connection"
       }
     ]
   },
   "params": {
-    "cacheID": "d932569d0c49173bdd674cd5c5b650d1",
+    "cacheID": "65784308d1245ffea3707c3899f614d9",
     "id": null,
     "metadata": {},
-    "name": "JargonListABCOrderQuery",
+    "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query JargonListABCOrderQuery(\n  $direction: order_by!\n) @cached {\n  jargon_connection(order_by: [{name: $direction}, {updated_at: desc}], first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
+    "text": "query HomeQuery(\n  $direction: order_by!\n) {\n  ...JargonListChronoOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListChronoOrderQuery on query_root {\n  jargon_connection(order_by: [{updated_at: $direction}, {name: asc}], first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)

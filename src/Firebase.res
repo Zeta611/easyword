@@ -55,7 +55,7 @@ type documentReference
 @module("firebase/firestore")
 external doc: (firestore, ~path: string) => documentReference = "doc"
 
-type documentSnapshot<'a> = {exists: (. unit) => bool, data: (. unit) => 'a}
+type documentSnapshot<'a> = {exists: unit => bool, data: unit => 'a}
 @module("firebase/firestore")
 external onSnapshot: (documentReference, documentSnapshot<'a> => promise<unit>) => 'unsubscribe =
   "onSnapshot"
@@ -88,7 +88,7 @@ external updateDoc: (documentReference, 'a) => promise<unit> = "updateDoc"
 external addDoc: (collectionReference, 'a) => promise<documentReference> = "addDoc"
 
 type aggregateSpecData = {count: int}
-type aggregateQuerySnapshot = {data: (. unit) => aggregateSpecData}
+type aggregateQuerySnapshot = {data: unit => aggregateSpecData}
 @module("firebase/firestore")
 external getCountFromServer: collectionReference => promise<aggregateQuerySnapshot> =
   "getCountFromServer"
@@ -203,7 +203,7 @@ module Auth = {
   }
 
   @module("firebase/auth")
-  external signInWithPopup: (. t, FederatedAuthProvider.t) => promise<userCredential> =
+  external signInWithPopup: (t, FederatedAuthProvider.t) => promise<userCredential> =
     "signInWithPopup"
 }
 
@@ -254,4 +254,4 @@ external getFunctions: (FirebaseApp.t, @as("asia-northeast3") _) => functions = 
 
 type callResult<'a> = {data: 'a}
 @module("firebase/functions")
-external httpsCallable: (functions, string) => (. 'a) => promise<callResult<'b>> = "httpsCallable"
+external httpsCallable: (functions, string) => 'a => promise<callResult<'b>> = "httpsCallable"

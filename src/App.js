@@ -124,7 +124,13 @@ function App(props) {
           tmp$1 = "404";
       }
     } else {
-      tmp$1 = JsxRuntime.jsx(Home.make, {});
+      tmp$1 = JsxRuntime.jsx(React.Suspense, {
+            children: Caml_option.some(JsxRuntime.jsx(Home.make, {})),
+            fallback: Caml_option.some(JsxRuntime.jsx("div", {
+                      children: JsxRuntime.jsx(Loader.make, {}),
+                      className: "h-screen grid justify-center content-center"
+                    }))
+          });
     }
     tmp = JsxRuntime.jsx(React.Suspense, {
           children: Caml_option.some(JsxRuntime.jsx(NavbarContainer.make, {

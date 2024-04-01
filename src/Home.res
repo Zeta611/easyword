@@ -1,3 +1,9 @@
+module HomeQuery = %relay(`
+  query HomeQuery($direction: order_by!) {
+    ...JargonListChronoOrderQuery
+  }
+`)
+
 @react.component
 let make = () => {
   // query is set from SearchBar via onChange and passed into Dictionary
@@ -10,12 +16,15 @@ let make = () => {
     setQuery(_ => value)
   }
 
+  // let {fragmentRefs: query} = HomeQuery.use(~variables={direction: direction->Obj.magic})
+  let {fragmentRefs: query} = HomeQuery.use(~variables={direction: Desc})
+
   open Heroicons
   <div className="grid p-5 text-sm">
     <div
       className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.75rem] -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
-        <SearchBar query onChange />
+        <SearchBar query={""} onChange />
       </div>
       <div className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
         <label
@@ -73,11 +82,6 @@ let make = () => {
         </ul>
       </div>
     </div>
-    <React.Suspense
-      fallback={<div className="h-screen grid justify-center content-center">
-        <Loader />
-      </div>}>
-      <JargonList axis direction={direction->Obj.magic} query />
-    </React.Suspense>
+    <JargonList axis query />
   </div>
 }

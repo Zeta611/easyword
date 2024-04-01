@@ -65,7 +65,6 @@ function JargonCard(props) {
                       className: "flex-none text-xs dark:text-zinc-400"
                     })
               ],
-              className: "flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900",
               onClick: (function (param) {
                   RescriptReactRouter.push("/jargon/" + id);
                 })
