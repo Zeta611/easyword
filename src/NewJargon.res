@@ -1,3 +1,31 @@
+// Insert comment first, and then insert a translation and modify the comment
+module JargonMutation = %relay(`
+  mutation NewJargonMutation($authorID: String!, $name: String!, $commentContent: String!) {
+    insert_jargon_one(object: {author_id: $authorID, name: $name, comments: {data: {author_id: $authorID, content: $commentContent}}}) {
+      id
+      comments {
+        id
+      }
+    }
+  }
+`)
+
+module TranslationMutation = %relay(`
+  mutation NewJargonTranslationMutation($authorID: String!, $name: String!, $jargonID: Int!, $commentID: Int!) {
+    insert_translation_one(object: {author_id: $authorID, name: $name, jargon_id: $jargonID, comment_id: $commentID}) {
+      id
+    }
+  }
+`)
+
+module CommentMutation = %relay(`
+  mutation NewJargonCommentMutation($commentID: Int!, $translationID: Int!) {
+    update_comment_by_pk(pk_columns: {id: $commentID}, _set: {translation_id: $translationID}) {
+      id
+    }
+  }
+`)
+
 @react.component
 let make = () => {
   let {signedIn, user} = React.useContext(SignInContext.context)
@@ -14,18 +42,16 @@ let make = () => {
     None
   })
 
-  let (disabled, setDisabled) = React.Uncurried.useState(() => false)
-
   let (english, setEnglish) = React.Uncurried.useState(() => "")
   let handleJargonChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setEnglish(._ => value)
+    setEnglish(_ => value)
   }
 
   let (korean, setKorean) = React.Uncurried.useState(() => "")
   let handleTranslationChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setKorean(._ => value)
+    setKorean(_ => value)
   }
 
   let (withoutKorean, setWithoutKorean) = React.Uncurried.useState(() => false)
@@ -33,14 +59,12 @@ let make = () => {
   let (comment, setComment) = React.Uncurried.useState(() => "")
   let handleCommentChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
-    setComment(._ => value)
+    setComment(_ => value)
   }
 
-  let addJargon = {
-    open Firebase
-    let functions = useFirebaseApp()->getFunctions
-    functions->httpsCallable("addJargon")
-  }
+  let (jargonMutate, isJargonMutating) = JargonMutation.use()
+  let (translationMutate, isTranslationMutating) = TranslationMutation.use()
+  let (commentMutate, isCommentMutating) = CommentMutation.use()
 
   let handleSubmit = event => {
     // Prevent a page refresh, we are already listening for updates
@@ -52,30 +76,66 @@ let make = () => {
       Window.alert("번역을 입력해주세요")
     } else if signedIn {
       switch user->Js.Nullable.toOption {
-      | Some(_) =>
-        setDisabled(._ => true)
-
-        (
-          async () => {
-            let comment = switch comment {
-            | "" =>
-              if !withoutKorean {
-                `${korean->Util.eulLeul} 제안합니다.`
-              } else {
-                `"${english}" 용어의 번역이 필요합니다.`
-              }
-            | _ => comment
+      | Some(user) => {
+          let comment = switch comment {
+          | "" =>
+            if !withoutKorean {
+              `${korean->Util.eulLeul} 제안합니다.`
+            } else {
+              `"${english}" 용어의 번역이 필요합니다.`
             }
-            try {
-              let result = await addJargon(.
-                ({english, korean, comment, withoutKorean}: Jargon.add),
-              )
-              RescriptReactRouter.replace(`/jargon/${result.data["jargonID"]}`)
-            } catch {
-            | e => Js.log(e)
-            }
+          | _ => comment
           }
-        )()->ignore
+
+          jargonMutate(
+            ~variables={authorID: user.uid, name: english, commentContent: comment},
+            ~onError=error => Js.Console.error(error),
+            ~onCompleted=({insert_jargon_one}, _errors) => {
+              switch insert_jargon_one {
+              | Some({id, comments}) => {
+                  let jargonID = id->Base64.retrieveOriginalID
+                  let commentID = comments[0]->Option.flatMap(x => x.id->Base64.retrieveOriginalID)
+                  switch (jargonID, commentID) {
+                  | (Some(jargonID), Some(commentID)) =>
+                    translationMutate(
+                      ~variables={authorID: user.uid, name: korean, jargonID, commentID},
+                      ~onError=error => Js.Console.error(error),
+                      ~onCompleted=({insert_translation_one}, _errors) => {
+                        switch insert_translation_one {
+                        | Some({id: translationID}) =>
+                          let translationID = translationID->Base64.retrieveOriginalID
+                          switch translationID {
+                          | Some(translationID) =>
+                            commentMutate(
+                              ~variables={commentID, translationID},
+                              ~onError=error => Js.Console.error(error),
+                              ~onCompleted=(_response, _errors) =>
+                                RescriptReactRouter.replace(`/jargon/${id}`),
+                            )->ignore
+                          | None => {
+                              Js.Console.error("Translation mutation failed")
+                              RescriptReactRouter.replace(`/jargon/${id}`)
+                            }
+                          }
+                        | None => {
+                            Js.Console.error("Translation mutation failed")
+                            RescriptReactRouter.replace(`/jargon/${id}`)
+                          }
+                        }
+                      },
+                    )->ignore
+
+                  | _ => {
+                      Js.Console.error("Translation mutation failed")
+                      RescriptReactRouter.replace(`/jargon/${id}`)
+                    }
+                  }
+                }
+              | None => ()
+              }
+            },
+          )->ignore
+        }
       | None => RescriptReactRouter.replace("/logout") // Something went wrong
       }
     } else {
@@ -109,7 +169,7 @@ let make = () => {
                     type_="checkbox"
                     className="checkbox checkbox-secondary"
                     checked={withoutKorean}
-                    onChange={_ => setWithoutKorean(.v => !v)}
+                    onChange={_ => setWithoutKorean(v => !v)}
                   />
                   {"번역 없이 제안하기"->React.string}
                 </div>,
@@ -136,7 +196,12 @@ let make = () => {
               className="textarea textarea-bordered w-full"
             />
           </label>
-          <input type_="submit" value="제안하기" disabled className="btn btn-primary" />
+          <input
+            type_="submit"
+            value="제안하기"
+            disabled={isJargonMutating || isTranslationMutating || isCommentMutating}
+            className="btn btn-primary"
+          />
         </div>
       </form>
     </div>

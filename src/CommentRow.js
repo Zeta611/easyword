@@ -47,7 +47,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      150,
+      148,
       4
     ], {
       TAG: "Module",
@@ -106,7 +106,7 @@ function CommentRow$CommentNode(props) {
           }, undefined, undefined, undefined, (function (_response, _errors) {
               ((window.location.reload()));
             }), (function (error) {
-              console.log(error);
+              console.error(error);
             }), undefined);
     } else {
       window.alert("현재 댓글을 달 수 없어요");

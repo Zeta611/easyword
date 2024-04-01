@@ -2,12 +2,76 @@
 
 import * as Util from "./Util.js";
 import * as React from "react";
-import * as Reactfire from "reactfire";
+import * as Base64 from "./Base64.js";
+import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
+import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
-import * as Functions from "firebase/functions";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
+import * as NewJargonMutation_graphql from "./__generated__/NewJargonMutation_graphql.js";
+import * as NewJargonCommentMutation_graphql from "./__generated__/NewJargonCommentMutation_graphql.js";
+import * as NewJargonTranslationMutation_graphql from "./__generated__/NewJargonTranslationMutation_graphql.js";
+
+var convertVariables = NewJargonMutation_graphql.Internal.convertVariables;
+
+var convertResponse = NewJargonMutation_graphql.Internal.convertResponse;
+
+var convertWrapRawResponse = NewJargonMutation_graphql.Internal.convertWrapRawResponse;
+
+var commitMutation = RescriptRelay_Mutation.commitMutation(convertVariables, NewJargonMutation_graphql.node, convertResponse, convertWrapRawResponse);
+
+var use = RescriptRelay_Mutation.useMutation(convertVariables, NewJargonMutation_graphql.node, convertResponse, convertWrapRawResponse);
+
+var JargonMutation = {
+  Operation: undefined,
+  Types: undefined,
+  convertVariables: convertVariables,
+  convertResponse: convertResponse,
+  convertWrapRawResponse: convertWrapRawResponse,
+  commitMutation: commitMutation,
+  use: use
+};
+
+var convertVariables$1 = NewJargonTranslationMutation_graphql.Internal.convertVariables;
+
+var convertResponse$1 = NewJargonTranslationMutation_graphql.Internal.convertResponse;
+
+var convertWrapRawResponse$1 = NewJargonTranslationMutation_graphql.Internal.convertWrapRawResponse;
+
+var commitMutation$1 = RescriptRelay_Mutation.commitMutation(convertVariables$1, NewJargonTranslationMutation_graphql.node, convertResponse$1, convertWrapRawResponse$1);
+
+var use$1 = RescriptRelay_Mutation.useMutation(convertVariables$1, NewJargonTranslationMutation_graphql.node, convertResponse$1, convertWrapRawResponse$1);
+
+var TranslationMutation = {
+  Operation: undefined,
+  Types: undefined,
+  convertVariables: convertVariables$1,
+  convertResponse: convertResponse$1,
+  convertWrapRawResponse: convertWrapRawResponse$1,
+  commitMutation: commitMutation$1,
+  use: use$1
+};
+
+var convertVariables$2 = NewJargonCommentMutation_graphql.Internal.convertVariables;
+
+var convertResponse$2 = NewJargonCommentMutation_graphql.Internal.convertResponse;
+
+var convertWrapRawResponse$2 = NewJargonCommentMutation_graphql.Internal.convertWrapRawResponse;
+
+var commitMutation$2 = RescriptRelay_Mutation.commitMutation(convertVariables$2, NewJargonCommentMutation_graphql.node, convertResponse$2, convertWrapRawResponse$2);
+
+var use$2 = RescriptRelay_Mutation.useMutation(convertVariables$2, NewJargonCommentMutation_graphql.node, convertResponse$2, convertWrapRawResponse$2);
+
+var CommentMutation = {
+  Operation: undefined,
+  Types: undefined,
+  convertVariables: convertVariables$2,
+  convertResponse: convertResponse$2,
+  convertWrapRawResponse: convertWrapRawResponse$2,
+  commitMutation: commitMutation$2,
+  use: use$2
+};
 
 function NewJargon(props) {
   var match = React.useContext(SignInContext.context);
@@ -24,88 +88,119 @@ function NewJargon(props) {
           }
         }), []);
   var match$1 = React.useState(function () {
-        return false;
-      });
-  var setDisabled = match$1[1];
-  var match$2 = React.useState(function () {
         return "";
       });
-  var setEnglish = match$2[1];
-  var english = match$2[0];
+  var setEnglish = match$1[1];
+  var english = match$1[0];
   var handleJargonChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setEnglish(function (param) {
           return value;
         });
   };
-  var match$3 = React.useState(function () {
+  var match$2 = React.useState(function () {
         return "";
       });
-  var setKorean = match$3[1];
-  var korean = match$3[0];
+  var setKorean = match$2[1];
+  var korean = match$2[0];
   var handleTranslationChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setKorean(function (param) {
           return value;
         });
   };
-  var match$4 = React.useState(function () {
+  var match$3 = React.useState(function () {
         return false;
       });
-  var setWithoutKorean = match$4[1];
-  var withoutKorean = match$4[0];
-  var match$5 = React.useState(function () {
+  var setWithoutKorean = match$3[1];
+  var withoutKorean = match$3[0];
+  var match$4 = React.useState(function () {
         return "";
       });
-  var setComment = match$5[1];
-  var comment = match$5[0];
+  var setComment = match$4[1];
+  var comment = match$4[0];
   var handleCommentChange = function ($$event) {
     var value = $$event.currentTarget.value;
     setComment(function (param) {
           return value;
         });
   };
-  var functions = Functions.getFunctions(Reactfire.useFirebaseApp(), "asia-northeast3");
-  var addJargon = Functions.httpsCallable(functions, "addJargon");
+  var match$5 = use();
+  var jargonMutate = match$5[0];
+  var match$6 = use$1();
+  var translationMutate = match$6[0];
+  var match$7 = use$2();
+  var commentMutate = match$7[0];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
     if (english.length < 3) {
       window.alert("용어는 세 글자 이상이어야 해요");
       return ;
-    } else if (!withoutKorean && korean.length < 1) {
+    }
+    if (!withoutKorean && korean.length < 1) {
       window.alert("번역을 입력해주세요");
       return ;
-    } else if (signedIn) {
-      if (user == null) {
-        return RescriptReactRouter.replace("/logout");
-      } else {
-        setDisabled(function (param) {
-              return true;
-            });
-        ((async function () {
-                var comment$1 = comment === "" ? (
-                    withoutKorean ? "\"" + english + "\" 용어의 번역이 필요합니다." : Util.eulLeul(korean) + " 제안합니다."
-                  ) : comment;
-                try {
-                  var result = await addJargon({
-                        english: english,
-                        korean: korean,
-                        comment: comment$1,
-                        withoutKorean: withoutKorean
-                      });
-                  return RescriptReactRouter.replace("/jargon/" + result.data.jargonID);
-                }
-                catch (raw_e){
-                  var e = Caml_js_exceptions.internalToOCamlException(raw_e);
-                  console.log(e);
-                  return ;
-                }
-              })());
-        return ;
-      }
-    } else {
+    }
+    if (!signedIn) {
       return RescriptReactRouter.replace("/login");
     }
+    if (user == null) {
+      return RescriptReactRouter.replace("/logout");
+    }
+    var comment$1 = comment === "" ? (
+        withoutKorean ? "\"" + english + "\" 용어의 번역이 필요합니다." : Util.eulLeul(korean) + " 제안합니다."
+      ) : comment;
+    jargonMutate({
+          authorID: user.uid,
+          commentContent: comment$1,
+          name: english
+        }, undefined, undefined, undefined, (function (param, _errors) {
+            var insert_jargon_one = param.insert_jargon_one;
+            if (insert_jargon_one === undefined) {
+              return ;
+            }
+            var id = insert_jargon_one.id;
+            var jargonID = Base64.retrieveOriginalID(id);
+            var commentID = Belt_Option.flatMap(Belt_Array.get(insert_jargon_one.comments, 0), (function (x) {
+                    return Base64.retrieveOriginalID(x.id);
+                  }));
+            if (jargonID !== undefined && commentID !== undefined) {
+              translationMutate({
+                    authorID: user.uid,
+                    commentID: commentID,
+                    jargonID: jargonID,
+                    name: korean
+                  }, undefined, undefined, undefined, (function (param, _errors) {
+                      var insert_translation_one = param.insert_translation_one;
+                      if (insert_translation_one !== undefined) {
+                        var translationID = Base64.retrieveOriginalID(insert_translation_one.id);
+                        if (translationID !== undefined) {
+                          commentMutate({
+                                commentID: commentID,
+                                translationID: translationID
+                              }, undefined, undefined, undefined, (function (_response, _errors) {
+                                  RescriptReactRouter.replace("/jargon/" + id);
+                                }), (function (error) {
+                                  console.error(error);
+                                }), undefined);
+                          return ;
+                        } else {
+                          console.error("Translation mutation failed");
+                          return RescriptReactRouter.replace("/jargon/" + id);
+                        }
+                      }
+                      console.error("Translation mutation failed");
+                      RescriptReactRouter.replace("/jargon/" + id);
+                    }), (function (error) {
+                      console.error(error);
+                    }), undefined);
+              return ;
+            }
+            console.error("Translation mutation failed");
+            RescriptReactRouter.replace("/jargon/" + id);
+          }), (function (error) {
+            console.error(error);
+          }), undefined);
   };
   if (signedIn) {
     return JsxRuntime.jsxs("div", {
@@ -195,7 +290,7 @@ function NewJargon(props) {
                                     }),
                                 JsxRuntime.jsx("input", {
                                       className: "btn btn-primary",
-                                      disabled: match$1[0],
+                                      disabled: match$5[1] || match$6[1] || match$7[1],
                                       type: "submit",
                                       value: "제안하기"
                                     })
@@ -216,6 +311,9 @@ function NewJargon(props) {
 var make = NewJargon;
 
 export {
+  JargonMutation ,
+  TranslationMutation ,
+  CommentMutation ,
   make ,
 }
-/* react Not a pure module */
+/* commitMutation Not a pure module */

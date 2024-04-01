@@ -48,9 +48,7 @@ module rec CommentNode: {
                 jargonID,
                 parentID: commentID,
               },
-              ~onError=error => {
-                Js.log(error)
-              },
+              ~onError=error => Js.Console.error(error),
               ~onCompleted=(_response, _errors) => {
                 // TODO: Make relay understand the update
                 %raw(`window.location.reload()`)
