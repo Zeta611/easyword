@@ -47,7 +47,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      148,
+      146,
       4
     ], {
       TAG: "Module",
@@ -97,7 +97,7 @@ function CommentRow$CommentNode(props) {
     if (user == null) {
       window.alert("You need to be signed in to comment!");
     } else if (jargonID$1 !== undefined && commentID !== undefined) {
-      console.log("commenting " + user.uid + " on " + String(jargonID$1) + " with " + content + " in reply to " + String(commentID));
+      console.log("commenting " + user.uid + " on " + jargonID$1 + " with " + content + " in reply to " + commentID);
       mutate({
             authorID: user.uid,
             content: content,

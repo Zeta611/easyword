@@ -54,7 +54,7 @@ function CommentInput(props) {
     if (user == null) {
       window.alert("You need to be signed in to comment!");
     } else if (jargonID$1 !== undefined) {
-      console.log("commenting " + user.uid + " on " + String(jargonID$1) + " with " + content);
+      console.log("commenting " + user.uid + " on " + jargonID$1 + " with " + content);
       mutate({
             authorID: user.uid,
             content: content,

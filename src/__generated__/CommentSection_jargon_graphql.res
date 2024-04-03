@@ -4,19 +4,19 @@
 module Types = {
   @@warning("-30")
 
-  type rec fragment_comments_connection_edges_node_parent = {
-    @live id: string,
-  }
-  and fragment_comments_connection_edges_node_user = {
+  type rec fragment_comments_connection_edges_node_author = {
     display_name: string,
     photo_url: option<string>,
   }
+  and fragment_comments_connection_edges_node_parent = {
+    @live id: string,
+  }
   and fragment_comments_connection_edges_node = {
+    author: fragment_comments_connection_edges_node_author,
     content: string,
     created_at: string,
     @live id: string,
     parent: option<fragment_comments_connection_edges_node_parent>,
-    user: fragment_comments_connection_edges_node_user,
   }
   and fragment_comments_connection_edges = {
     node: fragment_comments_connection_edges_node,
@@ -170,7 +170,7 @@ return {
                   "args": null,
                   "concreteType": "user",
                   "kind": "LinkedField",
-                  "name": "user",
+                  "name": "author",
                   "plural": false,
                   "selections": [
                     {

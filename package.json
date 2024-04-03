@@ -35,7 +35,8 @@
     "react-social-login-buttons": "^4.1.0",
     "reactfire": "^4.2.2",
     "relay-runtime": "16.1.0",
-    "rescript-relay": "3.0.0-rc.4"
+    "rescript-relay": "3.0.0-rc.4",
+    "uuid": "^9.0.1"
   },
   "packageManager": "yarn@3.2.2",
   "devDependencies": {

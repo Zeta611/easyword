@@ -9,7 +9,7 @@ module JargonQuery = %relay(`
 `)
 
 module NewCommentMutation = %relay(`
-  mutation NewTranslationNewCommentMutation($authorID: String!, $content: String!, $jargonID: Int!) {
+  mutation NewTranslationNewCommentMutation($authorID: String!, $content: String!, $jargonID: uuid!) {
     insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {
       id
     }
@@ -17,7 +17,7 @@ module NewCommentMutation = %relay(`
 `)
 
 module TranslationMutation = %relay(`
-  mutation NewTranslationMutation($authorID: String!, $name: String!, $jargonID: Int!, $commentID: Int!) {
+  mutation NewTranslationMutation($authorID: String!, $name: String!, $jargonID: uuid!, $commentID: uuid!) {
     insert_translation_one(object: {author_id: $authorID, name: $name, jargon_id: $jargonID, comment_id: $commentID}) {
       id
     }
@@ -25,7 +25,7 @@ module TranslationMutation = %relay(`
 `)
 
 module CommentMutation = %relay(`
-  mutation NewTranslationCommentMutation($commentID: Int!, $translationID: Int!) {
+  mutation NewTranslationCommentMutation($commentID: uuid!, $translationID: uuid!) {
     update_comment_by_pk(pk_columns: {id: $commentID}, _set: {translation_id: $translationID}) {
       id
     }

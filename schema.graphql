@@ -32,6 +32,8 @@ input Boolean_comparison_exp {
 columns and relationships of "comment"
 """
 type comment implements Node {
+  """An object relationship"""
+  author: user!
   author_id: String!
 
   """An array relationship"""
@@ -92,20 +94,17 @@ type comment implements Node {
 
   """An object relationship"""
   jargon: jargon!
-  jargon_id: Int!
+  jargon_id: uuid!
 
   """An object relationship"""
   parent: comment
-  parent_id: Int
+  parent_id: uuid
   removed: Boolean!
 
   """An object relationship"""
   translation: translation
-  translation_id: Int
+  translation_id: uuid
   updated_at: timestamptz!
-
-  """An object relationship"""
-  user: user!
 }
 
 """
@@ -147,34 +146,18 @@ input comment_aggregate_bool_exp_count {
 aggregate fields of "comment"
 """
 type comment_aggregate_fields {
-  avg: comment_avg_fields
   count(columns: [comment_select_column!], distinct: Boolean): Int!
   max: comment_max_fields
   min: comment_min_fields
-  stddev: comment_stddev_fields
-  stddev_pop: comment_stddev_pop_fields
-  stddev_samp: comment_stddev_samp_fields
-  sum: comment_sum_fields
-  var_pop: comment_var_pop_fields
-  var_samp: comment_var_samp_fields
-  variance: comment_variance_fields
 }
 
 """
 order by aggregate values of table "comment"
 """
 input comment_aggregate_order_by {
-  avg: comment_avg_order_by
   count: order_by
   max: comment_max_order_by
   min: comment_min_order_by
-  stddev: comment_stddev_order_by
-  stddev_pop: comment_stddev_pop_order_by
-  stddev_samp: comment_stddev_samp_order_by
-  sum: comment_sum_order_by
-  var_pop: comment_var_pop_order_by
-  var_samp: comment_var_samp_order_by
-  variance: comment_variance_order_by
 }
 
 """
@@ -187,24 +170,6 @@ input comment_arr_rel_insert_input {
   on_conflict: comment_on_conflict
 }
 
-"""aggregate avg on columns"""
-type comment_avg_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by avg() on columns of table "comment"
-"""
-input comment_avg_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
-}
-
 """
 Boolean expression to filter rows from the table "comment". All fields are combined with a logical 'AND'.
 """
@@ -212,21 +177,21 @@ input comment_bool_exp {
   _and: [comment_bool_exp!]
   _not: comment_bool_exp
   _or: [comment_bool_exp!]
+  author: user_bool_exp
   author_id: String_comparison_exp
   children: comment_bool_exp
   children_aggregate: comment_aggregate_bool_exp
   content: String_comparison_exp
   created_at: timestamptz_comparison_exp
-  id: Int_comparison_exp
+  id: uuid_comparison_exp
   jargon: jargon_bool_exp
-  jargon_id: Int_comparison_exp
+  jargon_id: uuid_comparison_exp
   parent: comment_bool_exp
-  parent_id: Int_comparison_exp
+  parent_id: uuid_comparison_exp
   removed: Boolean_comparison_exp
   translation: translation_bool_exp
-  translation_id: Int_comparison_exp
+  translation_id: uuid_comparison_exp
   updated_at: timestamptz_comparison_exp
-  user: user_bool_exp
 }
 
 """
@@ -236,42 +201,37 @@ enum comment_constraint {
   """
   unique or primary key constraint on columns "id"
   """
+  comment_id_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
   comment_pkey
 
   """
   unique or primary key constraint on columns "translation_id"
   """
-  comment_translation_id_key
-}
-
-"""
-input type for incrementing numeric columns in table "comment"
-"""
-input comment_inc_input {
-  id: Int
-  jargon_id: Int
-  parent_id: Int
-  translation_id: Int
+  comment_translation_id_new_key
 }
 
 """
 input type for inserting data into table "comment"
 """
 input comment_insert_input {
+  author: user_obj_rel_insert_input
   author_id: String
   children: comment_arr_rel_insert_input
   content: String
   created_at: timestamptz
-  id: Int
+  id: uuid
   jargon: jargon_obj_rel_insert_input
-  jargon_id: Int
+  jargon_id: uuid
   parent: comment_obj_rel_insert_input
-  parent_id: Int
+  parent_id: uuid
   removed: Boolean
   translation: translation_obj_rel_insert_input
-  translation_id: Int
+  translation_id: uuid
   updated_at: timestamptz
-  user: user_obj_rel_insert_input
 }
 
 """aggregate max on columns"""
@@ -279,10 +239,10 @@ type comment_max_fields {
   author_id: String
   content: String
   created_at: timestamptz
-  id: Int
-  jargon_id: Int
-  parent_id: Int
-  translation_id: Int
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  translation_id: uuid
   updated_at: timestamptz
 }
 
@@ -305,10 +265,10 @@ type comment_min_fields {
   author_id: String
   content: String
   created_at: timestamptz
-  id: Int
-  jargon_id: Int
-  parent_id: Int
-  translation_id: Int
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  translation_id: uuid
   updated_at: timestamptz
 }
 
@@ -358,6 +318,7 @@ input comment_on_conflict {
 
 """Ordering options when selecting data from "comment"."""
 input comment_order_by {
+  author: user_order_by
   author_id: order_by
   children_aggregate: comment_aggregate_order_by
   content: order_by
@@ -371,12 +332,11 @@ input comment_order_by {
   translation: translation_order_by
   translation_id: order_by
   updated_at: order_by
-  user: user_order_by
 }
 
 """primary key columns input for table: comment"""
 input comment_pk_columns_input {
-  id: Int!
+  id: uuid!
 }
 
 """
@@ -434,84 +394,12 @@ input comment_set_input {
   author_id: String
   content: String
   created_at: timestamptz
-  id: Int
-  jargon_id: Int
-  parent_id: Int
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
   removed: Boolean
-  translation_id: Int
+  translation_id: uuid
   updated_at: timestamptz
-}
-
-"""aggregate stddev on columns"""
-type comment_stddev_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by stddev() on columns of table "comment"
-"""
-input comment_stddev_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type comment_stddev_pop_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "comment"
-"""
-input comment_stddev_pop_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type comment_stddev_samp_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "comment"
-"""
-input comment_stddev_samp_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
-}
-
-"""aggregate sum on columns"""
-type comment_sum_fields {
-  id: Int
-  jargon_id: Int
-  parent_id: Int
-  translation_id: Int
-}
-
-"""
-order by sum() on columns of table "comment"
-"""
-input comment_sum_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
 }
 
 """
@@ -547,68 +435,11 @@ enum comment_update_column {
 }
 
 input comment_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: comment_inc_input
-
   """sets the columns of the filtered rows to the given values"""
   _set: comment_set_input
 
   """filter the rows which have to be updated"""
   where: comment_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type comment_var_pop_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by var_pop() on columns of table "comment"
-"""
-input comment_var_pop_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
-}
-
-"""aggregate var_samp on columns"""
-type comment_var_samp_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by var_samp() on columns of table "comment"
-"""
-input comment_var_samp_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
-}
-
-"""aggregate variance on columns"""
-type comment_variance_fields {
-  id: Float
-  jargon_id: Float
-  parent_id: Float
-  translation_id: Float
-}
-
-"""
-order by variance() on columns of table "comment"
-"""
-input comment_variance_order_by {
-  id: order_by
-  jargon_id: order_by
-  parent_id: order_by
-  translation_id: order_by
 }
 
 """
@@ -643,6 +474,8 @@ input Int_comparison_exp {
 columns and relationships of "jargon"
 """
 type jargon implements Node {
+  """An object relationship"""
+  author: user!
   author_id: String!
 
   """An array relationship"""
@@ -754,9 +587,6 @@ type jargon implements Node {
     where: translation_bool_exp
   ): translationConnection!
   updated_at: timestamptz!
-
-  """An object relationship"""
-  user: user!
 }
 
 """
@@ -782,34 +612,18 @@ input jargon_aggregate_bool_exp_count {
 aggregate fields of "jargon"
 """
 type jargon_aggregate_fields {
-  avg: jargon_avg_fields
   count(columns: [jargon_select_column!], distinct: Boolean): Int!
   max: jargon_max_fields
   min: jargon_min_fields
-  stddev: jargon_stddev_fields
-  stddev_pop: jargon_stddev_pop_fields
-  stddev_samp: jargon_stddev_samp_fields
-  sum: jargon_sum_fields
-  var_pop: jargon_var_pop_fields
-  var_samp: jargon_var_samp_fields
-  variance: jargon_variance_fields
 }
 
 """
 order by aggregate values of table "jargon"
 """
 input jargon_aggregate_order_by {
-  avg: jargon_avg_order_by
   count: order_by
   max: jargon_max_order_by
   min: jargon_min_order_by
-  stddev: jargon_stddev_order_by
-  stddev_pop: jargon_stddev_pop_order_by
-  stddev_samp: jargon_stddev_samp_order_by
-  sum: jargon_sum_order_by
-  var_pop: jargon_var_pop_order_by
-  var_samp: jargon_var_samp_order_by
-  variance: jargon_variance_order_by
 }
 
 """
@@ -822,18 +636,6 @@ input jargon_arr_rel_insert_input {
   on_conflict: jargon_on_conflict
 }
 
-"""aggregate avg on columns"""
-type jargon_avg_fields {
-  id: Float
-}
-
-"""
-order by avg() on columns of table "jargon"
-"""
-input jargon_avg_order_by {
-  id: order_by
-}
-
 """
 Boolean expression to filter rows from the table "jargon". All fields are combined with a logical 'AND'.
 """
@@ -841,22 +643,27 @@ input jargon_bool_exp {
   _and: [jargon_bool_exp!]
   _not: jargon_bool_exp
   _or: [jargon_bool_exp!]
+  author: user_bool_exp
   author_id: String_comparison_exp
   comments: comment_bool_exp
   comments_aggregate: comment_aggregate_bool_exp
   created_at: timestamptz_comparison_exp
-  id: Int_comparison_exp
+  id: uuid_comparison_exp
   name: String_comparison_exp
   translations: translation_bool_exp
   translations_aggregate: translation_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
-  user: user_bool_exp
 }
 
 """
 unique or primary key constraints on table "jargon"
 """
 enum jargon_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  jargon_id_key
+
   """
   unique or primary key constraint on columns "name"
   """
@@ -869,31 +676,24 @@ enum jargon_constraint {
 }
 
 """
-input type for incrementing numeric columns in table "jargon"
-"""
-input jargon_inc_input {
-  id: Int
-}
-
-"""
 input type for inserting data into table "jargon"
 """
 input jargon_insert_input {
+  author: user_obj_rel_insert_input
   author_id: String
   comments: comment_arr_rel_insert_input
   created_at: timestamptz
-  id: Int
+  id: uuid
   name: String
   translations: translation_arr_rel_insert_input
   updated_at: timestamptz
-  user: user_obj_rel_insert_input
 }
 
 """aggregate max on columns"""
 type jargon_max_fields {
   author_id: String
   created_at: timestamptz
-  id: Int
+  id: uuid
   name: String
   updated_at: timestamptz
 }
@@ -913,7 +713,7 @@ input jargon_max_order_by {
 type jargon_min_fields {
   author_id: String
   created_at: timestamptz
-  id: Int
+  id: uuid
   name: String
   updated_at: timestamptz
 }
@@ -961,6 +761,7 @@ input jargon_on_conflict {
 
 """Ordering options when selecting data from "jargon"."""
 input jargon_order_by {
+  author: user_order_by
   author_id: order_by
   comments_aggregate: comment_aggregate_order_by
   created_at: order_by
@@ -968,12 +769,11 @@ input jargon_order_by {
   name: order_by
   translations_aggregate: translation_aggregate_order_by
   updated_at: order_by
-  user: user_order_by
 }
 
 """primary key columns input for table: jargon"""
 input jargon_pk_columns_input {
-  id: Int!
+  id: uuid!
 }
 
 """
@@ -1002,57 +802,9 @@ input type for updating data in table "jargon"
 input jargon_set_input {
   author_id: String
   created_at: timestamptz
-  id: Int
+  id: uuid
   name: String
   updated_at: timestamptz
-}
-
-"""aggregate stddev on columns"""
-type jargon_stddev_fields {
-  id: Float
-}
-
-"""
-order by stddev() on columns of table "jargon"
-"""
-input jargon_stddev_order_by {
-  id: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type jargon_stddev_pop_fields {
-  id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "jargon"
-"""
-input jargon_stddev_pop_order_by {
-  id: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type jargon_stddev_samp_fields {
-  id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "jargon"
-"""
-input jargon_stddev_samp_order_by {
-  id: order_by
-}
-
-"""aggregate sum on columns"""
-type jargon_sum_fields {
-  id: Int
-}
-
-"""
-order by sum() on columns of table "jargon"
-"""
-input jargon_sum_order_by {
-  id: order_by
 }
 
 """
@@ -1076,50 +828,11 @@ enum jargon_update_column {
 }
 
 input jargon_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: jargon_inc_input
-
   """sets the columns of the filtered rows to the given values"""
   _set: jargon_set_input
 
   """filter the rows which have to be updated"""
   where: jargon_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type jargon_var_pop_fields {
-  id: Float
-}
-
-"""
-order by var_pop() on columns of table "jargon"
-"""
-input jargon_var_pop_order_by {
-  id: order_by
-}
-
-"""aggregate var_samp on columns"""
-type jargon_var_samp_fields {
-  id: Float
-}
-
-"""
-order by var_samp() on columns of table "jargon"
-"""
-input jargon_var_samp_order_by {
-  id: order_by
-}
-
-"""aggregate variance on columns"""
-type jargon_variance_fields {
-  id: Float
-}
-
-"""
-order by variance() on columns of table "jargon"
-"""
-input jargon_variance_order_by {
-  id: order_by
 }
 
 """
@@ -1148,7 +861,7 @@ type mutation_root {
   """
   delete single row from the table: "comment"
   """
-  delete_comment_by_pk(id: Int!): comment
+  delete_comment_by_pk(id: uuid!): comment
 
   """
   delete data from the table: "jargon"
@@ -1161,7 +874,7 @@ type mutation_root {
   """
   delete single row from the table: "jargon"
   """
-  delete_jargon_by_pk(id: Int!): jargon
+  delete_jargon_by_pk(id: uuid!): jargon
 
   """
   delete data from the table: "translation"
@@ -1174,7 +887,7 @@ type mutation_root {
   """
   delete single row from the table: "translation"
   """
-  delete_translation_by_pk(id: Int!): translation
+  delete_translation_by_pk(id: uuid!): translation
 
   """
   delete data from the table: "user"
@@ -1281,9 +994,6 @@ type mutation_root {
   update data of the table: "comment"
   """
   update_comment(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: comment_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: comment_set_input
 
@@ -1295,9 +1005,6 @@ type mutation_root {
   update single row of the table: "comment"
   """
   update_comment_by_pk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: comment_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: comment_set_input
     pk_columns: comment_pk_columns_input!
@@ -1315,9 +1022,6 @@ type mutation_root {
   update data of the table: "jargon"
   """
   update_jargon(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: jargon_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: jargon_set_input
 
@@ -1329,9 +1033,6 @@ type mutation_root {
   update single row of the table: "jargon"
   """
   update_jargon_by_pk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: jargon_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: jargon_set_input
     pk_columns: jargon_pk_columns_input!
@@ -1349,9 +1050,6 @@ type mutation_root {
   update data of the table: "translation"
   """
   update_translation(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: translation_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: translation_set_input
 
@@ -1363,9 +1061,6 @@ type mutation_root {
   update single row of the table: "translation"
   """
   update_translation_by_pk(
-    """increments the numeric columns with given value of the filtered values"""
-    _inc: translation_inc_input
-
     """sets the columns of the filtered rows to the given values"""
     _set: translation_set_input
     pk_columns: translation_pk_columns_input!
@@ -1680,22 +1375,21 @@ input timestamptz_comparison_exp {
 columns and relationships of "translation"
 """
 type translation implements Node {
+  """An object relationship"""
+  author: user!
   author_id: String!
 
   """An object relationship"""
   comment: comment
-  comment_id: Int!
+  comment_id: uuid!
   created_at: timestamptz!
   id: ID!
 
   """An object relationship"""
   jargon: jargon!
-  jargon_id: Int!
+  jargon_id: uuid!
   name: String!
   updated_at: timestamptz!
-
-  """An object relationship"""
-  user: user!
 }
 
 """
@@ -1721,34 +1415,18 @@ input translation_aggregate_bool_exp_count {
 aggregate fields of "translation"
 """
 type translation_aggregate_fields {
-  avg: translation_avg_fields
   count(columns: [translation_select_column!], distinct: Boolean): Int!
   max: translation_max_fields
   min: translation_min_fields
-  stddev: translation_stddev_fields
-  stddev_pop: translation_stddev_pop_fields
-  stddev_samp: translation_stddev_samp_fields
-  sum: translation_sum_fields
-  var_pop: translation_var_pop_fields
-  var_samp: translation_var_samp_fields
-  variance: translation_variance_fields
 }
 
 """
 order by aggregate values of table "translation"
 """
 input translation_aggregate_order_by {
-  avg: translation_avg_order_by
   count: order_by
   max: translation_max_order_by
   min: translation_min_order_by
-  stddev: translation_stddev_order_by
-  stddev_pop: translation_stddev_pop_order_by
-  stddev_samp: translation_stddev_samp_order_by
-  sum: translation_sum_order_by
-  var_pop: translation_var_pop_order_by
-  var_samp: translation_var_samp_order_by
-  variance: translation_variance_order_by
 }
 
 """
@@ -1761,22 +1439,6 @@ input translation_arr_rel_insert_input {
   on_conflict: translation_on_conflict
 }
 
-"""aggregate avg on columns"""
-type translation_avg_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by avg() on columns of table "translation"
-"""
-input translation_avg_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
-}
-
 """
 Boolean expression to filter rows from the table "translation". All fields are combined with a logical 'AND'.
 """
@@ -1784,16 +1446,16 @@ input translation_bool_exp {
   _and: [translation_bool_exp!]
   _not: translation_bool_exp
   _or: [translation_bool_exp!]
+  author: user_bool_exp
   author_id: String_comparison_exp
   comment: comment_bool_exp
-  comment_id: Int_comparison_exp
+  comment_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
-  id: Int_comparison_exp
+  id: uuid_comparison_exp
   jargon: jargon_bool_exp
-  jargon_id: Int_comparison_exp
+  jargon_id: uuid_comparison_exp
   name: String_comparison_exp
   updated_at: timestamptz_comparison_exp
-  user: user_bool_exp
 }
 
 """
@@ -1801,43 +1463,44 @@ unique or primary key constraints on table "translation"
 """
 enum translation_constraint {
   """
+  unique or primary key constraint on columns "comment_id"
+  """
+  translation_comment_id_new_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  translation_id_key
+
+  """
   unique or primary key constraint on columns "id"
   """
   translation_pkey
 }
 
 """
-input type for incrementing numeric columns in table "translation"
-"""
-input translation_inc_input {
-  comment_id: Int
-  id: Int
-  jargon_id: Int
-}
-
-"""
 input type for inserting data into table "translation"
 """
 input translation_insert_input {
+  author: user_obj_rel_insert_input
   author_id: String
   comment: comment_obj_rel_insert_input
-  comment_id: Int
+  comment_id: uuid
   created_at: timestamptz
-  id: Int
+  id: uuid
   jargon: jargon_obj_rel_insert_input
-  jargon_id: Int
+  jargon_id: uuid
   name: String
   updated_at: timestamptz
-  user: user_obj_rel_insert_input
 }
 
 """aggregate max on columns"""
 type translation_max_fields {
   author_id: String
-  comment_id: Int
+  comment_id: uuid
   created_at: timestamptz
-  id: Int
-  jargon_id: Int
+  id: uuid
+  jargon_id: uuid
   name: String
   updated_at: timestamptz
 }
@@ -1858,10 +1521,10 @@ input translation_max_order_by {
 """aggregate min on columns"""
 type translation_min_fields {
   author_id: String
-  comment_id: Int
+  comment_id: uuid
   created_at: timestamptz
-  id: Int
-  jargon_id: Int
+  id: uuid
+  jargon_id: uuid
   name: String
   updated_at: timestamptz
 }
@@ -1911,6 +1574,7 @@ input translation_on_conflict {
 
 """Ordering options when selecting data from "translation"."""
 input translation_order_by {
+  author: user_order_by
   author_id: order_by
   comment: comment_order_by
   comment_id: order_by
@@ -1920,12 +1584,11 @@ input translation_order_by {
   jargon_id: order_by
   name: order_by
   updated_at: order_by
-  user: user_order_by
 }
 
 """primary key columns input for table: translation"""
 input translation_pk_columns_input {
-  id: Int!
+  id: uuid!
 }
 
 """
@@ -1959,76 +1622,12 @@ input type for updating data in table "translation"
 """
 input translation_set_input {
   author_id: String
-  comment_id: Int
+  comment_id: uuid
   created_at: timestamptz
-  id: Int
-  jargon_id: Int
+  id: uuid
+  jargon_id: uuid
   name: String
   updated_at: timestamptz
-}
-
-"""aggregate stddev on columns"""
-type translation_stddev_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by stddev() on columns of table "translation"
-"""
-input translation_stddev_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
-}
-
-"""aggregate stddev_pop on columns"""
-type translation_stddev_pop_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "translation"
-"""
-input translation_stddev_pop_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
-}
-
-"""aggregate stddev_samp on columns"""
-type translation_stddev_samp_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by stddev_samp() on columns of table "translation"
-"""
-input translation_stddev_samp_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
-}
-
-"""aggregate sum on columns"""
-type translation_sum_fields {
-  comment_id: Int
-  id: Int
-  jargon_id: Int
-}
-
-"""
-order by sum() on columns of table "translation"
-"""
-input translation_sum_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
 }
 
 """
@@ -2058,62 +1657,11 @@ enum translation_update_column {
 }
 
 input translation_updates {
-  """increments the numeric columns with given value of the filtered values"""
-  _inc: translation_inc_input
-
   """sets the columns of the filtered rows to the given values"""
   _set: translation_set_input
 
   """filter the rows which have to be updated"""
   where: translation_bool_exp!
-}
-
-"""aggregate var_pop on columns"""
-type translation_var_pop_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by var_pop() on columns of table "translation"
-"""
-input translation_var_pop_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
-}
-
-"""aggregate var_samp on columns"""
-type translation_var_samp_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by var_samp() on columns of table "translation"
-"""
-input translation_var_samp_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
-}
-
-"""aggregate variance on columns"""
-type translation_variance_fields {
-  comment_id: Float
-  id: Float
-  jargon_id: Float
-}
-
-"""
-order by variance() on columns of table "translation"
-"""
-input translation_variance_order_by {
-  comment_id: order_by
-  id: order_by
-  jargon_id: order_by
 }
 
 """
@@ -2469,5 +2017,22 @@ type userConnection {
 type userEdge {
   cursor: String!
   node: user!
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
 }
 

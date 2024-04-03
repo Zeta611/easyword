@@ -4,5 +4,6 @@ module.exports = {
   artifactDirectory: "./src/__generated__",
   customScalars: {
     timestamptz: "string",
+    uuid: "string",
   },
 }

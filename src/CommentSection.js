@@ -37,8 +37,8 @@ function CommentSection(props) {
               return {
                       id: x.id,
                       content: x.content,
-                      userDisplayName: x.user.display_name,
-                      userPhotoURL: x.user.photo_url,
+                      userDisplayName: x.author.display_name,
+                      userPhotoURL: x.author.photo_url,
                       timestamp: new Date(x.created_at),
                       parent: Belt_Option.map(x.parent, (function (x) {
                               return x.id;

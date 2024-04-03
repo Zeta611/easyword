@@ -114,7 +114,7 @@ return {
                   "args": null,
                   "concreteType": "user",
                   "kind": "LinkedField",
-                  "name": "user",
+                  "name": "author",
                   "plural": false,
                   "selections": [
                     {

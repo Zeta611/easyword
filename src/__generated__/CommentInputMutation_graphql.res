@@ -18,14 +18,14 @@ module Types = {
   type variables = {
     authorID: string,
     content: string,
-    jargonID: int,
+    jargonID: string,
   }
 }
 
 module Internal = {
   @live
   let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"jargonID":{"b":""}}}`
   )
   @live
   let variablesConverterMap = ()
@@ -157,12 +157,12 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "8deb57d5ea789e636d48ac3e3a4d4454",
+    "cacheID": "4a3b42420449ee80b4f9dcb7bf25bacf",
     "id": null,
     "metadata": {},
     "name": "CommentInputMutation",
     "operationKind": "mutation",
-    "text": "mutation CommentInputMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: Int!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {\n    id\n  }\n}\n"
+    "text": "mutation CommentInputMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: uuid!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {\n    id\n  }\n}\n"
   }
 };
 })() `)

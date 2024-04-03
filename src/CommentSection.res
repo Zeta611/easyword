@@ -10,7 +10,7 @@ module CommentFragment = %relay(`
           parent {
             id
           }
-          user {
+          author {
             photo_url
             display_name
           }
@@ -32,8 +32,8 @@ let make = (~jargonID, ~commentRefs) => {
     comments->Array.map(({node: x}) => {
       Comment.id: x.id,
       content: x.content,
-      userDisplayName: x.user.display_name,
-      userPhotoURL: x.user.photo_url,
+      userDisplayName: x.author.display_name,
+      userPhotoURL: x.author.photo_url,
       timestamp: x.created_at->Js.Date.fromString,
       parent: x.parent->Option.map(x => x.id),
     }),

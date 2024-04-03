@@ -10,9 +10,7 @@ function retrieveOriginalID(id) {
   try {
     var decoded = Js_json.decodeArray(JSON.parse(atob(id)));
     if (decoded !== undefined) {
-      return Belt_Option.map(Belt_Option.flatMap(Belt_Array.get(decoded, 3), Js_json.decodeNumber), (function (x) {
-                    return x | 0;
-                  }));
+      return Belt_Option.flatMap(Belt_Array.get(decoded, 3), Js_json.decodeString);
     } else {
       return ;
     }

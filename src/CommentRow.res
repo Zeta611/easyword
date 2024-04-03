@@ -1,5 +1,5 @@
 module CommentMutation = %relay(`
-  mutation CommentRowMutation($authorID: String!, $content: String!, $jargonID: Int!, $parentID: Int!) {
+  mutation CommentRowMutation($authorID: String!, $content: String!, $jargonID: uuid!, $parentID: uuid!) {
     insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID, parent_id: $parentID}) {
       id
     }
@@ -38,9 +38,7 @@ module rec CommentNode: {
         let commentID = comment.id->Base64.retrieveOriginalID
         switch (user->Js.Nullable.toOption, jargonID, commentID) {
         | (Some(user), Some(jargonID), Some(commentID)) => {
-            Js.log(
-              `commenting ${user.uid} on ${jargonID->Int.toString} with ${content} in reply to ${commentID->Int.toString}`,
-            )
+            Js.log(`commenting ${user.uid} on ${jargonID} with ${content} in reply to ${commentID}`)
             mutate(
               ~variables={
                 authorID: user.uid,

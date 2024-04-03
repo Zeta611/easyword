@@ -5,7 +5,7 @@ import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRe
 
 var Types = {};
 
-var variablesConverter = {};
+var variablesConverter = {"__root":{"jargonID":{"b":""}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -117,12 +117,12 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "f7ead67d2d43e1befec7f481087295c8",
+    "cacheID": "2a16abfe2598fb3676701a9c12b864a6",
     "id": null,
     "metadata": {},
     "name": "NewTranslationNewCommentMutation",
     "operationKind": "mutation",
-    "text": "mutation NewTranslationNewCommentMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: Int!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {\n    id\n  }\n}\n"
+    "text": "mutation NewTranslationNewCommentMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: uuid!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {\n    id\n  }\n}\n"
   }
 };
 })());

@@ -288,7 +288,7 @@ return {
                             "args": null,
                             "concreteType": "user",
                             "kind": "LinkedField",
-                            "name": "user",
+                            "name": "author",
                             "plural": false,
                             "selections": [
                               {
@@ -383,12 +383,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "099d9fa06a05a6a04754d608b49450e5",
+    "cacheID": "35ad5953f4c37aa3ab0fe3495cfb2f92",
     "id": null,
     "metadata": {},
     "name": "JargonPostQuery",
     "operationKind": "query",
-    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection(first: 100) {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        user {\n          photo_url\n          display_name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
+    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection(first: 100) {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
   }
 };
 })() `)

@@ -7,8 +7,7 @@ let retrieveOriginalID = id => {
     | Some(decoded) =>
       decoded
       ->Array.get(3)
-      ->Option.flatMap(x => x->Js.Json.decodeNumber)
-      ->Option.map(x => x->Int.fromFloat)
+      ->Option.flatMap(x => x->Js.Json.decodeString)
     | None => None
     }
   } catch {

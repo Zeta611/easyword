@@ -16,15 +16,15 @@ module Types = {
   type rawResponse = response
   @live
   type variables = {
-    commentID: int,
-    translationID: int,
+    commentID: string,
+    translationID: string,
   }
 }
 
 module Internal = {
   @live
   let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"translationID":{"b":""},"commentID":{"b":""}}}`
   )
   @live
   let variablesConverterMap = ()
@@ -152,12 +152,12 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "f3807979f0d86827dce9a93210bd4dbd",
+    "cacheID": "c7a2ce642ea1436622dc14a0c9fe9ab2",
     "id": null,
     "metadata": {},
     "name": "NewJargonCommentMutation",
     "operationKind": "mutation",
-    "text": "mutation NewJargonCommentMutation(\n  $commentID: Int!\n  $translationID: Int!\n) {\n  update_comment_by_pk(pk_columns: {id: $commentID}, _set: {translation_id: $translationID}) {\n    id\n  }\n}\n"
+    "text": "mutation NewJargonCommentMutation(\n  $commentID: uuid!\n  $translationID: uuid!\n) {\n  update_comment_by_pk(pk_columns: {id: $commentID}, _set: {translation_id: $translationID}) {\n    id\n  }\n}\n"
   }
 };
 })() `)
