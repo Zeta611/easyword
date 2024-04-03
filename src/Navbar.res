@@ -1,3 +1,7 @@
+let unsafeGet = (json, key) => {
+  json->Js.Json.decodeObject->Option.getExn->Js.Dict.unsafeGet(key)
+}
+
 @react.component
 let make = () => {
   let {signedIn, user} = React.useContext(SignInContext.context)
@@ -8,16 +12,39 @@ let make = () => {
 
   let (jargonsCount, setJargonsCount) = React.Uncurried.useState(() => None)
 
-  open Firebase
-  let firestore = useFirestore()
-  let jargonsCollection = firestore->collection(~path=`jargons`)
   React.useEffect0(() => {
-    let countJargons = async (. ()) => {
-      let snapshot = await getCountFromServer(jargonsCollection)
-      let count = snapshot.data(.).count
-      setJargonsCount(._ => Some(count))
-    }
-    let _ = countJargons(.)
+    open Fetch
+
+    (
+      async () => {
+        let resp = await fetch(
+          "https://easyword.hasura.app/api/rest/jargons-count",
+          {
+            method: #GET,
+            headers: Headers.fromObject({
+              "content-type": "application/json",
+            }),
+          },
+        )
+
+        let json = if resp->Response.ok {
+          await resp->Response.json
+        } else {
+          raise(Exc.GraphQLError("Failed to fetch jargons count"))
+        }
+
+        let count =
+          json
+          ->unsafeGet("jargon_aggregate")
+          ->unsafeGet("aggregate")
+          ->unsafeGet("count")
+          ->Js.Json.decodeNumber
+          ->Option.getExn
+          ->Int.fromFloat
+
+        setJargonsCount(_ => Some(count))
+      }
+    )()->ignore
 
     None
   })

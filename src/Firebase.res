@@ -77,12 +77,6 @@ external updateDoc: (documentReference, 'a) => promise<unit> = "updateDoc"
 @module("firebase/firestore")
 external addDoc: (collectionReference, 'a) => promise<documentReference> = "addDoc"
 
-type aggregateSpecData = {count: int}
-type aggregateQuerySnapshot = {data: unit => aggregateSpecData}
-@module("firebase/firestore")
-external getCountFromServer: collectionReference => promise<aggregateQuerySnapshot> =
-  "getCountFromServer"
-
 @deriving(abstract)
 type reactFireOptions<'a> = {
   @optional idField: string,

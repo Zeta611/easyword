@@ -10,8 +10,6 @@ module JargonPostQuery = %relay(`
   }
 `)
 
-exception Error404
-
 @react.component
 let make = (~jargonID) => {
   let {node} = JargonPostQuery.use(~variables={id: jargonID})
@@ -44,7 +42,7 @@ let make = (~jargonID) => {
         </main>
       </div>
 
-    | UnselectedUnionMember(_) => raise(Error404)
+    | UnselectedUnionMember(resp) => raise(Exc.HTTPError(404, resp))
     }
   }
 }

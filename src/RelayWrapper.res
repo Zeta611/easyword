@@ -1,5 +1,3 @@
-exception Graphql_error(string)
-
 @react.component
 let make = (~children: React.element) => {
   let token = React.useContext(TokenContext.context)
@@ -17,7 +15,7 @@ let make = (~children: React.element) => {
         method: #POST,
         body: {"query": operation.text, "variables": variables}
         ->Js.Json.stringifyAny
-        ->Belt.Option.getExn
+        ->Option.getExn
         ->Body.string,
         headers: switch token {
         | Some(token) =>
@@ -33,10 +31,10 @@ let make = (~children: React.element) => {
       },
     )
 
-    if Response.ok(resp) {
-      await Response.json(resp)
+    if resp->Response.ok {
+      await resp->Response.json
     } else {
-      raise(Graphql_error("Request failed: " ++ Response.statusText(resp)))
+      raise(Exc.GraphQLError("Request failed: " ++ Response.statusText(resp)))
     }
   }
 
