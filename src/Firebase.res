@@ -19,13 +19,6 @@ module FirebaseApp = {
 @module("reactfire")
 external useFirebaseApp: unit => FirebaseApp.t = "useFirebaseApp"
 
-// @module("firebase/app")
-// external initializeApp: firebaseConfig => firebaseApp = "initializeApp"
-
-// type analytics
-// @module("firebase/analytics")
-// external getAnalytics: firebaseApp => analytics = "getAnalytics"
-
 type firestore
 @module("firebase/firestore")
 external getFirestore: FirebaseApp.t => firestore = "getFirestore"
@@ -70,9 +63,6 @@ type queryConstraint
 external query: (collectionReference, array<queryConstraint>) => query = "query"
 
 @module("firebase/firestore")
-external orderBy: (string, ~direction: [#asc | #desc]) => queryConstraint = "orderBy"
-
-@module("firebase/firestore")
 external getDoc: documentReference => promise<documentSnapshot<'a>> = "getDoc"
 
 @module("firebase/firestore")
@@ -99,16 +89,6 @@ type reactFireOptions<'a> = {
   @optional initialData: 'a,
   @optional suspense: bool,
 }
-
-@module("reactfire")
-external useFirestoreDocData: documentReference => observableStatus<_> = "useFirestoreDocData"
-
-@module("reactfire")
-external useFirestoreCollectionData: (
-  query,
-  ~options: reactFireOptions<_>=?,
-  unit,
-) => observableStatus<_> = "useFirestoreCollectionData"
 
 module User = {
   @deriving(accessors)
@@ -237,21 +217,3 @@ module AppCheckProvider = {
   @react.component @module("reactfire")
   external make: (~sdk: appCheck, ~children: React.element) => React.element = "AppCheckProvider"
 }
-
-module Timestamp = {
-  type t
-  @new @module("firebase/firestore")
-  external make: unit => t = "Timestamp"
-  @send
-  external toDate: t => Js.Date.t = "toDate"
-  @module("firebase/firestore") @scope("Timestamp")
-  external fromDate: Js.Date.t => t = "fromDate"
-}
-
-type functions
-@module("firebase/functions")
-external getFunctions: (FirebaseApp.t, @as("asia-northeast3") _) => functions = "getFunctions"
-
-type callResult<'a> = {data: 'a}
-@module("firebase/functions")
-external httpsCallable: (functions, string) => 'a => promise<callResult<'b>> = "httpsCallable"

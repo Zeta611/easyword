@@ -65,8 +65,6 @@ var appCheckToken = FirebaseConfig.APP_CHECK_TOKEN;
 
 var AppCheckProvider = {};
 
-var Timestamp = {};
-
 export {
   firebaseConfig ,
   FirebaseAppProvider ,
@@ -78,6 +76,5 @@ export {
   AuthProvider ,
   appCheckToken ,
   AppCheckProvider ,
-  Timestamp ,
 }
 /* firebaseConfig Not a pure module */

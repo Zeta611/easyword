@@ -1,10 +1,3 @@
-type t = {
-  id: string,
-  english: string,
-  translations: Js.Dict.t<int>,
-  timestamp: option<Firebase.Timestamp.t>,
-}
-
 type card = {
   id: string,
   name: string,
