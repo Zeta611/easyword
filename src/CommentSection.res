@@ -1,8 +1,7 @@
 module CommentFragment = %relay(`
   fragment CommentSection_jargon on jargon {
     __id
-    comments_connection(first: 100)
-      @connection(key: "CommentSection_jargon_comments_connection") {
+    comments_connection {
       edges {
         node {
           id
@@ -14,6 +13,10 @@ module CommentFragment = %relay(`
           author {
             photo_url
             display_name
+          }
+          translation {
+            id
+            name
           }
         }
       }
@@ -33,6 +36,7 @@ let make = (~jargonID, ~commentRefs) => {
       userPhotoURL: x.author.photo_url,
       timestamp: x.created_at->Date.fromString,
       parent: x.parent->Option.map(x => x.id),
+      translation: x.translation->Option.map(x => x.name),
     }),
   )
 

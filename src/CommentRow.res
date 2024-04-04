@@ -50,7 +50,9 @@ module rec CommentNode: {
         let commentID = comment.id->Base64.retrieveOriginalID
         switch (user->Nullable.toOption, jargonID, commentID) {
         | (Some(user), Some(jargonID), Some(commentID)) => {
-            Console.log(`commenting ${user.uid} on ${jargonID} with ${content} in reply to ${commentID}`)
+            Console.log(
+              `commenting ${user.uid} on ${jargonID} with ${content} in reply to ${commentID}`,
+            )
             mutate(
               ~variables={
                 authorID: user.uid,
@@ -87,6 +89,14 @@ module rec CommentNode: {
             className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium">
             {comment.userDisplayName->React.string}
           </span>
+          {switch comment.translation {
+          | Some(translation) =>
+            <span
+              className="text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium">
+              {translation->React.string}
+            </span>
+          | None => React.null
+          }}
           {"·"->React.string}
           <span title={comment.timestamp->Date.toDateString}>
             {comment.timestamp->DateFormat.timeAgo->React.string}

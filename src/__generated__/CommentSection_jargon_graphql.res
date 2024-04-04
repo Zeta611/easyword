@@ -11,23 +11,23 @@ module Types = {
   and fragment_comments_connection_edges_node_parent = {
     @live id: string,
   }
+  and fragment_comments_connection_edges_node_translation = {
+    @live id: string,
+    name: string,
+  }
   and fragment_comments_connection_edges_node = {
     author: fragment_comments_connection_edges_node_author,
     content: string,
     created_at: string,
     @live id: string,
     parent: option<fragment_comments_connection_edges_node_parent>,
+    translation: option<fragment_comments_connection_edges_node_translation>,
   }
   and fragment_comments_connection_edges = {
     node: fragment_comments_connection_edges_node,
   }
-  and fragment_comments_connection_pageInfo = {
-    endCursor: string,
-    hasNextPage: bool,
-  }
   and fragment_comments_connection = {
     edges: array<fragment_comments_connection_edges>,
-    pageInfo: fragment_comments_connection_pageInfo,
   }
   type fragment = {
     @live __id: RescriptRelay.dataId,
@@ -57,32 +57,9 @@ type fragmentRef
 external getFragmentRef:
   RescriptRelay.fragmentRefs<[> | #CommentSection_jargon]> => fragmentRef = "%identity"
 
-@live
-@inline
-let connectionKey = "CommentSection_jargon_comments_connection"
-
-%%private(
-  @live @module("relay-runtime") @scope("ConnectionHandler")
-  external internal_makeConnectionId: (RescriptRelay.dataId, @as("CommentSection_jargon_comments_connection") _, 'arguments) => RescriptRelay.dataId = "getConnectionID"
-)
-
-@live
-let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ) => {
-  let args = ()
-  internal_makeConnectionId(connectionParentDataId, args)
-}
 module Utils = {
   @@warning("-33")
   open Types
-
-  @live
-  let getConnectionNodes: Types.fragment_comments_connection => array<Types.fragment_comments_connection_edges_node> = connection => 
-  connection.edges
-    ->Belt.Array.keepMap(edge => 
-Some(edge.node)
-    )
-
-
 }
 
 type relayOperationNode
@@ -100,26 +77,15 @@ var v0 = {
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": {
-    "connection": [
-      {
-        "count": null,
-        "cursor": null,
-        "direction": "forward",
-        "path": [
-          "comments_connection"
-        ]
-      }
-    ]
-  },
+  "metadata": null,
   "name": "CommentSection_jargon",
   "selections": [
     {
-      "alias": "comments_connection",
+      "alias": null,
       "args": null,
       "concreteType": "commentConnection",
       "kind": "LinkedField",
-      "name": "__CommentSection_jargon_comments_connection_connection",
+      "name": "comments_connection",
       "plural": false,
       "selections": [
         {
@@ -193,43 +159,23 @@ return {
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "__typename",
+                  "concreteType": "translation",
+                  "kind": "LinkedField",
+                  "name": "translation",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 }
               ],
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "PageInfo",
-          "kind": "LinkedField",
-          "name": "pageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "hasNextPage",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "endCursor",
               "storageKey": null
             }
           ],

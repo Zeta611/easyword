@@ -5,6 +5,7 @@ type t = {
   userPhotoURL: option<string>,
   timestamp: Date.t,
   parent: option<string>,
+  translation: option<string>,
 }
 
 type rec node = {

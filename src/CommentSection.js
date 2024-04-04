@@ -18,10 +18,7 @@ function useOpt(fRef) {
   return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, CommentSection_jargon_graphql.node, convertFragment);
 }
 
-var CommentFragment_getConnectionNodes = CommentSection_jargon_graphql.Utils.getConnectionNodes;
-
 var CommentFragment = {
-  getConnectionNodes: CommentFragment_getConnectionNodes,
   Types: undefined,
   Operation: undefined,
   convertFragment: convertFragment,
@@ -41,6 +38,9 @@ function CommentSection(props) {
                     timestamp: new Date(x.created_at),
                     parent: Core__Option.map(x.parent, (function (x) {
                             return x.id;
+                          })),
+                    translation: Core__Option.map(x.translation, (function (x) {
+                            return x.name;
                           }))
                   };
           }));

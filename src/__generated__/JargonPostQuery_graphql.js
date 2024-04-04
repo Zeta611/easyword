@@ -100,13 +100,6 @@ v4 = {
 },
 v5 = [
   (v4/*: any*/)
-],
-v6 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 100
-  }
 ];
 return {
   "fragment": {
@@ -193,7 +186,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v6/*: any*/),
+                "args": null,
                 "concreteType": "commentConnection",
                 "kind": "LinkedField",
                 "name": "comments_connection",
@@ -266,56 +259,27 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "translation",
+                            "kind": "LinkedField",
+                            "name": "translation",
+                            "plural": false,
+                            "selections": [
+                              (v4/*: any*/),
+                              (v3/*: any*/)
+                            ],
+                            "storageKey": null
+                          }
                         ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "cursor",
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "PageInfo",
-                    "kind": "LinkedField",
-                    "name": "pageInfo",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "hasNextPage",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "endCursor",
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   }
                 ],
-                "storageKey": "comments_connection(first:100)"
-              },
-              {
-                "alias": null,
-                "args": (v6/*: any*/),
-                "filters": null,
-                "handle": "connection",
-                "key": "CommentSection_jargon_comments_connection",
-                "kind": "LinkedHandle",
-                "name": "comments_connection"
+                "storageKey": null
               },
               {
                 "kind": "ClientExtension",
@@ -340,12 +304,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "35ad5953f4c37aa3ab0fe3495cfb2f92",
+    "cacheID": "3e558aa674b9f4bca687964769a14338",
     "id": null,
     "metadata": {},
     "name": "JargonPostQuery",
     "operationKind": "query",
-    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection(first: 100) {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
+    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
   }
 };
 })());

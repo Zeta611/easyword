@@ -46,7 +46,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      158,
+      168,
       4
     ], {
       TAG: "Module",
@@ -112,6 +112,7 @@ function CommentRow$CommentNode(props) {
     }
   };
   var photoURL = comment.userPhotoURL;
+  var translation = comment.translation;
   return JsxRuntime.jsxs(JsxRuntime.Fragment, {
               children: [
                 JsxRuntime.jsxs("div", {
@@ -131,6 +132,10 @@ function CommentRow$CommentNode(props) {
                                       className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium",
                                       id: comment.id
                                     }),
+                                translation !== undefined ? JsxRuntime.jsx("span", {
+                                        children: translation,
+                                        className: "text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium"
+                                      }) : null,
                                 "·",
                                 JsxRuntime.jsx("span", {
                                       children: DateFormat.timeAgo(comment.timestamp),
