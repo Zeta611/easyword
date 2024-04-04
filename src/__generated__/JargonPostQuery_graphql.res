@@ -244,7 +244,15 @@ return {
               (v4/*: any*/),
               {
                 "alias": null,
-                "args": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "order_by",
+                    "value": {
+                      "name": "asc"
+                    }
+                  }
+                ],
                 "concreteType": "translation",
                 "kind": "LinkedField",
                 "name": "translations",
@@ -263,7 +271,7 @@ return {
                     "storageKey": null
                   }
                 ],
-                "storageKey": null
+                "storageKey": "translations(order_by:{\"name\":\"asc\"})"
               },
               {
                 "alias": null,
@@ -385,12 +393,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e17617cafb5875511a94aaaa0fd0a3f5",
+    "cacheID": "adbe0b1a300a8863ecef969f7a186f05",
     "id": null,
     "metadata": {},
     "name": "JargonPostQuery",
     "operationKind": "query",
-    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
+    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations(order_by: {name: asc}) {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
   }
 };
 })() `)

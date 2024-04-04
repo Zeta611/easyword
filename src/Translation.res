@@ -1,6 +1,6 @@
 module TranslationFragment = %relay(`
   fragment Translation_jargon on jargon {
-    translations {
+    translations(order_by: {name: asc}) {
       id
       name
       comment {

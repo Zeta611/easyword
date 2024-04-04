@@ -64,7 +64,15 @@ return {
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "order_by",
+          "value": {
+            "name": "asc"
+          }
+        }
+      ],
       "concreteType": "translation",
       "kind": "LinkedField",
       "name": "translations",
@@ -91,7 +99,7 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "translations(order_by:{\"name\":\"asc\"})"
     }
   ],
   "type": "jargon",
