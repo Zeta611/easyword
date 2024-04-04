@@ -737,6 +737,7 @@ and input_jargon_bool_exp = {
   created_at?: input_timestamptz_comparison_exp,
   id?: input_uuid_comparison_exp,
   name?: input_String_comparison_exp,
+  name_lower?: input_String_comparison_exp,
   translations?: input_translation_bool_exp,
   translations_aggregate?: input_translation_aggregate_bool_exp,
   updated_at?: input_timestamptz_comparison_exp,
@@ -754,6 +755,7 @@ and input_jargon_bool_exp_nullable = {
   created_at?: Js.Null.t<input_timestamptz_comparison_exp_nullable>,
   id?: Js.Null.t<input_uuid_comparison_exp_nullable>,
   name?: Js.Null.t<input_String_comparison_exp_nullable>,
+  name_lower?: Js.Null.t<input_String_comparison_exp_nullable>,
   translations?: Js.Null.t<input_translation_bool_exp_nullable>,
   translations_aggregate?: Js.Null.t<input_translation_aggregate_bool_exp_nullable>,
   updated_at?: Js.Null.t<input_timestamptz_comparison_exp_nullable>,
@@ -853,6 +855,7 @@ and input_jargon_order_by = {
   created_at?: enum_order_by_input,
   id?: enum_order_by_input,
   name?: enum_order_by_input,
+  name_lower?: enum_order_by_input,
   translations_aggregate?: input_translation_aggregate_order_by,
   updated_at?: enum_order_by_input,
 }
@@ -865,6 +868,7 @@ and input_jargon_order_by_nullable = {
   created_at?: Js.Null.t<enum_order_by_input>,
   id?: Js.Null.t<enum_order_by_input>,
   name?: Js.Null.t<enum_order_by_input>,
+  name_lower?: Js.Null.t<enum_order_by_input>,
   translations_aggregate?: Js.Null.t<input_translation_aggregate_order_by_nullable>,
   updated_at?: Js.Null.t<enum_order_by_input>,
 }

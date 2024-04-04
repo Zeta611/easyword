@@ -5,39 +5,39 @@ import * as JargonCard from "./JargonCard.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptRelay_Fragment from "../node_modules/rescript-relay/src/RescriptRelay_Fragment.js";
+import * as JargonListOrderQuery_graphql from "./__generated__/JargonListOrderQuery_graphql.js";
 import ReactInfiniteScrollComponent from "react-infinite-scroll-component";
-import * as JargonListChronoOrderQuery_graphql from "./__generated__/JargonListChronoOrderQuery_graphql.js";
-import * as JargonListChronoOrderRefetchQuery_graphql from "./__generated__/JargonListChronoOrderRefetchQuery_graphql.js";
+import * as JargonListOrderRefetchQuery_graphql from "./__generated__/JargonListOrderRefetchQuery_graphql.js";
 
-var getConnectionNodes = JargonListChronoOrderQuery_graphql.Utils.getConnectionNodes;
+var getConnectionNodes = JargonListOrderQuery_graphql.Utils.getConnectionNodes;
 
-var convertFragment = JargonListChronoOrderQuery_graphql.Internal.convertFragment;
+var convertFragment = JargonListOrderQuery_graphql.Internal.convertFragment;
 
 function use(fRef) {
-  return RescriptRelay_Fragment.useFragment(JargonListChronoOrderQuery_graphql.node, convertFragment, fRef);
+  return RescriptRelay_Fragment.useFragment(JargonListOrderQuery_graphql.node, convertFragment, fRef);
 }
 
 function useOpt(fRef) {
-  return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, JargonListChronoOrderQuery_graphql.node, convertFragment);
+  return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, JargonListOrderQuery_graphql.node, convertFragment);
 }
 
-var makeRefetchVariables = JargonListChronoOrderRefetchQuery_graphql.Types.makeRefetchVariables;
+var makeRefetchVariables = JargonListOrderRefetchQuery_graphql.Types.makeRefetchVariables;
 
-var convertRefetchVariables = JargonListChronoOrderRefetchQuery_graphql.Internal.convertVariables;
+var convertRefetchVariables = JargonListOrderRefetchQuery_graphql.Internal.convertVariables;
 
 function useRefetchable(fRef) {
-  return RescriptRelay_Fragment.useRefetchableFragment(JargonListChronoOrderQuery_graphql.node, convertFragment, convertRefetchVariables, fRef);
+  return RescriptRelay_Fragment.useRefetchableFragment(JargonListOrderQuery_graphql.node, convertFragment, convertRefetchVariables, fRef);
 }
 
 function usePagination(fRef) {
-  return RescriptRelay_Fragment.usePaginationFragment(JargonListChronoOrderQuery_graphql.node, fRef, convertFragment, convertRefetchVariables);
+  return RescriptRelay_Fragment.usePaginationFragment(JargonListOrderQuery_graphql.node, fRef, convertFragment, convertRefetchVariables);
 }
 
 function useBlockingPagination(fRef) {
-  return RescriptRelay_Fragment.useBlockingPaginationFragment(JargonListChronoOrderQuery_graphql.node, fRef, convertFragment, convertRefetchVariables);
+  return RescriptRelay_Fragment.useBlockingPaginationFragment(JargonListOrderQuery_graphql.node, fRef, convertFragment, convertRefetchVariables);
 }
 
-var JargonListChronoOrderQuery = {
+var JargonListOrderQuery = {
   getConnectionNodes: getConnectionNodes,
   Types: undefined,
   Operation: undefined,
@@ -50,15 +50,6 @@ var JargonListChronoOrderQuery = {
   usePagination: usePagination,
   useBlockingPagination: useBlockingPagination
 };
-
-function handleScroll($$event, onLoadMore) {
-  var currentTarget = $$event.currentTarget;
-  console.log(currentTarget.scrollTop, currentTarget.clientHeight, currentTarget.scrollHeight);
-  if ((currentTarget.scrollTop + currentTarget.clientHeight | 0) >= currentTarget.scrollHeight) {
-    return onLoadMore();
-  }
-  
-}
 
 function JargonList(props) {
   var query = props.query;
@@ -115,8 +106,7 @@ function JargonList(props) {
 var make = JargonList;
 
 export {
-  JargonListChronoOrderQuery ,
-  handleScroll ,
+  JargonListOrderQuery ,
   make ,
 }
 /* Loader Not a pure module */

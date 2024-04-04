@@ -39,20 +39,20 @@ module Internal = {
 type t
 type fragmentRef
 external getFragmentRef:
-  RescriptRelay.fragmentRefs<[> | #JargonListChronoOrderQuery]> => fragmentRef = "%identity"
+  RescriptRelay.fragmentRefs<[> | #JargonListOrderQuery]> => fragmentRef = "%identity"
 
 @live
 @inline
-let connectionKey = "JargonListChronoOrderQuery_jargon_connection"
+let connectionKey = "JargonListOrderQuery_jargon_connection"
 
 %%private(
   @live @module("relay-runtime") @scope("ConnectionHandler")
-  external internal_makeConnectionId: (RescriptRelay.dataId, @as("JargonListChronoOrderQuery_jargon_connection") _, 'arguments) => RescriptRelay.dataId = "getConnectionID"
+  external internal_makeConnectionId: (RescriptRelay.dataId, @as("JargonListOrderQuery_jargon_connection") _, 'arguments) => RescriptRelay.dataId = "getConnectionID"
 )
 
 @live
-let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~direction: option<RelaySchemaAssets_graphql.enum_order_by>=?) => {
-  let args = {"order_by": [RescriptRelay_Internal.Arg({"updated_at": direction}), RescriptRelay_Internal.Arg(Some({"name": Some("asc")}))]}
+let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?) => {
+  let args = {"order_by": directions}
   internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
@@ -73,8 +73,8 @@ type relayOperationNode
 type operationType = RescriptRelay.fragmentNode<relayOperationNode>
 
 
-%%private(let makeNode = (rescript_graphql_node_JargonListChronoOrderRefetchQuery): operationType => {
-  ignore(rescript_graphql_node_JargonListChronoOrderRefetchQuery)
+%%private(let makeNode = (rescript_graphql_node_JargonListOrderRefetchQuery): operationType => {
+  ignore(rescript_graphql_node_JargonListOrderRefetchQuery)
   %raw(json`(function(){
 var v0 = [
   "jargon_connection"
@@ -93,7 +93,7 @@ return {
     },
     {
       "kind": "RootArgument",
-      "name": "direction"
+      "name": "directions"
     }
   ],
   "kind": "Fragment",
@@ -116,42 +116,23 @@ return {
         "path": (v0/*: any*/)
       },
       "fragmentPathInResult": [],
-      "operation": rescript_graphql_node_JargonListChronoOrderRefetchQuery
+      "operation": rescript_graphql_node_JargonListOrderRefetchQuery
     }
   },
-  "name": "JargonListChronoOrderQuery",
+  "name": "JargonListOrderQuery",
   "selections": [
     {
       "alias": "jargon_connection",
       "args": [
         {
-          "items": [
-            {
-              "fields": [
-                {
-                  "kind": "Variable",
-                  "name": "updated_at",
-                  "variableName": "direction"
-                }
-              ],
-              "kind": "ObjectValue",
-              "name": "order_by.0"
-            },
-            {
-              "kind": "Literal",
-              "name": "order_by.1",
-              "value": {
-                "name": "asc"
-              }
-            }
-          ],
-          "kind": "ListValue",
-          "name": "order_by"
+          "kind": "Variable",
+          "name": "order_by",
+          "variableName": "directions"
         }
       ],
       "concreteType": "jargonConnection",
       "kind": "LinkedField",
-      "name": "__JargonListChronoOrderQuery_jargon_connection_connection",
+      "name": "__JargonListOrderQuery_jargon_connection_connection",
       "plural": false,
       "selections": [
         {
@@ -236,5 +217,5 @@ return {
 };
 })()`)
 })
-let node: operationType = makeNode(JargonListChronoOrderRefetchQuery_graphql.node)
+let node: operationType = makeNode(JargonListOrderRefetchQuery_graphql.node)
 

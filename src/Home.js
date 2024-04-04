@@ -71,19 +71,35 @@ function Home(props) {
           return value;
         });
   };
-  var match$3 = use({
-        direction: "desc"
-      }, undefined, undefined, undefined);
   var tmp;
-  tmp = axis === "English" ? (
+  tmp = axis === "English" ? [
+      {
+        name_lower: direction === "asc" ? "asc" : "desc"
+      },
+      {
+        created_at: "desc"
+      }
+    ] : [
+      {
+        created_at: "desc"
+      },
+      {
+        name_lower: "asc"
+      }
+    ];
+  var match$3 = use({
+        directions: tmp
+      }, undefined, undefined, undefined);
+  var tmp$1;
+  tmp$1 = axis === "English" ? (
       direction === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
               className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
             }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
               className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
             })
     ) : null;
-  var tmp$1;
-  tmp$1 = axis === "English" ? "ABC순" : "최근순";
+  var tmp$2;
+  tmp$2 = axis === "English" ? "ABC순" : "최근순";
   return JsxRuntime.jsxs("div", {
               children: [
                 JsxRuntime.jsxs("div", {
@@ -99,8 +115,8 @@ function Home(props) {
                               children: [
                                 JsxRuntime.jsxs("label", {
                                       children: [
-                                        tmp,
                                         tmp$1,
+                                        tmp$2,
                                         JsxRuntime.jsx(Solid.ChevronDownIcon, {
                                               className: "ml-2 -mr-1 h-5 w-5"
                                             })

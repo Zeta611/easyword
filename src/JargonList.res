@@ -1,15 +1,15 @@
-module JargonListChronoOrderQuery = %relay(`
-  fragment JargonListChronoOrderQuery on query_root
-  @refetchable(queryName: "JargonListChronoOrderRefetchQuery")
+module JargonListOrderQuery = %relay(`
+  fragment JargonListOrderQuery on query_root
+  @refetchable(queryName: "JargonListOrderRefetchQuery")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 40 }
     cursor: { type: "String" }
   ) {
     jargon_connection(
-      order_by: [{ updated_at: $direction }, { name: asc }]
+      order_by: $directions
       first: $count
       after: $cursor
-    ) @connection(key: "JargonListChronoOrderQuery_jargon_connection") {
+    ) @connection(key: "JargonListOrderQuery_jargon_connection") {
       edges {
         node {
           id
@@ -19,29 +19,6 @@ module JargonListChronoOrderQuery = %relay(`
     }
   }
 `)
-// module JargonListABCOrderQuery = %relay(`
-//   fragment JargonListABCOrderQuery on query_root {
-//     jargon_connection(
-//       order_by: [{ name: $abcDirection }, { updated_at: desc }]
-//       first: 40
-//     ) {
-//       edges {
-//         node {
-//           id
-//           ...JargonCard_jargon
-//         }
-//       }
-//     }
-//   }
-// `)
-
-let handleScroll = (event, onLoadMore) => {
-  let currentTarget = event->ReactEvent.Synthetic.currentTarget
-  Console.log3(currentTarget["scrollTop"], currentTarget["clientHeight"], currentTarget["scrollHeight"])
-  if currentTarget["scrollTop"] + currentTarget["clientHeight"] >= currentTarget["scrollHeight"] {
-    onLoadMore()
-  }
-}
 
 @react.component
 let make = (~axis, ~query) => {
@@ -53,10 +30,10 @@ let make = (~axis, ~query) => {
         data: {jargon_connection: jargonConnection},
         hasNext,
         loadNext,
-      } = JargonListChronoOrderQuery.usePagination(query)
+      } = JargonListOrderQuery.usePagination(query)
       (
         jargonConnection
-        ->JargonListChronoOrderQuery.getConnectionNodes
+        ->JargonListOrderQuery.getConnectionNodes
         ->Array.map(node => (node.id, node.fragmentRefs)),
         hasNext,
         loadNext,
@@ -67,10 +44,10 @@ let make = (~axis, ~query) => {
         data: {jargon_connection: jargonConnection},
         hasNext,
         loadNext,
-      } = JargonListChronoOrderQuery.usePagination(query)
+      } = JargonListOrderQuery.usePagination(query)
       (
         jargonConnection
-        ->JargonListChronoOrderQuery.getConnectionNodes
+        ->JargonListOrderQuery.getConnectionNodes
         ->Array.map(node => (node.id, node.fragmentRefs)),
         hasNext,
         loadNext,

@@ -4,23 +4,34 @@
 module Types = {
   @@warning("-30")
 
+  @live type jargon_order_by = RelaySchemaAssets_graphql.input_jargon_order_by
+  @live type user_order_by = RelaySchemaAssets_graphql.input_user_order_by
+  @live type comment_aggregate_order_by = RelaySchemaAssets_graphql.input_comment_aggregate_order_by
+  @live type comment_max_order_by = RelaySchemaAssets_graphql.input_comment_max_order_by
+  @live type comment_min_order_by = RelaySchemaAssets_graphql.input_comment_min_order_by
+  @live type jargon_aggregate_order_by = RelaySchemaAssets_graphql.input_jargon_aggregate_order_by
+  @live type jargon_max_order_by = RelaySchemaAssets_graphql.input_jargon_max_order_by
+  @live type jargon_min_order_by = RelaySchemaAssets_graphql.input_jargon_min_order_by
+  @live type translation_aggregate_order_by = RelaySchemaAssets_graphql.input_translation_aggregate_order_by
+  @live type translation_max_order_by = RelaySchemaAssets_graphql.input_translation_max_order_by
+  @live type translation_min_order_by = RelaySchemaAssets_graphql.input_translation_min_order_by
   type response = {
-    fragmentRefs: RescriptRelay.fragmentRefs<[ | #JargonListChronoOrderQuery]>,
+    fragmentRefs: RescriptRelay.fragmentRefs<[ | #JargonListOrderQuery]>,
   }
   @live
   type rawResponse = response
   @live
   type variables = {
-    direction: RelaySchemaAssets_graphql.enum_order_by_input,
+    directions: array<jargon_order_by>,
   }
   @live
   type refetchVariables = {
-    direction: option<RelaySchemaAssets_graphql.enum_order_by_input>,
+    directions: option<array<jargon_order_by>>,
   }
   @live let makeRefetchVariables = (
-    ~direction=?,
+    ~directions=?,
   ): refetchVariables => {
-    direction: direction
+    directions: directions
   }
 
 }
@@ -31,7 +42,7 @@ type queryRef
 module Internal = {
   @live
   let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"translation_max_order_by":{},"comment_aggregate_order_by":{"min":{"r":"comment_min_order_by"},"max":{"r":"comment_max_order_by"}},"translation_min_order_by":{},"jargon_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"},"author":{"r":"user_order_by"}},"jargon_aggregate_order_by":{"min":{"r":"jargon_min_order_by"},"max":{"r":"jargon_max_order_by"}},"jargon_max_order_by":{},"translation_aggregate_order_by":{"min":{"r":"translation_min_order_by"},"max":{"r":"translation_max_order_by"}},"comment_min_order_by":{},"user_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargons_aggregate":{"r":"jargon_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"}},"comment_max_order_by":{},"jargon_min_order_by":{},"__root":{"directions":{"r":"jargon_order_by"}}}`
   )
   @live
   let variablesConverterMap = ()
@@ -107,49 +118,29 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "direction"
+    "name": "directions"
   }
 ],
-v1 = {
-  "name": "asc"
-},
-v2 = [
+v1 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 40
   },
   {
-    "items": [
-      {
-        "fields": [
-          {
-            "kind": "Variable",
-            "name": "updated_at",
-            "variableName": "direction"
-          }
-        ],
-        "kind": "ObjectValue",
-        "name": "order_by.0"
-      },
-      {
-        "kind": "Literal",
-        "name": "order_by.1",
-        "value": (v1/*: any*/)
-      }
-    ],
-    "kind": "ListValue",
-    "name": "order_by"
+    "kind": "Variable",
+    "name": "order_by",
+    "variableName": "directions"
   }
 ],
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -166,7 +157,7 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "JargonListChronoOrderQuery"
+        "name": "JargonListOrderQuery"
       }
     ],
     "type": "query_root",
@@ -180,7 +171,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "jargon_connection",
@@ -202,8 +193,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v2/*: any*/),
                   (v3/*: any*/),
-                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -222,7 +213,9 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": (v1/*: any*/)
+                        "value": {
+                          "name": "asc"
+                        }
                       }
                     ],
                     "concreteType": "translation",
@@ -230,8 +223,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v3/*: any*/),
-                      (v4/*: any*/)
+                      (v2/*: any*/),
+                      (v3/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -314,24 +307,24 @@ return {
       },
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v1/*: any*/),
         "filters": [
           "order_by"
         ],
         "handle": "connection",
-        "key": "JargonListChronoOrderQuery_jargon_connection",
+        "key": "JargonListOrderQuery_jargon_connection",
         "kind": "LinkedHandle",
         "name": "jargon_connection"
       }
     ]
   },
   "params": {
-    "cacheID": "65784308d1245ffea3707c3899f614d9",
+    "cacheID": "77ac2a15ce95415aee01b4275df193ba",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $direction: order_by!\n) {\n  ...JargonListChronoOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListChronoOrderQuery on query_root {\n  jargon_connection(order_by: [{updated_at: $direction}, {name: asc}], first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery(\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)

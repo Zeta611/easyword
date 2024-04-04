@@ -534,6 +534,11 @@ type jargon implements Node {
   id: ID!
   name: String!
 
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+
   """An array relationship"""
   translations(
     """distinct select on columns"""
@@ -650,6 +655,7 @@ input jargon_bool_exp {
   created_at: timestamptz_comparison_exp
   id: uuid_comparison_exp
   name: String_comparison_exp
+  name_lower: String_comparison_exp
   translations: translation_bool_exp
   translations_aggregate: translation_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
@@ -695,6 +701,11 @@ type jargon_max_fields {
   created_at: timestamptz
   id: uuid
   name: String
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
   updated_at: timestamptz
 }
 
@@ -715,6 +726,11 @@ type jargon_min_fields {
   created_at: timestamptz
   id: uuid
   name: String
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
   updated_at: timestamptz
 }
 
@@ -767,6 +783,7 @@ input jargon_order_by {
   created_at: order_by
   id: order_by
   name: order_by
+  name_lower: order_by
   translations_aggregate: translation_aggregate_order_by
   updated_at: order_by
 }

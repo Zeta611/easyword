@@ -4,7 +4,7 @@
 import * as Belt_Array from "../../node_modules/rescript/lib/es6/belt_Array.js";
 import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRelay.js";
 import * as RelayRuntime from "relay-runtime";
-import * as JargonListChronoOrderRefetchQuery_graphql from "./JargonListChronoOrderRefetchQuery_graphql.js";
+import * as JargonListOrderRefetchQuery_graphql from "./JargonListOrderRefetchQuery_graphql.js";
 
 var Types = {};
 
@@ -20,18 +20,11 @@ var Internal = {
   convertFragment: convertFragment
 };
 
-function makeConnectionId(connectionParentDataId, direction) {
+function makeConnectionId(connectionParentDataId, directions) {
   var args = {
-    order_by: [
-      {
-        updated_at: direction
-      },
-      {
-        name: "asc"
-      }
-    ]
+    order_by: directions
   };
-  return RelayRuntime.ConnectionHandler.getConnectionID(connectionParentDataId, "JargonListChronoOrderQuery_jargon_connection", args);
+  return RelayRuntime.ConnectionHandler.getConnectionID(connectionParentDataId, "JargonListOrderQuery_jargon_connection", args);
 }
 
 function getConnectionNodes(connection) {
@@ -44,7 +37,7 @@ var Utils = {
   getConnectionNodes: getConnectionNodes
 };
 
-function makeNode(rescript_graphql_node_JargonListChronoOrderRefetchQuery) {
+function makeNode(rescript_graphql_node_JargonListOrderRefetchQuery) {
   return ((function(){
 var v0 = [
   "jargon_connection"
@@ -63,7 +56,7 @@ return {
     },
     {
       "kind": "RootArgument",
-      "name": "direction"
+      "name": "directions"
     }
   ],
   "kind": "Fragment",
@@ -86,42 +79,23 @@ return {
         "path": (v0/*: any*/)
       },
       "fragmentPathInResult": [],
-      "operation": rescript_graphql_node_JargonListChronoOrderRefetchQuery
+      "operation": rescript_graphql_node_JargonListOrderRefetchQuery
     }
   },
-  "name": "JargonListChronoOrderQuery",
+  "name": "JargonListOrderQuery",
   "selections": [
     {
       "alias": "jargon_connection",
       "args": [
         {
-          "items": [
-            {
-              "fields": [
-                {
-                  "kind": "Variable",
-                  "name": "updated_at",
-                  "variableName": "direction"
-                }
-              ],
-              "kind": "ObjectValue",
-              "name": "order_by.0"
-            },
-            {
-              "kind": "Literal",
-              "name": "order_by.1",
-              "value": {
-                "name": "asc"
-              }
-            }
-          ],
-          "kind": "ListValue",
-          "name": "order_by"
+          "kind": "Variable",
+          "name": "order_by",
+          "variableName": "directions"
         }
       ],
       "concreteType": "jargonConnection",
       "kind": "LinkedField",
-      "name": "__JargonListChronoOrderQuery_jargon_connection_connection",
+      "name": "__JargonListOrderQuery_jargon_connection_connection",
       "plural": false,
       "selections": [
         {
@@ -207,7 +181,7 @@ return {
 })());
 }
 
-var node = makeNode(JargonListChronoOrderRefetchQuery_graphql.node);
+var node = makeNode(JargonListOrderRefetchQuery_graphql.node);
 
 export {
   Types ,

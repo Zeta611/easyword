@@ -1,6 +1,6 @@
 module HomeQuery = %relay(`
-  query HomeQuery($direction: order_by!) {
-    ...JargonListChronoOrderQuery
+  query HomeQuery($directions: [jargon_order_by!]!) {
+    ...JargonListOrderQuery
   }
 `)
 
@@ -16,8 +16,31 @@ let make = () => {
     setQuery(_ => value)
   }
 
-  // let {fragmentRefs: query} = HomeQuery.use(~variables={direction: direction->Obj.magic})
-  let {fragmentRefs: query} = HomeQuery.use(~variables={direction: Desc})
+  let {fragmentRefs: query} = HomeQuery.use(
+    ~variables={
+      directions: switch axis {
+      | English => [
+          {
+            name_lower: switch direction {
+            | #asc => Asc
+            | #desc => Desc
+            },
+          },
+          {
+            created_at: Desc,
+          },
+        ]
+      | Chrono => [
+          {
+            created_at: Desc,
+          },
+          {
+            name_lower: Asc,
+          },
+        ]
+      },
+    },
+  )
 
   open Heroicons
   <div className="grid p-5 text-sm">
