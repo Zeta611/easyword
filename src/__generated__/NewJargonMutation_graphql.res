@@ -5,12 +5,7 @@ module Types = {
   @@warning("-30")
 
   @live
-  type rec response_insert_jargon_one_comments = {
-    @live id: string,
-  }
-  @live
-  and response_insert_jargon_one = {
-    comments: array<response_insert_jargon_one_comments>,
+  type rec response_insert_jargon_one = {
     @live id: string,
   }
   @live
@@ -22,15 +17,19 @@ module Types = {
   @live
   type variables = {
     authorID: string,
-    commentContent: string,
+    comment: string,
+    commentID: string,
+    @live id: string,
     name: string,
+    translation: string,
+    translationID: string,
   }
 }
 
 module Internal = {
   @live
   let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{}`
+    json`{"__root":{"translationID":{"b":""},"id":{"b":""},"commentID":{"b":""}}}`
   )
   @live
   let variablesConverterMap = ()
@@ -93,41 +92,64 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "commentContent"
+  "name": "comment"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "name"
+  "name": "commentID"
 },
 v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "id"
+},
+v4 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "name"
+},
+v5 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "translation"
+},
+v6 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "translationID"
+},
+v7 = {
   "kind": "Variable",
   "name": "author_id",
   "variableName": "authorID"
 },
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v5 = [
+v8 = [
   {
     "alias": null,
     "args": [
       {
         "fields": [
-          (v3/*: any*/),
+          (v7/*: any*/),
           {
             "fields": [
               {
                 "fields": [
-                  (v3/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "content",
-                    "variableName": "commentContent"
+                    "variableName": "comment"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "id",
+                    "variableName": "commentID"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "translation_id",
+                    "variableName": "translationID"
                   }
                 ],
                 "kind": "ObjectValue",
@@ -139,8 +161,41 @@ v5 = [
           },
           {
             "kind": "Variable",
+            "name": "id",
+            "variableName": "id"
+          },
+          {
+            "kind": "Variable",
             "name": "name",
             "variableName": "name"
+          },
+          {
+            "fields": [
+              {
+                "fields": [
+                  (v7/*: any*/),
+                  {
+                    "kind": "Variable",
+                    "name": "comment_id",
+                    "variableName": "commentID"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "id",
+                    "variableName": "translationID"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "name",
+                    "variableName": "translation"
+                  }
+                ],
+                "kind": "ObjectValue",
+                "name": "data"
+              }
+            ],
+            "kind": "ObjectValue",
+            "name": "translations"
           }
         ],
         "kind": "ObjectValue",
@@ -152,17 +207,11 @@ v5 = [
     "name": "insert_jargon_one",
     "plural": false,
     "selections": [
-      (v4/*: any*/),
       {
         "alias": null,
         "args": null,
-        "concreteType": "comment",
-        "kind": "LinkedField",
-        "name": "comments",
-        "plural": true,
-        "selections": [
-          (v4/*: any*/)
-        ],
+        "kind": "ScalarField",
+        "name": "id",
         "storageKey": null
       }
     ],
@@ -174,33 +223,41 @@ return {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/)
+      (v2/*: any*/),
+      (v3/*: any*/),
+      (v4/*: any*/),
+      (v5/*: any*/),
+      (v6/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
     "name": "NewJargonMutation",
-    "selections": (v5/*: any*/),
+    "selections": (v8/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
+      (v3/*: any*/),
       (v0/*: any*/),
+      (v4/*: any*/),
+      (v6/*: any*/),
+      (v5/*: any*/),
       (v2/*: any*/),
       (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "NewJargonMutation",
-    "selections": (v5/*: any*/)
+    "selections": (v8/*: any*/)
   },
   "params": {
-    "cacheID": "6c05766065fc630b85a0bd2cc43f206e",
+    "cacheID": "a43c526da42b2fa6d6551f6f76c7db4d",
     "id": null,
     "metadata": {},
     "name": "NewJargonMutation",
     "operationKind": "mutation",
-    "text": "mutation NewJargonMutation(\n  $authorID: String!\n  $name: String!\n  $commentContent: String!\n) {\n  insert_jargon_one(object: {author_id: $authorID, name: $name, comments: {data: {author_id: $authorID, content: $commentContent}}}) {\n    id\n    comments {\n      id\n    }\n  }\n}\n"
+    "text": "mutation NewJargonMutation(\n  $id: uuid!\n  $authorID: String!\n  $name: String!\n  $translationID: uuid!\n  $translation: String!\n  $commentID: uuid!\n  $comment: String!\n) {\n  insert_jargon_one(object: {id: $id, author_id: $authorID, name: $name, comments: {data: {id: $commentID, author_id: $authorID, translation_id: $translationID, content: $comment}}, translations: {data: {id: $translationID, comment_id: $commentID, author_id: $authorID, name: $translation}}}) {\n    id\n  }\n}\n"
   }
 };
 })() `)

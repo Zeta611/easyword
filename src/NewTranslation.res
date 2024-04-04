@@ -8,25 +8,9 @@ module JargonQuery = %relay(`
   }
 `)
 
-module NewCommentMutation = %relay(`
-  mutation NewTranslationNewCommentMutation($authorID: String!, $content: String!, $jargonID: uuid!) {
-    insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {
-      id
-    }
-  }
-`)
-
-module TranslationMutation = %relay(`
-  mutation NewTranslationMutation($authorID: String!, $name: String!, $jargonID: uuid!, $commentID: uuid!) {
-    insert_translation_one(object: {author_id: $authorID, name: $name, jargon_id: $jargonID, comment_id: $commentID}) {
-      id
-    }
-  }
-`)
-
-module CommentMutation = %relay(`
-  mutation NewTranslationCommentMutation($commentID: uuid!, $translationID: uuid!) {
-    update_comment_by_pk(pk_columns: {id: $commentID}, _set: {translation_id: $translationID}) {
+module NewTranslationMutation = %relay(`
+  mutation NewTranslationMutation($id: uuid!, $jargonID: uuid!, $authorID: String!, $name: String!, $commentID: uuid!, $comment: String!) {
+    insert_translation_one(object: {id: $id, jargon_id: $jargonID, author_id: $authorID, name: $name, comment_id: $commentID, comment: {data: {id: $commentID, jargon_id: $jargonID, author_id: $authorID, content: $comment}}}) {
       id
     }
   }
@@ -61,9 +45,7 @@ let make = (~jargonID: string) => {
     setComment(_ => value)
   }
 
-  let (newCommentMutate, isNewCommentMutating) = NewCommentMutation.use()
-  let (translationMutate, isTranslationMutating) = TranslationMutation.use()
-  let (commentMutate, isCommentMutating) = CommentMutation.use()
+  let (newTranslationMutate, isNewTranslationMutating) = NewTranslationMutation.use()
 
   let handleSubmit = event => {
     // Prevent a page refresh, we are already listening for updates
@@ -78,56 +60,32 @@ let make = (~jargonID: string) => {
         | "" => `${korean->Util.eulLeul} 제안합니다.`
         | _ => comment
         }
+
         let (id, jargonID) = (jargonID, jargonID->Base64.retrieveOriginalID)
         switch jargonID {
-        | Some(jargonID) =>
-          newCommentMutate(
-            ~variables={authorID: user.uid, content: comment, jargonID},
-            ~onError=error => Js.Console.error(error),
-            ~onCompleted=({insert_comment_one}, _errors) => {
-              switch insert_comment_one {
-              | Some({id: commentID}) => {
-                  let commentID = commentID->Base64.retrieveOriginalID
-                  switch commentID {
-                  | Some(commentID) =>
-                    translationMutate(
-                      ~variables={authorID: user.uid, name: korean, jargonID, commentID},
-                      ~onError=error => Js.Console.error(error),
-                      ~onCompleted=({insert_translation_one}, _errors) => {
-                        switch insert_translation_one {
-                        | Some({id: translationID}) =>
-                          let translationID = translationID->Base64.retrieveOriginalID
-                          switch translationID {
-                          | Some(translationID) =>
-                            commentMutate(
-                              ~variables={commentID, translationID},
-                              ~onError=error => Js.Console.error(error),
-                              ~onCompleted=(_response, _errors) =>
-                                RescriptReactRouter.replace(`/jargon/${id}`),
-                            )->ignore
-                          | None => {
-                              Js.Console.error("Translation mutation failed")
-                              RescriptReactRouter.replace(`/jargon/${id}`)
-                            }
-                          }
-                        | None => {
-                            Js.Console.error("Translation mutation failed")
-                            RescriptReactRouter.replace(`/jargon/${id}`)
-                          }
-                        }
-                      },
-                    )->ignore
-
-                  | _ => {
-                      Js.Console.error("Comment mutation failed")
-                      RescriptReactRouter.replace(`/jargon/${id}`)
-                    }
+        | Some(jargonID) => {
+            let (translationID, commentID) = (Uuid.v4(), Uuid.v4())
+            newTranslationMutate(
+              ~variables={
+                id: translationID,
+                jargonID,
+                authorID: user.uid,
+                name: korean,
+                commentID,
+                comment,
+              },
+              ~onError=error => Js.Console.error(error),
+              ~onCompleted=({insert_translation_one}, _errors) => {
+                switch insert_translation_one {
+                | Some(_) => RescriptReactRouter.replace(`/jargon/${id}`)
+                | None => {
+                    Js.Console.error("Translation mutation failed")
+                    RescriptReactRouter.replace(`/jargon/${id}`)
                   }
                 }
-              | None => ()
-              }
-            },
-          )->ignore
+              },
+            )->ignore
+          }
         | None => ()
         }
 
@@ -171,7 +129,7 @@ let make = (~jargonID: string) => {
             <input
               type_="submit"
               value="제안하기"
-              disabled={isNewCommentMutating || isTranslationMutating || isCommentMutating}
+              disabled={isNewTranslationMutating}
               className="btn btn-primary"
             />
           </div>

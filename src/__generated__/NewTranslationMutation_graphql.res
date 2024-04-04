@@ -17,7 +17,9 @@ module Types = {
   @live
   type variables = {
     authorID: string,
+    comment: string,
     commentID: string,
+    @live id: string,
     jargonID: string,
     name: string,
   }
@@ -26,7 +28,7 @@ module Types = {
 module Internal = {
   @live
   let variablesConverter: Js.Dict.t<Js.Dict.t<Js.Dict.t<string>>> = %raw(
-    json`{"__root":{"jargonID":{"b":""},"commentID":{"b":""}}}`
+    json`{"__root":{"jargonID":{"b":""},"id":{"b":""},"commentID":{"b":""}}}`
   )
   @live
   let variablesConverterMap = ()
@@ -89,28 +91,68 @@ var v0 = {
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "commentID"
+  "name": "comment"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "jargonID"
+  "name": "commentID"
 },
 v3 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "id"
+},
+v4 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "jargonID"
+},
+v5 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "name"
 },
-v4 = [
+v6 = {
+  "kind": "Variable",
+  "name": "author_id",
+  "variableName": "authorID"
+},
+v7 = {
+  "kind": "Variable",
+  "name": "jargon_id",
+  "variableName": "jargonID"
+},
+v8 = [
   {
     "alias": null,
     "args": [
       {
         "fields": [
+          (v6/*: any*/),
           {
-            "kind": "Variable",
-            "name": "author_id",
-            "variableName": "authorID"
+            "fields": [
+              {
+                "fields": [
+                  (v6/*: any*/),
+                  {
+                    "kind": "Variable",
+                    "name": "content",
+                    "variableName": "comment"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "id",
+                    "variableName": "commentID"
+                  },
+                  (v7/*: any*/)
+                ],
+                "kind": "ObjectValue",
+                "name": "data"
+              }
+            ],
+            "kind": "ObjectValue",
+            "name": "comment"
           },
           {
             "kind": "Variable",
@@ -119,9 +161,10 @@ v4 = [
           },
           {
             "kind": "Variable",
-            "name": "jargon_id",
-            "variableName": "jargonID"
+            "name": "id",
+            "variableName": "id"
           },
+          (v7/*: any*/),
           {
             "kind": "Variable",
             "name": "name",
@@ -154,34 +197,38 @@ return {
       (v0/*: any*/),
       (v1/*: any*/),
       (v2/*: any*/),
-      (v3/*: any*/)
+      (v3/*: any*/),
+      (v4/*: any*/),
+      (v5/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
     "name": "NewTranslationMutation",
-    "selections": (v4/*: any*/),
+    "selections": (v8/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v0/*: any*/),
       (v3/*: any*/),
+      (v4/*: any*/),
+      (v0/*: any*/),
+      (v5/*: any*/),
       (v2/*: any*/),
       (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "NewTranslationMutation",
-    "selections": (v4/*: any*/)
+    "selections": (v8/*: any*/)
   },
   "params": {
-    "cacheID": "9123c7ef1cc57d72b30290a3ffa5523f",
+    "cacheID": "e049aef1333f794217834529753a5c57",
     "id": null,
     "metadata": {},
     "name": "NewTranslationMutation",
     "operationKind": "mutation",
-    "text": "mutation NewTranslationMutation(\n  $authorID: String!\n  $name: String!\n  $jargonID: uuid!\n  $commentID: uuid!\n) {\n  insert_translation_one(object: {author_id: $authorID, name: $name, jargon_id: $jargonID, comment_id: $commentID}) {\n    id\n  }\n}\n"
+    "text": "mutation NewTranslationMutation(\n  $id: uuid!\n  $jargonID: uuid!\n  $authorID: String!\n  $name: String!\n  $commentID: uuid!\n  $comment: String!\n) {\n  insert_translation_one(object: {id: $id, jargon_id: $jargonID, author_id: $authorID, name: $name, comment_id: $commentID, comment: {data: {id: $commentID, jargon_id: $jargonID, author_id: $authorID, content: $comment}}}) {\n    id\n  }\n}\n"
   }
 };
 })() `)
