@@ -5,9 +5,10 @@ import * as Caml_option from "../../node_modules/rescript/lib/es6/caml_option.js
 import * as ReactRelay from "react-relay";
 import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRelay.js";
 
-function makeRefetchVariables(directions) {
+function makeRefetchVariables(directions, searchTerm) {
   return {
-          directions: directions
+          directions: directions,
+          searchTerm: searchTerm
         };
 }
 
@@ -64,14 +65,17 @@ var Utils = {
 };
 
 var node = ((function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "directions"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "directions"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "searchTerm"
+},
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -81,16 +85,33 @@ v1 = [
     "kind": "Variable",
     "name": "order_by",
     "variableName": "directions"
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "_iregex",
+            "variableName": "searchTerm"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "name"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "where"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -99,7 +120,10 @@ v3 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "HomeQuery",
@@ -115,13 +139,16 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "HomeQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "jargon_connection",
@@ -143,8 +170,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
                   (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -173,8 +200,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/)
+                      (v3/*: any*/),
+                      (v4/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -257,9 +284,10 @@ return {
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "filters": [
-          "order_by"
+          "order_by",
+          "where"
         ],
         "handle": "connection",
         "key": "JargonListOrderQuery_jargon_connection",
@@ -269,12 +297,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "77ac2a15ce95415aee01b4275df193ba",
+    "cacheID": "5db767d8783b87c0f335afe6b6bc23f0",
     "id": null,
     "metadata": {},
     "name": "HomeQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {name: {_iregex: $searchTerm}}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());

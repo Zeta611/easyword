@@ -52,42 +52,21 @@ var JargonListOrderQuery = {
 };
 
 function JargonList(props) {
-  var query = props.query;
-  var match;
-  if (props.axis === "English") {
-    var match$1 = usePagination(query);
-    match = [
-      getConnectionNodes(match$1.data.jargon_connection).map(function (node) {
-            return [
-                    node.id,
-                    node.fragmentRefs
-                  ];
-          }),
-      match$1.hasNext,
-      match$1.loadNext
-    ];
-  } else {
-    var match$2 = usePagination(query);
-    match = [
-      getConnectionNodes(match$2.data.jargon_connection).map(function (node) {
-            return [
-                    node.id,
-                    node.fragmentRefs
-                  ];
-          }),
-      match$2.hasNext,
-      match$2.loadNext
-    ];
-  }
-  var loadNext = match[2];
-  var rows = match[0];
+  var match = usePagination(props.query);
+  var loadNext = match.loadNext;
+  var rows = getConnectionNodes(match.data.jargon_connection).map(function (node) {
+        return [
+                node.id,
+                node.fragmentRefs
+              ];
+      });
   return JsxRuntime.jsx(ReactInfiniteScrollComponent, {
-              className: "grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2",
+              className: "grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2 pb-10",
               dataLength: rows.length,
               next: (function () {
                   loadNext(40, undefined);
                 }),
-              hasMore: match[1],
+              hasMore: match.hasNext,
               loader: JsxRuntime.jsx("div", {
                     children: JsxRuntime.jsx(Loader.make, {}),
                     className: "grid justify-center content-center"

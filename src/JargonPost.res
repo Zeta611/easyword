@@ -24,7 +24,7 @@ let make = (~jargonID) => {
   | Some(node) =>
     switch node {
     | Jargon(jargon) =>
-      <div className="px-3 max-w-xl mx-auto md:max-w-4xl text-sm">
+      <div className="px-3 pb-10 max-w-xl mx-auto md:max-w-4xl text-sm">
         <main className="flex flex-col p-5 gap-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
           // Jargon
           <div className="flex flex-col gap-1">

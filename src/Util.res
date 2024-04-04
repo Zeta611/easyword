@@ -16,3 +16,15 @@ let eulLeul = korean => {
     "를"
   }
 }
+
+let useDebounce = (value, delay) => {
+  let (debouncedValue, setDebouncedValue) = React.useState(_ => value)
+
+  React.useEffect(() => {
+    let handler = setTimeout(() => setDebouncedValue(_ => value), delay)
+
+    Some(() => clearTimeout(handler))
+  }, (value, delay))
+
+  debouncedValue
+}

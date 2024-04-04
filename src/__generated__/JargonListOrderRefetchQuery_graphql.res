@@ -26,21 +26,25 @@ module Types = {
     count?: int,
     cursor?: string,
     directions?: array<jargon_order_by>,
+    searchTerm?: string,
   }
   @live
   type refetchVariables = {
     count: option<option<int>>,
     cursor: option<option<string>>,
     directions: option<option<array<jargon_order_by>>>,
+    searchTerm: option<option<string>>,
   }
   @live let makeRefetchVariables = (
     ~count=?,
     ~cursor=?,
     ~directions=?,
+    ~searchTerm=?,
   ): refetchVariables => {
     count: count,
     cursor: cursor,
-    directions: directions
+    directions: directions,
+    searchTerm: searchTerm
   }
 
 }
@@ -138,6 +142,11 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "directions"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "searchTerm"
   }
 ],
 v1 = [
@@ -155,6 +164,23 @@ v1 = [
     "kind": "Variable",
     "name": "order_by",
     "variableName": "directions"
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "_iregex",
+            "variableName": "searchTerm"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "name"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "where"
   }
 ],
 v2 = {
@@ -344,7 +370,8 @@ return {
         "alias": null,
         "args": (v1/*: any*/),
         "filters": [
-          "order_by"
+          "order_by",
+          "where"
         ],
         "handle": "connection",
         "key": "JargonListOrderQuery_jargon_connection",
@@ -354,12 +381,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b61b5d139a577fd1b427799224fbc0fb",
+    "cacheID": "034063ced50b2c2f418f883c8de33698",
     "id": null,
     "metadata": {},
     "name": "JargonListOrderRefetchQuery",
     "operationKind": "query",
-    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {name: {_iregex: $searchTerm}}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)

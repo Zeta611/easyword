@@ -8,7 +8,7 @@ function SearchBar(props) {
                     className: "input input-bordered w-full rounded-lg text-sm shadow-lg",
                     placeholder: "정규식으로 검색해보세요",
                     type: "search",
-                    value: props.query,
+                    value: props.searchTerm,
                     onChange: props.onChange
                   }),
               className: "relative flex place-items-center gap-1"

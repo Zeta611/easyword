@@ -20,9 +20,14 @@ var Internal = {
   convertFragment: convertFragment
 };
 
-function makeConnectionId(connectionParentDataId, directions) {
+function makeConnectionId(connectionParentDataId, directions, searchTerm) {
   var args = {
-    order_by: directions
+    order_by: directions,
+    where: {
+      name: {
+        _iregex: searchTerm
+      }
+    }
   };
   return RelayRuntime.ConnectionHandler.getConnectionID(connectionParentDataId, "JargonListOrderQuery_jargon_connection", args);
 }
@@ -57,6 +62,10 @@ return {
     {
       "kind": "RootArgument",
       "name": "directions"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "searchTerm"
     }
   ],
   "kind": "Fragment",
@@ -91,6 +100,23 @@ return {
           "kind": "Variable",
           "name": "order_by",
           "variableName": "directions"
+        },
+        {
+          "fields": [
+            {
+              "fields": [
+                {
+                  "kind": "Variable",
+                  "name": "_iregex",
+                  "variableName": "searchTerm"
+                }
+              ],
+              "kind": "ObjectValue",
+              "name": "name"
+            }
+          ],
+          "kind": "ObjectValue",
+          "name": "where"
         }
       ],
       "concreteType": "jargonConnection",

@@ -1,23 +1,25 @@
 module HomeQuery = %relay(`
-  query HomeQuery($directions: [jargon_order_by!]!) {
+  query HomeQuery($searchTerm: String!, $directions: [jargon_order_by!]!) {
     ...JargonListOrderQuery
   }
 `)
 
 @react.component
 let make = () => {
-  // query is set from SearchBar via onChange and passed into Dictionary
-  let (query, setQuery) = React.Uncurried.useState(() => "")
+  // searchTerm is set from SearchBar via onChange and passed into Dictionary
+  let (searchTerm, setSearchTerm) = React.Uncurried.useState(() => "")
+  let debouncedSearchTerm = Util.useDebounce(searchTerm, 300)
   let (axis, setAxis) = React.Uncurried.useState(() => Jargon.Chrono)
   let (direction, setDirection) = React.Uncurried.useState(() => #desc)
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
-    setQuery(_ => value)
+    setSearchTerm(_ => value)
   }
 
   let {fragmentRefs: query} = HomeQuery.use(
     ~variables={
+      searchTerm: debouncedSearchTerm,
       directions: switch axis {
       | English => [
           {
@@ -47,7 +49,7 @@ let make = () => {
     <div
       className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.75rem] -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
-        <SearchBar query={""} onChange />
+        <SearchBar searchTerm onChange />
       </div>
       <div className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
         <label
@@ -105,6 +107,11 @@ let make = () => {
         </ul>
       </div>
     </div>
-    <JargonList axis query />
+    <React.Suspense
+      fallback={<div className="h-screen grid justify-center content-center">
+        <Loader />
+      </div>}>
+      <JargonList query />
+    </React.Suspense>
   </div>
 }

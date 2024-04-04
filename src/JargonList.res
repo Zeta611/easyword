@@ -9,6 +9,7 @@ module JargonListOrderQuery = %relay(`
       order_by: $directions
       first: $count
       after: $cursor
+      where: {name: {_iregex: $searchTerm}}
     ) @connection(key: "JargonListOrderQuery_jargon_connection") {
       edges {
         node {
@@ -21,42 +22,24 @@ module JargonListOrderQuery = %relay(`
 `)
 
 @react.component
-let make = (~axis, ~query) => {
-  open Jargon
-
-  let (rows, hasMore, loadNext) = switch axis {
-  | Chrono => {
-      let {
-        data: {jargon_connection: jargonConnection},
-        hasNext,
-        loadNext,
-      } = JargonListOrderQuery.usePagination(query)
-      (
-        jargonConnection
-        ->JargonListOrderQuery.getConnectionNodes
-        ->Array.map(node => (node.id, node.fragmentRefs)),
-        hasNext,
-        loadNext,
-      )
-    }
-  | English => {
-      let {
-        data: {jargon_connection: jargonConnection},
-        hasNext,
-        loadNext,
-      } = JargonListOrderQuery.usePagination(query)
-      (
-        jargonConnection
-        ->JargonListOrderQuery.getConnectionNodes
-        ->Array.map(node => (node.id, node.fragmentRefs)),
-        hasNext,
-        loadNext,
-      )
-    }
+let make = (~query) => {
+  let (rows, hasMore, loadNext) = {
+    let {
+      data: {jargon_connection: jargonConnection},
+      hasNext,
+      loadNext,
+    } = JargonListOrderQuery.usePagination(query)
+    (
+      jargonConnection
+      ->JargonListOrderQuery.getConnectionNodes
+      ->Array.map(node => (node.id, node.fragmentRefs)),
+      hasNext,
+      loadNext,
+    )
   }
 
   <InfiniteScroll
-    className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2"
+    className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2 pb-10"
     dataLength={rows->Array.length}
     next={() => loadNext(~count=40)->ignore}
     hasMore

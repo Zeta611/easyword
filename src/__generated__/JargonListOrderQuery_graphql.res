@@ -51,8 +51,8 @@ let connectionKey = "JargonListOrderQuery_jargon_connection"
 )
 
 @live
-let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?) => {
-  let args = {"order_by": directions}
+let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?) => {
+  let args = {"order_by": directions, "where": {"name": {"_iregex": searchTerm}}}
   internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
@@ -94,6 +94,10 @@ return {
     {
       "kind": "RootArgument",
       "name": "directions"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "searchTerm"
     }
   ],
   "kind": "Fragment",
@@ -128,6 +132,23 @@ return {
           "kind": "Variable",
           "name": "order_by",
           "variableName": "directions"
+        },
+        {
+          "fields": [
+            {
+              "fields": [
+                {
+                  "kind": "Variable",
+                  "name": "_iregex",
+                  "variableName": "searchTerm"
+                }
+              ],
+              "kind": "ObjectValue",
+              "name": "name"
+            }
+          ],
+          "kind": "ObjectValue",
+          "name": "where"
         }
       ],
       "concreteType": "jargonConnection",
