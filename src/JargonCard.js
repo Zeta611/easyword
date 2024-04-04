@@ -65,6 +65,7 @@ function JargonCard(props) {
                       className: "flex-none text-xs dark:text-zinc-400"
                     })
               ],
+              className: "h-[100%] p-4",
               onClick: (function (param) {
                   RescriptReactRouter.push("/jargon/" + id);
                 })

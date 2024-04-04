@@ -21,7 +21,7 @@ let make = (~jargonCardRef) => {
     jargonCardRef,
   )
 
-  <div onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
+  <div className="h-[100%] p-4" onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
     // first row
     <div className="flex-none">
       {<div className="text-xs dark:text-zinc-500">

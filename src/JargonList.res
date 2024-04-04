@@ -85,7 +85,7 @@ let make = (~axis, ~query) => {
     ->Array.map(((key, jargonCardRef)) =>
       <li
         key
-        className="flex flex-col gap-y-2 group cursor-pointer p-4 bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900">
+        className="flex flex-col gap-y-2 group cursor-pointer bg-white hover:bg-teal-50 rounded-xl shadow-md dark:bg-zinc-900 dark:hover:bg-teal-900">
         <JargonCard jargonCardRef />
       </li>
     )
