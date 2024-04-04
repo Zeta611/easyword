@@ -1,4 +1,5 @@
 open Firebase
+open ReactSocialLoginButtons
 
 let uiConfig = {
   "signInFlow": "popup",
@@ -20,7 +21,7 @@ let make = () => {
     | None => ()
     | Some({signedIn, user}) =>
       if signedIn {
-        switch user->Js.Nullable.toOption {
+        switch user->Nullable.toOption {
         | Some({uid, displayName, email, photoURL}) =>
           // Set uid. This is safe due to the security rule:
           // allow write: if request.auth.uid == uid;
@@ -28,14 +29,14 @@ let make = () => {
           (
             async () => {
               let userDocRef = firestore->doc(~path=`users/${uid}`)
-              // let userDoc = await userDocRef->getDoc
-              // if !userDoc.exists(.) {
-              await userDocRef->setDoc({
-                "displayName": displayName,
-                "email": email,
-                "photoURL": photoURL,
-              })
-              // }
+              await userDocRef->setDoc2(
+                {
+                  "displayName": displayName,
+                  "email": email,
+                  "photoURL": photoURL,
+                },
+                {"merge": true},
+              )
 
               switch displayName {
               | Some(_) => RescriptReactRouter.replace("/")
@@ -51,10 +52,7 @@ let make = () => {
     None
   }, [data])
 
-  // This uses a v8 auth instance
-  // See https://github.com/FirebaseExtended/reactfire/discussions/474
-  let app = FirebaseCompat.firebase->FirebaseCompat.initializeApp(useAuth().app.options)
-  let firebaseAuth = app->getAuth
+  let auth = useAuth()
 
   switch status {
   | #loading =>
@@ -69,9 +67,15 @@ let make = () => {
       <div
         className="h-screen bg-cover bg-center bg-[url('/assets/layered-waves.svg')] justify-self-stretch grid justify-center content-center">
         <div
-          className="h-96 w-96 bg-zinc-50 bg-opacity-30 backdrop-blur-lg drop-shadow-lg rounded-xl grid content-center gap-3 text-zinc-800 dark:text-zinc-50">
+          className="h-96 w-96 place-content-center bg-zinc-50 bg-opacity-30 backdrop-blur-lg drop-shadow-lg rounded-xl grid content-center gap-3 text-zinc-800 dark:text-zinc-50">
           <div className="text-3xl font-medium text-center"> {React.string(`로그인`)} </div>
-          <StyledFirebaseAuth uiConfig firebaseAuth />
+          <GoogleLoginButton
+            onClick={(. ()) => {
+              open Auth
+              signInWithPopup(. auth, FederatedAuthProvider.googleAuthProvider())->ignore
+            }}>
+            <div className="text-sm"> {"Sign in with Google"->React.string} </div>
+          </GoogleLoginButton>
         </div>
       </div>
     }

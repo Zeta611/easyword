@@ -34,7 +34,7 @@ module.exports = {
       "emerald",
       {
         myForest: {
-          ...require("daisyui/src/colors/themes")["[data-theme=forest]"],
+          ...require("daisyui/src/theming/themes")["forest"],
           "--rounded-btn": "0.5rem",
         },
       },

@@ -1,0 +1,2055 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""
+columns and relationships of "comment"
+"""
+type comment implements Node {
+  """An object relationship"""
+  author: user!
+  author_id: String!
+
+  """An array relationship"""
+  children(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """An aggregate relationship"""
+  children_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+
+  """An array relationship connection"""
+  children_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): commentConnection!
+  content: String!
+  created_at: timestamptz!
+  id: ID!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon_id: uuid!
+
+  """An object relationship"""
+  parent: comment
+  parent_id: uuid
+  removed: Boolean!
+
+  """An object relationship"""
+  translation: translation
+  translation_id: uuid
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "comment"
+"""
+type comment_aggregate {
+  aggregate: comment_aggregate_fields
+  nodes: [comment!]!
+}
+
+input comment_aggregate_bool_exp {
+  bool_and: comment_aggregate_bool_exp_bool_and
+  bool_or: comment_aggregate_bool_exp_bool_or
+  count: comment_aggregate_bool_exp_count
+}
+
+input comment_aggregate_bool_exp_bool_and {
+  arguments: comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: comment_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input comment_aggregate_bool_exp_bool_or {
+  arguments: comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: comment_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input comment_aggregate_bool_exp_count {
+  arguments: [comment_select_column!]
+  distinct: Boolean
+  filter: comment_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "comment"
+"""
+type comment_aggregate_fields {
+  count(columns: [comment_select_column!], distinct: Boolean): Int!
+  max: comment_max_fields
+  min: comment_min_fields
+}
+
+"""
+order by aggregate values of table "comment"
+"""
+input comment_aggregate_order_by {
+  count: order_by
+  max: comment_max_order_by
+  min: comment_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "comment"
+"""
+input comment_arr_rel_insert_input {
+  data: [comment_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: comment_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "comment". All fields are combined with a logical 'AND'.
+"""
+input comment_bool_exp {
+  _and: [comment_bool_exp!]
+  _not: comment_bool_exp
+  _or: [comment_bool_exp!]
+  author: user_bool_exp
+  author_id: String_comparison_exp
+  children: comment_bool_exp
+  children_aggregate: comment_aggregate_bool_exp
+  content: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  jargon: jargon_bool_exp
+  jargon_id: uuid_comparison_exp
+  parent: comment_bool_exp
+  parent_id: uuid_comparison_exp
+  removed: Boolean_comparison_exp
+  translation: translation_bool_exp
+  translation_id: uuid_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "comment"
+"""
+enum comment_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  comment_id_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  comment_pkey
+
+  """
+  unique or primary key constraint on columns "translation_id"
+  """
+  comment_translation_id_new_key
+}
+
+"""
+input type for inserting data into table "comment"
+"""
+input comment_insert_input {
+  author: user_obj_rel_insert_input
+  author_id: String
+  children: comment_arr_rel_insert_input
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon: jargon_obj_rel_insert_input
+  jargon_id: uuid
+  parent: comment_obj_rel_insert_input
+  parent_id: uuid
+  removed: Boolean
+  translation: translation_obj_rel_insert_input
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type comment_max_fields {
+  author_id: String
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "comment"
+"""
+input comment_max_order_by {
+  author_id: order_by
+  content: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  parent_id: order_by
+  translation_id: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type comment_min_fields {
+  author_id: String
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "comment"
+"""
+input comment_min_order_by {
+  author_id: order_by
+  content: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  parent_id: order_by
+  translation_id: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "comment"
+"""
+type comment_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [comment!]!
+}
+
+"""
+input type for inserting object relation for remote table "comment"
+"""
+input comment_obj_rel_insert_input {
+  data: comment_insert_input!
+
+  """upsert condition"""
+  on_conflict: comment_on_conflict
+}
+
+"""
+on_conflict condition type for table "comment"
+"""
+input comment_on_conflict {
+  constraint: comment_constraint!
+  update_columns: [comment_update_column!]! = []
+  where: comment_bool_exp
+}
+
+"""Ordering options when selecting data from "comment"."""
+input comment_order_by {
+  author: user_order_by
+  author_id: order_by
+  children_aggregate: comment_aggregate_order_by
+  content: order_by
+  created_at: order_by
+  id: order_by
+  jargon: jargon_order_by
+  jargon_id: order_by
+  parent: comment_order_by
+  parent_id: order_by
+  removed: order_by
+  translation: translation_order_by
+  translation_id: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: comment"""
+input comment_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "comment"
+"""
+enum comment_select_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  content
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  jargon_id
+
+  """column name"""
+  parent_id
+
+  """column name"""
+  removed
+
+  """column name"""
+  translation_id
+
+  """column name"""
+  updated_at
+}
+
+"""
+select "comment_aggregate_bool_exp_bool_and_arguments_columns" columns of table "comment"
+"""
+enum comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  removed
+}
+
+"""
+select "comment_aggregate_bool_exp_bool_or_arguments_columns" columns of table "comment"
+"""
+enum comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  removed
+}
+
+"""
+input type for updating data in table "comment"
+"""
+input comment_set_input {
+  author_id: String
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  removed: Boolean
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "comment"
+"""
+enum comment_update_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  content
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  jargon_id
+
+  """column name"""
+  parent_id
+
+  """column name"""
+  removed
+
+  """column name"""
+  translation_id
+
+  """column name"""
+  updated_at
+}
+
+input comment_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: comment_set_input
+
+  """filter the rows which have to be updated"""
+  where: comment_bool_exp!
+}
+
+"""
+A Relay connection object on "comment"
+"""
+type commentConnection {
+  edges: [commentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type commentEdge {
+  cursor: String!
+  node: comment!
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+columns and relationships of "jargon"
+"""
+type jargon implements Node {
+  """An object relationship"""
+  author: user!
+  author_id: String!
+
+  """An array relationship"""
+  comments(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """An aggregate relationship"""
+  comments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+
+  """An array relationship connection"""
+  comments_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): commentConnection!
+  created_at: timestamptz!
+  id: ID!
+  name: String!
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+
+  """An array relationship"""
+  translations(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+
+  """An aggregate relationship"""
+  translations_aggregate(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): translation_aggregate!
+
+  """An array relationship connection"""
+  translations_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): translationConnection!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "jargon"
+"""
+type jargon_aggregate {
+  aggregate: jargon_aggregate_fields
+  nodes: [jargon!]!
+}
+
+input jargon_aggregate_bool_exp {
+  count: jargon_aggregate_bool_exp_count
+}
+
+input jargon_aggregate_bool_exp_count {
+  arguments: [jargon_select_column!]
+  distinct: Boolean
+  filter: jargon_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "jargon"
+"""
+type jargon_aggregate_fields {
+  count(columns: [jargon_select_column!], distinct: Boolean): Int!
+  max: jargon_max_fields
+  min: jargon_min_fields
+}
+
+"""
+order by aggregate values of table "jargon"
+"""
+input jargon_aggregate_order_by {
+  count: order_by
+  max: jargon_max_order_by
+  min: jargon_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "jargon"
+"""
+input jargon_arr_rel_insert_input {
+  data: [jargon_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: jargon_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "jargon". All fields are combined with a logical 'AND'.
+"""
+input jargon_bool_exp {
+  _and: [jargon_bool_exp!]
+  _not: jargon_bool_exp
+  _or: [jargon_bool_exp!]
+  author: user_bool_exp
+  author_id: String_comparison_exp
+  comments: comment_bool_exp
+  comments_aggregate: comment_aggregate_bool_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  name_lower: String_comparison_exp
+  translations: translation_bool_exp
+  translations_aggregate: translation_aggregate_bool_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "jargon"
+"""
+enum jargon_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  jargon_id_key
+
+  """
+  unique or primary key constraint on columns "name"
+  """
+  jargon_name_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  jargon_pkey
+}
+
+"""
+input type for inserting data into table "jargon"
+"""
+input jargon_insert_input {
+  author: user_obj_rel_insert_input
+  author_id: String
+  comments: comment_arr_rel_insert_input
+  created_at: timestamptz
+  id: uuid
+  name: String
+  translations: translation_arr_rel_insert_input
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type jargon_max_fields {
+  author_id: String
+  created_at: timestamptz
+  id: uuid
+  name: String
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "jargon"
+"""
+input jargon_max_order_by {
+  author_id: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type jargon_min_fields {
+  author_id: String
+  created_at: timestamptz
+  id: uuid
+  name: String
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "jargon"
+"""
+input jargon_min_order_by {
+  author_id: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "jargon"
+"""
+type jargon_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [jargon!]!
+}
+
+"""
+input type for inserting object relation for remote table "jargon"
+"""
+input jargon_obj_rel_insert_input {
+  data: jargon_insert_input!
+
+  """upsert condition"""
+  on_conflict: jargon_on_conflict
+}
+
+"""
+on_conflict condition type for table "jargon"
+"""
+input jargon_on_conflict {
+  constraint: jargon_constraint!
+  update_columns: [jargon_update_column!]! = []
+  where: jargon_bool_exp
+}
+
+"""Ordering options when selecting data from "jargon"."""
+input jargon_order_by {
+  author: user_order_by
+  author_id: order_by
+  comments_aggregate: comment_aggregate_order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+  name_lower: order_by
+  translations_aggregate: translation_aggregate_order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: jargon"""
+input jargon_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "jargon"
+"""
+enum jargon_select_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "jargon"
+"""
+input jargon_set_input {
+  author_id: String
+  created_at: timestamptz
+  id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "jargon"
+"""
+enum jargon_update_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+input jargon_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: jargon_set_input
+
+  """filter the rows which have to be updated"""
+  where: jargon_bool_exp!
+}
+
+"""
+A Relay connection object on "jargon"
+"""
+type jargonConnection {
+  edges: [jargonEdge!]!
+  pageInfo: PageInfo!
+}
+
+type jargonEdge {
+  cursor: String!
+  node: jargon!
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "comment"
+  """
+  delete_comment(
+    """filter the rows which have to be deleted"""
+    where: comment_bool_exp!
+  ): comment_mutation_response
+
+  """
+  delete single row from the table: "comment"
+  """
+  delete_comment_by_pk(id: uuid!): comment
+
+  """
+  delete data from the table: "jargon"
+  """
+  delete_jargon(
+    """filter the rows which have to be deleted"""
+    where: jargon_bool_exp!
+  ): jargon_mutation_response
+
+  """
+  delete single row from the table: "jargon"
+  """
+  delete_jargon_by_pk(id: uuid!): jargon
+
+  """
+  delete data from the table: "translation"
+  """
+  delete_translation(
+    """filter the rows which have to be deleted"""
+    where: translation_bool_exp!
+  ): translation_mutation_response
+
+  """
+  delete single row from the table: "translation"
+  """
+  delete_translation_by_pk(id: uuid!): translation
+
+  """
+  delete data from the table: "user"
+  """
+  delete_user(
+    """filter the rows which have to be deleted"""
+    where: user_bool_exp!
+  ): user_mutation_response
+
+  """
+  delete single row from the table: "user"
+  """
+  delete_user_by_pk(id: String!): user
+
+  """
+  insert data into the table: "comment"
+  """
+  insert_comment(
+    """the rows to be inserted"""
+    objects: [comment_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: comment_on_conflict
+  ): comment_mutation_response
+
+  """
+  insert a single row into the table: "comment"
+  """
+  insert_comment_one(
+    """the row to be inserted"""
+    object: comment_insert_input!
+
+    """upsert condition"""
+    on_conflict: comment_on_conflict
+  ): comment
+
+  """
+  insert data into the table: "jargon"
+  """
+  insert_jargon(
+    """the rows to be inserted"""
+    objects: [jargon_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: jargon_on_conflict
+  ): jargon_mutation_response
+
+  """
+  insert a single row into the table: "jargon"
+  """
+  insert_jargon_one(
+    """the row to be inserted"""
+    object: jargon_insert_input!
+
+    """upsert condition"""
+    on_conflict: jargon_on_conflict
+  ): jargon
+
+  """
+  insert data into the table: "translation"
+  """
+  insert_translation(
+    """the rows to be inserted"""
+    objects: [translation_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: translation_on_conflict
+  ): translation_mutation_response
+
+  """
+  insert a single row into the table: "translation"
+  """
+  insert_translation_one(
+    """the row to be inserted"""
+    object: translation_insert_input!
+
+    """upsert condition"""
+    on_conflict: translation_on_conflict
+  ): translation
+
+  """
+  insert data into the table: "user"
+  """
+  insert_user(
+    """the rows to be inserted"""
+    objects: [user_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: user_on_conflict
+  ): user_mutation_response
+
+  """
+  insert a single row into the table: "user"
+  """
+  insert_user_one(
+    """the row to be inserted"""
+    object: user_insert_input!
+
+    """upsert condition"""
+    on_conflict: user_on_conflict
+  ): user
+
+  """
+  update data of the table: "comment"
+  """
+  update_comment(
+    """sets the columns of the filtered rows to the given values"""
+    _set: comment_set_input
+
+    """filter the rows which have to be updated"""
+    where: comment_bool_exp!
+  ): comment_mutation_response
+
+  """
+  update single row of the table: "comment"
+  """
+  update_comment_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: comment_set_input
+    pk_columns: comment_pk_columns_input!
+  ): comment
+
+  """
+  update multiples rows of table: "comment"
+  """
+  update_comment_many(
+    """updates to execute, in order"""
+    updates: [comment_updates!]!
+  ): [comment_mutation_response]
+
+  """
+  update data of the table: "jargon"
+  """
+  update_jargon(
+    """sets the columns of the filtered rows to the given values"""
+    _set: jargon_set_input
+
+    """filter the rows which have to be updated"""
+    where: jargon_bool_exp!
+  ): jargon_mutation_response
+
+  """
+  update single row of the table: "jargon"
+  """
+  update_jargon_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: jargon_set_input
+    pk_columns: jargon_pk_columns_input!
+  ): jargon
+
+  """
+  update multiples rows of table: "jargon"
+  """
+  update_jargon_many(
+    """updates to execute, in order"""
+    updates: [jargon_updates!]!
+  ): [jargon_mutation_response]
+
+  """
+  update data of the table: "translation"
+  """
+  update_translation(
+    """sets the columns of the filtered rows to the given values"""
+    _set: translation_set_input
+
+    """filter the rows which have to be updated"""
+    where: translation_bool_exp!
+  ): translation_mutation_response
+
+  """
+  update single row of the table: "translation"
+  """
+  update_translation_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: translation_set_input
+    pk_columns: translation_pk_columns_input!
+  ): translation
+
+  """
+  update multiples rows of table: "translation"
+  """
+  update_translation_many(
+    """updates to execute, in order"""
+    updates: [translation_updates!]!
+  ): [translation_mutation_response]
+
+  """
+  update data of the table: "user"
+  """
+  update_user(
+    """sets the columns of the filtered rows to the given values"""
+    _set: user_set_input
+
+    """filter the rows which have to be updated"""
+    where: user_bool_exp!
+  ): user_mutation_response
+
+  """
+  update single row of the table: "user"
+  """
+  update_user_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: user_set_input
+    pk_columns: user_pk_columns_input!
+  ): user
+
+  """
+  update multiples rows of table: "user"
+  """
+  update_user_many(
+    """updates to execute, in order"""
+    updates: [user_updates!]!
+  ): [user_mutation_response]
+}
+
+"""An object with globally unique ID"""
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
+type query_root {
+  """
+  fetch data from the table: "comment"
+  """
+  comment_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): commentConnection!
+
+  """
+  fetch data from the table: "jargon"
+  """
+  jargon_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargonConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
+
+  """
+  fetch data from the table: "translation"
+  """
+  translation_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): translationConnection!
+
+  """
+  fetch data from the table: "user"
+  """
+  user_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [user_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_order_by!]
+
+    """filter the rows returned"""
+    where: user_bool_exp
+  ): userConnection!
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "comment"
+  """
+  comment_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): commentConnection!
+
+  """
+  fetch data from the table: "jargon"
+  """
+  jargon_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargonConnection!
+  node(
+    """A globally unique id"""
+    id: ID!
+  ): Node
+
+  """
+  fetch data from the table: "translation"
+  """
+  translation_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): translationConnection!
+
+  """
+  fetch data from the table: "user"
+  """
+  user_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [user_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_order_by!]
+
+    """filter the rows returned"""
+    where: user_bool_exp
+  ): userConnection!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+columns and relationships of "translation"
+"""
+type translation implements Node {
+  """An object relationship"""
+  author: user!
+  author_id: String!
+
+  """An object relationship"""
+  comment: comment
+  comment_id: uuid!
+  created_at: timestamptz!
+  id: ID!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon_id: uuid!
+  name: String!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "translation"
+"""
+type translation_aggregate {
+  aggregate: translation_aggregate_fields
+  nodes: [translation!]!
+}
+
+input translation_aggregate_bool_exp {
+  count: translation_aggregate_bool_exp_count
+}
+
+input translation_aggregate_bool_exp_count {
+  arguments: [translation_select_column!]
+  distinct: Boolean
+  filter: translation_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "translation"
+"""
+type translation_aggregate_fields {
+  count(columns: [translation_select_column!], distinct: Boolean): Int!
+  max: translation_max_fields
+  min: translation_min_fields
+}
+
+"""
+order by aggregate values of table "translation"
+"""
+input translation_aggregate_order_by {
+  count: order_by
+  max: translation_max_order_by
+  min: translation_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "translation"
+"""
+input translation_arr_rel_insert_input {
+  data: [translation_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: translation_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "translation". All fields are combined with a logical 'AND'.
+"""
+input translation_bool_exp {
+  _and: [translation_bool_exp!]
+  _not: translation_bool_exp
+  _or: [translation_bool_exp!]
+  author: user_bool_exp
+  author_id: String_comparison_exp
+  comment: comment_bool_exp
+  comment_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  jargon: jargon_bool_exp
+  jargon_id: uuid_comparison_exp
+  name: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "translation"
+"""
+enum translation_constraint {
+  """
+  unique or primary key constraint on columns "comment_id"
+  """
+  translation_comment_id_new_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  translation_id_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  translation_pkey
+}
+
+"""
+input type for inserting data into table "translation"
+"""
+input translation_insert_input {
+  author: user_obj_rel_insert_input
+  author_id: String
+  comment: comment_obj_rel_insert_input
+  comment_id: uuid
+  created_at: timestamptz
+  id: uuid
+  jargon: jargon_obj_rel_insert_input
+  jargon_id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type translation_max_fields {
+  author_id: String
+  comment_id: uuid
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "translation"
+"""
+input translation_max_order_by {
+  author_id: order_by
+  comment_id: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type translation_min_fields {
+  author_id: String
+  comment_id: uuid
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "translation"
+"""
+input translation_min_order_by {
+  author_id: order_by
+  comment_id: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "translation"
+"""
+type translation_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [translation!]!
+}
+
+"""
+input type for inserting object relation for remote table "translation"
+"""
+input translation_obj_rel_insert_input {
+  data: translation_insert_input!
+
+  """upsert condition"""
+  on_conflict: translation_on_conflict
+}
+
+"""
+on_conflict condition type for table "translation"
+"""
+input translation_on_conflict {
+  constraint: translation_constraint!
+  update_columns: [translation_update_column!]! = []
+  where: translation_bool_exp
+}
+
+"""Ordering options when selecting data from "translation"."""
+input translation_order_by {
+  author: user_order_by
+  author_id: order_by
+  comment: comment_order_by
+  comment_id: order_by
+  created_at: order_by
+  id: order_by
+  jargon: jargon_order_by
+  jargon_id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: translation"""
+input translation_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "translation"
+"""
+enum translation_select_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  comment_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  jargon_id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "translation"
+"""
+input translation_set_input {
+  author_id: String
+  comment_id: uuid
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "translation"
+"""
+enum translation_update_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  comment_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  jargon_id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+input translation_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: translation_set_input
+
+  """filter the rows which have to be updated"""
+  where: translation_bool_exp!
+}
+
+"""
+A Relay connection object on "translation"
+"""
+type translationConnection {
+  edges: [translationEdge!]!
+  pageInfo: PageInfo!
+}
+
+type translationEdge {
+  cursor: String!
+  node: translation!
+}
+
+"""
+columns and relationships of "user"
+"""
+type user implements Node {
+  """An array relationship"""
+  comments(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """An aggregate relationship"""
+  comments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+
+  """An array relationship connection"""
+  comments_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): commentConnection!
+  display_name: String!
+  email: String!
+  id: ID!
+
+  """An array relationship"""
+  jargons(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """An aggregate relationship"""
+  jargons_aggregate(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargon_aggregate!
+
+  """An array relationship connection"""
+  jargons_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargonConnection!
+  last_seen: timestamptz
+  photo_url: String
+
+  """An array relationship"""
+  translations(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+
+  """An aggregate relationship"""
+  translations_aggregate(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): translation_aggregate!
+
+  """An array relationship connection"""
+  translations_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): translationConnection!
+}
+
+"""
+Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'.
+"""
+input user_bool_exp {
+  _and: [user_bool_exp!]
+  _not: user_bool_exp
+  _or: [user_bool_exp!]
+  comments: comment_bool_exp
+  comments_aggregate: comment_aggregate_bool_exp
+  display_name: String_comparison_exp
+  email: String_comparison_exp
+  id: String_comparison_exp
+  jargons: jargon_bool_exp
+  jargons_aggregate: jargon_aggregate_bool_exp
+  last_seen: timestamptz_comparison_exp
+  photo_url: String_comparison_exp
+  translations: translation_bool_exp
+  translations_aggregate: translation_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "user"
+"""
+enum user_constraint {
+  """
+  unique or primary key constraint on columns "email"
+  """
+  user_email_key
+
+  """
+  unique or primary key constraint on columns "photo_url"
+  """
+  user_photo_url_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  user_pkey
+}
+
+"""
+input type for inserting data into table "user"
+"""
+input user_insert_input {
+  comments: comment_arr_rel_insert_input
+  display_name: String
+  email: String
+  id: String
+  jargons: jargon_arr_rel_insert_input
+  last_seen: timestamptz
+  photo_url: String
+  translations: translation_arr_rel_insert_input
+}
+
+"""
+response of any mutation on the table "user"
+"""
+type user_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [user!]!
+}
+
+"""
+input type for inserting object relation for remote table "user"
+"""
+input user_obj_rel_insert_input {
+  data: user_insert_input!
+
+  """upsert condition"""
+  on_conflict: user_on_conflict
+}
+
+"""
+on_conflict condition type for table "user"
+"""
+input user_on_conflict {
+  constraint: user_constraint!
+  update_columns: [user_update_column!]! = []
+  where: user_bool_exp
+}
+
+"""Ordering options when selecting data from "user"."""
+input user_order_by {
+  comments_aggregate: comment_aggregate_order_by
+  display_name: order_by
+  email: order_by
+  id: order_by
+  jargons_aggregate: jargon_aggregate_order_by
+  last_seen: order_by
+  photo_url: order_by
+  translations_aggregate: translation_aggregate_order_by
+}
+
+"""primary key columns input for table: user"""
+input user_pk_columns_input {
+  id: String!
+}
+
+"""
+select columns of table "user"
+"""
+enum user_select_column {
+  """column name"""
+  display_name
+
+  """column name"""
+  email
+
+  """column name"""
+  id
+
+  """column name"""
+  last_seen
+
+  """column name"""
+  photo_url
+}
+
+"""
+input type for updating data in table "user"
+"""
+input user_set_input {
+  display_name: String
+  email: String
+  id: String
+  last_seen: timestamptz
+  photo_url: String
+}
+
+"""
+update columns of table "user"
+"""
+enum user_update_column {
+  """column name"""
+  display_name
+
+  """column name"""
+  email
+
+  """column name"""
+  id
+
+  """column name"""
+  last_seen
+
+  """column name"""
+  photo_url
+}
+
+input user_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: user_set_input
+
+  """filter the rows which have to be updated"""
+  where: user_bool_exp!
+}
+
+"""
+A Relay connection object on "user"
+"""
+type userConnection {
+  edges: [userEdge!]!
+  pageInfo: PageInfo!
+}
+
+type userEdge {
+  cursor: String!
+  node: user!
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+

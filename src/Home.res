@@ -1,72 +1,74 @@
-module SearchBar = {
-  @react.component
-  let make = (~query, ~caseSensitivity, ~setCaseSensitivity, ~onChange) => {
-    <div className="relative flex place-items-center gap-1">
-      <input
-        type_="search"
-        value=query
-        onChange
-        className="input input-bordered w-full rounded-lg text-sm shadow-lg"
-        placeholder="정규식으로 검색해보세요"
-      />
-      // {React.cloneElement(
-      //   <div className="flex flex-col text-xs place-items-center tooltip tooltip-bottom">
-      //     {"/re/i"->React.string}
-      //     <input
-      //       type_="checkbox"
-      //       className="checkbox checkbox-secondary"
-      //       checked={caseSensitivity}
-      //       onChange={_ => setCaseSensitivity(._ => !caseSensitivity)}
-      //     />
-      //   </div>,
-      //   {"data-tip": "대소문자 구분 여부"},
-      // )}
-    </div>
+module HomeQuery = %relay(`
+  query HomeQuery($searchTerm: String!, $directions: [jargon_order_by!]!) {
+    ...JargonListOrderQuery
   }
-}
+`)
 
 @react.component
 let make = () => {
-  // query is set from SearchBar via onChange and passed into Dictionary
-  let (query, setQuery) = React.Uncurried.useState(() => "")
-  let (order, setOrder) = React.Uncurried.useState(() => {
-    open Jargon
-    (Chrono, #desc)
-  })
-
-  let (caseSensitivity, setCaseSensitivity) = React.Uncurried.useState(() => true)
+  // searchTerm is set from SearchBar via onChange and passed into Dictionary
+  let (searchTerm, setSearchTerm) = React.Uncurried.useState(() => "")
+  let debouncedSearchTerm = Util.useDebounce(searchTerm, 300)
+  let (axis, setAxis) = React.Uncurried.useState(() => Jargon.Chrono)
+  let (direction, setDirection) = React.Uncurried.useState(() => #desc)
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
-    setQuery(._ => value)
+    setSearchTerm(_ => value)
   }
+
+  let {fragmentRefs: query} = HomeQuery.use(
+    ~variables={
+      searchTerm: debouncedSearchTerm,
+      directions: switch axis {
+      | English => [
+          {
+            name_lower: switch direction {
+            | #asc => Asc
+            | #desc => Desc
+            },
+          },
+          {
+            created_at: Desc,
+          },
+        ]
+      | Chrono => [
+          {
+            created_at: Desc,
+          },
+          {
+            name_lower: Asc,
+          },
+        ]
+      },
+    },
+  )
 
   open Heroicons
   <div className="grid p-5 text-sm">
     <div
-      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.22rem] -mt-5 mb-5 z-40 bg-base-100">
+      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.75rem] -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
-        <SearchBar query caseSensitivity setCaseSensitivity onChange />
+        <SearchBar searchTerm onChange />
       </div>
       <div className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
         <label
           tabIndex={0}
           className="btn btn-primary"
           onClick={_ => {
-            switch order {
-            | (Chrono, _) => setOrder(._ => (Chrono, #desc))
-            | (lang, #asc) => setOrder(._ => (lang, #desc))
-            | (lang, #desc) => setOrder(._ => (lang, #asc))
+            switch (axis, direction) {
+            | (Chrono, _) => setDirection(_ => #desc)
+            | (_, #asc) => setDirection(_ => #desc)
+            | (_, #desc) => setDirection(_ => #asc)
             }
           }}>
-          {switch order {
+          {switch (axis, direction) {
           | (Chrono, _) => React.null
           | (_, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           | (_, #desc) => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           }}
-          {switch order {
+          {switch (axis, direction) {
           | (English, _) => "ABC순"->React.string
-          // | (Korean, _) => "한영"->React.string
           | (Chrono, _) => "최근순"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
@@ -75,49 +77,41 @@ let make = () => {
           tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
-            <button onClick={_ => setOrder(._ => (Chrono, #desc))}>
+            <button
+              onClick={_ => {
+                setAxis(_ => Chrono)
+                setDirection(_ => #desc)
+              }}>
               {"최근순"->React.string}
             </button>
           </li>
-          // <li>
-          //   <button
-          //     onClick={_ =>
-          //       setOrder(.order => {
-          //         switch order {
-          //         | (English, _) | (Chrono, _) | (Korean, #desc) => (Korean, #asc)
-          //         | (Korean, #asc) => (Korean, #desc)
-          //         }
-          //       })}>
-          //     {"한영"->React.string}
-          //     {switch order {
-          //     | (Korean, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-          //     | (Korean, #desc) =>
-          //       <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-          //     | _ => React.null
-          //     }}
-          //   </button>
-          // </li>
           <li>
             <button
-              onClick={_ =>
-                setOrder(.order => {
-                  switch order {
-                  /* | (Korean, _) */ | (Chrono, _) | (English, #desc) => (English, #asc)
-                  | (English, #asc) => (English, #desc)
+              onClick={_ => {
+                setAxis(_ => English)
+                setDirection(direction => {
+                  // If axis was Chrono, the direction was always #desc
+                  switch direction {
+                  | #asc => #desc
+                  | #desc => #asc
                   }
-                })}>
+                })
+              }}>
               {"ABC순"->React.string}
-              {switch order {
-              | (English, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-              | (English, #desc) =>
-                <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-              | _ => React.null
+              {switch direction {
+              | #asc => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
+              | #desc => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               }}
             </button>
           </li>
         </ul>
       </div>
     </div>
-    <JargonList order query caseSensitivity />
+    <React.Suspense
+      fallback={<div className="h-screen grid justify-center content-center">
+        <Loader />
+      </div>}>
+      <JargonList query />
+    </React.Suspense>
   </div>
 }

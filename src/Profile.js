@@ -2,20 +2,43 @@
 
 import * as React from "react";
 import * as Reactfire from "reactfire";
-import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
+import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Auth from "firebase/auth";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
+import * as ProfileDisplayNameMutation_graphql from "./__generated__/ProfileDisplayNameMutation_graphql.js";
 
-function Profile(props) {
-  var match = React.useContext(SignInContext.context);
-  var user = match.user;
-  var signedIn = match.signedIn;
+var convertVariables = ProfileDisplayNameMutation_graphql.Internal.convertVariables;
+
+var convertResponse = ProfileDisplayNameMutation_graphql.Internal.convertResponse;
+
+var convertWrapRawResponse = ProfileDisplayNameMutation_graphql.Internal.convertWrapRawResponse;
+
+var commitMutation = RescriptRelay_Mutation.commitMutation(convertVariables, ProfileDisplayNameMutation_graphql.node, convertResponse, convertWrapRawResponse);
+
+var use = RescriptRelay_Mutation.useMutation(convertVariables, ProfileDisplayNameMutation_graphql.node, convertResponse, convertWrapRawResponse);
+
+var DisplayNameMutation = {
+  Operation: undefined,
+  Types: undefined,
+  convertVariables: convertVariables,
+  convertResponse: convertResponse,
+  convertWrapRawResponse: convertWrapRawResponse,
+  commitMutation: commitMutation,
+  use: use
+};
+
+function Profile$SignedInProfile(props) {
+  var user = props.user;
+  var firestore = Reactfire.useFirestore();
+  var match = use();
+  var mutate = match[0];
   var match$1 = React.useState(function () {
-        return "";
+        return Core__Option.getOr(user.displayName, "");
       });
   var setDisplayName = match$1[1];
   var displayName = match$1[0];
@@ -26,144 +49,130 @@ function Profile(props) {
         });
   };
   var match$2 = React.useState(function () {
-        return "";
-      });
-  var setEmail = match$2[1];
-  var match$3 = React.useState(function () {
         return false;
       });
-  var setDisabled = match$3[1];
-  var firestore = Reactfire.useFirestore();
+  var setDisabled = match$2[1];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (displayName.length < 3) {
-      window.alert("필명은 세 글자 이상이어야 해요");
-      return ;
-    }
-    if (!signedIn) {
-      return RescriptReactRouter.replace("/login");
-    }
-    if (user == null) {
-      return RescriptReactRouter.replace("/logout");
-    }
-    var email = user.email;
-    var uid = user.uid;
-    setDisabled(function (param) {
-          return true;
-        });
-    ((async function (param) {
-            try {
-              var authUpdate = Auth.updateProfile(user, {
-                    displayName: displayName
-                  });
-              var docUpdate = (async function (param) {
-                    var userDocRef = Firestore.doc(firestore, "users/" + uid + "");
-                    var userDoc = await Firestore.getDoc(userDocRef);
-                    if (userDoc.exists()) {
-                      return await Firestore.updateDoc(userDocRef, {
-                                  displayName: displayName
-                                });
-                    } else {
-                      return await Firestore.setDoc(userDocRef, {
-                                  displayName: displayName,
-                                  email: email
-                                });
-                    }
-                  })(undefined);
-              await Promise.all([
-                    authUpdate,
-                    docUpdate
-                  ]);
+    if (displayName.length <= 0) {
+      window.alert("필명을 입력해주세요");
+    } else {
+      setDisabled(function (param) {
+            return true;
+          });
+      ((async function () {
+              try {
+                var authUpdate = Auth.updateProfile(user, {
+                      displayName: displayName
+                    });
+                var docUpdate = (async function () {
+                      var userDocRef = Firestore.doc(firestore, "users/" + user.uid);
+                      var userDoc = await Firestore.getDoc(userDocRef);
+                      if (userDoc.exists()) {
+                        return await Firestore.updateDoc(userDocRef, {
+                                    displayName: displayName
+                                  });
+                      } else {
+                        console.warn("User document does not exist!");
+                        return await Firestore.setDoc(userDocRef, {
+                                    displayName: displayName,
+                                    email: user.email
+                                  });
+                      }
+                    })();
+                mutate({
+                      displayName: displayName,
+                      uid: user.uid
+                    }, undefined, undefined, undefined, undefined, undefined, undefined);
+                await Promise.all([
+                      authUpdate,
+                      docUpdate
+                    ]);
+              }
+              catch (raw_e){
+                var e = Caml_js_exceptions.internalToOCamlException(raw_e);
+                console.warn(e);
+              }
               return setDisabled(function (param) {
                           return false;
                         });
-            }
-            catch (raw_e){
-              var e = Caml_js_exceptions.internalToOCamlException(raw_e);
-              console.log(e);
-              return ;
-            }
-          })(undefined));
+            })());
+    }
   };
-  React.useEffect((function () {
-          if (signedIn) {
-            if (user == null) {
-              RescriptReactRouter.replace("/logout");
-            } else {
-              var email = user.email;
-              var displayName = user.displayName;
-              setDisplayName(function (param) {
-                    return Belt_Option.getWithDefault(displayName, "");
-                  });
-              setEmail(function (param) {
-                    return Belt_Option.getWithDefault(email, "");
-                  });
-            }
-          } else {
-            RescriptReactRouter.replace("/login");
-          }
-        }), []);
-  if (signedIn) {
-    return JsxRuntime.jsxs("div", {
-                children: [
-                  JsxRuntime.jsx("h1", {
-                        children: "내 정보"
-                      }),
-                  JsxRuntime.jsx("form", {
-                        children: JsxRuntime.jsxs("div", {
-                              children: [
-                                JsxRuntime.jsxs("label", {
-                                      children: [
-                                        JsxRuntime.jsx("label", {
-                                              children: JsxRuntime.jsx("span", {
-                                                    children: "필명",
-                                                    className: "label-text"
-                                                  }),
-                                              className: "label"
-                                            }),
-                                        JsxRuntime.jsx("input", {
-                                              className: "input input-bordered w-full",
-                                              type: "text",
-                                              value: displayName,
-                                              onChange: handleDisplayNameChange
-                                            })
-                                      ],
-                                      className: "block"
-                                    }),
-                                JsxRuntime.jsxs("label", {
-                                      children: [
-                                        JsxRuntime.jsx("label", {
-                                              children: JsxRuntime.jsx("span", {
-                                                    children: "이메일",
-                                                    className: "label-text"
-                                                  }),
-                                              className: "label"
-                                            }),
-                                        JsxRuntime.jsx("input", {
-                                              className: "input input-bordered input-disabled w-full",
-                                              readOnly: true,
-                                              type: "email",
-                                              value: match$2[0]
-                                            })
-                                      ],
-                                      className: "block"
-                                    }),
-                                JsxRuntime.jsx("input", {
-                                      className: "btn btn-primary",
-                                      disabled: match$3[0],
-                                      type: "submit",
-                                      value: "저장"
-                                    })
-                              ],
-                              className: "grid grid-cols-1 gap-6"
-                            }),
-                        className: "mt-8 max-w-md",
-                        onSubmit: handleSubmit
-                      })
-                ],
-                className: "px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose"
+  return JsxRuntime.jsxs("div", {
+              children: [
+                JsxRuntime.jsx("h1", {
+                      children: "내 정보"
+                    }),
+                JsxRuntime.jsx("form", {
+                      children: JsxRuntime.jsxs("div", {
+                            children: [
+                              JsxRuntime.jsxs("label", {
+                                    children: [
+                                      JsxRuntime.jsx("label", {
+                                            children: JsxRuntime.jsx("span", {
+                                                  children: "필명",
+                                                  className: "label-text"
+                                                }),
+                                            className: "label"
+                                          }),
+                                      JsxRuntime.jsx("input", {
+                                            className: "input input-bordered w-full",
+                                            type: "text",
+                                            value: displayName,
+                                            onChange: handleDisplayNameChange
+                                          })
+                                    ],
+                                    className: "block"
+                                  }),
+                              JsxRuntime.jsxs("label", {
+                                    children: [
+                                      JsxRuntime.jsx("label", {
+                                            children: JsxRuntime.jsx("span", {
+                                                  children: "이메일",
+                                                  className: "label-text"
+                                                }),
+                                            className: "label"
+                                          }),
+                                      JsxRuntime.jsx("input", {
+                                            className: "input input-bordered input-disabled w-full",
+                                            readOnly: true,
+                                            type: "email",
+                                            value: Core__Option.getOr(user.email, "")
+                                          })
+                                    ],
+                                    className: "block"
+                                  }),
+                              JsxRuntime.jsx("input", {
+                                    className: "btn btn-primary",
+                                    disabled: match$2[0],
+                                    type: "submit",
+                                    value: "저장"
+                                  })
+                            ],
+                            className: "grid grid-cols-1 gap-6"
+                          }),
+                      className: "mt-8 max-w-md",
+                      onSubmit: handleSubmit
+                    })
+              ],
+              className: "px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose"
+            });
+}
+
+var SignedInProfile = {
+  make: Profile$SignedInProfile
+};
+
+function Profile(props) {
+  var match = React.useContext(SignInContext.context);
+  var user = match.user;
+  if (match.signedIn && !(user == null)) {
+    return JsxRuntime.jsx(Profile$SignedInProfile, {
+                user: user
               });
   } else {
+    RescriptReactRouter.replace("/login");
     return null;
   }
 }
@@ -171,6 +180,8 @@ function Profile(props) {
 var make = Profile;
 
 export {
+  DisplayNameMutation ,
+  SignedInProfile ,
   make ,
 }
-/* react Not a pure module */
+/* commitMutation Not a pure module */

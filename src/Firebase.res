@@ -19,13 +19,6 @@ module FirebaseApp = {
 @module("reactfire")
 external useFirebaseApp: unit => FirebaseApp.t = "useFirebaseApp"
 
-// @module("firebase/app")
-// external initializeApp: firebaseConfig => firebaseApp = "initializeApp"
-
-// type analytics
-// @module("firebase/analytics")
-// external getAnalytics: firebaseApp => analytics = "getAnalytics"
-
 type firestore
 @module("firebase/firestore")
 external getFirestore: FirebaseApp.t => firestore = "getFirestore"
@@ -55,6 +48,11 @@ type documentReference
 @module("firebase/firestore")
 external doc: (firestore, ~path: string) => documentReference = "doc"
 
+type documentSnapshot<'a> = {exists: unit => bool, data: unit => 'a}
+@module("firebase/firestore")
+external onSnapshot: (documentReference, documentSnapshot<'a> => promise<unit>) => 'unsubscribe =
+  "onSnapshot"
+
 type collectionReference
 @module("firebase/firestore")
 external collection: (firestore, ~path: string) => collectionReference = "collection"
@@ -65,14 +63,13 @@ type queryConstraint
 external query: (collectionReference, array<queryConstraint>) => query = "query"
 
 @module("firebase/firestore")
-external orderBy: (string, ~direction: [#asc | #desc]) => queryConstraint = "orderBy"
-
-type documentSnapshot<'a> = {exists: (. unit) => bool, data: (. unit) => 'a}
-@module("firebase/firestore")
 external getDoc: documentReference => promise<documentSnapshot<'a>> = "getDoc"
 
 @module("firebase/firestore")
 external setDoc: (documentReference, 'a) => promise<unit> = "setDoc"
+
+@module("firebase/firestore")
+external setDoc2: (documentReference, 'a, 'b) => promise<unit> = "setDoc"
 
 @module("firebase/firestore")
 external updateDoc: (documentReference, 'a) => promise<unit> = "updateDoc"
@@ -80,28 +77,12 @@ external updateDoc: (documentReference, 'a) => promise<unit> = "updateDoc"
 @module("firebase/firestore")
 external addDoc: (collectionReference, 'a) => promise<documentReference> = "addDoc"
 
-type aggregateSpecData = {count: int}
-type aggregateQuerySnapshot = {data: (. unit) => aggregateSpecData}
-@module("firebase/firestore")
-external getCountFromServer: collectionReference => promise<aggregateQuerySnapshot> =
-  "getCountFromServer"
-
 @deriving(abstract)
 type reactFireOptions<'a> = {
   @optional idField: string,
   @optional initialData: 'a,
   @optional suspense: bool,
 }
-
-@module("reactfire")
-external useFirestoreDocData: documentReference => observableStatus<_> = "useFirestoreDocData"
-
-@module("reactfire")
-external useFirestoreCollectionData: (
-  query,
-  ~options: reactFireOptions<_>=?,
-  unit,
-) => observableStatus<_> = "useFirestoreCollectionData"
 
 module User = {
   @deriving(accessors)
@@ -122,11 +103,44 @@ module User = {
 }
 
 module Auth = {
-  type t = {app: FirebaseApp.t}
+  module AuthUser = {
+    // TODO: Merge with User.t
+    type t = {
+      uid: string,
+      emailVerified: bool,
+      isAnonymous: bool,
+      //metadata: {
+      //  creationTime: string,
+      //  lastSignInTime: string,
+      //},
+      providerData: array<User.info>,
+      refreshToken: string,
+      tenatId: option<string>,
+    }
+
+    type idTokenResult = {
+      authTime: string,
+      claims: Dict.t<string>,
+      expirationTime: string,
+      issuedAtTime: string,
+      signInProvider: option<string>,
+      signInSecondFactor: option<string>,
+      token: string,
+    }
+
+    @send
+    external getIdToken: (t, ~forceRefresh: bool) => promise<string> = "getIdToken"
+
+    @send
+    external getIdTokenResult: (t, ~forceRefresh: bool) => promise<idTokenResult> =
+      "getIdTokenResult"
+  }
+  type t = {app: FirebaseApp.t, currentUser: Nullable.t<AuthUser.t>}
   type update = {displayName?: string, photoURL?: string}
 
-  @send
-  external onAuthStateChanged: (t, 'user) => 'unsubscribe = "onAuthStateChanged"
+  @module("firebase/auth")
+  external onAuthStateChanged: (t, Nullable.t<AuthUser.t> => promise<unit>) => 'unsubscribe =
+    "onAuthStateChanged"
 
   @module("firebase/auth")
   external signOut: t => promise<unit> = "signOut"
@@ -143,10 +157,29 @@ module Auth = {
   module GoogleAuthProvider = {
     let providerID = "google.com"
   }
-}
 
-@module("firebase/auth")
-external getAuth: FirebaseApp.t => Auth.t = "getAuth"
+  @module("firebase/auth")
+  external getAuth: FirebaseApp.t => t = "getAuth"
+
+  @string
+  type operationType = [#link | #reauthenticate | #signIn]
+
+  type userCredential = {
+    operationType: operationType,
+    providerId: option<string>,
+    user: User.t,
+  }
+
+  module FederatedAuthProvider = {
+    type t
+    @new @module("firebase/auth")
+    external googleAuthProvider: unit => t = "GoogleAuthProvider"
+  }
+
+  @module("firebase/auth")
+  external signInWithPopup: (t, FederatedAuthProvider.t) => promise<userCredential> =
+    "signInWithPopup"
+}
 
 module AuthProvider = {
   @react.component @module("reactfire")
@@ -157,7 +190,7 @@ module AuthProvider = {
 external useAuth: unit => Auth.t = "useAuth"
 
 // TODO: The domain modeling seems a bit off--what does it mean when signedIn is false and there is a user?
-type signInCheckResult = {signedIn: bool, user: Js.Nullable.t<User.t>}
+type signInCheckResult = {signedIn: bool, user: Nullable.t<User.t>}
 @module("reactfire")
 external useSigninCheck: unit => observableStatus<signInCheckResult> = "useSigninCheck"
 
@@ -178,36 +211,3 @@ module AppCheckProvider = {
   @react.component @module("reactfire")
   external make: (~sdk: appCheck, ~children: React.element) => React.element = "AppCheckProvider"
 }
-
-module Timestamp = {
-  type t
-  @new @module("firebase/firestore")
-  external make: unit => t = "Timestamp"
-  @send
-  external toDate: t => Js.Date.t = "toDate"
-  @module("firebase/firestore") @scope("Timestamp")
-  external fromDate: Js.Date.t => t = "fromDate"
-}
-
-module StyledFirebaseAuth = {
-  @react.component @module("react-firebaseui")
-  external make: (~uiConfig: 'uiConfig, ~firebaseAuth: 'a) => React.element = "StyledFirebaseAuth"
-}
-
-module FirebaseCompat = {
-  type firebase
-
-  @module("firebase/compat/app")
-  external firebase: firebase = "default"
-
-  @send
-  external initializeApp: (firebase, FirebaseOptions.t) => FirebaseApp.t = "initializeApp"
-}
-
-type functions
-@module("firebase/functions")
-external getFunctions: (FirebaseApp.t, @as("asia-northeast3") _) => functions = "getFunctions"
-
-type callResult<'a> = {data: 'a}
-@module("firebase/functions")
-external httpsCallable: (functions, string) => (. 'a) => promise<callResult<'b>> = "httpsCallable"

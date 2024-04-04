@@ -2,9 +2,9 @@ open Firebase
 
 @react.component
 let make = () => {
-  let auth = useFirebaseApp()->getAuth
+  let auth = useAuth()
 
-  React.useEffect(() => {
+  React.useEffectOnEveryRender(() => {
     let signOut = async () => {
       await auth->Auth.signOut
       RescriptReactRouter.replace("/")

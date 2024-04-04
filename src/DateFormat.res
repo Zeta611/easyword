@@ -1,5 +1,5 @@
 let timeAgo = date => {
-  let seconds = ((Js.Date.now() -. date->Js.Date.getTime) /. 1000.)->Float.toInt
+  let seconds = ((Date.now() -. date->Date.getTime) /. 1000.)->Float.toInt
   let minutes = seconds / 60
   let hours = minutes / 60
   let days = hours / 24
@@ -9,14 +9,14 @@ let timeAgo = date => {
   if seconds < 60 {
     "방금 전"
   } else if minutes < 60 {
-    j`$minutes분 전`
+    `${minutes->Int.toString}분 전`
   } else if hours < 24 {
-    j`$hours시간 전`
+    `${hours->Int.toString}시간 전`
   } else if days < 30 {
-    j`$days일 전`
+    `${days->Int.toString}일 전`
   } else if months < 12 {
-    j`$months달 전`
+    `${months->Int.toString}달 전`
   } else {
-    j`$years년 전`
+    `${years->Int.toString}년 전`
   }
 }

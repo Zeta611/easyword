@@ -1,23 +1,50 @@
+let unsafeGet = (json, key) => {
+  json->JSON.Decode.object->Option.getExn->Dict.getUnsafe(key)
+}
+
 @react.component
 let make = () => {
   let {signedIn, user} = React.useContext(SignInContext.context)
-  let photoURL = switch user->Js.Nullable.toOption {
+  let photoURL = switch user->Nullable.toOption {
   | None => None
   | Some({photoURL}) => photoURL
   }
 
   let (jargonsCount, setJargonsCount) = React.Uncurried.useState(() => None)
 
-  open Firebase
-  let firestore = useFirestore()
-  let jargonsCollection = firestore->collection(~path=`jargons`)
   React.useEffect0(() => {
-    let countJargons = async (. ()) => {
-      let snapshot = await getCountFromServer(jargonsCollection)
-      let count = snapshot.data(.).count
-      setJargonsCount(._ => Some(count))
-    }
-    let _ = countJargons(.)
+    open Fetch
+
+    (
+      async () => {
+        let resp = await fetch(
+          "https://easyword.hasura.app/api/rest/jargons-count",
+          {
+            method: #GET,
+            headers: Headers.fromObject({
+              "content-type": "application/json",
+            }),
+          },
+        )
+
+        let json = if resp->Response.ok {
+          await resp->Response.json
+        } else {
+          raise(Exc.GraphQLError("Failed to fetch jargons count"))
+        }
+
+        let count =
+          json
+          ->unsafeGet("jargon_aggregate")
+          ->unsafeGet("aggregate")
+          ->unsafeGet("count")
+          ->JSON.Decode.float
+          ->Option.getExn
+          ->Int.fromFloat
+
+        setJargonsCount(_ => Some(count))
+      }
+    )()->ignore
 
     None
   })
@@ -54,7 +81,7 @@ let make = () => {
       <button
         className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
-          <span> {"쉬운 전문용어"->React.string} </span>
+          <span> {"쉬운 전문용어 𝛼"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>
@@ -62,7 +89,7 @@ let make = () => {
         className="btn btn-ghost text-xl hidden lg:flex"
         onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
-          <span> {"쉬운 전문용어"->React.string} </span>
+          <span> {"쉬운 전문용어 𝛼"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>

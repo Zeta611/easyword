@@ -23,6 +23,8 @@ var UserCircleIcon = {};
 
 var ChatBubbleLeftIcon = {};
 
+var ChatBubbleLeftRightIcon = {};
+
 var ChartBarSquareIcon = {};
 
 var HomeIcon = {};
@@ -34,6 +36,7 @@ var WrenchIcon = {};
 var Outline = {
   UserCircleIcon: UserCircleIcon,
   ChatBubbleLeftIcon: ChatBubbleLeftIcon,
+  ChatBubbleLeftRightIcon: ChatBubbleLeftRightIcon,
   ChartBarSquareIcon: ChartBarSquareIcon,
   HomeIcon: HomeIcon,
   PencilSquareIcon: PencilSquareIcon,

@@ -1,26 +1,27 @@
-type t = {
+type card = {
   id: string,
-  english: string,
-  translations: Js.Dict.t<int>,
-  timestamp: option<Firebase.Timestamp.t>,
+  name: string,
+  updated_at: Date.t,
+  translations: array<(string, string)>,
+  commentsCount: int,
 }
 
 let joinTranslations = translations =>
   translations
-  ->Js.Dict.entries
-  ->Js.Array2.sortInPlaceWith(((k1, v1), (k2, v2)) => {
+  ->Dict.toArray
+  ->Array.toSorted(((k1, v1), (k2, v2)) => {
     if v2 - v1 != 0 {
-      v2 - v1
+      float(v2 - v1)
     } else if k1 > k2 {
-      1
+      1.0
     } else if k1 < k2 {
-      -1
+      -1.0
     } else {
-      0
+      0.0
     }
   })
   ->Array.map(((k, _)) => k)
-  ->Js.Array2.joinWith(",")
+  ->Array.join(",")
 
 type translation = {
   id: string,
@@ -32,6 +33,4 @@ type addTranslation = {id: string, korean: string, comment: string}
 
 type vote = {jargonID: string, translations: array<string>}
 
-type axis = English /* | Korean */ | Chrono
-type direction = [#asc | #desc]
-type order = (axis, direction)
+type axis = English | Chrono

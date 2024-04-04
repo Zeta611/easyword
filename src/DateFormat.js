@@ -11,15 +11,15 @@ function timeAgo(date) {
   if (seconds < 60) {
     return "방금 전";
   } else if (minutes < 60) {
-    return "" + minutes + "분 전";
+    return minutes.toString() + "분 전";
   } else if (hours < 24) {
-    return "" + hours + "시간 전";
+    return hours.toString() + "시간 전";
   } else if (days < 30) {
-    return "" + days + "일 전";
+    return days.toString() + "일 전";
   } else if (months < 12) {
-    return "" + months + "달 전";
+    return months.toString() + "달 전";
   } else {
-    return "" + years + "년 전";
+    return years.toString() + "년 전";
   }
 }
 

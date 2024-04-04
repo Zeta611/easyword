@@ -35,6 +35,11 @@ module Outline = {
     external make: (~className: string=?) => React.element = "ChatBubbleLeftIcon"
   }
 
+  module ChatBubbleLeftRightIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "ChatBubbleLeftRightIcon"
+  }
+
   module ChartBarSquareIcon = {
     @module("@heroicons/react/24/outline") @react.component
     external make: (~className: string=?) => React.element = "ChartBarSquareIcon"

@@ -1,0 +1,31 @@
+{
+  "name": "eko",
+  "version": "0.0.1",
+  "sources": {
+    "dir" : "src",
+    "subdirs" : true
+  },
+  "package-specs": {
+    "module": "es6-global",
+    "in-source": true
+  },
+  "suffix": ".js",
+  "jsx": { "version": 4, "mode": "automatic" },
+  "bs-dependencies": [
+    "@rescript/core",
+    "@rescript/react",
+    "rescript-relay",
+    "rescript-webapi",
+    "@glennsl/rescript-fetch"
+  ],
+  "warnings": {
+    "error" : "+101"
+  },
+  "bsc-flags": ["-open RescriptCore"],
+  "ppx-flags": [
+    [
+      "rescript-relay/ppx",
+      "-uncurried"
+    ]
+  ]
+}
