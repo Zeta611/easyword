@@ -3,7 +3,7 @@ module JargonCardFragment = %relay(`
     id
     name
     updated_at
-    translations(order_by: {name: asc}, limit: 20) {
+    translations(order_by: { name: asc }, limit: 20) {
       id
       name
     }

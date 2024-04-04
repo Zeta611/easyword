@@ -1,6 +1,18 @@
 module CommentMutation = %relay(`
-  mutation CommentRowMutation($authorID: String!, $content: String!, $jargonID: uuid!, $parentID: uuid!) {
-    insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID, parent_id: $parentID}) {
+  mutation CommentRowMutation(
+    $authorID: String!
+    $content: String!
+    $jargonID: uuid!
+    $parentID: uuid!
+  ) {
+    insert_comment_one(
+      object: {
+        author_id: $authorID
+        content: $content
+        jargon_id: $jargonID
+        parent_id: $parentID
+      }
+    ) {
       id
     }
   }

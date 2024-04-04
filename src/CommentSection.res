@@ -1,7 +1,8 @@
 module CommentFragment = %relay(`
   fragment CommentSection_jargon on jargon {
     __id
-    comments_connection(first: 100) @connection(key: "CommentSection_jargon_comments_connection") {
+    comments_connection(first: 100)
+      @connection(key: "CommentSection_jargon_comments_connection") {
       edges {
         node {
           id
@@ -15,10 +16,6 @@ module CommentFragment = %relay(`
             display_name
           }
         }
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
       }
     }
   }

@@ -1,13 +1,15 @@
 module JargonListChronoOrderQuery = %relay(`
   fragment JargonListChronoOrderQuery on query_root
-    @refetchable(queryName: "JargonListChronoOrderRefetchQuery")
-    @argumentDefinitions(
-      count: {type: "Int", defaultValue: 40},
-      cursor: {type: "String"}
-    ) {
-    jargon_connection(order_by: [{updated_at: $direction}, {name: asc}], first: $count, after: $cursor)
-      @connection(key: "JargonListChronoOrderQuery_jargon_connection")
-    {
+  @refetchable(queryName: "JargonListChronoOrderRefetchQuery")
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 40 }
+    cursor: { type: "String" }
+  ) {
+    jargon_connection(
+      order_by: [{ updated_at: $direction }, { name: asc }]
+      first: $count
+      after: $cursor
+    ) @connection(key: "JargonListChronoOrderQuery_jargon_connection") {
       edges {
         node {
           id
@@ -19,7 +21,10 @@ module JargonListChronoOrderQuery = %relay(`
 `)
 // module JargonListABCOrderQuery = %relay(`
 //   fragment JargonListABCOrderQuery on query_root {
-//     jargon_connection(order_by: [{name: $abcDirection}, {updated_at: desc}], first: 40) {
+//     jargon_connection(
+//       order_by: [{ name: $abcDirection }, { updated_at: desc }]
+//       first: 40
+//     ) {
 //       edges {
 //         node {
 //           id

@@ -1,6 +1,9 @@
 module DisplayNameMutation = %relay(`
   mutation ProfileDisplayNameMutation($uid: String!, $displayName: String!) {
-    update_user_by_pk(pk_columns: {id: $uid}, _set: {display_name: $displayName}) {
+    update_user_by_pk(
+      pk_columns: { id: $uid }
+      _set: { display_name: $displayName }
+    ) {
       id
     }
   }

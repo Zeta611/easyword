@@ -1,6 +1,36 @@
 module NewJargonMutation = %relay(`
-  mutation NewJargonMutation($id: uuid!, $authorID: String!, $name: String!, $translationID: uuid!, $translation: String! $commentID: uuid!, $comment: String!) {
-    insert_jargon_one(object: {id: $id, author_id: $authorID, name: $name, comments: {data: {id: $commentID, author_id: $authorID, translation_id: $translationID, content: $comment}}, translations: {data: {id: $translationID, comment_id: $commentID, author_id: $authorID, name: $translation}}}) {
+  mutation NewJargonMutation(
+    $id: uuid!
+    $authorID: String!
+    $name: String!
+    $translationID: uuid!
+    $translation: String!
+    $commentID: uuid!
+    $comment: String!
+  ) {
+    insert_jargon_one(
+      object: {
+        id: $id
+        author_id: $authorID
+        name: $name
+        comments: {
+          data: {
+            id: $commentID
+            author_id: $authorID
+            translation_id: $translationID
+            content: $comment
+          }
+        }
+        translations: {
+          data: {
+            id: $translationID
+            comment_id: $commentID
+            author_id: $authorID
+            name: $translation
+          }
+        }
+      }
+    ) {
       id
     }
   }

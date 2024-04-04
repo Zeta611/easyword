@@ -9,8 +9,31 @@ module JargonQuery = %relay(`
 `)
 
 module NewTranslationMutation = %relay(`
-  mutation NewTranslationMutation($id: uuid!, $jargonID: uuid!, $authorID: String!, $name: String!, $commentID: uuid!, $comment: String!) {
-    insert_translation_one(object: {id: $id, jargon_id: $jargonID, author_id: $authorID, name: $name, comment_id: $commentID, comment: {data: {id: $commentID, jargon_id: $jargonID, author_id: $authorID, content: $comment}}}) {
+  mutation NewTranslationMutation(
+    $id: uuid!
+    $jargonID: uuid!
+    $authorID: String!
+    $name: String!
+    $commentID: uuid!
+    $comment: String!
+  ) {
+    insert_translation_one(
+      object: {
+        id: $id
+        jargon_id: $jargonID
+        author_id: $authorID
+        name: $name
+        comment_id: $commentID
+        comment: {
+          data: {
+            id: $commentID
+            jargon_id: $jargonID
+            author_id: $authorID
+            content: $comment
+          }
+        }
+      }
+    ) {
       id
     }
   }
