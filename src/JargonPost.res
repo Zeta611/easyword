@@ -3,6 +3,11 @@ module JargonPostQuery = %relay(`
     node(id: $id) {
       ... on jargon {
         name
+        comments_aggregate {
+          aggregate {
+            count
+          }
+        }
         ...Translation_jargon
         ...CommentSection_jargon
       }
@@ -34,9 +39,17 @@ let make = (~jargonID) => {
             onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
             {"새 번역 제안하기"->React.string}
           </button>
+          <div className="divider -mb-2" />
+          <div className="flex gap-1 text-teal-600">
+            <Heroicons.Outline.ChatBubbleLeftRightIcon className="w-6 h-6" />
+            {jargon.comments_aggregate.aggregate
+            ->Option.map(x => x.count)
+            ->Option.getOr(0)
+            ->Int.toString
+            ->React.string}
+          </div>
           // New comment
           <CommentInput jargonID />
-          <div className="divider -my-2" />
           // Comments
           <CommentSection jargonID commentRefs={jargon.fragmentRefs} />
         </main>

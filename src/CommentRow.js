@@ -3,6 +3,7 @@
 import * as React from "react";
 import * as Base64 from "./Base64.js";
 import * as $$Comment from "./Comment.js";
+import * as Core__Date from "../node_modules/@rescript/core/src/Core__Date.js";
 import * as Core__List from "../node_modules/@rescript/core/src/Core__List.js";
 import * as DateFormat from "./DateFormat.js";
 import * as Caml_module from "../node_modules/rescript/lib/es6/caml_module.js";
@@ -84,7 +85,6 @@ function CommentRow$CommentNode(props) {
         });
   };
   var match$5 = use();
-  var isMutating = match$5[1];
   var mutate = match$5[0];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
@@ -122,20 +122,26 @@ function CommentRow$CommentNode(props) {
                               children: [
                                 JsxRuntime.jsx("span", {
                                       children: photoURL !== undefined ? JsxRuntime.jsx("img", {
-                                              className: "mask mask-squircle h-4 w-4",
+                                              className: "mask mask-squircle h-7 w-7",
                                               src: photoURL
                                             }) : JsxRuntime.jsx(Outline.UserCircleIcon, {
-                                              className: "h-4 w-4"
-                                            })
+                                              className: "h-7 w-7"
+                                            }),
+                                      className: "pr-1"
                                     }),
                                 JsxRuntime.jsx("span", {
                                       children: comment.userDisplayName,
-                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium",
+                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold",
                                       id: comment.id
                                     }),
-                                translation !== undefined ? JsxRuntime.jsx("span", {
-                                        children: translation,
-                                        className: "text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium"
+                                translation !== undefined ? JsxRuntime.jsxs(JsxRuntime.Fragment, {
+                                        children: [
+                                          "·",
+                                          JsxRuntime.jsx("span", {
+                                                children: translation,
+                                                className: "text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium"
+                                              })
+                                        ]
                                       }) : null,
                                 "·",
                                 JsxRuntime.jsx("span", {
@@ -143,13 +149,13 @@ function CommentRow$CommentNode(props) {
                                       title: comment.timestamp.toDateString()
                                     })
                               ],
-                              className: "flex items-center gap-x-1 text-xs"
+                              className: "flex items-center pb-1 gap-x-1 text-xs"
                             }),
-                        JsxRuntime.jsx(BetterReactMathjax.MathJax, {
-                              children: JsxRuntime.jsx("div", {
-                                    children: comment.content,
-                                    className: "text-base-content"
-                                  })
+                        JsxRuntime.jsx("div", {
+                              children: JsxRuntime.jsx(BetterReactMathjax.MathJax, {
+                                    children: comment.content
+                                  }),
+                              className: "pl-3 text-base-content"
                             }),
                         JsxRuntime.jsxs("button", {
                               children: [
@@ -158,7 +164,7 @@ function CommentRow$CommentNode(props) {
                                     }),
                                 "답글"
                               ],
-                              className: "btn btn-ghost btn-xs gap-1",
+                              className: "btn btn-ghost btn-sm text-xs gap-1",
                               onClick: (function (param) {
                                   setShowReply(function (show) {
                                         return !show;
@@ -172,7 +178,7 @@ function CommentRow$CommentNode(props) {
                         children: JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("textarea", {
-                                      className: "textarea textarea-bordered textarea-sm rounded-lg place-self-stretch",
+                                      className: "textarea textarea-ghost textarea-sm focus:outline-0 focus:border-transparent place-self-stretch",
                                       id: "comment" + comment.id,
                                       name: "comment" + comment.id,
                                       placeholder: "여러분의 생각은 어떠신가요?",
@@ -180,16 +186,15 @@ function CommentRow$CommentNode(props) {
                                       onChange: handleInputChange
                                     }),
                                 JsxRuntime.jsx("input", {
-                                      className: "btn btn-primary btn-outline btn-xs " + (
-                                        isMutating ? "loading" : ""
-                                      ),
-                                      disabled: isMutating,
+                                      className: "btn btn-neutral btn-sm ml-1 mb-1 disabled:loading",
+                                      disabled: match$5[1],
                                       type: "submit",
                                       value: "답글"
                                     })
                               ],
-                              className: "p-2 gap-1 grid grid-cols-1 place-items-start"
+                              className: "rounded-lg border-2 border-zinc-300 focus-within:border-zinc-400 bg-white gap-1 grid grid-cols-1 place-items-start"
                             }),
+                        className: "pb-1",
                         onSubmit: handleSubmit
                       }) : null,
                 match$2[0] ? JsxRuntime.jsxs("div", {
@@ -244,7 +249,9 @@ Caml_module.update_mod({
 
 function CommentRow$CommentSiblings(props) {
   var jargonID = props.jargonID;
-  return Core__List.toArray(props.siblings).map(function (commentNode) {
+  return Core__List.toArray(props.siblings).toSorted(function (a, b) {
+                return Core__Date.compare(b.comment.timestamp, a.comment.timestamp);
+              }).map(function (commentNode) {
               return JsxRuntime.jsx("div", {
                           children: JsxRuntime.jsx(CommentNode.make, {
                                 jargonID: jargonID,

@@ -25,12 +25,23 @@ var TranslationFragment = {
 };
 
 function Translation$TranslationRow(props) {
+  var commentID = props.commentID;
+  var goToComment = function (_event) {
+    var element = document.getElementById(commentID);
+    if (!(element == null)) {
+      element.scrollIntoView({
+            block: "start",
+            behavior: "smooth"
+          });
+      return ;
+    }
+    
+  };
   return JsxRuntime.jsx("tr", {
               children: JsxRuntime.jsx("td", {
-                    children: JsxRuntime.jsx("a", {
-                          children: props.name,
-                          href: "#" + props.commentID
-                        })
+                    children: props.name,
+                    className: "font-normal text-[15px] hover:underline hover:cursor-pointer",
+                    onClick: goToComment
                   })
             });
 }

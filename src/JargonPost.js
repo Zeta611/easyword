@@ -3,11 +3,13 @@
 import * as Exc from "./Exc.js";
 import * as Translation from "./Translation.js";
 import * as CommentInput from "./CommentInput.js";
+import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as CommentSection from "./CommentSection.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
 import * as JargonPostQuery_graphql from "./__generated__/JargonPostQuery_graphql.js";
+import * as Outline from "@heroicons/react/24/outline";
 
 var convertVariables = JargonPostQuery_graphql.Internal.convertVariables;
 
@@ -75,11 +77,22 @@ function JargonPost(props) {
                                   RescriptReactRouter.replace("/new-translation/" + jargonID);
                                 })
                             }),
+                        JsxRuntime.jsx("div", {
+                              className: "divider -mb-2"
+                            }),
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx(Outline.ChatBubbleLeftRightIcon, {
+                                      className: "w-6 h-6"
+                                    }),
+                                Core__Option.getOr(Core__Option.map(node.comments_aggregate.aggregate, (function (x) {
+                                              return x.count;
+                                            })), 0).toString()
+                              ],
+                              className: "flex gap-1 text-teal-600"
+                            }),
                         JsxRuntime.jsx(CommentInput.make, {
                               jargonID: jargonID
-                            }),
-                        JsxRuntime.jsx("div", {
-                              className: "divider -my-2"
                             }),
                         JsxRuntime.jsx(CommentSection.make, {
                               jargonID: jargonID,

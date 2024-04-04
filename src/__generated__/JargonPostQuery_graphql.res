@@ -4,10 +4,17 @@
 module Types = {
   @@warning("-30")
 
-  @tag("__typename") type response_node = 
+  type rec response_node_jargon_comments_aggregate_aggregate = {
+    count: int,
+  }
+  and response_node_jargon_comments_aggregate = {
+    aggregate: option<response_node_jargon_comments_aggregate_aggregate>,
+  }
+  @tag("__typename") and response_node = 
     | @live @as("jargon") Jargon(
       {
         @live __typename: [ | #jargon],
+        comments_aggregate: response_node_jargon_comments_aggregate,
         name: string,
         fragmentRefs: RescriptRelay.fragmentRefs<[ | #CommentSection_jargon | #Translation_jargon]>,
       }
@@ -137,12 +144,41 @@ v3 = {
 v4 = {
   "alias": null,
   "args": null,
+  "concreteType": "comment_aggregate",
+  "kind": "LinkedField",
+  "name": "comments_aggregate",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "comment_aggregate_fields",
+      "kind": "LinkedField",
+      "name": "aggregate",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "count",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = [
-  (v4/*: any*/)
+v6 = [
+  (v5/*: any*/)
 ];
 return {
   "fragment": {
@@ -164,6 +200,7 @@ return {
             "kind": "InlineFragment",
             "selections": [
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "args": null,
                 "kind": "FragmentSpread",
@@ -204,6 +241,7 @@ return {
             "kind": "InlineFragment",
             "selections": [
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -212,7 +250,7 @@ return {
                 "name": "translations",
                 "plural": true,
                 "selections": [
-                  (v4/*: any*/),
+                  (v5/*: any*/),
                   (v3/*: any*/),
                   {
                     "alias": null,
@@ -221,7 +259,7 @@ return {
                     "kind": "LinkedField",
                     "name": "comment",
                     "plural": false,
-                    "selections": (v5/*: any*/),
+                    "selections": (v6/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -251,7 +289,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -273,7 +311,7 @@ return {
                             "kind": "LinkedField",
                             "name": "parent",
                             "plural": false,
-                            "selections": (v5/*: any*/),
+                            "selections": (v6/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -298,7 +336,7 @@ return {
                                 "name": "display_name",
                                 "storageKey": null
                               },
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -310,7 +348,7 @@ return {
                             "name": "translation",
                             "plural": false,
                             "selections": [
-                              (v4/*: any*/),
+                              (v5/*: any*/),
                               (v3/*: any*/)
                             ],
                             "storageKey": null
@@ -340,19 +378,19 @@ return {
             "type": "jargon",
             "abstractKey": null
           },
-          (v4/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "3e558aa674b9f4bca687964769a14338",
+    "cacheID": "e17617cafb5875511a94aaaa0fd0a3f5",
     "id": null,
     "metadata": {},
     "name": "JargonPostQuery",
     "operationKind": "query",
-    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
+    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
   }
 };
 })() `)

@@ -15,6 +15,7 @@
     "@rescript/core",
     "@rescript/react",
     "rescript-relay",
+    "rescript-webapi",
     "@glennsl/rescript-fetch"
   ],
   "warnings": {

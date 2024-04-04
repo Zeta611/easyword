@@ -1971,6 +1971,7 @@ __metadata:
     relay-runtime: "npm:16.1.0"
     rescript: "npm:^11.0.1"
     rescript-relay: "npm:3.0.0-rc.4"
+    rescript-webapi: "npm:^0.9.1"
     tailwindcss: "npm:^3.1.8"
     uuid: "npm:^9.0.1"
     vite: "npm:^5.2.7"
@@ -3523,6 +3524,13 @@ __metadata:
     rescript-relay-cli: cli/cli.js
     rescript-relay-compiler: compiler.js
   checksum: 10/995a41898f4e30ee9ded7b8781263092bdbdc24307d016a1c265c8b276d39af5ff3e4cc37983771a979214c79caff104ec1dfbbdc8d1b97fccd739bbc0aea2a9
+  languageName: node
+  linkType: hard
+
+"rescript-webapi@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "rescript-webapi@npm:0.9.1"
+  checksum: 10/712ff0f2b53626029f35247769892568fc7515e2e39ef6341c916c7dd42457665f9998ae46067467b0d204187dd2d462546273660f657259c544f83165b685dc
   languageName: node
   linkType: hard
 

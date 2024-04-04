@@ -13,9 +13,23 @@ module TranslationFragment = %relay(`
 module TranslationRow = {
   @react.component
   let make = (~name, ~commentID) => {
+    let goToComment = _event => {
+      open! Webapi.Dom // suppress warning for document
+      switch document->Document.getElementById(commentID) {
+      | Some(element) =>
+        element->Element.scrollIntoViewWithOptions({
+          "block": "start",
+          "behavior": "smooth",
+        })
+      | None => ()
+      }
+    }
+
     <tr>
-      <td>
-        <a href={`#${commentID}`}> {name->React.string} </a>
+      <td
+        className="font-normal text-[15px] hover:underline hover:cursor-pointer"
+        onClick=goToComment>
+        {name->React.string}
       </td>
     </tr>
   }

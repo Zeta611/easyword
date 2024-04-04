@@ -76,25 +76,27 @@ module rec CommentNode: {
     <>
       <div className="flex flex-col gap-y-1 place-items-start text-zinc-500">
         // header
-        <div className="flex items-center gap-x-1 text-xs">
-          <span>
+        <div className="flex items-center pb-1 gap-x-1 text-xs">
+          <span className="pr-1">
             {switch comment.userPhotoURL {
-            | None => <Heroicons.Outline.UserCircleIcon className="h-4 w-4" />
-
-            | Some(photoURL) => <img className="mask mask-squircle h-4 w-4" src={photoURL} />
+            | None => <Heroicons.Outline.UserCircleIcon className="h-7 w-7" />
+            | Some(photoURL) => <img className="mask mask-squircle h-7 w-7" src={photoURL} />
             }}
           </span>
           <span
             id={comment.id}
-            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-medium">
+            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold">
             {comment.userDisplayName->React.string}
           </span>
           {switch comment.translation {
           | Some(translation) =>
-            <span
-              className="text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium">
-              {translation->React.string}
-            </span>
+            <>
+              {"·"->React.string}
+              <span
+                className="text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium">
+                {translation->React.string}
+              </span>
+            </>
           | None => React.null
           }}
           {"·"->React.string}
@@ -103,36 +105,34 @@ module rec CommentNode: {
           </span>
         </div>
         // comment
-        <MathJax>
-          <div className="text-base-content"> {comment.content->React.string} </div>
-        </MathJax>
+        <div className="pl-3 text-base-content">
+          <MathJax> {comment.content->React.string} </MathJax>
+        </div>
         // footer
-        <button className="btn btn-ghost btn-xs gap-1" onClick={_ => setShowReply(show => !show)}>
+        <button
+          className="btn btn-ghost btn-sm text-xs gap-1" onClick={_ => setShowReply(show => !show)}>
           <Heroicons.Outline.ChatBubbleLeftIcon className="h-5 w-5" />
           {"답글"->React.string}
         </button>
       </div>
       // reply
       {if showReply {
-        <form onSubmit=handleSubmit>
-          <div className="p-2 gap-1 grid grid-cols-1 place-items-start">
+        <form onSubmit=handleSubmit className="pb-1">
+          <div
+            className="rounded-lg border-2 border-zinc-300 focus-within:border-zinc-400 bg-white gap-1 grid grid-cols-1 place-items-start">
             <textarea
               name={"comment" ++ comment.id}
               id={"comment" ++ comment.id}
               value=content
               onChange=handleInputChange
               placeholder="여러분의 생각은 어떠신가요?"
-              className="textarea textarea-bordered textarea-sm rounded-lg place-self-stretch"
+              className="textarea textarea-ghost textarea-sm focus:outline-0 focus:border-transparent place-self-stretch"
             />
             <input
               type_="submit"
               value="답글"
               disabled={isMutating}
-              className={`btn btn-primary btn-outline btn-xs ${if isMutating {
-                  "loading"
-                } else {
-                  ""
-                }}`}
+              className="btn btn-neutral btn-sm ml-1 mb-1 disabled:loading"
             />
           </div>
         </form>
@@ -172,6 +172,7 @@ and CommentSiblings: {
   let make = (~jargonID: string, ~siblings: list<Comment.node>) => {
     siblings
     ->List.toArray
+    ->Array.toSorted((a, b) => Date.compare(b.comment.timestamp, a.comment.timestamp))
     ->Array.map(commentNode =>
       <div key={commentNode.comment.id} className="flex flex-col gap-y-2">
         <CommentNode jargonID commentNode />
