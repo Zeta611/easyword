@@ -54,7 +54,6 @@ function CommentInput(props) {
     if (user == null) {
       window.alert("You need to be signed in to comment!");
     } else if (jargonID$1 !== undefined) {
-      console.log("commenting " + user.uid + " on " + jargonID$1 + " with " + content);
       mutate({
             authorID: user.uid,
             content: content,
@@ -63,7 +62,7 @@ function CommentInput(props) {
           }, undefined, undefined, undefined, (function (_response, _errors) {
               ((window.location.reload()));
             }), (function (error) {
-              console.log(error);
+              console.error(error);
             }), undefined);
     } else {
       window.alert("현재 댓글을 달 수 없어요");

@@ -38,24 +38,22 @@ let make = (~jargonID) => {
     } else {
       let jargonID = jargonID->Base64.retrieveOriginalID
       switch (user->Nullable.toOption, jargonID) {
-      | (Some(user), Some(jargonID)) => {
-          Console.log(`commenting ${user.uid} on ${jargonID} with ${content}`)
-          mutate(
-            ~variables={
-              authorID: user.uid,
-              content,
-              jargonID,
-              now: Date.make()->Date.toISOString,
-            },
-            ~onError=error => {
-              Console.log(error)
-            },
-            ~onCompleted=(_response, _errors) => {
-              // TODO: Make relay understand the update
-              %raw(`window.location.reload()`)
-            },
-          )->ignore
-        }
+      | (Some(user), Some(jargonID)) =>
+        mutate(
+          ~variables={
+            authorID: user.uid,
+            content,
+            jargonID,
+            now: Date.make()->Date.toISOString,
+          },
+          ~onError=error => {
+            Console.error(error)
+          },
+          ~onCompleted=(_response, _errors) => {
+            // TODO: Make relay understand the update
+            %raw(`window.location.reload()`)
+          },
+        )->ignore
       | (Some(_), _) => Window.alert("현재 댓글을 달 수 없어요")
       | (None, _) => Window.alert("You need to be signed in to comment!")
       }

@@ -6,7 +6,7 @@ let make = (~children: React.element) => {
   let firestore = useFirestore()
   let auth = useAuth()
   let (token, setToken) = React.Uncurried.useState(() => None)
-  Console.log(`token: ${token->Option.getOr("None")}`)
+  // Console.log(`token: ${token->Option.getOr("None")}`)
 
   React.useEffectOnEveryRender(() => {
     let userDocUnsub = ref(None)

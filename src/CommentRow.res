@@ -53,25 +53,21 @@ module rec CommentNode: {
         let jargonID = jargonID->Base64.retrieveOriginalID
         let commentID = comment.id->Base64.retrieveOriginalID
         switch (user->Nullable.toOption, jargonID, commentID) {
-        | (Some(user), Some(jargonID), Some(commentID)) => {
-            Console.log(
-              `commenting ${user.uid} on ${jargonID} with ${content} in reply to ${commentID}`,
-            )
-            mutate(
-              ~variables={
-                authorID: user.uid,
-                content,
-                jargonID,
-                parentID: commentID,
-                now: Date.make()->Date.toISOString,
-              },
-              ~onError=error => Console.error(error),
-              ~onCompleted=(_response, _errors) => {
-                // TODO: Make relay understand the update
-                %raw(`window.location.reload()`)
-              },
-            )->ignore
-          }
+        | (Some(user), Some(jargonID), Some(commentID)) =>
+          mutate(
+            ~variables={
+              authorID: user.uid,
+              content,
+              jargonID,
+              parentID: commentID,
+              now: Date.make()->Date.toISOString,
+            },
+            ~onError=error => Console.error(error),
+            ~onCompleted=(_response, _errors) => {
+              // TODO: Make relay understand the update
+              %raw(`window.location.reload()`)
+            },
+          )->ignore
         | (Some(_), _, _) => Window.alert("현재 댓글을 달 수 없어요")
         | (None, _, _) => Window.alert("You need to be signed in to comment!")
         }

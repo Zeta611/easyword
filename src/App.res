@@ -20,7 +20,7 @@ let make = () => {
     try {
       await firestore->enableMultiTabIndexedDbPersistence
     } catch {
-    | Exn.Error(err) => Console.log(err)
+    | Exn.Error(err) => Console.error(err)
     }
     firestore
   })

@@ -42,7 +42,7 @@ function App(props) {
         catch (raw_err){
           var err = Caml_js_exceptions.internalToOCamlException(raw_err);
           if (err.RE_EXN_ID === Js_exn.$$Error) {
-            console.log(err._1);
+            console.error(err._1);
           } else {
             throw err;
           }
