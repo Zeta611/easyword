@@ -8,7 +8,7 @@ let make = (~children: React.element) => {
   let (token, setToken) = React.Uncurried.useState(() => None)
   Console.log(`token: ${token->Option.getOr("None")}`)
 
-  React.useEffect(() => {
+  React.useEffectOnEveryRender(() => {
     let userDocUnsub = ref(None)
 
     let authStateChangeUnsub = auth->Auth.onAuthStateChanged(async user => {
