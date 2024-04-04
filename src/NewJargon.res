@@ -42,7 +42,7 @@ let make = () => {
 
   React.useEffect0(() => {
     if signedIn {
-      switch user->Js.Nullable.toOption {
+      switch user->Nullable.toOption {
       | Some(_) => ()
       | None => RescriptReactRouter.replace("/logout") // Something went wrong
       }
@@ -83,7 +83,7 @@ let make = () => {
     } else if !withoutKorean && korean->String.length < 1 {
       Window.alert("번역을 입력해주세요")
     } else if signedIn {
-      switch user->Js.Nullable.toOption {
+      switch user->Nullable.toOption {
       | Some(user) => {
           let comment = switch comment {
           | "" =>

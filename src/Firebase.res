@@ -120,7 +120,7 @@ module Auth = {
 
     type idTokenResult = {
       authTime: string,
-      claims: Js.Dict.t<string>,
+      claims: Dict.t<string>,
       expirationTime: string,
       issuedAtTime: string,
       signInProvider: option<string>,
@@ -135,11 +135,11 @@ module Auth = {
     external getIdTokenResult: (t, ~forceRefresh: bool) => promise<idTokenResult> =
       "getIdTokenResult"
   }
-  type t = {app: FirebaseApp.t, currentUser: Js.Nullable.t<AuthUser.t>}
+  type t = {app: FirebaseApp.t, currentUser: Nullable.t<AuthUser.t>}
   type update = {displayName?: string, photoURL?: string}
 
   @module("firebase/auth")
-  external onAuthStateChanged: (t, Js.Nullable.t<AuthUser.t> => promise<unit>) => 'unsubscribe =
+  external onAuthStateChanged: (t, Nullable.t<AuthUser.t> => promise<unit>) => 'unsubscribe =
     "onAuthStateChanged"
 
   @module("firebase/auth")
@@ -190,7 +190,7 @@ module AuthProvider = {
 external useAuth: unit => Auth.t = "useAuth"
 
 // TODO: The domain modeling seems a bit off--what does it mean when signedIn is false and there is a user?
-type signInCheckResult = {signedIn: bool, user: Js.Nullable.t<User.t>}
+type signInCheckResult = {signedIn: bool, user: Nullable.t<User.t>}
 @module("reactfire")
 external useSigninCheck: unit => observableStatus<signInCheckResult> = "useSigninCheck"
 

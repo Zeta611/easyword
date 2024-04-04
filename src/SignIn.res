@@ -21,7 +21,7 @@ let make = () => {
     | None => ()
     | Some({signedIn, user}) =>
       if signedIn {
-        switch user->Js.Nullable.toOption {
+        switch user->Nullable.toOption {
         | Some({uid, displayName, email, photoURL}) =>
           // Set uid. This is safe due to the security rule:
           // allow write: if request.auth.uid == uid;

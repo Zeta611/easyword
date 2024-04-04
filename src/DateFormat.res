@@ -1,5 +1,5 @@
 let timeAgo = date => {
-  let seconds = ((Js.Date.now() -. date->Js.Date.getTime) /. 1000.)->Float.toInt
+  let seconds = ((Date.now() -. date->Date.getTime) /. 1000.)->Float.toInt
   let minutes = seconds / 60
   let hours = minutes / 60
   let days = hours / 24

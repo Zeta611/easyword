@@ -25,7 +25,7 @@ let make = (~jargonCardRef) => {
     // first row
     <div className="flex-none">
       {<div className="text-xs dark:text-zinc-500">
-        {`최근 활동 ${updated_at->Js.Date.fromString->DateFormat.timeAgo}`->React.string}
+        {`최근 활동 ${updated_at->Date.fromString->DateFormat.timeAgo}`->React.string}
       </div>}
     </div>
     // second row
@@ -46,7 +46,7 @@ let make = (~jargonCardRef) => {
     <div className="flex-none text-xs dark:text-zinc-400">
       {`댓글 ${comments_aggregate.aggregate
         ->Option.map(x => x.count)
-        ->Option.getWithDefault(0)
+        ->Option.getOr(0)
         ->Int.toString}개`->React.string}
     </div>
   </div>

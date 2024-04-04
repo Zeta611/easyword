@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import * as Loader from "./Loader.js";
-import * as Js_dict from "../node_modules/rescript/lib/es6/js_dict.js";
 import * as Reactfire from "reactfire";
-import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
+import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as TokenContext from "./TokenContext.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Auth from "firebase/auth";
@@ -20,7 +19,7 @@ function SignInWrapper(props) {
       });
   var setToken = match$1[1];
   var token = match$1[0];
-  console.log("token: " + Belt_Option.getWithDefault(token, "None"));
+  console.log("token: " + Core__Option.getOr(token, "None"));
   React.useEffect(function () {
         var userDocUnsub = {
           contents: undefined
@@ -33,7 +32,7 @@ function SignInWrapper(props) {
                 }
                 var token = await user.getIdToken(false);
                 var match = await user.getIdTokenResult(false);
-                var hasuraClaim = Js_dict.get(match.claims, "https://hasura.io/jwt/claims");
+                var hasuraClaim = match.claims["https://hasura.io/jwt/claims"];
                 if (hasuraClaim !== undefined) {
                   return setToken(function (param) {
                               return token;
@@ -41,7 +40,7 @@ function SignInWrapper(props) {
                 }
                 var userDocRef = Firestore.doc(firestore, "users/" + user.uid);
                 userDocUnsub.contents = Firestore.onSnapshot(userDocRef, (async function (userDoc) {
-                        var match = Js_dict.get(userDoc.data(), "refreshTime");
+                        var match = userDoc.data()["refreshTime"];
                         if (match === undefined) {
                           return ;
                         }
@@ -62,7 +61,7 @@ function SignInWrapper(props) {
       });
   if (match.status === "success") {
     return JsxRuntime.jsx(SignInContext.Provider.make, {
-                value: Belt_Option.getExn(match.data),
+                value: Core__Option.getExn(match.data),
                 children: JsxRuntime.jsx(TokenContext.Provider.make, {
                       value: token,
                       children: props.children

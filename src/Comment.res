@@ -3,7 +3,7 @@ type t = {
   content: string,
   userDisplayName: string,
   userPhotoURL: option<string>,
-  timestamp: Js.Date.t,
+  timestamp: Date.t,
   parent: option<string>,
 }
 
@@ -21,22 +21,22 @@ type write = {
 
 let constructForest = comments => {
   let roots: ref<list<node>> = ref(list{})
-  let commentNodeTable = HashMap.String.make(~hintSize=10)
+  let commentNodeTable = Map.make()
 
   // Store comments in the lookupComment hash map & add roots as well
   comments->Array.forEach(comment => {
     let node = {comment, parent: None, children: list{}}
-    commentNodeTable->HashMap.String.set(comment.id, node)
+    commentNodeTable->Map.set(comment.id, node)
     if comment.parent->Option.isNone {
       roots.contents = roots.contents->List.add(node)
     }
   })
 
   // Iterate through the array and link the nodes
-  commentNodeTable->HashMap.String.forEach((_, {comment} as node) => {
+  commentNodeTable->Map.forEach(({comment} as node) => {
     switch comment.parent {
     | Some(parent) => {
-        let parentNode = commentNodeTable->HashMap.String.get(parent)->Option.getExn
+        let parentNode = commentNodeTable->Map.get(parent)->Option.getExn
         parentNode.children = parentNode.children->List.add(node)
         node.parent = Some(parentNode)
       }

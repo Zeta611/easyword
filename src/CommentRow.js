@@ -3,8 +3,7 @@
 import * as React from "react";
 import * as Base64 from "./Base64.js";
 import * as $$Comment from "./Comment.js";
-import * as Belt_List from "../node_modules/rescript/lib/es6/belt_List.js";
-import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
+import * as Core__List from "../node_modules/@rescript/core/src/Core__List.js";
 import * as DateFormat from "./DateFormat.js";
 import * as Caml_module from "../node_modules/rescript/lib/es6/caml_module.js";
 import * as SignInContext from "./SignInContext.js";
@@ -210,7 +209,7 @@ function CommentRow$CommentNode(props) {
                                 className: "flex-none mr-3 w-3 border-r-[2px] border-zinc-300 group-hover:border-zinc-600"
                               }),
                           JsxRuntime.jsx("div", {
-                                children: "댓글 " + String($$Comment.countDescendents(children)) + "개 열기",
+                                children: "댓글 " + $$Comment.countDescendents(children).toString() + "개 열기",
                                 className: "flex-initial w-full text-zinc-500 group-hover:text-zinc-600"
                               })
                         ],
@@ -237,15 +236,15 @@ Caml_module.update_mod({
 
 function CommentRow$CommentSiblings(props) {
   var jargonID = props.jargonID;
-  return Belt_Array.map(Belt_List.toArray(props.siblings), (function (commentNode) {
-                return JsxRuntime.jsx("div", {
-                            children: JsxRuntime.jsx(CommentNode.make, {
-                                  jargonID: jargonID,
-                                  commentNode: commentNode
-                                }),
-                            className: "flex flex-col gap-y-2"
-                          }, commentNode.comment.id);
-              }));
+  return Core__List.toArray(props.siblings).map(function (commentNode) {
+              return JsxRuntime.jsx("div", {
+                          children: JsxRuntime.jsx(CommentNode.make, {
+                                jargonID: jargonID,
+                                commentNode: commentNode
+                              }),
+                          className: "flex flex-col gap-y-2"
+                        }, commentNode.comment.id);
+            });
 }
 
 Caml_module.update_mod({

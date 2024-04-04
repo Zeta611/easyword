@@ -31,7 +31,7 @@ let make = (~jargonID, ~commentRefs) => {
       content: x.content,
       userDisplayName: x.author.display_name,
       userPhotoURL: x.author.photo_url,
-      timestamp: x.created_at->Js.Date.fromString,
+      timestamp: x.created_at->Date.fromString,
       parent: x.parent->Option.map(x => x.id),
     }),
   )

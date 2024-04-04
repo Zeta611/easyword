@@ -2,8 +2,8 @@
 
 import * as Exc from "./Exc.js";
 import * as React from "react";
-import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as TokenContext from "./TokenContext.js";
 import * as RescriptRelay from "../node_modules/rescript-relay/src/RescriptRelay.js";
 import * as RelayRuntime from "relay-runtime";
@@ -14,10 +14,10 @@ function RelayWrapper(props) {
   var fetchQuery = async function (operation, variables, _cacheConfig, _uploadables) {
     var resp = await fetch("https://easyword.hasura.app/v1beta1/relay", {
           method: "POST",
-          body: Caml_option.some(Belt_Option.getExn(JSON.stringify({
+          body: Caml_option.some(Core__Option.getExn(JSON.stringify({
                         query: operation.text,
                         variables: variables
-                      }))),
+                      }, undefined, undefined))),
           headers: Caml_option.some(token !== undefined ? new Headers({
                       "content-type": "application/json",
                       authorization: "Bearer " + token

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as Reactfire from "reactfire";
-import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
+import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Auth from "firebase/auth";
 import * as JsxRuntime from "react/jsx-runtime";
@@ -38,7 +38,7 @@ function Profile$SignedInProfile(props) {
   var match = use();
   var mutate = match[0];
   var match$1 = React.useState(function () {
-        return Belt_Option.getWithDefault(user.displayName, "");
+        return Core__Option.getOr(user.displayName, "");
       });
   var setDisplayName = match$1[1];
   var displayName = match$1[0];
@@ -138,7 +138,7 @@ function Profile$SignedInProfile(props) {
                                             className: "input input-bordered input-disabled w-full",
                                             readOnly: true,
                                             type: "email",
-                                            value: Belt_Option.getWithDefault(user.email, "")
+                                            value: Core__Option.getOr(user.email, "")
                                           })
                                     ],
                                     className: "block"

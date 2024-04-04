@@ -23,6 +23,7 @@
     "@glennsl/rescript-fetch": "^0.2.0",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
+    "@rescript/core": "^1.2.0",
     "concurrently": "^5.0.0",
     "daisyui": "^4.8.0",
     "firebase": "^9.16.0",

@@ -14,7 +14,7 @@ let make = (~children: React.element) => {
       {
         method: #POST,
         body: {"query": operation.text, "variables": variables}
-        ->Js.Json.stringifyAny
+        ->JSON.stringifyAny
         ->Option.getExn
         ->Body.string,
         headers: switch token {

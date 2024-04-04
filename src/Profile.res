@@ -18,7 +18,7 @@ module SignedInProfile = {
     let (mutate, _isMutating) = DisplayNameMutation.use()
 
     let (displayName, setDisplayName) = React.Uncurried.useState(() =>
-      user.displayName->Option.getWithDefault("")
+      user.displayName->Option.getOr("")
     )
     let handleDisplayNameChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
@@ -56,7 +56,7 @@ module SignedInProfile = {
 
               mutate(~variables={uid: user.uid, displayName})->ignore
 
-              (await Js.Promise2.all([authUpdate, docUpdate]))->ignore
+              (await Promise.all([authUpdate, docUpdate]))->ignore
             } catch {
             | e => Js.Console.warn(e)
             }
@@ -87,7 +87,7 @@ module SignedInProfile = {
             </label>
             <input
               type_="email"
-              value={user.email->Option.getWithDefault("")}
+              value={user.email->Option.getOr("")}
               readOnly={true}
               className="input input-bordered input-disabled w-full"
             />
@@ -102,7 +102,7 @@ module SignedInProfile = {
 @react.component
 let make = () => {
   let {signedIn, user} = React.useContext(SignInContext.context)
-  switch (signedIn, user->Js.Nullable.toOption) {
+  switch (signedIn, user->Nullable.toOption) {
   | (false, _) | (_, None) => {
       RescriptReactRouter.replace("/login")
       React.null

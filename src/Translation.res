@@ -25,14 +25,14 @@ module TranslationRow = {
 let make = (~translationRefs) => {
   let {translations} = TranslationFragment.use(translationRefs)
 
-  if translations->Array.size > 0 {
+  if translations->Array.length > 0 {
     <div className="overflow-x-auto">
       <table className="table w-full">
         <tbody>
           {translations
           ->Array.map(({id, name, comment}) =>
             <TranslationRow
-              key={id} name commentID={comment->Option.map(x => x.id)->Option.getWithDefault("")}
+              key={id} name commentID={comment->Option.map(x => x.id)->Option.getOr("")}
             />
           )
           ->React.array}

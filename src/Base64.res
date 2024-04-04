@@ -3,15 +3,15 @@
 
 let retrieveOriginalID = id => {
   try {
-    switch id->decode->Js.Json.parseExn->Js.Json.decodeArray {
+    switch id->decode->JSON.parseExn->JSON.Decode.array {
     | Some(decoded) =>
       decoded
       ->Array.get(3)
-      ->Option.flatMap(x => x->Js.Json.decodeString)
+      ->Option.flatMap(x => x->JSON.Decode.string)
     | None => None
     }
   } catch {
-  | Js.Exn.Error(_) => {
+  | Exn.Error(_) => {
       Js.Console.error(`Error decoding ID: ${id}`)
       None
     }

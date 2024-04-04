@@ -1216,6 +1216,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rescript/core@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@rescript/core@npm:1.2.0"
+  peerDependencies:
+    rescript: ">=11.0.0 || ^11.1.0-rc.2"
+  checksum: e41bd666c73b35e8e4b3c657836461e7c20ca13d67ff71ea395862d451cd3b1ff331c0671f3da0f14cf1682422e29049aae3122cf505110badabb9e9787a70d9
+  languageName: node
+  linkType: hard
+
 "@rescript/react@npm:^0.11.0":
   version: 0.11.0
   resolution: "@rescript/react@npm:0.11.0"
@@ -2003,6 +2012,7 @@ __metadata:
     "@glennsl/rescript-fetch": ^0.2.0
     "@headlessui/react": ^1.7.7
     "@heroicons/react": ^2.0.13
+    "@rescript/core": ^1.2.0
     "@rescript/react": ^0.11.0
     "@tailwindcss/forms": ^0.5.3
     "@tailwindcss/typography": ^0.5.9

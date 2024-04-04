@@ -6,40 +6,40 @@ let make = (~children: React.element) => {
   let firestore = useFirestore()
   let auth = useAuth()
   let (token, setToken) = React.Uncurried.useState(() => None)
-  Js.log(`token: ${token->Option.getWithDefault("None")}`)
+  Console.log(`token: ${token->Option.getOr("None")}`)
 
   React.useEffect(() => {
     let userDocUnsub = ref(None)
 
     let authStateChangeUnsub = auth->Auth.onAuthStateChanged(async user => {
-      switch user->Js.Nullable.toOption {
+      switch user->Nullable.toOption {
       | Some(user) => {
           let token = await user->Auth.AuthUser.getIdToken(~forceRefresh=false)
-          // Js.log(`Initial token: ${token}`)
+          // Console.log(`Initial token: ${token}`)
 
           let {claims} = await user->Auth.AuthUser.getIdTokenResult(~forceRefresh=false)
-          let hasuraClaim = claims->Js.Dict.get("https://hasura.io/jwt/claims")
-          // Js.log(`hasuraClaim: ${hasuraClaim->Option.getWithDefault("None")}`)
+          let hasuraClaim = claims->Dict.get("https://hasura.io/jwt/claims")
+          // Console.log(`hasuraClaim: ${hasuraClaim->Option.getOr("None")}`)
           switch hasuraClaim {
           | Some(_hasuraClaim) =>
-            // Js.log(
-            //   `Claim found! ${_hasuraClaim->Js.Json.stringifyAny->Option.getWithDefault("None")}`,
+            // Console.log(
+            //   `Claim found! ${_hasuraClaim->JSON.Encode.stringifyAny->Option.getOr("None")}`,
             // )
             setToken(_ => Some(token))
 
           | None => {
               let userDocRef = firestore->doc(~path=`users/${user.uid}`)
-              // Js.log(`uid: ${user.uid}`)
+              // Console.log(`uid: ${user.uid}`)
               userDocUnsub :=
                 userDocRef->onSnapshot(
                   async userDoc => {
-                    switch userDoc.data()->Js.Dict.get("refreshTime") {
+                    switch userDoc.data()->Dict.get("refreshTime") {
                     | Some(_) => {
                         let token = await user->Auth.AuthUser.getIdToken(~forceRefresh=true)
-                        // Js.log(`New token: ${token}`)
+                        // Console.log(`New token: ${token}`)
                         setToken(_ => Some(token))
                       }
-                    | None => () // Js.log("refreshTime not yet found")
+                    | None => () // Console.log("refreshTime not yet found")
                     }
                   },
                 )

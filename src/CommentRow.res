@@ -48,9 +48,9 @@ module rec CommentNode: {
       } else {
         let jargonID = jargonID->Base64.retrieveOriginalID
         let commentID = comment.id->Base64.retrieveOriginalID
-        switch (user->Js.Nullable.toOption, jargonID, commentID) {
+        switch (user->Nullable.toOption, jargonID, commentID) {
         | (Some(user), Some(jargonID), Some(commentID)) => {
-            Js.log(`commenting ${user.uid} on ${jargonID} with ${content} in reply to ${commentID}`)
+            Console.log(`commenting ${user.uid} on ${jargonID} with ${content} in reply to ${commentID}`)
             mutate(
               ~variables={
                 authorID: user.uid,
@@ -88,7 +88,7 @@ module rec CommentNode: {
             {comment.userDisplayName->React.string}
           </span>
           {"·"->React.string}
-          <span title={comment.timestamp->Js.Date.toDateString}>
+          <span title={comment.timestamp->Date.toDateString}>
             {comment.timestamp->DateFormat.timeAgo->React.string}
           </span>
         </div>

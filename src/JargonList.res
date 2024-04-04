@@ -37,7 +37,7 @@ module JargonListChronoOrderQuery = %relay(`
 
 let handleScroll = (event, onLoadMore) => {
   let currentTarget = event->ReactEvent.Synthetic.currentTarget
-  Js.log3(currentTarget["scrollTop"], currentTarget["clientHeight"], currentTarget["scrollHeight"])
+  Console.log3(currentTarget["scrollTop"], currentTarget["clientHeight"], currentTarget["scrollHeight"])
   if currentTarget["scrollTop"] + currentTarget["clientHeight"] >= currentTarget["scrollHeight"] {
     onLoadMore()
   }

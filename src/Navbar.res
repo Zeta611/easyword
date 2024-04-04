@@ -1,11 +1,11 @@
 let unsafeGet = (json, key) => {
-  json->Js.Json.decodeObject->Option.getExn->Js.Dict.unsafeGet(key)
+  json->JSON.Decode.object->Option.getExn->Dict.getUnsafe(key)
 }
 
 @react.component
 let make = () => {
   let {signedIn, user} = React.useContext(SignInContext.context)
-  let photoURL = switch user->Js.Nullable.toOption {
+  let photoURL = switch user->Nullable.toOption {
   | None => None
   | Some({photoURL}) => photoURL
   }
@@ -38,7 +38,7 @@ let make = () => {
           ->unsafeGet("jargon_aggregate")
           ->unsafeGet("aggregate")
           ->unsafeGet("count")
-          ->Js.Json.decodeNumber
+          ->JSON.Decode.float
           ->Option.getExn
           ->Int.fromFloat
 

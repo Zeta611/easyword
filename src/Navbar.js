@@ -2,9 +2,9 @@
 
 import * as Exc from "./Exc.js";
 import * as React from "react";
-import * as Js_json from "../node_modules/rescript/lib/es6/js_json.js";
-import * as Belt_Option from "../node_modules/rescript/lib/es6/belt_Option.js";
+import * as Core__JSON from "../node_modules/@rescript/core/src/Core__JSON.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
@@ -12,7 +12,7 @@ import * as Solid from "@heroicons/react/24/solid";
 import * as Outline from "@heroicons/react/24/outline";
 
 function unsafeGet(json, key) {
-  return Belt_Option.getExn(Js_json.decodeObject(json))[key];
+  return Core__Option.getExn(Core__JSON.Decode.object(json))[key];
 }
 
 function Navbar(props) {
@@ -42,7 +42,7 @@ function Navbar(props) {
                           Error: new Error()
                         };
                   }
-                  var count = Belt_Option.getExn(Js_json.decodeNumber(unsafeGet(unsafeGet(unsafeGet(json, "jargon_aggregate"), "aggregate"), "count"))) | 0;
+                  var count = Core__Option.getExn(Core__JSON.Decode.$$float(unsafeGet(unsafeGet(unsafeGet(json, "jargon_aggregate"), "aggregate"), "count"))) | 0;
                   return setJargonsCount(function (param) {
                               return count;
                             });
@@ -212,7 +212,7 @@ function Navbar(props) {
                                         className: "h-5 w-5"
                                       }),
                                   JsxRuntime.jsx("div", {
-                                        children: "총 " + String(jargonsCount) + "개",
+                                        children: "총 " + jargonsCount.toString() + "개",
                                         className: "ml-0"
                                       })
                                 ],
