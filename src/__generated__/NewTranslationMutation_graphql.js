@@ -5,7 +5,7 @@ import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRe
 
 var Types = {};
 
-var variablesConverter = {"__root":{"jargonID":{"b":""},"id":{"b":""},"commentID":{"b":""}}};
+var variablesConverter = {"__root":{"now":{"b":""},"jargonID":{"b":""},"id":{"b":""},"commentID":{"b":""}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -71,27 +71,41 @@ v5 = {
   "name": "name"
 },
 v6 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "now"
+},
+v7 = {
   "kind": "Variable",
   "name": "author_id",
   "variableName": "authorID"
 },
-v7 = {
+v8 = {
   "kind": "Variable",
   "name": "jargon_id",
   "variableName": "jargonID"
 },
-v8 = [
+v9 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "id",
+    "storageKey": null
+  }
+],
+v10 = [
   {
     "alias": null,
     "args": [
       {
         "fields": [
-          (v6/*: any*/),
+          (v7/*: any*/),
           {
             "fields": [
               {
                 "fields": [
-                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "content",
@@ -102,7 +116,7 @@ v8 = [
                     "name": "id",
                     "variableName": "commentID"
                   },
-                  (v7/*: any*/)
+                  (v8/*: any*/)
                 ],
                 "kind": "ObjectValue",
                 "name": "data"
@@ -121,7 +135,7 @@ v8 = [
             "name": "id",
             "variableName": "id"
           },
-          (v7/*: any*/),
+          (v8/*: any*/),
           {
             "kind": "Variable",
             "name": "name",
@@ -136,15 +150,40 @@ v8 = [
     "kind": "LinkedField",
     "name": "insert_translation_one",
     "plural": false,
-    "selections": [
+    "selections": (v9/*: any*/),
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": [
       {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "updated_at",
+            "variableName": "now"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "_set"
+      },
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "id",
+            "variableName": "jargonID"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "pk_columns"
       }
     ],
+    "concreteType": "jargon",
+    "kind": "LinkedField",
+    "name": "update_jargon_by_pk",
+    "plural": false,
+    "selections": (v9/*: any*/),
     "storageKey": null
   }
 ];
@@ -156,12 +195,13 @@ return {
       (v2/*: any*/),
       (v3/*: any*/),
       (v4/*: any*/),
-      (v5/*: any*/)
+      (v5/*: any*/),
+      (v6/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
     "name": "NewTranslationMutation",
-    "selections": (v8/*: any*/),
+    "selections": (v10/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -173,19 +213,20 @@ return {
       (v0/*: any*/),
       (v5/*: any*/),
       (v2/*: any*/),
-      (v1/*: any*/)
+      (v1/*: any*/),
+      (v6/*: any*/)
     ],
     "kind": "Operation",
     "name": "NewTranslationMutation",
-    "selections": (v8/*: any*/)
+    "selections": (v10/*: any*/)
   },
   "params": {
-    "cacheID": "e049aef1333f794217834529753a5c57",
+    "cacheID": "a69d498ff41976c5cfac7c6c69da1cf7",
     "id": null,
     "metadata": {},
     "name": "NewTranslationMutation",
     "operationKind": "mutation",
-    "text": "mutation NewTranslationMutation(\n  $id: uuid!\n  $jargonID: uuid!\n  $authorID: String!\n  $name: String!\n  $commentID: uuid!\n  $comment: String!\n) {\n  insert_translation_one(object: {id: $id, jargon_id: $jargonID, author_id: $authorID, name: $name, comment_id: $commentID, comment: {data: {id: $commentID, jargon_id: $jargonID, author_id: $authorID, content: $comment}}}) {\n    id\n  }\n}\n"
+    "text": "mutation NewTranslationMutation(\n  $id: uuid!\n  $jargonID: uuid!\n  $authorID: String!\n  $name: String!\n  $commentID: uuid!\n  $comment: String!\n  $now: timestamptz!\n) {\n  insert_translation_one(object: {id: $id, jargon_id: $jargonID, author_id: $authorID, name: $name, comment_id: $commentID, comment: {data: {id: $commentID, jargon_id: $jargonID, author_id: $authorID, content: $comment}}}) {\n    id\n  }\n  update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {\n    id\n  }\n}\n"
   }
 };
 })());

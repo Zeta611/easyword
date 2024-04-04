@@ -5,7 +5,7 @@ import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRe
 
 var Types = {};
 
-var variablesConverter = {"__root":{"jargonID":{"b":""}}};
+var variablesConverter = {"__root":{"now":{"b":""},"jargonID":{"b":""}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -55,9 +55,23 @@ var v0 = [
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "jargonID"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "now"
   }
 ],
 v1 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "id",
+    "storageKey": null
+  }
+],
+v2 = [
   {
     "alias": null,
     "args": [
@@ -87,15 +101,40 @@ v1 = [
     "kind": "LinkedField",
     "name": "insert_comment_one",
     "plural": false,
-    "selections": [
+    "selections": (v1/*: any*/),
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": [
       {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "updated_at",
+            "variableName": "now"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "_set"
+      },
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "id",
+            "variableName": "jargonID"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "pk_columns"
       }
     ],
+    "concreteType": "jargon",
+    "kind": "LinkedField",
+    "name": "update_jargon_by_pk",
+    "plural": false,
+    "selections": (v1/*: any*/),
     "storageKey": null
   }
 ];
@@ -105,7 +144,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "CommentInputMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -114,15 +153,15 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "CommentInputMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "4a3b42420449ee80b4f9dcb7bf25bacf",
+    "cacheID": "080acbaf1c5ee27be818a444615fdbca",
     "id": null,
     "metadata": {},
     "name": "CommentInputMutation",
     "operationKind": "mutation",
-    "text": "mutation CommentInputMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: uuid!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {\n    id\n  }\n}\n"
+    "text": "mutation CommentInputMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: uuid!\n  $now: timestamptz!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID}) {\n    id\n  }\n  update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {\n    id\n  }\n}\n"
   }
 };
 })());

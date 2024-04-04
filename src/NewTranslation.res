@@ -16,6 +16,7 @@ module NewTranslationMutation = %relay(`
     $name: String!
     $commentID: uuid!
     $comment: String!
+    $now: timestamptz!
   ) {
     insert_translation_one(
       object: {
@@ -34,6 +35,9 @@ module NewTranslationMutation = %relay(`
         }
       }
     ) {
+      id
+    }
+    update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {
       id
     }
   }
@@ -96,6 +100,7 @@ let make = (~jargonID: string) => {
                 name: korean,
                 commentID,
                 comment,
+                now: Date.make()->Date.toISOString,
               },
               ~onError=error => Js.Console.error(error),
               ~onCompleted=({insert_translation_one}, _errors) => {

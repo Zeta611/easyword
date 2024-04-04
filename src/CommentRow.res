@@ -4,6 +4,7 @@ module CommentMutation = %relay(`
     $content: String!
     $jargonID: uuid!
     $parentID: uuid!
+    $now: timestamptz!
   ) {
     insert_comment_one(
       object: {
@@ -13,6 +14,9 @@ module CommentMutation = %relay(`
         parent_id: $parentID
       }
     ) {
+      id
+    }
+    update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {
       id
     }
   }
@@ -59,8 +63,9 @@ module rec CommentNode: {
                 content,
                 jargonID,
                 parentID: commentID,
+                now: Date.make()->Date.toISOString,
               },
-              ~onError=error => Js.Console.error(error),
+              ~onError=error => Console.error(error),
               ~onCompleted=(_response, _errors) => {
                 // TODO: Make relay understand the update
                 %raw(`window.location.reload()`)

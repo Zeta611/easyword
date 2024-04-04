@@ -58,7 +58,8 @@ function CommentInput(props) {
       mutate({
             authorID: user.uid,
             content: content,
-            jargonID: jargonID$1
+            jargonID: jargonID$1,
+            now: new Date().toISOString()
           }, undefined, undefined, undefined, (function (_response, _errors) {
               ((window.location.reload()));
             }), (function (error) {

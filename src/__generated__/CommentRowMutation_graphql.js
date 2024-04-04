@@ -5,7 +5,7 @@ import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRe
 
 var Types = {};
 
-var variablesConverter = {"__root":{"parentID":{"b":""},"jargonID":{"b":""}}};
+var variablesConverter = {"__root":{"parentID":{"b":""},"now":{"b":""},"jargonID":{"b":""}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -40,29 +40,41 @@ var Internal = {
 var Utils = {};
 
 var node = ((function(){
-var v0 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "authorID"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "content"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "jargonID"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "now"
+},
+v4 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "parentID"
+},
+v5 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "authorID"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "content"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "jargonID"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "parentID"
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "id",
+    "storageKey": null
   }
 ],
-v1 = [
+v6 = [
   {
     "alias": null,
     "args": [
@@ -97,42 +109,79 @@ v1 = [
     "kind": "LinkedField",
     "name": "insert_comment_one",
     "plural": false,
-    "selections": [
+    "selections": (v5/*: any*/),
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": [
       {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "id",
-        "storageKey": null
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "updated_at",
+            "variableName": "now"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "_set"
+      },
+      {
+        "fields": [
+          {
+            "kind": "Variable",
+            "name": "id",
+            "variableName": "jargonID"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "pk_columns"
       }
     ],
+    "concreteType": "jargon",
+    "kind": "LinkedField",
+    "name": "update_jargon_by_pk",
+    "plural": false,
+    "selections": (v5/*: any*/),
     "storageKey": null
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v3/*: any*/),
+      (v4/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "CommentRowMutation",
-    "selections": (v1/*: any*/),
+    "selections": (v6/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/),
+      (v2/*: any*/),
+      (v4/*: any*/),
+      (v3/*: any*/)
+    ],
     "kind": "Operation",
     "name": "CommentRowMutation",
-    "selections": (v1/*: any*/)
+    "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "9d28acb12daec125c8d386002d723a83",
+    "cacheID": "80aa57994b6dbbafbc93308d75b9f2ee",
     "id": null,
     "metadata": {},
     "name": "CommentRowMutation",
     "operationKind": "mutation",
-    "text": "mutation CommentRowMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: uuid!\n  $parentID: uuid!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID, parent_id: $parentID}) {\n    id\n  }\n}\n"
+    "text": "mutation CommentRowMutation(\n  $authorID: String!\n  $content: String!\n  $jargonID: uuid!\n  $parentID: uuid!\n  $now: timestamptz!\n) {\n  insert_comment_one(object: {author_id: $authorID, content: $content, jargon_id: $jargonID, parent_id: $parentID}) {\n    id\n  }\n  update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {\n    id\n  }\n}\n"
   }
 };
 })());

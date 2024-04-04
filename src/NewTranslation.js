@@ -132,7 +132,8 @@ function NewTranslation(props) {
           commentID: commentID,
           id: translationID,
           jargonID: jargonID$1,
-          name: korean
+          name: korean,
+          now: new Date().toISOString()
         }, undefined, undefined, undefined, (function (param, _errors) {
             if (param.insert_translation_one !== undefined) {
               return RescriptReactRouter.replace("/jargon/" + jargonID);

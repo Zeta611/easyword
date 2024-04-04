@@ -36,7 +36,7 @@ var CommentMutation = {
 
 var CommentNode = Caml_module.init_mod([
       "CommentRow.res",
-      24,
+      28,
       4
     ], {
       TAG: "Module",
@@ -48,7 +48,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      170,
+      175,
       4
     ], {
       TAG: "Module",
@@ -102,6 +102,7 @@ function CommentRow$CommentNode(props) {
             authorID: user.uid,
             content: content,
             jargonID: jargonID$1,
+            now: new Date().toISOString(),
             parentID: commentID
           }, undefined, undefined, undefined, (function (_response, _errors) {
               ((window.location.reload()));

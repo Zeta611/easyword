@@ -3,10 +3,14 @@ module CommentMutation = %relay(`
     $authorID: String!
     $content: String!
     $jargonID: uuid!
+    $now: timestamptz!
   ) {
     insert_comment_one(
       object: { author_id: $authorID, content: $content, jargon_id: $jargonID }
     ) {
+      id
+    }
+    update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {
       id
     }
   }
@@ -41,6 +45,7 @@ let make = (~jargonID) => {
               authorID: user.uid,
               content,
               jargonID,
+              now: Date.make()->Date.toISOString,
             },
             ~onError=error => {
               Console.log(error)
