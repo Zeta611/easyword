@@ -20,10 +20,19 @@ let make = () => {
     try {
       await firestore->enableMultiTabIndexedDbPersistence
     } catch {
-    | Js.Exn.Error(err) => Js.log(err)
+    | Exn.Error(err) => Console.log(err)
     }
     firestore
   })
+
+  let mathJaxConfig = {
+    "loader": {"load": ["[tex]/bussproofs"]},
+    "tex": {
+      "packages": {"[+]": ["bussproofs"]},
+      "inlineMath": [["$", "$"], ["\\(", "\\)"]],
+      "displayMath": [["$$", "$$"], ["\\[", "\\]"]],
+    },
+  }
 
   let url = RescriptReactRouter.useUrl()
 
@@ -37,53 +46,55 @@ let make = () => {
     switch firestore {
     | None => React.null
     | Some(firestore) =>
-      <AppCheckProvider sdk=appCheck>
-        <AuthProvider sdk=auth>
-          <FirestoreProvider sdk=firestore>
-            <SignInWrapper>
-              <RelayWrapper>
-                {switch url.path {
-                | list{"login"} => <SignIn />
-                | list{"logout"} => <SignOut />
+      <MathJaxContext config=mathJaxConfig>
+        <AppCheckProvider sdk=appCheck>
+          <AuthProvider sdk=auth>
+            <FirestoreProvider sdk=firestore>
+              <SignInWrapper>
+                <RelayWrapper>
+                  {switch url.path {
+                  | list{"login"} => <SignIn />
+                  | list{"logout"} => <SignOut />
 
-                | path =>
-                  <React.Suspense
-                    fallback={<div className="h-screen grid justify-center content-center">
-                      <Loader />
-                    </div>}>
-                    <NavbarContainer>
-                      {switch path {
-                      | list{} =>
-                        <React.Suspense
-                          fallback={<div className="h-screen grid justify-center content-center">
-                            <Loader />
-                          </div>}>
-                          <Home />
-                        </React.Suspense>
-                      | list{"profile"} => <Profile />
-                      | list{"new-jargon"} => <NewJargon />
-                      | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                      | list{"jargon", jargonID} =>
-                        <ErrorBoundary
-                          fallbackRender={_e => {
-                            <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
-                          }}>
-                          <JargonPost jargonID />
-                        </ErrorBoundary>
+                  | path =>
+                    <React.Suspense
+                      fallback={<div className="h-screen grid justify-center content-center">
+                        <Loader />
+                      </div>}>
+                      <NavbarContainer>
+                        {switch path {
+                        | list{} =>
+                          <React.Suspense
+                            fallback={<div className="h-screen grid justify-center content-center">
+                              <Loader />
+                            </div>}>
+                            <Home />
+                          </React.Suspense>
+                        | list{"profile"} => <Profile />
+                        | list{"new-jargon"} => <NewJargon />
+                        | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                        | list{"jargon", jargonID} =>
+                          <ErrorBoundary
+                            fallbackRender={_e => {
+                              <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
+                            }}>
+                            <JargonPost jargonID />
+                          </ErrorBoundary>
 
-                      | list{"why"} => <Why />
-                      | list{"colophon"} => <Colophon />
+                        | list{"why"} => <Why />
+                        | list{"colophon"} => <Colophon />
 
-                      | _ => React.string("404")
-                      }}
-                    </NavbarContainer>
-                  </React.Suspense>
-                }}
-              </RelayWrapper>
-            </SignInWrapper>
-          </FirestoreProvider>
-        </AuthProvider>
-      </AppCheckProvider>
+                        | _ => React.string("404")
+                        }}
+                      </NavbarContainer>
+                    </React.Suspense>
+                  }}
+                </RelayWrapper>
+              </SignInWrapper>
+            </FirestoreProvider>
+          </AuthProvider>
+        </AppCheckProvider>
+      </MathJaxContext>
     }
   }
 }

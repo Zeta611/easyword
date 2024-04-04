@@ -8,6 +8,7 @@ import * as DateFormat from "./DateFormat.js";
 import * as Caml_module from "../node_modules/rescript/lib/es6/caml_module.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
+import * as BetterReactMathjax from "better-react-mathjax";
 import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
 import * as CommentRowMutation_graphql from "./__generated__/CommentRowMutation_graphql.js";
 import * as Outline from "@heroicons/react/24/outline";
@@ -46,7 +47,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      168,
+      170,
       4
     ], {
       TAG: "Module",
@@ -144,9 +145,11 @@ function CommentRow$CommentNode(props) {
                               ],
                               className: "flex items-center gap-x-1 text-xs"
                             }),
-                        JsxRuntime.jsx("div", {
-                              children: comment.content,
-                              className: "text-base-content"
+                        JsxRuntime.jsx(BetterReactMathjax.MathJax, {
+                              children: JsxRuntime.jsx("div", {
+                                    children: comment.content,
+                                    className: "text-base-content"
+                                  })
                             }),
                         JsxRuntime.jsxs("button", {
                               children: [

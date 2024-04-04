@@ -103,7 +103,9 @@ module rec CommentNode: {
           </span>
         </div>
         // comment
-        <div className="text-base-content"> {comment.content->React.string} </div>
+        <MathJax>
+          <div className="text-base-content"> {comment.content->React.string} </div>
+        </MathJax>
         // footer
         <button className="btn btn-ghost btn-xs gap-1" onClick={_ => setShowReply(show => !show)}>
           <Heroicons.Outline.ChatBubbleLeftIcon className="h-5 w-5" />

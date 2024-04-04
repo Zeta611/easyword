@@ -24,6 +24,7 @@ import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_ex
 import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as BetterReactMathjax from "better-react-mathjax";
 import * as ReactErrorBoundary from "react-error-boundary";
 
 function App(props) {
@@ -49,6 +50,36 @@ function App(props) {
         return firestore;
       });
   var firestore = match.data;
+  var mathJaxConfig = {
+    loader: {
+      load: ["[tex]/bussproofs"]
+    },
+    tex: {
+      packages: {
+        "[+]": ["bussproofs"]
+      },
+      inlineMath: [
+        [
+          "$",
+          "$"
+        ],
+        [
+          "\\(",
+          "\\)"
+        ]
+      ],
+      displayMath: [
+        [
+          "$$",
+          "$$"
+        ],
+        [
+          "\\[",
+          "\\]"
+        ]
+      ]
+    }
+  };
   var url = RescriptReactRouter.useUrl(undefined, undefined);
   if (match.status !== "success") {
     return JsxRuntime.jsx("div", {
@@ -142,15 +173,18 @@ function App(props) {
                   }))
         });
   }
-  return JsxRuntime.jsx(Reactfire.AppCheckProvider, {
-              sdk: appCheck,
-              children: JsxRuntime.jsx(Reactfire.AuthProvider, {
-                    sdk: auth,
-                    children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
-                          sdk: Caml_option.valFromOption(firestore),
-                          children: JsxRuntime.jsx(SignInWrapper.make, {
-                                children: JsxRuntime.jsx(RelayWrapper.make, {
-                                      children: tmp
+  return JsxRuntime.jsx(BetterReactMathjax.MathJaxContext, {
+              config: mathJaxConfig,
+              children: JsxRuntime.jsx(Reactfire.AppCheckProvider, {
+                    sdk: appCheck,
+                    children: JsxRuntime.jsx(Reactfire.AuthProvider, {
+                          sdk: auth,
+                          children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
+                                sdk: Caml_option.valFromOption(firestore),
+                                children: JsxRuntime.jsx(SignInWrapper.make, {
+                                      children: JsxRuntime.jsx(RelayWrapper.make, {
+                                            children: tmp
+                                          })
                                     })
                               })
                         })
