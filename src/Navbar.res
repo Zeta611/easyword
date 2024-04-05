@@ -95,7 +95,7 @@ let make = () => {
       <button
         className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
-          <span> {"쉬운 전문용어 𝛼"->React.string} </span>
+          <span> {"쉬운 전문용어"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>
@@ -103,7 +103,7 @@ let make = () => {
         className="btn btn-ghost text-xl hidden lg:flex"
         onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
-          <span> {"쉬운 전문용어 𝛼"->React.string} </span>
+          <span> {"쉬운 전문용어"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>
