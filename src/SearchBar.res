@@ -5,7 +5,7 @@ let make = (~searchTerm, ~onChange) => {
       type_="search"
       value=searchTerm
       onChange
-      className="input input-bordered w-full rounded-lg text-sm shadow-lg"
+      className="input input-bordered w-full rounded-lg text-sm shadow-lg mt-1"
       placeholder="정규식으로 검색해보세요"
     />
   </div>
