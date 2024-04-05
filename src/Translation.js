@@ -30,7 +30,7 @@ function Translation$TranslationRow(props) {
     var element = document.getElementById(commentID);
     if (!(element == null)) {
       element.scrollIntoView({
-            block: "start",
+            block: "center",
             behavior: "smooth"
           });
       return ;

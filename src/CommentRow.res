@@ -93,8 +93,7 @@ module rec CommentNode: {
           | Some(translation) =>
             <>
               {"·"->React.string}
-              <span
-                className="text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium">
+              <span className="text-teal-600 dark:target:text-teal-300 text-base-content">
                 {translation->React.string}
               </span>
             </>

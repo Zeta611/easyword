@@ -18,7 +18,7 @@ module TranslationRow = {
       switch document->Document.getElementById(commentID) {
       | Some(element) =>
         element->Element.scrollIntoViewWithOptions({
-          "block": "start",
+          "block": "center",
           "behavior": "smooth",
         })
       | None => ()

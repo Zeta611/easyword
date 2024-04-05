@@ -48,7 +48,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      171,
+      170,
       4
     ], {
       TAG: "Module",
@@ -139,7 +139,7 @@ function CommentRow$CommentNode(props) {
                                           "·",
                                           JsxRuntime.jsx("span", {
                                                 children: translation,
-                                                className: "text-teal-600 dark:target:text-teal-300 underline hover:decoration-2 text-base-content font-medium"
+                                                className: "text-teal-600 dark:target:text-teal-300 text-base-content"
                                               })
                                         ]
                                       }) : null,

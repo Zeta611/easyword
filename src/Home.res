@@ -1,9 +1,3 @@
-module HomeQuery = %relay(`
-  query HomeQuery($searchTerm: String!, $directions: [jargon_order_by!]!) {
-    ...JargonListOrderQuery
-  }
-`)
-
 @react.component
 let make = () => {
   // searchTerm is set from SearchBar via onChange and passed into Dictionary
@@ -11,38 +5,19 @@ let make = () => {
   let debouncedSearchTerm = Util.useDebounce(searchTerm, 300)
   let (axis, setAxis) = React.Uncurried.useState(() => Jargon.Chrono)
   let (direction, setDirection) = React.Uncurried.useState(() => #desc)
+  let (resetErrorBoundary, setResetErrorBoundary) = React.Uncurried.useState(() => None)
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
     setSearchTerm(_ => value)
+    switch resetErrorBoundary {
+    | Some(resetErrorBoundary) => {
+        resetErrorBoundary()
+        setResetErrorBoundary(_ => None)
+      }
+    | None => ()
+    }
   }
-
-  let {fragmentRefs: query} = HomeQuery.use(
-    ~variables={
-      searchTerm: debouncedSearchTerm,
-      directions: switch axis {
-      | English => [
-          {
-            name_lower: switch direction {
-            | #asc => Asc
-            | #desc => Desc
-            },
-          },
-          {
-            created_at: Desc,
-          },
-        ]
-      | Chrono => [
-          {
-            created_at: Desc,
-          },
-          {
-            name_lower: Asc,
-          },
-        ]
-      },
-    },
-  )
 
   open Heroicons
   <div className="grid p-5 text-sm">
@@ -107,11 +82,13 @@ let make = () => {
         </ul>
       </div>
     </div>
-    <React.Suspense
-      fallback={<div className="h-screen grid justify-center content-center">
-        <Loader />
-      </div>}>
-      <JargonList query />
-    </React.Suspense>
+    <ErrorBoundary
+      fallbackRender={({error, resetErrorBoundary}) => {
+        Console.error(error)
+        setResetErrorBoundary(_ => Some(resetErrorBoundary))
+        React.null
+      }}>
+      <HomeJargonListSection searchTerm=debouncedSearchTerm axis direction />
+    </ErrorBoundary>
   </div>
 }
