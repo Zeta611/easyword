@@ -49,35 +49,49 @@ let make = () => {
     None
   })
 
+  let closeMenu = Hooks.useClosingDropdown("menu-dropdown-btn")
+  let closeProfile = Hooks.useClosingDropdown("profile-dropdown-btn")
+
   <div className="navbar sticky top-0 z-50 bg-base-100">
     <div className="navbar-start">
-      <div className="dropdown dropdown-hover">
-        <label tabIndex={0} className="btn btn-ghost md:hidden">
+      <details id="menu-dropdown-btn" className="dropdown">
+        <summary className="btn btn-ghost md:hidden">
           <Heroicons.Solid.Bars3Icon className="h-5 w-5" />
-        </label>
+        </summary>
         <ul
-          tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[9rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
-            <button onClick={_ => RescriptReactRouter.push("/why")}>
+            <button
+              onClick={_ => {
+                RescriptReactRouter.push("/why")
+                closeMenu()
+              }}>
               <Heroicons.Solid.StarIcon className="h-4 w-4" />
               {"배경/원칙"->React.string}
             </button>
           </li>
           <li>
-            <button onClick={_ => RescriptReactRouter.push("/new-jargon")}>
+            <button
+              onClick={_ => {
+                RescriptReactRouter.push("/new-jargon")
+                closeMenu()
+              }}>
               <Heroicons.Outline.PencilSquareIcon className="h-4 w-4" />
               {"용어제안"->React.string}
             </button>
           </li>
           <li>
-            <button onClick={_ => RescriptReactRouter.push("/colophon")}>
+            <button
+              onClick={_ => {
+                RescriptReactRouter.push("/colophon")
+                closeMenu()
+              }}>
               <Heroicons.Outline.WrenchIcon className="h-4 w-4" />
               {"제작기"->React.string}
             </button>
           </li>
         </ul>
-      </div>
+      </details>
       <button
         className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.push("/")}>
         <div className="flex items-baseline gap-1">
@@ -131,29 +145,36 @@ let make = () => {
           <div className="ml-0"> {`총 ${jargonsCount->Int.toString}개`->React.string} </div>
         </div>
       }}
-      <div className="dropdown dropdown-hover dropdown-end">
+      <details id="profile-dropdown-btn" className="dropdown dropdown-end">
         {switch photoURL {
         | None =>
-          <label tabIndex={0} className="btn btn-circle btn-ghost">
+          <summary className="btn btn-circle btn-ghost">
             <Heroicons.Outline.UserCircleIcon className="h-6 w-6" />
-          </label>
+          </summary>
         | Some(photoURL) =>
-          <img
-            tabIndex={0} className="mask mask-squircle h-8 w-8 m-2 cursor-pointer" src={photoURL}
-          />
+          <summary className="flex">
+            <img className="mask mask-squircle h-8 w-8 m-2 cursor-pointer" src={photoURL} />
+          </summary>
         }}
         <ul
-          tabIndex={0}
           className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           {if signedIn {
             <>
               <li>
-                <button onClick={_ => RescriptReactRouter.push("/profile")}>
+                <button
+                  onClick={_ => {
+                    RescriptReactRouter.push("/profile")
+                    closeProfile()
+                  }}>
                   {"내 프로필"->React.string}
                 </button>
               </li>
               <li>
-                <button onClick={_ => RescriptReactRouter.push("/logout")}>
+                <button
+                  onClick={_ => {
+                    RescriptReactRouter.push("/logout")
+                    closeProfile()
+                  }}>
                   {"로그아웃"->React.string}
                 </button>
               </li>
@@ -166,7 +187,7 @@ let make = () => {
             </li>
           }}
         </ul>
-      </div>
+      </details>
     </div>
   </div>
 }
