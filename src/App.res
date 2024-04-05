@@ -64,18 +64,25 @@ let make = () => {
                       <NavbarContainer>
                         {switch path {
                         | list{} =>
-                          <React.Suspense
-                            fallback={<div className="h-screen grid justify-center content-center">
-                              <Loader />
-                            </div>}>
-                            <Home />
-                          </React.Suspense>
+                          <ErrorBoundary
+                            fallbackRender={({error}) => {
+                              Console.error(error)
+                              React.null
+                            }}>
+                            <React.Suspense
+                              fallback={<div
+                                className="h-screen grid justify-center content-center">
+                                <Loader />
+                              </div>}>
+                              <Home />
+                            </React.Suspense>
+                          </ErrorBoundary>
                         | list{"profile"} => <Profile />
                         | list{"new-jargon"} => <NewJargon />
                         | list{"new-translation", jargonID} => <NewTranslation jargonID />
                         | list{"jargon", jargonID} =>
                           <ErrorBoundary
-                            fallbackRender={_e => {
+                            fallbackRender={_ => {
                               <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
                             }}>
                             <JargonPost jargonID />

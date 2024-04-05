@@ -1,4 +1,4 @@
-/* @sourceLoc Home.res */
+/* @sourceLoc HomeJargonListSection.res */
 /* @generated */
 %%raw("/* @generated */")
 module Types = {
@@ -179,7 +179,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "HomeQuery",
+    "name": "HomeJargonListSectionQuery",
     "selections": [
       {
         "args": null,
@@ -197,7 +197,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "HomeQuery",
+    "name": "HomeJargonListSectionQuery",
     "selections": [
       {
         "alias": null,
@@ -350,12 +350,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5db767d8783b87c0f335afe6b6bc23f0",
+    "cacheID": "743903f0b8cd304ecd2b21fa8ae4dedf",
     "id": null,
     "metadata": {},
-    "name": "HomeQuery",
+    "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {name: {_iregex: $searchTerm}}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {name: {_iregex: $searchTerm}}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)

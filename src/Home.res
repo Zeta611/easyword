@@ -1,48 +1,25 @@
-module HomeQuery = %relay(`
-  query HomeQuery($searchTerm: String!, $directions: [jargon_order_by!]!) {
-    ...JargonListOrderQuery
-  }
-`)
-
 @react.component
 let make = () => {
   // searchTerm is set from SearchBar via onChange and passed into Dictionary
   let (searchTerm, setSearchTerm) = React.Uncurried.useState(() => "")
-  let debouncedSearchTerm = Util.useDebounce(searchTerm, 300)
+  let debouncedSearchTerm = Hooks.useDebounce(searchTerm, 300)
   let (axis, setAxis) = React.Uncurried.useState(() => Jargon.Chrono)
   let (direction, setDirection) = React.Uncurried.useState(() => #desc)
+
+  let (resetErrorBoundary, setResetErrorBoundary) = React.Uncurried.useState(() => None)
+  let closeDropdown = Hooks.useClosingDropdown("sort-dropdown-btn")
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
     setSearchTerm(_ => value)
+    switch resetErrorBoundary {
+    | Some(resetErrorBoundary) => {
+        resetErrorBoundary()
+        setResetErrorBoundary(_ => None)
+      }
+    | None => ()
+    }
   }
-
-  let {fragmentRefs: query} = HomeQuery.use(
-    ~variables={
-      searchTerm: debouncedSearchTerm,
-      directions: switch axis {
-      | English => [
-          {
-            name_lower: switch direction {
-            | #asc => Asc
-            | #desc => Desc
-            },
-          },
-          {
-            created_at: Desc,
-          },
-        ]
-      | Chrono => [
-          {
-            created_at: Desc,
-          },
-          {
-            name_lower: Asc,
-          },
-        ]
-      },
-    },
-  )
 
   open Heroicons
   <div className="grid p-5 text-sm">
@@ -51,17 +28,10 @@ let make = () => {
       <div className="flex-auto">
         <SearchBar searchTerm onChange />
       </div>
-      <div className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
-        <label
-          tabIndex={0}
-          className="btn btn-primary"
-          onClick={_ => {
-            switch (axis, direction) {
-            | (Chrono, _) => setDirection(_ => #desc)
-            | (_, #asc) => setDirection(_ => #desc)
-            | (_, #desc) => setDirection(_ => #asc)
-            }
-          }}>
+      <details
+        id="sort-dropdown-btn"
+        className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
+        <summary className="btn btn-primary text-xs">
           {switch (axis, direction) {
           | (Chrono, _) => React.null
           | (_, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
@@ -72,15 +42,15 @@ let make = () => {
           | (Chrono, _) => "최근순"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
-        </label>
+        </summary>
         <ul
-          tabIndex={0}
-          className="menu menu-compact dropdown-content p-2 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
+          className="menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
           <li>
             <button
               onClick={_ => {
                 setAxis(_ => Chrono)
                 setDirection(_ => #desc)
+                closeDropdown()
               }}>
               {"최근순"->React.string}
             </button>
@@ -96,6 +66,7 @@ let make = () => {
                   | #desc => #asc
                   }
                 })
+                closeDropdown()
               }}>
               {"ABC순"->React.string}
               {switch direction {
@@ -105,13 +76,15 @@ let make = () => {
             </button>
           </li>
         </ul>
-      </div>
+      </details>
     </div>
-    <React.Suspense
-      fallback={<div className="h-screen grid justify-center content-center">
-        <Loader />
-      </div>}>
-      <JargonList query />
-    </React.Suspense>
+    <ErrorBoundary
+      fallbackRender={({error, resetErrorBoundary}) => {
+        Console.error(error)
+        setResetErrorBoundary(_ => Some(resetErrorBoundary))
+        React.null
+      }}>
+      <HomeJargonListSection searchTerm=debouncedSearchTerm axis direction />
+    </ErrorBoundary>
   </div>
 }

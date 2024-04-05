@@ -128,7 +128,7 @@ function App(props) {
                     children: JsxRuntime.jsx(JargonPost.make, {
                           jargonID: match$1.hd
                         }),
-                    fallbackRender: (function (_e) {
+                    fallbackRender: (function (param) {
                         return JsxRuntime.jsx("div", {
                                     children: "앗! 404",
                                     className: "text-3xl px-5 py-5"
@@ -155,12 +155,18 @@ function App(props) {
           tmp$1 = "404";
       }
     } else {
-      tmp$1 = JsxRuntime.jsx(React.Suspense, {
-            children: Caml_option.some(JsxRuntime.jsx(Home.make, {})),
-            fallback: Caml_option.some(JsxRuntime.jsx("div", {
-                      children: JsxRuntime.jsx(Loader.make, {}),
-                      className: "h-screen grid justify-center content-center"
-                    }))
+      tmp$1 = JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
+            children: JsxRuntime.jsx(React.Suspense, {
+                  children: Caml_option.some(JsxRuntime.jsx(Home.make, {})),
+                  fallback: Caml_option.some(JsxRuntime.jsx("div", {
+                            children: JsxRuntime.jsx(Loader.make, {}),
+                            className: "h-screen grid justify-center content-center"
+                          }))
+                }),
+            fallbackRender: (function (param) {
+                console.error(param.error);
+                return null;
+              })
           });
     }
     tmp = JsxRuntime.jsx(React.Suspense, {
