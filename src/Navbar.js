@@ -25,30 +25,30 @@ function Navbar(props) {
       });
   var setJargonsCount = match$1[1];
   var jargonsCount = match$1[0];
-  React.useEffect((function () {
-          ((async function () {
-                  var resp = await fetch("https://easyword.hasura.app/api/rest/jargons-count", {
-                        method: "GET",
-                        headers: Caml_option.some(new Headers({
-                                  "content-type": "application/json"
-                                }))
-                      });
-                  var json;
-                  if (resp.ok) {
-                    json = await resp.json();
-                  } else {
-                    throw {
-                          RE_EXN_ID: Exc.GraphQLError,
-                          _1: "Failed to fetch jargons count",
-                          Error: new Error()
-                        };
-                  }
-                  var count = Core__Option.getExn(Core__JSON.Decode.$$float(unsafeGet(unsafeGet(unsafeGet(json, "jargon_aggregate"), "aggregate"), "count"))) | 0;
-                  return setJargonsCount(function (param) {
-                              return count;
-                            });
-                })());
-        }), []);
+  React.useEffect(function () {
+        ((async function () {
+                var resp = await fetch("https://easyword.hasura.app/api/rest/jargons-count", {
+                      method: "GET",
+                      headers: Caml_option.some(new Headers({
+                                "content-type": "application/json"
+                              }))
+                    });
+                var json;
+                if (resp.ok) {
+                  json = await resp.json();
+                } else {
+                  throw {
+                        RE_EXN_ID: Exc.GraphQLError,
+                        _1: "Failed to fetch jargons count",
+                        Error: new Error()
+                      };
+                }
+                var count = Core__Option.getExn(Core__JSON.Decode.$$float(unsafeGet(unsafeGet(unsafeGet(json, "jargon_aggregate"), "aggregate"), "count"))) | 0;
+                return setJargonsCount(function (param) {
+                            return count;
+                          });
+              })());
+      });
   var closeMenu = Hooks.useClosingDropdown("menu-dropdown-btn");
   var closeProfile = Hooks.useClosingDropdown("profile-dropdown-btn");
   return JsxRuntime.jsxs("div", {

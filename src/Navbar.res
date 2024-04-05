@@ -12,7 +12,7 @@ let make = () => {
 
   let (jargonsCount, setJargonsCount) = React.Uncurried.useState(() => None)
 
-  React.useEffect0(() => {
+  React.useEffectOnEveryRender(() => {
     open Fetch
 
     (
