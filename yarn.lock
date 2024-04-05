@@ -1000,19 +1000,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:^1.7.7":
-  version: 1.7.18
-  resolution: "@headlessui/react@npm:1.7.18"
-  dependencies:
-    "@tanstack/react-virtual": "npm:^3.0.0-beta.60"
-    client-only: "npm:^0.0.1"
-  peerDependencies:
-    react: ^16 || ^17 || ^18
-    react-dom: ^16 || ^17 || ^18
-  checksum: 10/9615f7b709842f2e56b3ef1a8f1a77faed7982e86af52f057a5c2a9950d073672073a6c09829f0c26ed7287e298f5e2345f3898dbc2cc13318af10598ceb4bbc
-  languageName: node
-  linkType: hard
-
 "@heroicons/react@npm:^2.0.13":
   version: 2.1.3
   resolution: "@heroicons/react@npm:2.1.3"
@@ -1353,25 +1340,6 @@ __metadata:
   peerDependencies:
     tailwindcss: "*"
   checksum: 10/bae016432101cfd843dfbcc40789b8db334f53d23c96cc4ff2ec1e0757ff54db44b1b99d7a8b584116497ebf8abb7b656df01e57527172328f67eb890aec4cf5
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-virtual@npm:^3.0.0-beta.60":
-  version: 3.2.0
-  resolution: "@tanstack/react-virtual@npm:3.2.0"
-  dependencies:
-    "@tanstack/virtual-core": "npm:3.2.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/09bf6db0f3dbfa2245c7d78ed425bb7c0e169cbe5024cc6bfc53005505a472b36a0b5506d6fa4b8a47c07296c5982b1ac49acd4f32c48547aef7556f9ed2ed1d
-  languageName: node
-  linkType: hard
-
-"@tanstack/virtual-core@npm:3.2.0":
-  version: 3.2.0
-  resolution: "@tanstack/virtual-core@npm:3.2.0"
-  checksum: 10/cf3ef6a2f3fa8ec4b155926da32508df45dadf268b365f206a171d011d6c728ddc9a7ea074575145266ccbdf445352ee9c9278bc1f55c3f96ad69ade7964b936
   languageName: node
   linkType: hard
 
@@ -1717,13 +1685,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client-only@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "client-only@npm:0.0.1"
-  checksum: 10/0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
-  languageName: node
-  linkType: hard
-
 "cliui@npm:^5.0.0":
   version: 5.0.0
   resolution: "cliui@npm:5.0.0"
@@ -1943,12 +1904,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eko@workspace:.":
+"easyword.kr@workspace:.":
   version: 0.0.0-use.local
-  resolution: "eko@workspace:."
+  resolution: "easyword.kr@workspace:."
   dependencies:
     "@glennsl/rescript-fetch": "npm:^0.2.0"
-    "@headlessui/react": "npm:^1.7.7"
     "@heroicons/react": "npm:^2.0.13"
     "@rescript/core": "npm:^1.2.0"
     "@rescript/react": "npm:^0.12.1"
