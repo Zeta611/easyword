@@ -18,9 +18,9 @@ let make = (~searchTerm, ~axis, ~direction) => {
               | #desc => Desc
               },
             },
-            {created_at: Desc},
+            {updated_at: Desc},
           ]
-        | Chrono => [{created_at: Desc}, {name_lower: Asc}]
+        | Chrono => [{updated_at: Desc}, {name_lower: Asc}]
         }
       },
     },

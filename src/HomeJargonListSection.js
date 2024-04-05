@@ -57,11 +57,11 @@ function HomeJargonListSection(props) {
         name_lower: props.direction === "asc" ? "asc" : "desc"
       },
       {
-        created_at: "desc"
+        updated_at: "desc"
       }
     ] : [
       {
-        created_at: "desc"
+        updated_at: "desc"
       },
       {
         name_lower: "asc"
