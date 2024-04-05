@@ -7,6 +7,7 @@ import * as Core__JSON from "../node_modules/@rescript/core/src/Core__JSON.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
 import * as SignInContext from "./SignInContext.js";
+import * as Fa from "react-icons/fa";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 import * as Solid from "@heroicons/react/24/solid";
@@ -25,6 +26,7 @@ function Navbar(props) {
       });
   var setJargonsCount = match$1[1];
   var jargonsCount = match$1[0];
+  var gitHubURL = "https://github.com/Zeta611/easyword";
   React.useEffect(function () {
         ((async function () {
                 var resp = await fetch("https://easyword.hasura.app/api/rest/jargons-count", {
@@ -104,6 +106,19 @@ function Navbar(props) {
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.push("/colophon");
                                                         closeMenu();
+                                                      })
+                                                  })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsxs("button", {
+                                                    children: [
+                                                      JsxRuntime.jsx(Fa.FaGithub, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "참여하기"
+                                                    ],
+                                                    onClick: (function (param) {
+                                                        window.open(gitHubURL, "_blank", undefined);
                                                       })
                                                   })
                                             })
@@ -201,6 +216,22 @@ function Navbar(props) {
                                               }),
                                           onClick: (function (param) {
                                               RescriptReactRouter.push("/colophon");
+                                            })
+                                        })
+                                  }),
+                              JsxRuntime.jsx("li", {
+                                    children: JsxRuntime.jsx("button", {
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Fa.FaGithub, {
+                                                        className: "h-6 w-6 hidden sm:flex"
+                                                      }),
+                                                  "참여하기"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
+                                          onClick: (function (param) {
+                                              window.open(gitHubURL, "_blank", undefined);
                                             })
                                         })
                                   })

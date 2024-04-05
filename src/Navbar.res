@@ -12,6 +12,8 @@ let make = () => {
 
   let (jargonsCount, setJargonsCount) = React.Uncurried.useState(() => None)
 
+  let gitHubURL = "https://github.com/Zeta611/easyword"
+
   React.useEffectOnEveryRender(() => {
     open Fetch
 
@@ -90,6 +92,16 @@ let make = () => {
               {"제작기"->React.string}
             </button>
           </li>
+          <li>
+            <button
+              onClick={_ =>
+                window
+                ->Webapi.Dom.Window.open_(~url=gitHubURL, ~name="_blank", ())
+                ->ignore}>
+              <ReactIcons.FaGithub className="h-4 w-4" />
+              {"참여하기"->React.string}
+            </button>
+          </li>
         </ul>
       </details>
       <button
@@ -131,6 +143,18 @@ let make = () => {
             <div className="grid justify-items-center">
               <Heroicons.Outline.WrenchIcon className="h-6 w-6 hidden sm:flex" />
               {"제작기"->React.string}
+            </div>
+          </button>
+        </li>
+        <li>
+          <button
+            onClick={_ =>
+              window
+              ->Webapi.Dom.Window.open_(~url=gitHubURL, ~name="_blank", ())
+              ->ignore}>
+            <div className="grid justify-items-center">
+              <ReactIcons.FaGithub className="h-6 w-6 hidden sm:flex" />
+              {"참여하기"->React.string}
             </div>
           </button>
         </li>
