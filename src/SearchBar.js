@@ -5,7 +5,7 @@ import * as JsxRuntime from "react/jsx-runtime";
 function SearchBar(props) {
   return JsxRuntime.jsx("div", {
               children: JsxRuntime.jsx("input", {
-                    className: "input input-bordered w-full rounded-lg text-sm shadow-lg",
+                    className: "input input-bordered w-full rounded-lg text-sm shadow-lg mt-1",
                     placeholder: "정규식으로 검색해보세요",
                     type: "search",
                     value: props.searchTerm,
