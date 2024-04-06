@@ -91,6 +91,19 @@ var v0 = [
 ],
 v1 = [
   {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "_iregex",
+        "variableName": "searchTerm"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "name"
+  }
+],
+v2 = [
+  {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
@@ -108,29 +121,40 @@ v1 = [
   {
     "fields": [
       {
-        "fields": [
+        "items": [
           {
-            "kind": "Variable",
-            "name": "_iregex",
-            "variableName": "searchTerm"
+            "fields": (v1/*: any*/),
+            "kind": "ObjectValue",
+            "name": "_or.0"
+          },
+          {
+            "fields": [
+              {
+                "fields": (v1/*: any*/),
+                "kind": "ObjectValue",
+                "name": "translations"
+              }
+            ],
+            "kind": "ObjectValue",
+            "name": "_or.1"
           }
         ],
-        "kind": "ObjectValue",
-        "name": "name"
+        "kind": "ListValue",
+        "name": "_or"
       }
     ],
     "kind": "ObjectValue",
     "name": "where"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -172,7 +196,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "jargon_connection",
@@ -194,8 +218,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
                   (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -224,8 +248,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/)
+                      (v3/*: any*/),
+                      (v4/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -308,7 +332,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "filters": [
           "order_by",
           "where"
@@ -321,12 +345,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "034063ced50b2c2f418f883c8de33698",
+    "cacheID": "3cb4006fcf3652bc5ac431cf5350f059",
     "id": null,
     "metadata": {},
     "name": "JargonListOrderRefetchQuery",
     "operationKind": "query",
-    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {name: {_iregex: $searchTerm}}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_or: [{name: {_iregex: $searchTerm}}, {translations: {name: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());

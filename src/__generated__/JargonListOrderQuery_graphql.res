@@ -52,7 +52,7 @@ let connectionKey = "JargonListOrderQuery_jargon_connection"
 
 @live
 let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?) => {
-  let args = {"order_by": directions, "where": {"name": {"_iregex": searchTerm}}}
+  let args = {"order_by": directions, "where": {"_or": [RescriptRelay_Internal.Arg({"name": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name": {"_iregex": searchTerm}}})]}}
   internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
@@ -78,6 +78,19 @@ type operationType = RescriptRelay.fragmentNode<relayOperationNode>
   %raw(json`(function(){
 var v0 = [
   "jargon_connection"
+],
+v1 = [
+  {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "_iregex",
+        "variableName": "searchTerm"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "name"
+  }
 ];
 return {
   "argumentDefinitions": [
@@ -136,15 +149,26 @@ return {
         {
           "fields": [
             {
-              "fields": [
+              "items": [
                 {
-                  "kind": "Variable",
-                  "name": "_iregex",
-                  "variableName": "searchTerm"
+                  "fields": (v1/*: any*/),
+                  "kind": "ObjectValue",
+                  "name": "_or.0"
+                },
+                {
+                  "fields": [
+                    {
+                      "fields": (v1/*: any*/),
+                      "kind": "ObjectValue",
+                      "name": "translations"
+                    }
+                  ],
+                  "kind": "ObjectValue",
+                  "name": "_or.1"
                 }
               ],
-              "kind": "ObjectValue",
-              "name": "name"
+              "kind": "ListValue",
+              "name": "_or"
             }
           ],
           "kind": "ObjectValue",

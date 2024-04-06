@@ -36,7 +36,7 @@ var CommentMutation = {
 
 var CommentNode = Caml_module.init_mod([
       "CommentRow.res",
-      28,
+      31,
       4
     ], {
       TAG: "Module",
@@ -48,7 +48,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      170,
+      173,
       4
     ], {
       TAG: "Module",

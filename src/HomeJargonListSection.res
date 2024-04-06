@@ -1,5 +1,8 @@
 module HomeJargonListSectionQuery = %relay(`
-  query HomeJargonListSectionQuery($searchTerm: String!, $directions: [jargon_order_by!]!) {
+  query HomeJargonListSectionQuery(
+    $searchTerm: String!
+    $directions: [jargon_order_by!]!
+  ) {
     ...JargonListOrderQuery
   }
 `)

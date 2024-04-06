@@ -24,9 +24,20 @@ function makeConnectionId(connectionParentDataId, directions, searchTerm) {
   var args = {
     order_by: directions,
     where: {
-      name: {
-        _iregex: searchTerm
-      }
+      _or: [
+        {
+          name: {
+            _iregex: searchTerm
+          }
+        },
+        {
+          translations: {
+            name: {
+              _iregex: searchTerm
+            }
+          }
+        }
+      ]
     }
   };
   return RelayRuntime.ConnectionHandler.getConnectionID(connectionParentDataId, "JargonListOrderQuery_jargon_connection", args);
@@ -46,6 +57,19 @@ function makeNode(rescript_graphql_node_JargonListOrderRefetchQuery) {
   return ((function(){
 var v0 = [
   "jargon_connection"
+],
+v1 = [
+  {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "_iregex",
+        "variableName": "searchTerm"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "name"
+  }
 ];
 return {
   "argumentDefinitions": [
@@ -104,15 +128,26 @@ return {
         {
           "fields": [
             {
-              "fields": [
+              "items": [
                 {
-                  "kind": "Variable",
-                  "name": "_iregex",
-                  "variableName": "searchTerm"
+                  "fields": (v1/*: any*/),
+                  "kind": "ObjectValue",
+                  "name": "_or.0"
+                },
+                {
+                  "fields": [
+                    {
+                      "fields": (v1/*: any*/),
+                      "kind": "ObjectValue",
+                      "name": "translations"
+                    }
+                  ],
+                  "kind": "ObjectValue",
+                  "name": "_or.1"
                 }
               ],
-              "kind": "ObjectValue",
-              "name": "name"
+              "kind": "ListValue",
+              "name": "_or"
             }
           ],
           "kind": "ObjectValue",

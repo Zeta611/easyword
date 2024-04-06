@@ -37,7 +37,10 @@ module NewTranslationMutation = %relay(`
     ) {
       id
     }
-    update_jargon_by_pk(pk_columns: {id: $jargonID}, _set: {updated_at: $now}) {
+    update_jargon_by_pk(
+      pk_columns: { id: $jargonID }
+      _set: { updated_at: $now }
+    ) {
       id
     }
   }

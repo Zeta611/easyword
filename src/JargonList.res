@@ -9,7 +9,12 @@ module JargonListOrderQuery = %relay(`
       order_by: $directions
       first: $count
       after: $cursor
-      where: {name: {_iregex: $searchTerm}}
+      where: {
+        _or: [
+          { name: { _iregex: $searchTerm } }
+          { translations: { name: { _iregex: $searchTerm } } }
+        ]
+      }
     ) @connection(key: "JargonListOrderQuery_jargon_connection") {
       edges {
         node {
