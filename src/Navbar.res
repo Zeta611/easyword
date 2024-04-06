@@ -120,12 +120,12 @@ let make = () => {
         </div>
       </button>
     </div>
-    <div className="navbar-center hidden md:flex text-sm">
-      <ul className="menu menu-horizontal px-1">
+    <div className="navbar-center hidden md:flex">
+      <ul className="menu menu-horizontal px-1 text-xs">
         <li>
           <button onClick={_ => RescriptReactRouter.push("/why")}>
             <div className="grid justify-items-center">
-              <Heroicons.Solid.StarIcon className="h-6 w-6 hidden sm:flex" />
+              <Heroicons.Solid.StarIcon className="h-5 w-5 hidden sm:flex" />
               {"배경/원칙"->React.string}
             </div>
           </button>
@@ -133,7 +133,7 @@ let make = () => {
         <li>
           <button onClick={_ => RescriptReactRouter.push("/new-jargon")}>
             <div className="grid justify-items-center">
-              <Heroicons.Outline.PencilSquareIcon className="h-6 w-6 hidden sm:flex" />
+              <Heroicons.Outline.PencilSquareIcon className="h-5 w-5 hidden sm:flex" />
               {"용어제안"->React.string}
             </div>
           </button>
@@ -141,7 +141,7 @@ let make = () => {
         <li>
           <button onClick={_ => RescriptReactRouter.push("/colophon")}>
             <div className="grid justify-items-center">
-              <Heroicons.Outline.WrenchIcon className="h-6 w-6 hidden sm:flex" />
+              <Heroicons.Outline.WrenchIcon className="h-5 w-5 hidden sm:flex" />
               {"제작기"->React.string}
             </div>
           </button>
@@ -153,7 +153,7 @@ let make = () => {
               ->Webapi.Dom.Window.open_(~url=gitHubURL, ~name="_blank", ())
               ->ignore}>
             <div className="grid justify-items-center">
-              <ReactIcons.FaGithub className="h-6 w-6 hidden sm:flex" />
+              <ReactIcons.FaGithub className="h-5 w-5 hidden sm:flex" />
               {"참여하기"->React.string}
             </div>
           </button>

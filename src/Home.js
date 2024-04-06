@@ -126,7 +126,7 @@ function Home(props) {
                               id: "sort-dropdown-btn"
                             })
                       ],
-                      className: "flex items-center space-x-2 sticky top-[4rem] md:top-[5.75rem] -mt-5 mb-5 z-40 bg-base-100"
+                      className: "flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] -mt-5 mb-5 z-40 bg-base-100"
                     }),
                 JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
                       children: JsxRuntime.jsx(HomeJargonListSection.make, {

@@ -176,7 +176,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Solid.StarIcon, {
-                                                        className: "h-6 w-6 hidden sm:flex"
+                                                        className: "h-5 w-5 hidden sm:flex"
                                                       }),
                                                   "배경/원칙"
                                                 ],
@@ -192,7 +192,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Outline.PencilSquareIcon, {
-                                                        className: "h-6 w-6 hidden sm:flex"
+                                                        className: "h-5 w-5 hidden sm:flex"
                                                       }),
                                                   "용어제안"
                                                 ],
@@ -208,7 +208,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Outline.WrenchIcon, {
-                                                        className: "h-6 w-6 hidden sm:flex"
+                                                        className: "h-5 w-5 hidden sm:flex"
                                                       }),
                                                   "제작기"
                                                 ],
@@ -224,7 +224,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Fa.FaGithub, {
-                                                        className: "h-6 w-6 hidden sm:flex"
+                                                        className: "h-5 w-5 hidden sm:flex"
                                                       }),
                                                   "참여하기"
                                                 ],
@@ -236,9 +236,9 @@ function Navbar(props) {
                                         })
                                   })
                             ],
-                            className: "menu menu-horizontal px-1"
+                            className: "menu menu-horizontal px-1 text-xs"
                           }),
-                      className: "navbar-center hidden md:flex text-sm"
+                      className: "navbar-center hidden md:flex"
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [
