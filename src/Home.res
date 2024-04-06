@@ -25,12 +25,12 @@ let make = () => {
   <div className="grid p-5 text-sm">
     <div
       className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] -mt-5 mb-5 z-40 bg-base-100">
-      <div className="flex-auto">
+      <div className="flex-auto mt-1">
         <SearchBar searchTerm onChange />
       </div>
       <details
         id="sort-dropdown-btn"
-        className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg">
+        className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg mt-1">
         <summary className="btn btn-primary text-xs">
           {switch (axis, direction) {
           | (Chrono, _) => React.null

@@ -63,7 +63,7 @@ function Home(props) {
                                     searchTerm: searchTerm,
                                     onChange: onChange
                                   }),
-                              className: "flex-auto"
+                              className: "flex-auto mt-1"
                             }),
                         JsxRuntime.jsxs("details", {
                               children: [
@@ -122,7 +122,7 @@ function Home(props) {
                                       className: "menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box"
                                     })
                               ],
-                              className: "dropdown dropdown-hover dropdown-end shadow-lg rounded-lg",
+                              className: "dropdown dropdown-hover dropdown-end shadow-lg rounded-lg mt-1",
                               id: "sort-dropdown-btn"
                             })
                       ],
