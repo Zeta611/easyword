@@ -21,7 +21,7 @@ let make = (~jargonID) => {
   let {user} = React.useContext(SignInContext.context)
 
   // For handling the comment textarea
-  let (content, setContent) = React.Uncurried.useState(() => "")
+  let (content, setContent) = React.useState(() => "")
   let handleInputChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
     setContent(_ => value)

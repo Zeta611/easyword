@@ -5,7 +5,7 @@ let make = (~children: React.element) => {
   let {status, data: signInData} = Firebase.useSigninCheck()
   let firestore = useFirestore()
   let auth = useAuth()
-  let (token, setToken) = React.Uncurried.useState(() => None)
+  let (token, setToken) = React.useState(() => None)
   // Console.log(`token: ${token->Option.getOr("None")}`)
 
   React.useEffectOnEveryRender(() => {

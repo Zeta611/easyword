@@ -30,12 +30,12 @@ module rec CommentNode: {
   let make = (~jargonID: string, ~commentNode as {comment, children}: Comment.node) => {
     let {user} = React.useContext(SignInContext.context)
 
-    let (showChildren, setShowChildren) = React.Uncurried.useState(() => true)
+    let (showChildren, setShowChildren) = React.useState(() => true)
 
-    let (showReply, setShowReply) = React.Uncurried.useState(() => false)
+    let (showReply, setShowReply) = React.useState(() => false)
 
     // For handling the comment textarea
-    let (content, setContent) = React.Uncurried.useState(() => "")
+    let (content, setContent) = React.useState(() => "")
     let handleInputChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
       setContent(_ => value)

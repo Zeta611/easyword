@@ -10,7 +10,7 @@ let make = () => {
   | Some({photoURL}) => photoURL
   }
 
-  let (jargonsCount, setJargonsCount) = React.Uncurried.useState(() => None)
+  let (jargonsCount, setJargonsCount) = React.useState(() => None)
 
   let gitHubURL = "https://github.com/Zeta611/easyword"
 

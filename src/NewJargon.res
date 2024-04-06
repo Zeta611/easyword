@@ -52,21 +52,21 @@ let make = () => {
     None
   })
 
-  let (english, setEnglish) = React.Uncurried.useState(() => "")
+  let (english, setEnglish) = React.useState(() => "")
   let handleJargonChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
     setEnglish(_ => value)
   }
 
-  let (korean, setKorean) = React.Uncurried.useState(() => "")
+  let (korean, setKorean) = React.useState(() => "")
   let handleTranslationChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
     setKorean(_ => value)
   }
 
-  let (withoutKorean, setWithoutKorean) = React.Uncurried.useState(() => false)
+  let (withoutKorean, setWithoutKorean) = React.useState(() => false)
 
-  let (comment, setComment) = React.Uncurried.useState(() => "")
+  let (comment, setComment) = React.useState(() => "")
   let handleCommentChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
     setComment(_ => value)

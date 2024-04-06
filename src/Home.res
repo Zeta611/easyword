@@ -1,12 +1,12 @@
 @react.component
 let make = () => {
   // searchTerm is set from SearchBar via onChange and passed into Dictionary
-  let (searchTerm, setSearchTerm) = React.Uncurried.useState(() => "")
+  let (searchTerm, setSearchTerm) = React.useState(() => "")
   let debouncedSearchTerm = Hooks.useDebounce(searchTerm, 300)
-  let (axis, setAxis) = React.Uncurried.useState(() => Jargon.Chrono)
-  let (direction, setDirection) = React.Uncurried.useState(() => #desc)
+  let (axis, setAxis) = React.useState(() => Jargon.Chrono)
+  let (direction, setDirection) = React.useState(() => #desc)
 
-  let (resetErrorBoundary, setResetErrorBoundary) = React.Uncurried.useState(() => None)
+  let (resetErrorBoundary, setResetErrorBoundary) = React.useState(() => None)
   let closeDropdown = Hooks.useClosingDropdown("sort-dropdown-btn")
 
   let onChange = event => {

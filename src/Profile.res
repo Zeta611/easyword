@@ -17,7 +17,7 @@ module SignedInProfile = {
 
     let (mutate, _isMutating) = DisplayNameMutation.use()
 
-    let (displayName, setDisplayName) = React.Uncurried.useState(() =>
+    let (displayName, setDisplayName) = React.useState(() =>
       user.displayName->Option.getOr("")
     )
     let handleDisplayNameChange = event => {
@@ -25,7 +25,7 @@ module SignedInProfile = {
       setDisplayName(_ => value)
     }
 
-    let (disabled, setDisabled) = React.Uncurried.useState(() => false)
+    let (disabled, setDisabled) = React.useState(() => false)
 
     let handleSubmit = event => {
       // Prevent a page refresh, we are already listening for updates
