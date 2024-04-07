@@ -51,6 +51,7 @@ var HomeJargonListSectionQuery = {
 };
 
 function HomeJargonListSection(props) {
+  var searchTerm = props.searchTerm.replace(/\s/g, "");
   var tmp;
   tmp = props.axis === "English" ? [
       {
@@ -69,7 +70,7 @@ function HomeJargonListSection(props) {
     ];
   var match = use({
         directions: tmp,
-        searchTerm: props.searchTerm
+        searchTerm: searchTerm
       }, undefined, undefined, undefined);
   return JsxRuntime.jsx(React.Suspense, {
               children: Caml_option.some(JsxRuntime.jsx(JargonList.make, {
