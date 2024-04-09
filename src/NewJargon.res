@@ -36,6 +36,33 @@ module NewJargonMutation = %relay(`
   }
 `)
 
+module NewJargonWithoutTranslationMutation = %relay(`
+  mutation NewJargonWithoutTranslationMutation(
+    $id: uuid!
+    $authorID: String!
+    $name: String!
+    $commentID: uuid!
+    $comment: String!
+  ) {
+    insert_jargon_one(
+      object: {
+        id: $id
+        author_id: $authorID
+        name: $name
+        comments: {
+          data: {
+            id: $commentID
+            author_id: $authorID
+            content: $comment
+          }
+        }
+      }
+    ) {
+      id
+    }
+  }
+`)
+
 @react.component
 let make = () => {
   let {signedIn, user} = React.useContext(SignInContext.context)
@@ -73,6 +100,10 @@ let make = () => {
   }
 
   let (newJargonMutate, isNewJargonMutating) = NewJargonMutation.use()
+  let (
+    newJargonWithoutTranslationMutate,
+    isNewJargonWithoutTranslationMutating,
+  ) = NewJargonWithoutTranslationMutation.use()
 
   let handleSubmit = event => {
     // Prevent a page refresh, we are already listening for updates
@@ -97,24 +128,43 @@ let make = () => {
 
           let (jargonID, translationID, commentID) = (Uuid.v4(), Uuid.v4(), Uuid.v4())
 
-          newJargonMutate(
-            ~variables={
-              id: jargonID,
-              translationID,
-              commentID,
-              authorID: user.uid,
-              name: english,
-              comment,
-              translation: korean,
-            },
-            ~onError=error => Js.Console.error(error),
-            ~onCompleted=({insert_jargon_one}, _errors) => {
-              switch insert_jargon_one {
-              | Some({id}) => RescriptReactRouter.replace("/jargon/" ++ id)
-              | None => ()
-              }
-            },
-          )->ignore
+          if withoutKorean {
+            newJargonWithoutTranslationMutate(
+              ~variables={
+                id: jargonID,
+                commentID,
+                authorID: user.uid,
+                name: english,
+                comment,
+              },
+              ~onError=error => Js.Console.error(error),
+              ~onCompleted=({insert_jargon_one}, _errors) => {
+                switch insert_jargon_one {
+                | Some({id}) => RescriptReactRouter.replace("/jargon/" ++ id)
+                | None => ()
+                }
+              },
+            )->ignore
+          } else {
+            newJargonMutate(
+              ~variables={
+                id: jargonID,
+                translationID,
+                commentID,
+                authorID: user.uid,
+                name: english,
+                comment,
+                translation: korean,
+              },
+              ~onError=error => Js.Console.error(error),
+              ~onCompleted=({insert_jargon_one}, _errors) => {
+                switch insert_jargon_one {
+                | Some({id}) => RescriptReactRouter.replace("/jargon/" ++ id)
+                | None => ()
+                }
+              },
+            )->ignore
+          }
         }
       | None => RescriptReactRouter.replace("/logout") // Something went wrong
       }
@@ -179,7 +229,7 @@ let make = () => {
           <input
             type_="submit"
             value="제안하기"
-            disabled={isNewJargonMutating}
+            disabled={isNewJargonMutating || isNewJargonWithoutTranslationMutating}
             className="btn btn-primary"
           />
         </div>
