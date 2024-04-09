@@ -20,6 +20,12 @@
   "author": "Jay Lee <jaeho.lee@snu.ac.kr>",
   "license": "MIT",
   "packageManager": "yarn@4.1.1",
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "> 0.2% in KR",
+    "iOS >= 12.5"
+  ],
   "dependencies": {
     "@glennsl/rescript-fetch": "^0.2.0",
     "@heroicons/react": "^2.0.13",
@@ -49,6 +55,7 @@
     "autoprefixer": "^10.4.8",
     "concurrently": "^5.0.0",
     "postcss": "^8.4.16",
+    "postcss-preset-env": "^9.5.4",
     "rescript": "^11.0.1",
     "tailwindcss": "^3.1.8",
     "terser": "^5.30.3",
