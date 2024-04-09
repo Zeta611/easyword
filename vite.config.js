@@ -1,7 +1,13 @@
 import { defineConfig } from 'vite'
+import legacy from '@vitejs/plugin-legacy'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()]
+  plugins: [
+    react(),
+    legacy({
+      targets: ['last 2 versions, not dead, > 0.2% in KR, iOS >= 12.5'],
+      polyfills: ['es/array']
+    })
+  ]
 })
