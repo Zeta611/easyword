@@ -108,8 +108,8 @@ function NewJargon(props) {
   var newJargonWithoutTranslationMutate = match$6[0];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (english.length < 3) {
-      window.alert("용어는 세 글자 이상이어야 해요");
+    if (english.length < 1) {
+      window.alert("용어를 입력해주세요");
       return ;
     }
     if (!withoutKorean && korean.length < 1) {

@@ -88,14 +88,14 @@ function CommentRow$CommentNode(props) {
   var mutate = match$5[0];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (content.length < 5) {
-      window.alert("댓글은 다섯 글자 이상이어야 해요");
+    if (content.length < 3) {
+      window.alert("댓글은 세 글자 이상이어야 해요");
       return ;
     }
     var jargonID$1 = Base64.retrieveOriginalID(jargonID);
     var commentID = Base64.retrieveOriginalID(comment.id);
     if (user == null) {
-      window.alert("You need to be signed in to comment!");
+      window.alert("로그인해야 합니다.");
     } else if (jargonID$1 !== undefined && commentID !== undefined) {
       mutate({
             authorID: user.uid,

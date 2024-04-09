@@ -36,8 +36,8 @@ let make = (~jargonID) => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if content->String.length < 5 {
-      Window.alert("댓글은 다섯 글자 이상이어야 해요")
+    if content->String.length < 3 {
+      Window.alert("댓글은 세 글자 이상이어야 해요")
     } else {
       let jargonID = jargonID->Base64.retrieveOriginalID
       switch (user->Nullable.toOption, jargonID) {
@@ -58,7 +58,7 @@ let make = (~jargonID) => {
           },
         )->ignore
       | (Some(_), _) => Window.alert("현재 댓글을 달 수 없어요")
-      | (None, _) => Window.alert("You need to be signed in to comment!")
+      | (None, _) => Window.alert("로그인해야 합니다")
       }
     }
   }
