@@ -1,3 +1,11 @@
+module SignIn = {
+  let make = React.lazy_(() => Js.import(SignIn.make))
+}
+
+module SignOut = {
+  let make = React.lazy_(() => Js.import(SignOut.make))
+}
+
 module Profile = {
   let make = React.lazy_(() => Js.import(Profile.make))
 }

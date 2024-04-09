@@ -4,8 +4,6 @@ import * as Home from "./Home.js";
 import * as React from "react";
 import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
-import * as SignIn from "./SignIn.js";
-import * as SignOut from "./SignOut.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
@@ -94,14 +92,14 @@ function App(props) {
           if (path.tl) {
             exit = 1;
           } else {
-            tmp = JsxRuntime.jsx(SignIn.make, {});
+            tmp = JsxRuntime.jsx(LazyComponents.SignIn.make, {});
           }
           break;
       case "logout" :
           if (path.tl) {
             exit = 1;
           } else {
-            tmp = JsxRuntime.jsx(SignOut.make, {});
+            tmp = JsxRuntime.jsx(LazyComponents.SignOut.make, {});
           }
           break;
       default:
@@ -164,14 +162,8 @@ function App(props) {
               })
           });
     }
-    tmp = JsxRuntime.jsx(React.Suspense, {
-          children: Caml_option.some(JsxRuntime.jsx(NavbarContainer.make, {
-                    children: tmp$1
-                  })),
-          fallback: Caml_option.some(JsxRuntime.jsx("div", {
-                    children: JsxRuntime.jsx(Loader.make, {}),
-                    className: "h-screen grid justify-center content-center"
-                  }))
+    tmp = JsxRuntime.jsx(NavbarContainer.make, {
+          children: tmp$1
         });
   }
   return JsxRuntime.jsx(BetterReactMathjax.MathJaxContext, {
@@ -184,7 +176,13 @@ function App(props) {
                                 sdk: Caml_option.valFromOption(firestore),
                                 children: JsxRuntime.jsx(SignInWrapper.make, {
                                       children: JsxRuntime.jsx(RelayWrapper.make, {
-                                            children: tmp
+                                            children: JsxRuntime.jsx(React.Suspense, {
+                                                  children: Caml_option.some(tmp),
+                                                  fallback: Caml_option.some(JsxRuntime.jsx("div", {
+                                                            children: JsxRuntime.jsx(Loader.make, {}),
+                                                            className: "h-screen grid justify-center content-center"
+                                                          }))
+                                                })
                                           })
                                     })
                               })
