@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     legacy({
       targets: ['last 2 versions, not dead, > 0.2% in KR, iOS >= 12.5'],
-      polyfills: ['es/array']
+      modernPolyfills: ['es/array']
     })
   ]
 })
