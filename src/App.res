@@ -52,50 +52,55 @@ let make = () => {
             <FirestoreProvider sdk=firestore>
               <SignInWrapper>
                 <RelayWrapper>
-                  {switch url.path {
-                  | list{"login"} => <SignIn />
-                  | list{"logout"} => <SignOut />
+                  <React.Suspense
+                    fallback={<div className="h-screen grid justify-center content-center">
+                      <Loader />
+                    </div>}>
+                    {
+                      open LazyComponents
+                      switch url.path {
+                      | list{"login"} => <SignIn />
+                      | list{"logout"} => <SignOut />
 
-                  | path =>
-                    <React.Suspense
-                      fallback={<div className="h-screen grid justify-center content-center">
-                        <Loader />
-                      </div>}>
-                      <NavbarContainer>
-                        {switch path {
-                        | list{} =>
-                          <ErrorBoundary
-                            fallbackRender={({error}) => {
-                              Console.error(error)
-                              React.null
-                            }}>
-                            <React.Suspense
-                              fallback={<div
-                                className="h-screen grid justify-center content-center">
-                                <Loader />
-                              </div>}>
-                              <Home />
-                            </React.Suspense>
-                          </ErrorBoundary>
-                        | list{"profile"} => <Profile />
-                        | list{"new-jargon"} => <NewJargon />
-                        | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                        | list{"jargon", jargonID} =>
-                          <ErrorBoundary
-                            fallbackRender={_ => {
-                              <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
-                            }}>
-                            <JargonPost jargonID />
-                          </ErrorBoundary>
+                      | path =>
+                        <NavbarContainer>
+                          {switch path {
+                          | list{} =>
+                            <ErrorBoundary
+                              fallbackRender={({error}) => {
+                                Console.error(error)
+                                React.null
+                              }}>
+                              <React.Suspense
+                                fallback={<div
+                                  className="h-screen grid justify-center content-center">
+                                  <Loader />
+                                </div>}>
+                                <Home />
+                              </React.Suspense>
+                            </ErrorBoundary>
+                          | list{"profile"} => <Profile />
+                          | list{"new-jargon"} => <NewJargon />
+                          | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                          | list{"jargon", jargonID} =>
+                            <ErrorBoundary
+                              fallbackRender={_ => {
+                                <div className="text-3xl px-5 py-5">
+                                  {"앗! 404"->React.string}
+                                </div>
+                              }}>
+                              <JargonPost jargonID />
+                            </ErrorBoundary>
 
-                        | list{"why"} => <Why />
-                        | list{"colophon"} => <Colophon />
+                          | list{"why"} => <Why />
+                          | list{"colophon"} => <Colophon />
 
-                        | _ => React.string("404")
-                        }}
-                      </NavbarContainer>
-                    </React.Suspense>
-                  }}
+                          | _ => React.string("404")
+                          }}
+                        </NavbarContainer>
+                      }
+                    }
+                  </React.Suspense>
                 </RelayWrapper>
               </SignInWrapper>
             </FirestoreProvider>
