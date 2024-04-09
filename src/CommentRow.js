@@ -247,15 +247,6 @@ Caml_module.update_mod({
       make: CommentRow$CommentNode
     });
 
-Array.prototype.toSorted  = function(){
-    const arr = this;
-    const n = arr.length;
-    const res = [...arr];
-
-    // sort in ascending order
-    res.sort((a,b)=>a-b);
-    return res;
-}
 function CommentRow$CommentSiblings(props) {
   var jargonID = props.jargonID;
   return Core__List.toArray(props.siblings).toSorted(function (a, b) {

@@ -26,6 +26,7 @@
     "@rescript/core": "^1.2.0",
     "@rescript/react": "^0.12.1",
     "better-react-mathjax": "^2.0.3",
+    "core-js": "^3.36.1",
     "daisyui": "^4.8.0",
     "firebase": "^9.16.0",
     "react": "18.2.0",

@@ -2975,7 +2975,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.36.0":
+"core-js@npm:^3.36.0, core-js@npm:^3.36.1":
   version: 3.36.1
   resolution: "core-js@npm:3.36.1"
   checksum: 10/ce1e1bfc1034b6f2ff7c91077319e8abdd650ee606ffe6e80073e64ab9d8aad2d6a6d953461b01f331a6f796ad2fd766a3386b88aa371b45d44fa7c0b9913ce6
@@ -3111,6 +3111,7 @@ __metadata:
     autoprefixer: "npm:^10.4.8"
     better-react-mathjax: "npm:^2.0.3"
     concurrently: "npm:^5.0.0"
+    core-js: "npm:^3.36.1"
     daisyui: "npm:^4.8.0"
     firebase: "npm:^9.16.0"
     postcss: "npm:^8.4.16"
