@@ -77,19 +77,20 @@ let make = () => {
                               <Home />
                             </React.Suspense>
                           </ErrorBoundary>
-                        | list{"profile"} => <Profile />
-                        | list{"new-jargon"} => <NewJargon />
-                        | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                        | list{"profile"} => <LazyComponents.Profile />
+                        | list{"new-jargon"} => <LazyComponents.NewJargon />
+                        | list{"new-translation", jargonID} =>
+                          <LazyComponents.NewTranslation jargonID />
                         | list{"jargon", jargonID} =>
                           <ErrorBoundary
                             fallbackRender={_ => {
                               <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
                             }}>
-                            <JargonPost jargonID />
+                            <LazyComponents.JargonPost jargonID />
                           </ErrorBoundary>
 
-                        | list{"why"} => <Why />
-                        | list{"colophon"} => <Colophon />
+                        | list{"why"} => <LazyComponents.Why />
+                        | list{"colophon"} => <LazyComponents.Colophon />
 
                         | _ => React.string("404")
                         }}
