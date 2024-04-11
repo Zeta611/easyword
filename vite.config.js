@@ -8,7 +8,6 @@ export default defineConfig({
     cssMinify: 'lightningcss',
     terserOptions: {
       compress: {
-        booleans_as_integers: true,
         drop_console: true,
         passes: 5,
         keep_fargs: false,
