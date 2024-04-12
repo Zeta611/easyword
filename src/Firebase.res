@@ -37,13 +37,6 @@ external useInitFirestore: (FirebaseApp.t => promise<firestore>) => observableSt
 @module("reactfire")
 external useFirestore: unit => firestore = "useFirestore"
 
-@module("firebase/firestore")
-external enableIndexedDbPersistence: firestore => promise<unit> = "enableIndexedDbPersistence"
-
-@module("firebase/firestore")
-external enableMultiTabIndexedDbPersistence: firestore => promise<unit> =
-  "enableMultiTabIndexedDbPersistence"
-
 type documentReference
 @module("firebase/firestore")
 external doc: (firestore, ~path: string) => documentReference = "doc"

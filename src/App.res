@@ -15,15 +15,7 @@ let make = () => {
     },
   )
 
-  let {status, data: firestore} = useInitFirestore(async app => {
-    let firestore = app->getFirestore
-    try {
-      await firestore->enableMultiTabIndexedDbPersistence
-    } catch {
-    | Exn.Error(err) => Console.error(err)
-    }
-    firestore
-  })
+  let {status, data: firestore} = useInitFirestore(async app => app->getFirestore)
 
   let mathJaxConfig = {
     "loader": {"load": ["[tex]/bussproofs"]},

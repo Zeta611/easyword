@@ -2,7 +2,6 @@
 
 import * as Home from "./Home.js";
 import * as React from "react";
-import * as Js_exn from "../node_modules/rescript/lib/es6/js_exn.js";
 import * as Loader from "./Loader.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
@@ -13,7 +12,6 @@ import * as Auth from "firebase/auth";
 import * as LazyComponents from "./LazyComponents.js";
 import * as NavbarContainer from "./NavbarContainer.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
 import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
@@ -28,19 +26,7 @@ function App(props) {
         isTokenAutoRefreshEnabled: true
       });
   var match = Reactfire.useInitFirestore(async function (app) {
-        var firestore = Firestore.getFirestore(app);
-        try {
-          await Firestore.enableMultiTabIndexedDbPersistence(firestore);
-        }
-        catch (raw_err){
-          var err = Caml_js_exceptions.internalToOCamlException(raw_err);
-          if (err.RE_EXN_ID === Js_exn.$$Error) {
-            console.error(err._1);
-          } else {
-            throw err;
-          }
-        }
-        return firestore;
+        return Firestore.getFirestore(app);
       });
   var firestore = match.data;
   var mathJaxConfig = {
