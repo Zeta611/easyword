@@ -2,6 +2,7 @@
 let make = (~searchTerm, ~onChange) => {
   <div className="relative flex place-items-center gap-1">
     <input
+      id="search-bar"
       type_="search"
       value=searchTerm
       onChange

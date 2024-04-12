@@ -6,6 +6,7 @@ function SearchBar(props) {
   return JsxRuntime.jsx("div", {
               children: JsxRuntime.jsx("input", {
                     className: "input input-bordered w-full rounded-lg text-sm shadow-lg",
+                    id: "search-bar",
                     placeholder: "정규식으로 검색해보세요",
                     type: "search",
                     value: props.searchTerm,
