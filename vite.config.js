@@ -8,10 +8,10 @@ export default defineConfig({
     cssMinify: 'lightningcss',
     terserOptions: {
       compress: {
-        drop_console: true,
+        // drop_console: true,
         passes: 5,
-        keep_fargs: false,
-        toplevel: true
+        // keep_fargs: false,
+        // toplevel: true
       }
     }
   },
