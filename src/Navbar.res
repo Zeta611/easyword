@@ -99,7 +99,7 @@ let make = () => {
                 ->Webapi.Dom.Window.open_(~url=gitHubURL, ~name="_blank", ())
                 ->ignore}>
               <ReactIcons.FaGithub className="h-4 w-4" />
-              {"참여하기"->React.string}
+              {"제작참여"->React.string}
             </button>
           </li>
         </ul>
@@ -154,7 +154,7 @@ let make = () => {
               ->ignore}>
             <div className="grid justify-items-center">
               <ReactIcons.FaGithub className="h-5 w-5 hidden sm:flex" />
-              {"참여하기"->React.string}
+              {"제작참여"->React.string}
             </div>
           </button>
         </li>

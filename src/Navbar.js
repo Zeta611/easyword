@@ -115,7 +115,7 @@ function Navbar(props) {
                                                       JsxRuntime.jsx(Fa.FaGithub, {
                                                             className: "h-4 w-4"
                                                           }),
-                                                      "참여하기"
+                                                      "제작참여"
                                                     ],
                                                     onClick: (function (param) {
                                                         window.open(gitHubURL, "_blank", undefined);
@@ -226,7 +226,7 @@ function Navbar(props) {
                                                   JsxRuntime.jsx(Fa.FaGithub, {
                                                         className: "h-5 w-5 hidden sm:flex"
                                                       }),
-                                                  "참여하기"
+                                                  "제작참여"
                                                 ],
                                                 className: "grid justify-items-center"
                                               }),
