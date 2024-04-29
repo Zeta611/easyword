@@ -5,5 +5,6 @@ module.exports = {
   customScalars: {
     timestamptz: "string",
     uuid: "string",
+    seed_float: "string",
   },
-}
+};

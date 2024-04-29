@@ -29,6 +29,87 @@ input Boolean_comparison_exp {
 }
 
 """
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""An object with globally unique ID"""
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String!
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String!
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
 columns and relationships of "comment"
 """
 type comment implements Node {
@@ -105,6 +186,19 @@ type comment implements Node {
   translation: translation
   translation_id: uuid
   updated_at: timestamptz!
+}
+
+"""
+A Relay connection object on "comment"
+"""
+type commentConnection {
+  edges: [commentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type commentEdge {
+  cursor: String!
+  node: comment!
 }
 
 """
@@ -443,34 +537,6 @@ input comment_updates {
 }
 
 """
-A Relay connection object on "comment"
-"""
-type commentConnection {
-  edges: [commentEdge!]!
-  pageInfo: PageInfo!
-}
-
-type commentEdge {
-  cursor: String!
-  node: comment!
-}
-
-"""
-Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
-"""
-input Int_comparison_exp {
-  _eq: Int
-  _gt: Int
-  _gte: Int
-  _in: [Int!]
-  _is_null: Boolean
-  _lt: Int
-  _lte: Int
-  _neq: Int
-  _nin: [Int!]
-}
-
-"""
 columns and relationships of "jargon"
 """
 type jargon implements Node {
@@ -592,6 +658,19 @@ type jargon implements Node {
     where: translation_bool_exp
   ): translationConnection!
   updated_at: timestamptz!
+}
+
+"""
+A Relay connection object on "jargon"
+"""
+type jargonConnection {
+  edges: [jargonEdge!]!
+  pageInfo: PageInfo!
+}
+
+type jargonEdge {
+  cursor: String!
+  node: jargon!
 }
 
 """
@@ -852,17 +931,8 @@ input jargon_updates {
   where: jargon_bool_exp!
 }
 
-"""
-A Relay connection object on "jargon"
-"""
-type jargonConnection {
-  edges: [jargonEdge!]!
-  pageInfo: PageInfo!
-}
-
-type jargonEdge {
-  cursor: String!
-  node: jargon!
+input list_jargon_random_args {
+  seed: seed_float
 }
 
 """mutation root"""
@@ -1120,12 +1190,6 @@ type mutation_root {
   ): [user_mutation_response]
 }
 
-"""An object with globally unique ID"""
-interface Node {
-  """A globally unique identifier"""
-  id: ID!
-}
-
 """column ordering options"""
 enum order_by {
   """in ascending order, nulls last"""
@@ -1145,13 +1209,6 @@ enum order_by {
 
   """in descending order, nulls last"""
   desc_nulls_last
-}
-
-type PageInfo {
-  endCursor: String!
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String!
 }
 
 type query_root {
@@ -1179,6 +1236,30 @@ type query_root {
   """
   jargon_connection(
     after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargonConnection!
+
+  """
+  execute function "list_jargon_random" which returns "jargon"
+  """
+  list_jargon_random_connection(
+    after: String
+
+    """
+    input parameters for function "list_jargon_random"
+    """
+    args: list_jargon_random_args
     before: String
 
     """distinct select on columns"""
@@ -1236,58 +1317,7 @@ type query_root {
   ): userConnection!
 }
 
-"""
-Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
-"""
-input String_comparison_exp {
-  _eq: String
-  _gt: String
-  _gte: String
-
-  """does the column match the given case-insensitive pattern"""
-  _ilike: String
-  _in: [String!]
-
-  """
-  does the column match the given POSIX regular expression, case insensitive
-  """
-  _iregex: String
-  _is_null: Boolean
-
-  """does the column match the given pattern"""
-  _like: String
-  _lt: String
-  _lte: String
-  _neq: String
-
-  """does the column NOT match the given case-insensitive pattern"""
-  _nilike: String
-  _nin: [String!]
-
-  """
-  does the column NOT match the given POSIX regular expression, case insensitive
-  """
-  _niregex: String
-
-  """does the column NOT match the given pattern"""
-  _nlike: String
-
-  """
-  does the column NOT match the given POSIX regular expression, case sensitive
-  """
-  _nregex: String
-
-  """does the column NOT match the given SQL regular expression"""
-  _nsimilar: String
-
-  """
-  does the column match the given POSIX regular expression, case sensitive
-  """
-  _regex: String
-
-  """does the column match the given SQL regular expression"""
-  _similar: String
-}
+scalar seed_float
 
 type subscription_root {
   """
@@ -1314,6 +1344,30 @@ type subscription_root {
   """
   jargon_connection(
     after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargonConnection!
+
+  """
+  execute function "list_jargon_random" which returns "jargon"
+  """
+  list_jargon_random_connection(
+    after: String
+
+    """
+    input parameters for function "list_jargon_random"
+    """
+    args: list_jargon_random_args
     before: String
 
     """distinct select on columns"""
@@ -1407,6 +1461,19 @@ type translation implements Node {
   jargon_id: uuid!
   name: String!
   updated_at: timestamptz!
+}
+
+"""
+A Relay connection object on "translation"
+"""
+type translationConnection {
+  edges: [translationEdge!]!
+  pageInfo: PageInfo!
+}
+
+type translationEdge {
+  cursor: String!
+  node: translation!
 }
 
 """
@@ -1682,19 +1749,6 @@ input translation_updates {
 }
 
 """
-A Relay connection object on "translation"
-"""
-type translationConnection {
-  edges: [translationEdge!]!
-  pageInfo: PageInfo!
-}
-
-type translationEdge {
-  cursor: String!
-  node: translation!
-}
-
-"""
 columns and relationships of "user"
 """
 type user implements Node {
@@ -1864,6 +1918,19 @@ type user implements Node {
 }
 
 """
+A Relay connection object on "user"
+"""
+type userConnection {
+  edges: [userEdge!]!
+  pageInfo: PageInfo!
+}
+
+type userEdge {
+  cursor: String!
+  node: user!
+}
+
+"""
 Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'.
 """
 input user_bool_exp {
@@ -2021,19 +2088,6 @@ input user_updates {
 
   """filter the rows which have to be updated"""
   where: user_bool_exp!
-}
-
-"""
-A Relay connection object on "user"
-"""
-type userConnection {
-  edges: [userEdge!]!
-  pageInfo: PageInfo!
-}
-
-type userEdge {
-  cursor: String!
-  node: user!
 }
 
 scalar uuid

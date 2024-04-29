@@ -8,6 +8,10 @@ import * as ReactErrorBoundary from "react-error-boundary";
 import * as HomeJargonListSection from "./HomeJargonListSection.js";
 import * as Solid from "@heroicons/react/24/solid";
 
+function seed() {
+  return Math.random() * 2 - 1;
+}
+
 function Home(props) {
   var match = React.useState(function () {
         return "";
@@ -45,7 +49,7 @@ function Home(props) {
     
   };
   var tmp;
-  tmp = axis === "English" ? (
+  tmp = typeof axis !== "object" && axis === "English" ? (
       direction === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
               className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
             }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
@@ -53,7 +57,9 @@ function Home(props) {
             })
     ) : null;
   var tmp$1;
-  tmp$1 = axis === "English" ? "ABC순" : "최근순";
+  tmp$1 = typeof axis !== "object" ? (
+      axis === "English" ? "ABC순" : "최근순"
+    ) : "무작위";
   return JsxRuntime.jsxs("div", {
               children: [
                 JsxRuntime.jsxs("div", {
@@ -117,6 +123,22 @@ function Home(props) {
                                                         closeDropdown();
                                                       })
                                                   })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsx("button", {
+                                                    children: "무작위",
+                                                    onClick: (function (param) {
+                                                        setAxis(function (param) {
+                                                              return {
+                                                                      TAG: "Random",
+                                                                      _0: seed()
+                                                                    };
+                                                            });
+                                                        setSearchTerm(function (param) {
+                                                              return "";
+                                                            });
+                                                      })
+                                                  })
                                             })
                                       ],
                                       className: "menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box"
@@ -151,6 +173,7 @@ function Home(props) {
 var make = Home;
 
 export {
+  seed ,
   make ,
 }
 /* Hooks Not a pure module */

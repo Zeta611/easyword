@@ -33,4 +33,4 @@ type addTranslation = {id: string, korean: string, comment: string}
 
 type vote = {jargonID: string, translations: array<string>}
 
-type axis = English | Chrono
+type axis = English | Chrono | Random(float)

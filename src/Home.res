@@ -1,3 +1,5 @@
+let seed = () => Math.random() *. 2. -. 1.
+
 @react.component
 let make = () => {
   // searchTerm is set from SearchBar via onChange and passed into Dictionary
@@ -33,13 +35,14 @@ let make = () => {
         className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg mt-1">
         <summary className="btn btn-primary text-xs">
           {switch (axis, direction) {
-          | (Chrono, _) => React.null
+          | (Chrono | Random(_), _) => React.null
           | (_, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           | (_, #desc) => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
           }}
           {switch (axis, direction) {
           | (English, _) => "ABC순"->React.string
           | (Chrono, _) => "최근순"->React.string
+          | (Random(_), _) => "무작위"->React.string
           }}
           <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
         </summary>
@@ -73,6 +76,15 @@ let make = () => {
               | #asc => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               | #desc => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
               }}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={_ => {
+                setAxis(_ => Random(seed()))
+                setSearchTerm(_ => "")
+              }}>
+              {"무작위"->React.string}
             </button>
           </li>
         </ul>

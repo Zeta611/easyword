@@ -50,11 +50,7 @@ module NewJargonWithoutTranslationMutation = %relay(`
         author_id: $authorID
         name: $name
         comments: {
-          data: {
-            id: $commentID
-            author_id: $authorID
-            content: $comment
-          }
+          data: { id: $commentID, author_id: $authorID, content: $comment }
         }
       }
     ) {

@@ -51,30 +51,39 @@ var HomeJargonListSectionQuery = {
 };
 
 function HomeJargonListSection(props) {
+  var axis = props.axis;
   var searchTerm = props.searchTerm.replace(/\s/g, "");
   var tmp;
-  tmp = props.axis === "English" ? [
-      {
-        name_lower: props.direction === "asc" ? "asc" : "desc"
-      },
-      {
-        updated_at: "desc"
-      }
-    ] : [
-      {
-        updated_at: "desc"
-      },
-      {
-        name_lower: "asc"
-      }
-    ];
+  tmp = typeof axis !== "object" ? (
+      axis === "English" ? [
+          {
+            name_lower: props.direction === "asc" ? "asc" : "desc"
+          },
+          {
+            updated_at: "desc"
+          }
+        ] : [
+          {
+            updated_at: "desc"
+          },
+          {
+            name_lower: "asc"
+          }
+        ]
+    ) : [];
+  var tmp$1;
+  tmp$1 = typeof axis !== "object" ? "0.0" : axis._0.toString();
   var match = use({
         directions: tmp,
-        searchTerm: searchTerm
+        searchTerm: searchTerm,
+        seed: tmp$1
       }, undefined, undefined, undefined);
+  var tmp$2;
+  tmp$2 = typeof axis !== "object" ? false : true;
   return JsxRuntime.jsx(React.Suspense, {
               children: Caml_option.some(JsxRuntime.jsx(JargonList.make, {
-                        query: match.fragmentRefs
+                        query: match.fragmentRefs,
+                        random: tmp$2
                       })),
               fallback: Caml_option.some(JsxRuntime.jsx("div", {
                         children: JsxRuntime.jsx(Loader.make, {}),

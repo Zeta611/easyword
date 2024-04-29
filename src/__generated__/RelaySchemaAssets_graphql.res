@@ -322,6 +322,78 @@ and input_Boolean_comparison_exp_nullable = {
 }
 
 @live
+and input_Int_comparison_exp = {
+  _eq?: int,
+  _gt?: int,
+  _gte?: int,
+  _in?: array<int>,
+  _is_null?: bool,
+  _lt?: int,
+  _lte?: int,
+  _neq?: int,
+  _nin?: array<int>,
+}
+
+@live
+and input_Int_comparison_exp_nullable = {
+  _eq?: Js.Null.t<int>,
+  _gt?: Js.Null.t<int>,
+  _gte?: Js.Null.t<int>,
+  _in?: Js.Null.t<array<int>>,
+  _is_null?: Js.Null.t<bool>,
+  _lt?: Js.Null.t<int>,
+  _lte?: Js.Null.t<int>,
+  _neq?: Js.Null.t<int>,
+  _nin?: Js.Null.t<array<int>>,
+}
+
+@live
+and input_String_comparison_exp = {
+  _eq?: string,
+  _gt?: string,
+  _gte?: string,
+  _ilike?: string,
+  _in?: array<string>,
+  _iregex?: string,
+  _is_null?: bool,
+  _like?: string,
+  _lt?: string,
+  _lte?: string,
+  _neq?: string,
+  _nilike?: string,
+  _nin?: array<string>,
+  _niregex?: string,
+  _nlike?: string,
+  _nregex?: string,
+  _nsimilar?: string,
+  _regex?: string,
+  _similar?: string,
+}
+
+@live
+and input_String_comparison_exp_nullable = {
+  _eq?: Js.Null.t<string>,
+  _gt?: Js.Null.t<string>,
+  _gte?: Js.Null.t<string>,
+  _ilike?: Js.Null.t<string>,
+  _in?: Js.Null.t<array<string>>,
+  _iregex?: Js.Null.t<string>,
+  _is_null?: Js.Null.t<bool>,
+  _like?: Js.Null.t<string>,
+  _lt?: Js.Null.t<string>,
+  _lte?: Js.Null.t<string>,
+  _neq?: Js.Null.t<string>,
+  _nilike?: Js.Null.t<string>,
+  _nin?: Js.Null.t<array<string>>,
+  _niregex?: Js.Null.t<string>,
+  _nlike?: Js.Null.t<string>,
+  _nregex?: Js.Null.t<string>,
+  _nsimilar?: Js.Null.t<string>,
+  _regex?: Js.Null.t<string>,
+  _similar?: Js.Null.t<string>,
+}
+
+@live
 and input_comment_aggregate_bool_exp = {
   bool_and?: input_comment_aggregate_bool_exp_bool_and,
   bool_or?: input_comment_aggregate_bool_exp_bool_or,
@@ -648,32 +720,6 @@ and input_comment_updates_nullable = {
 }
 
 @live
-and input_Int_comparison_exp = {
-  _eq?: int,
-  _gt?: int,
-  _gte?: int,
-  _in?: array<int>,
-  _is_null?: bool,
-  _lt?: int,
-  _lte?: int,
-  _neq?: int,
-  _nin?: array<int>,
-}
-
-@live
-and input_Int_comparison_exp_nullable = {
-  _eq?: Js.Null.t<int>,
-  _gt?: Js.Null.t<int>,
-  _gte?: Js.Null.t<int>,
-  _in?: Js.Null.t<array<int>>,
-  _is_null?: Js.Null.t<bool>,
-  _lt?: Js.Null.t<int>,
-  _lte?: Js.Null.t<int>,
-  _neq?: Js.Null.t<int>,
-  _nin?: Js.Null.t<array<int>>,
-}
-
-@live
 and input_jargon_aggregate_bool_exp = {
   count?: input_jargon_aggregate_bool_exp_count,
 }
@@ -914,49 +960,13 @@ and input_jargon_updates_nullable = {
 }
 
 @live
-and input_String_comparison_exp = {
-  _eq?: string,
-  _gt?: string,
-  _gte?: string,
-  _ilike?: string,
-  _in?: array<string>,
-  _iregex?: string,
-  _is_null?: bool,
-  _like?: string,
-  _lt?: string,
-  _lte?: string,
-  _neq?: string,
-  _nilike?: string,
-  _nin?: array<string>,
-  _niregex?: string,
-  _nlike?: string,
-  _nregex?: string,
-  _nsimilar?: string,
-  _regex?: string,
-  _similar?: string,
+and input_list_jargon_random_args = {
+  seed?: string,
 }
 
 @live
-and input_String_comparison_exp_nullable = {
-  _eq?: Js.Null.t<string>,
-  _gt?: Js.Null.t<string>,
-  _gte?: Js.Null.t<string>,
-  _ilike?: Js.Null.t<string>,
-  _in?: Js.Null.t<array<string>>,
-  _iregex?: Js.Null.t<string>,
-  _is_null?: Js.Null.t<bool>,
-  _like?: Js.Null.t<string>,
-  _lt?: Js.Null.t<string>,
-  _lte?: Js.Null.t<string>,
-  _neq?: Js.Null.t<string>,
-  _nilike?: Js.Null.t<string>,
-  _nin?: Js.Null.t<array<string>>,
-  _niregex?: Js.Null.t<string>,
-  _nlike?: Js.Null.t<string>,
-  _nregex?: Js.Null.t<string>,
-  _nsimilar?: Js.Null.t<string>,
-  _regex?: Js.Null.t<string>,
-  _similar?: Js.Null.t<string>,
+and input_list_jargon_random_args_nullable = {
+  seed?: Js.Null.t<string>,
 }
 
 @live
