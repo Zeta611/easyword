@@ -13,6 +13,10 @@ let make = () => {
 
   let onChange = event => {
     let value = (event->ReactEvent.Form.currentTarget)["value"]
+    switch axis {
+    | Random(_) => setAxis(_ => Chrono)
+    | _ => ()
+    }
     setSearchTerm(_ => value)
     switch resetErrorBoundary {
     | Some(resetErrorBoundary) => {

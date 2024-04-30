@@ -37,6 +37,13 @@ function Home(props) {
   var closeDropdown = Hooks.useClosingDropdown("sort-dropdown-btn");
   var onChange = function ($$event) {
     var value = $$event.currentTarget.value;
+    if (typeof axis !== "object") {
+      axis === "English";
+    } else {
+      setAxis(function (param) {
+            return "Chrono";
+          });
+    }
     setSearchTerm(function (param) {
           return value;
         });
