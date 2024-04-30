@@ -5,10 +5,8 @@ import * as Caml_option from "../../node_modules/rescript/lib/es6/caml_option.js
 import * as ReactRelay from "react-relay";
 import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRelay.js";
 
-function makeRefetchVariables(count, cursor, seed) {
+function makeRefetchVariables(seed) {
   return {
-          count: count,
-          cursor: cursor,
           seed: seed
         };
 }
@@ -23,13 +21,13 @@ function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
 }
 
-var wrapResponseConverter = {"__root":{"":{"f":""}}};
+var wrapResponseConverter = {"__root":{"list_jargon_random_connection_edges_node":{"f":""}}};
 
 function convertWrapResponse(v) {
   return RescriptRelay.convertObj(v, wrapResponseConverter, undefined, null);
 }
 
-var responseConverter = {"__root":{"":{"f":""}}};
+var responseConverter = {"__root":{"list_jargon_random_connection_edges_node":{"f":""}}};
 
 function convertResponse(v) {
   return RescriptRelay.convertObj(v, responseConverter, undefined, undefined);
@@ -54,27 +52,12 @@ var Utils = {};
 var node = ((function(){
 var v0 = [
   {
-    "defaultValue": 40,
-    "kind": "LocalArgument",
-    "name": "count"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "cursor"
-  },
-  {
     "defaultValue": null,
     "kind": "LocalArgument",
     "name": "seed"
   }
 ],
 v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
   {
     "fields": [
       {
@@ -87,9 +70,9 @@ v1 = [
     "name": "args"
   },
   {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 40
   }
 ],
 v2 = {
@@ -111,23 +94,46 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "JargonListRandomOrderRefetchQuery",
+    "name": "JargonRandomListOrderQuery",
     "selections": [
       {
-        "args": [
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "jargonConnection",
+        "kind": "LinkedField",
+        "name": "list_jargon_random_connection",
+        "plural": false,
+        "selections": [
           {
-            "kind": "Variable",
-            "name": "count",
-            "variableName": "count"
-          },
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
+            "alias": null,
+            "args": null,
+            "concreteType": "jargonEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "jargon",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v2/*: any*/),
+                  {
+                    "args": null,
+                    "kind": "FragmentSpread",
+                    "name": "JargonCard_jargon"
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
           }
         ],
-        "kind": "FragmentSpread",
-        "name": "JargonListRandomOrderQuery"
+        "storageKey": null
       }
     ],
     "type": "query_root",
@@ -137,7 +143,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "JargonListRandomOrderRefetchQuery",
+    "name": "JargonRandomListOrderQuery",
     "selections": [
       {
         "alias": null,
@@ -226,47 +232,8 @@ return {
                       }
                     ],
                     "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "__typename",
-                    "storageKey": null
                   }
                 ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "cursor",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "PageInfo",
-            "kind": "LinkedField",
-            "name": "pageInfo",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "endCursor",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "hasNextPage",
                 "storageKey": null
               }
             ],
@@ -274,27 +241,16 @@ return {
           }
         ],
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "filters": [
-          "args"
-        ],
-        "handle": "connection",
-        "key": "JargonListRandomOrderQuery_list_jargon_random_connection",
-        "kind": "LinkedHandle",
-        "name": "list_jargon_random_connection"
       }
     ]
   },
   "params": {
-    "cacheID": "3c9686956d952cc9dabfb67967cc08e4",
+    "cacheID": "b5167799589f884ad33e434e9f843d34",
     "id": null,
     "metadata": {},
-    "name": "JargonListRandomOrderRefetchQuery",
+    "name": "JargonRandomListOrderQuery",
     "operationKind": "query",
-    "text": "query JargonListRandomOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $seed: seed_float\n) {\n  ...JargonListRandomOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListRandomOrderQuery_1G22uz on query_root {\n  list_jargon_random_connection(args: {seed: $seed}, first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
   }
 };
 })());

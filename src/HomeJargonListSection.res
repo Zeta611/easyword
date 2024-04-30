@@ -2,10 +2,8 @@ module HomeJargonListSectionQuery = %relay(`
   query HomeJargonListSectionQuery(
     $searchTerm: String!
     $directions: [jargon_order_by!]!
-    $seed: seed_float!
   ) {
     ...JargonListOrderQuery
-    ...JargonListRandomOrderQuery
   }
 `)
 
@@ -30,10 +28,6 @@ let make = (~searchTerm, ~axis, ~direction) => {
         | Random(_) => []
         }
       },
-      seed: switch axis {
-      | Random(seed) => seed->Float.toString
-      | _ => "0.0"
-      },
     },
   )
 
@@ -41,12 +35,9 @@ let make = (~searchTerm, ~axis, ~direction) => {
     fallback={<div className="h-screen grid justify-center content-center">
       <Loader />
     </div>}>
-    <JargonList
-      query
-      random={switch axis {
-      | Random(_) => true
-      | _ => false
-      }}
-    />
+    {switch axis {
+    | Random(seed) => <JargonRandomList seed />
+    | _ => <JargonList query />
+    }}
   </React.Suspense>
 }

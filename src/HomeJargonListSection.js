@@ -4,6 +4,7 @@ import * as React from "react";
 import * as Loader from "./Loader.js";
 import * as JargonList from "./JargonList.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as JargonRandomList from "./JargonRandomList.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
 import * as HomeJargonListSectionQuery_graphql from "./__generated__/HomeJargonListSectionQuery_graphql.js";
@@ -71,20 +72,19 @@ function HomeJargonListSection(props) {
           }
         ]
     ) : [];
-  var tmp$1;
-  tmp$1 = typeof axis !== "object" ? "0.0" : axis._0.toString();
   var match = use({
         directions: tmp,
-        searchTerm: searchTerm,
-        seed: tmp$1
+        searchTerm: searchTerm
       }, undefined, undefined, undefined);
-  var tmp$2;
-  tmp$2 = typeof axis !== "object" ? false : true;
+  var query = match.fragmentRefs;
+  var tmp$1;
+  tmp$1 = typeof axis !== "object" ? JsxRuntime.jsx(JargonList.make, {
+          query: query
+        }) : JsxRuntime.jsx(JargonRandomList.make, {
+          seed: axis._0
+        });
   return JsxRuntime.jsx(React.Suspense, {
-              children: Caml_option.some(JsxRuntime.jsx(JargonList.make, {
-                        query: match.fragmentRefs,
-                        random: tmp$2
-                      })),
+              children: Caml_option.some(tmp$1),
               fallback: Caml_option.some(JsxRuntime.jsx("div", {
                         children: JsxRuntime.jsx(Loader.make, {}),
                         className: "h-screen grid justify-center content-center"

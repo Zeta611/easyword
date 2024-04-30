@@ -7,9 +7,7 @@ import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptRelay_Fragment from "../node_modules/rescript-relay/src/RescriptRelay_Fragment.js";
 import * as JargonListOrderQuery_graphql from "./__generated__/JargonListOrderQuery_graphql.js";
 import ReactInfiniteScrollComponent from "react-infinite-scroll-component";
-import * as JargonListRandomOrderQuery_graphql from "./__generated__/JargonListRandomOrderQuery_graphql.js";
 import * as JargonListOrderRefetchQuery_graphql from "./__generated__/JargonListOrderRefetchQuery_graphql.js";
-import * as JargonListRandomOrderRefetchQuery_graphql from "./__generated__/JargonListRandomOrderRefetchQuery_graphql.js";
 
 var getConnectionNodes = JargonListOrderQuery_graphql.Utils.getConnectionNodes;
 
@@ -53,85 +51,22 @@ var JargonListOrderQuery = {
   useBlockingPagination: useBlockingPagination
 };
 
-var getConnectionNodes$1 = JargonListRandomOrderQuery_graphql.Utils.getConnectionNodes;
-
-var convertFragment$1 = JargonListRandomOrderQuery_graphql.Internal.convertFragment;
-
-function use$1(fRef) {
-  return RescriptRelay_Fragment.useFragment(JargonListRandomOrderQuery_graphql.node, convertFragment$1, fRef);
-}
-
-function useOpt$1(fRef) {
-  return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, JargonListRandomOrderQuery_graphql.node, convertFragment$1);
-}
-
-var makeRefetchVariables$1 = JargonListRandomOrderRefetchQuery_graphql.Types.makeRefetchVariables;
-
-var convertRefetchVariables$1 = JargonListRandomOrderRefetchQuery_graphql.Internal.convertVariables;
-
-function useRefetchable$1(fRef) {
-  return RescriptRelay_Fragment.useRefetchableFragment(JargonListRandomOrderQuery_graphql.node, convertFragment$1, convertRefetchVariables$1, fRef);
-}
-
-function usePagination$1(fRef) {
-  return RescriptRelay_Fragment.usePaginationFragment(JargonListRandomOrderQuery_graphql.node, fRef, convertFragment$1, convertRefetchVariables$1);
-}
-
-function useBlockingPagination$1(fRef) {
-  return RescriptRelay_Fragment.useBlockingPaginationFragment(JargonListRandomOrderQuery_graphql.node, fRef, convertFragment$1, convertRefetchVariables$1);
-}
-
-var JargonListRandomOrderQuery = {
-  getConnectionNodes: getConnectionNodes$1,
-  Types: undefined,
-  Operation: undefined,
-  convertFragment: convertFragment$1,
-  use: use$1,
-  useOpt: useOpt$1,
-  makeRefetchVariables: makeRefetchVariables$1,
-  convertRefetchVariables: convertRefetchVariables$1,
-  useRefetchable: useRefetchable$1,
-  usePagination: usePagination$1,
-  useBlockingPagination: useBlockingPagination$1
-};
-
 function JargonList(props) {
-  var query = props.query;
-  var match;
-  if (props.random) {
-    var match$1 = usePagination$1(query);
-    match = [
-      getConnectionNodes$1(match$1.data.list_jargon_random_connection).map(function (node) {
-            return [
-                    node.id,
-                    node.fragmentRefs
-                  ];
-          }),
-      match$1.hasNext,
-      match$1.loadNext
-    ];
-  } else {
-    var match$2 = usePagination(query);
-    match = [
-      getConnectionNodes(match$2.data.jargon_connection).map(function (node) {
-            return [
-                    node.id,
-                    node.fragmentRefs
-                  ];
-          }),
-      match$2.hasNext,
-      match$2.loadNext
-    ];
-  }
-  var loadNext = match[2];
-  var rows = match[0];
+  var match = usePagination(props.query);
+  var loadNext = match.loadNext;
+  var rows = getConnectionNodes(match.data.jargon_connection).map(function (node) {
+        return [
+                node.id,
+                node.fragmentRefs
+              ];
+      });
   return JsxRuntime.jsx(ReactInfiniteScrollComponent, {
               className: "grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2 pb-10",
               dataLength: rows.length,
               next: (function () {
                   loadNext(40, undefined);
                 }),
-              hasMore: match[1],
+              hasMore: match.hasNext,
               loader: JsxRuntime.jsx("div", {
                     children: JsxRuntime.jsx(Loader.make, {}),
                     className: "grid justify-center content-center"
@@ -151,7 +86,6 @@ var make = JargonList;
 
 export {
   JargonListOrderQuery ,
-  JargonListRandomOrderQuery ,
   make ,
 }
 /* Loader Not a pure module */

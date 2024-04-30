@@ -26,61 +26,21 @@ module JargonListOrderQuery = %relay(`
   }
 `)
 
-module JargonListRandomOrderQuery = %relay(`
-  fragment JargonListRandomOrderQuery on query_root
-  @refetchable(queryName: "JargonListRandomOrderRefetchQuery")
-  @argumentDefinitions(
-    count: { type: "Int", defaultValue: 40 }
-    cursor: { type: "String" }
-  ) {
-    list_jargon_random_connection(
-      args: { seed: $seed }
-      first: $count
-      after: $cursor
-    )
-      @connection(
-        key: "JargonListRandomOrderQuery_list_jargon_random_connection"
-      ) {
-      edges {
-        node {
-          id
-          ...JargonCard_jargon
-        }
-      }
-    }
-  }
-`)
-
 @react.component
-let make = (~query, ~random) => {
+let make = (~query) => {
   let (rows, hasMore, loadNext) = {
-    if !random {
-      let {
-        data: {jargon_connection: jargonConnection},
-        hasNext,
-        loadNext,
-      } = JargonListOrderQuery.usePagination(query)
-      (
-        jargonConnection
-        ->JargonListOrderQuery.getConnectionNodes
-        ->Array.map(node => (node.id, node.fragmentRefs)),
-        hasNext,
-        loadNext,
-      )
-    } else {
-      let {
-        data: {list_jargon_random_connection: jargonConnection},
-        hasNext,
-        loadNext,
-      } = JargonListRandomOrderQuery.usePagination(query)
-      (
-        jargonConnection
-        ->JargonListRandomOrderQuery.getConnectionNodes
-        ->Array.map(node => (node.id, node.fragmentRefs)),
-        hasNext,
-        loadNext,
-      )
-    }
+    let {
+      data: {jargon_connection: jargonConnection},
+      hasNext,
+      loadNext,
+    } = JargonListOrderQuery.usePagination(query)
+    (
+      jargonConnection
+      ->JargonListOrderQuery.getConnectionNodes
+      ->Array.map(node => (node.id, node.fragmentRefs)),
+      hasNext,
+      loadNext,
+    )
   }
 
   <InfiniteScroll
