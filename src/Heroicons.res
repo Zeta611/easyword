@@ -1,4 +1,9 @@
 module Solid = {
+  module CalendarDaysIcon = {
+    @module("@heroicons/react/24/solid") @react.component
+    external make: (~className: string=?) => React.element = "CalendarDaysIcon"
+  }
+
   module ChevronDownIcon = {
     @module("@heroicons/react/24/solid") @react.component
     external make: (~className: string=?) => React.element = "ChevronDownIcon"
@@ -25,6 +30,16 @@ module Solid = {
 }
 
 module Outline = {
+  module ClockIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "ClockIcon"
+  }
+
+  module ListBulletIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "ListBulletIcon"
+  }
+
   module UserCircleIcon = {
     @module("@heroicons/react/24/outline") @react.component
     external make: (~className: string=?) => React.element = "UserCircleIcon"

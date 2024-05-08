@@ -2,11 +2,12 @@
 
 import * as Hooks from "./Hooks.js";
 import * as React from "react";
+import * as HideUs from "./HideUs.js";
 import * as SearchBar from "./SearchBar.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as ReactErrorBoundary from "react-error-boundary";
 import * as HomeJargonListSection from "./HomeJargonListSection.js";
-import * as Solid from "@heroicons/react/24/solid";
+import * as Outline from "@heroicons/react/24/outline";
 
 function seed() {
   return Math.random() * 2 - 1;
@@ -56,19 +57,34 @@ function Home(props) {
     
   };
   var tmp;
-  tmp = typeof axis !== "object" && axis === "English" ? (
-      direction === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-              className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
-            }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-              className: "-ml-2 mr-1 h-5 w-5 text-teal-100"
+  tmp = typeof axis !== "object" ? (
+      axis === "English" ? (
+          direction === "asc" ? JsxRuntime.jsx("i", {
+                  className: "fa-solid fa-arrow-down-a-z"
+                }) : JsxRuntime.jsx("i", {
+                  className: "fa-solid fa-arrow-up-a-z"
+                })
+        ) : JsxRuntime.jsx(Outline.ClockIcon, {
+              className: "h-5 w-5"
             })
-    ) : null;
-  var tmp$1;
-  tmp$1 = typeof axis !== "object" ? (
-      axis === "English" ? "ABC순" : "최근순"
-    ) : "무작위";
+    ) : JsxRuntime.jsx("i", {
+          className: "fa-solid fa-dice"
+        });
   return JsxRuntime.jsxs("div", {
               children: [
+                JsxRuntime.jsxs(HideUs.make, {
+                      children: [
+                        JsxRuntime.jsx("i", {
+                              className: "fa-solid fa-arrow-down-a-z"
+                            }),
+                        JsxRuntime.jsx("i", {
+                              className: "fa-solid fa-arrow-up-a-z"
+                            }),
+                        JsxRuntime.jsx("i", {
+                              className: "fa-solid fa-dice"
+                            })
+                      ]
+                    }),
                 JsxRuntime.jsxs("div", {
                       children: [
                         JsxRuntime.jsx("div", {
@@ -76,19 +92,46 @@ function Home(props) {
                                     searchTerm: searchTerm,
                                     onChange: onChange
                                   }),
-                              className: "flex-auto mt-1"
+                              className: "flex-auto"
+                            }),
+                        JsxRuntime.jsx("button", {
+                              children: tmp,
+                              className: "btn btn-square btn-primary btn-outline text-lg",
+                              onClick: (function (param) {
+                                  if (typeof axis !== "object") {
+                                    if (axis === "English") {
+                                      if (direction === "asc") {
+                                        setDirection(function (param) {
+                                              return "desc";
+                                            });
+                                      } else {
+                                        setDirection(function (param) {
+                                              return "asc";
+                                            });
+                                      }
+                                    }
+                                    
+                                  } else {
+                                    setAxis(function (param) {
+                                          return {
+                                                  TAG: "Random",
+                                                  _0: seed()
+                                                };
+                                        });
+                                    setSearchTerm(function (param) {
+                                          return "";
+                                        });
+                                  }
+                                  closeDropdown();
+                                })
                             }),
                         JsxRuntime.jsxs("details", {
                               children: [
-                                JsxRuntime.jsxs("summary", {
-                                      children: [
-                                        tmp,
-                                        tmp$1,
-                                        JsxRuntime.jsx(Solid.ChevronDownIcon, {
-                                              className: "ml-2 -mr-1 h-5 w-5"
-                                            })
-                                      ],
-                                      className: "btn btn-primary text-xs"
+                                JsxRuntime.jsx("summary", {
+                                      children: JsxRuntime.jsx(Outline.ListBulletIcon, {
+                                            className: "h-5 w-5"
+                                          }),
+                                      className: "btn btn-square btn-ghost"
                                     }),
                                 JsxRuntime.jsxs("ul", {
                                       children: [
@@ -107,25 +150,14 @@ function Home(props) {
                                                   })
                                             }),
                                         JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsxs("button", {
-                                                    children: [
-                                                      "ABC순",
-                                                      direction === "asc" ? JsxRuntime.jsx(Solid.ArrowUpIcon, {
-                                                              className: "-ml-2 mr-1 h-5 w-5 text-primary"
-                                                            }) : JsxRuntime.jsx(Solid.ArrowDownIcon, {
-                                                              className: "-ml-2 mr-1 h-5 w-5 text-primary"
-                                                            })
-                                                    ],
+                                              children: JsxRuntime.jsx("button", {
+                                                    children: "알파벳순",
                                                     onClick: (function (param) {
                                                         setAxis(function (param) {
                                                               return "English";
                                                             });
-                                                        setDirection(function (direction) {
-                                                              if (direction === "asc") {
-                                                                return "desc";
-                                                              } else {
-                                                                return "asc";
-                                                              }
+                                                        setDirection(function (param) {
+                                                              return "asc";
                                                             });
                                                         closeDropdown();
                                                       })
@@ -133,7 +165,7 @@ function Home(props) {
                                             }),
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsx("button", {
-                                                    children: "무작위",
+                                                    children: "무작위순",
                                                     onClick: (function (param) {
                                                         setAxis(function (param) {
                                                               return {
@@ -148,14 +180,14 @@ function Home(props) {
                                                   })
                                             })
                                       ],
-                                      className: "menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box"
+                                      className: "menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-zinc-50 dark:bg-zinc-800 rounded-box"
                                     })
                               ],
-                              className: "dropdown dropdown-hover dropdown-end shadow-lg rounded-lg mt-1",
+                              className: "dropdown dropdown-hover dropdown-end text-xs",
                               id: "sort-dropdown-btn"
                             })
                       ],
-                      className: "flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] -mt-5 mb-5 z-40 bg-base-100"
+                      className: "flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] pt-1 -mt-5 mb-5 z-40 bg-base-100"
                     }),
                 JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
                       children: JsxRuntime.jsx(HomeJargonListSection.make, {

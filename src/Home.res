@@ -29,29 +29,43 @@ let make = () => {
 
   open Heroicons
   <div className="grid p-5 text-sm">
+    <HideUs>
+      <i className="fa-solid fa-arrow-down-a-z" />
+      <i className="fa-solid fa-arrow-up-a-z" />
+      <i className="fa-solid fa-dice" />
+    </HideUs>
     <div
-      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] -mt-5 mb-5 z-40 bg-base-100">
-      <div className="flex-auto mt-1">
+      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] pt-1 -mt-5 mb-5 z-40 bg-base-100">
+      <div className="flex-auto">
         <SearchBar searchTerm onChange />
       </div>
-      <details
-        id="sort-dropdown-btn"
-        className="dropdown dropdown-hover dropdown-end shadow-lg rounded-lg mt-1">
-        <summary className="btn btn-primary text-xs">
-          {switch (axis, direction) {
-          | (Chrono | Random(_), _) => React.null
-          | (_, #asc) => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
-          | (_, #desc) => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-teal-100" />
-          }}
-          {switch (axis, direction) {
-          | (English, _) => "ABC순"->React.string
-          | (Chrono, _) => "최근순"->React.string
-          | (Random(_), _) => "무작위"->React.string
-          }}
-          <Solid.ChevronDownIcon className="ml-2 -mr-1 h-5 w-5" />
+      <button
+        className="btn btn-square btn-primary btn-outline text-lg"
+        onClick={_ => {
+          switch (axis, direction) {
+          | (Chrono, _) => ()
+          | (English, #asc) => setDirection(_ => #desc)
+          | (English, #desc) => setDirection(_ => #asc)
+          | (Random(_), _) => {
+              setAxis(_ => Random(seed()))
+              setSearchTerm(_ => "")
+            }
+          }
+          closeDropdown()
+        }}>
+        {switch (axis, direction) {
+        | (English, #asc) => <i className="fa-solid fa-arrow-down-a-z" />
+        | (English, #desc) => <i className="fa-solid fa-arrow-up-a-z" />
+        | (Chrono, _) => <Outline.ClockIcon className="h-5 w-5" />
+        | (Random(_), _) => <i className="fa-solid fa-dice" />
+        }}
+      </button>
+      <details id="sort-dropdown-btn" className="dropdown dropdown-hover dropdown-end text-xs">
+        <summary className="btn btn-square btn-ghost">
+          <Outline.ListBulletIcon className="h-5 w-5" />
         </summary>
         <ul
-          className="menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-teal-50 dark:bg-zinc-800 rounded-box">
+          className="menu menu-compact dropdown-content text-xs p-1 m-1 w-[6.5rem] shadow bg-zinc-50 dark:bg-zinc-800 rounded-box">
           <li>
             <button
               onClick={_ => {
@@ -66,20 +80,10 @@ let make = () => {
             <button
               onClick={_ => {
                 setAxis(_ => English)
-                setDirection(direction => {
-                  // If axis was Chrono, the direction was always #desc
-                  switch direction {
-                  | #asc => #desc
-                  | #desc => #asc
-                  }
-                })
+                setDirection(_ => #asc)
                 closeDropdown()
               }}>
-              {"ABC순"->React.string}
-              {switch direction {
-              | #asc => <Solid.ArrowUpIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-              | #desc => <Solid.ArrowDownIcon className="-ml-2 mr-1 h-5 w-5 text-primary" />
-              }}
+              {"알파벳순"->React.string}
             </button>
           </li>
           <li>
@@ -88,7 +92,7 @@ let make = () => {
                 setAxis(_ => Random(seed()))
                 setSearchTerm(_ => "")
               }}>
-              {"무작위"->React.string}
+              {"무작위순"->React.string}
             </button>
           </li>
         </ul>
