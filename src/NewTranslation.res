@@ -69,6 +69,8 @@ let make = (~jargonID: string) => {
     setKorean(_ => value)
   }
 
+  let sanitizedKorean = korean->Util.sanitize
+
   let (comment, setComment) = React.useState(() => "")
   let handleCommentChange = event => {
     let value = ReactEvent.Form.currentTarget(event)["value"]
@@ -81,13 +83,13 @@ let make = (~jargonID: string) => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if korean->String.length < 1 {
+    if sanitizedKorean->String.length < 1 {
       Window.alert("번역을 입력해주세요")
     } else if signedIn {
       switch user->Nullable.toOption {
       | Some(user) =>
         let comment = switch comment {
-        | "" => `${korean->Util.eulLeul} 제안합니다.`
+        | "" => `${sanitizedKorean->Util.eulLeul} 제안합니다.`
         | _ => comment
         }
 
@@ -100,7 +102,7 @@ let make = (~jargonID: string) => {
                 id: translationID,
                 jargonID,
                 authorID: user.uid,
-                name: korean,
+                name: sanitizedKorean,
                 commentID,
                 comment,
                 now: Date.make()->Date.toISOString,

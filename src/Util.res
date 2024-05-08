@@ -16,3 +16,5 @@ let eulLeul = korean => {
     "를"
   }
 }
+
+let sanitize = word => word->String.replaceRegExp(%re(`/\s+/g`), " ")->String.trim

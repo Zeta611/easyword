@@ -20,9 +20,14 @@ function eulLeul(korean) {
         );
 }
 
+function sanitize(word) {
+  return word.replace(/\s+/g, " ").trim();
+}
+
 export {
   getCode ,
   endsWithJong ,
   eulLeul ,
+  sanitize ,
 }
 /* No side effect */

@@ -94,6 +94,7 @@ function NewTranslation(props) {
           return value;
         });
   };
+  var sanitizedKorean = Util.sanitize(korean);
   var match$2 = React.useState(function () {
         return "";
       });
@@ -109,7 +110,7 @@ function NewTranslation(props) {
   var newTranslationMutate = match$3[0];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (korean.length < 1) {
+    if (sanitizedKorean.length < 1) {
       window.alert("번역을 입력해주세요");
       return ;
     }
@@ -119,7 +120,7 @@ function NewTranslation(props) {
     if (user == null) {
       return RescriptReactRouter.replace("/logout");
     }
-    var comment$1 = comment === "" ? Util.eulLeul(korean) + " 제안합니다." : comment;
+    var comment$1 = comment === "" ? Util.eulLeul(sanitizedKorean) + " 제안합니다." : comment;
     var jargonID$1 = Base64.retrieveOriginalID(jargonID);
     if (jargonID$1 === undefined) {
       return ;
@@ -132,7 +133,7 @@ function NewTranslation(props) {
           commentID: commentID,
           id: translationID,
           jargonID: jargonID$1,
-          name: korean,
+          name: sanitizedKorean,
           now: new Date().toISOString()
         }, undefined, undefined, undefined, (function (param, _errors) {
             if (param.insert_translation_one !== undefined) {

@@ -87,6 +87,9 @@ let make = () => {
     setKorean(_ => value)
   }
 
+  let sanitizedEnglish = english->Util.sanitize
+  let sanitizedKorean = korean->Util.sanitize
+
   let (withoutKorean, setWithoutKorean) = React.useState(() => false)
 
   let (comment, setComment) = React.useState(() => "")
@@ -105,9 +108,9 @@ let make = () => {
     // Prevent a page refresh, we are already listening for updates
     ReactEvent.Form.preventDefault(event)
 
-    if english->String.length < 1 {
+    if sanitizedEnglish->String.length < 1 {
       Window.alert("용어를 입력해주세요")
-    } else if !withoutKorean && korean->String.length < 1 {
+    } else if !withoutKorean && sanitizedKorean->String.length < 1 {
       Window.alert("번역을 입력해주세요")
     } else if signedIn {
       switch user->Nullable.toOption {
@@ -115,9 +118,9 @@ let make = () => {
           let comment = switch comment {
           | "" =>
             if !withoutKorean {
-              `${korean->Util.eulLeul} 제안합니다.`
+              `${sanitizedKorean->Util.eulLeul} 제안합니다.`
             } else {
-              `"${english}" 용어의 번역이 필요합니다.`
+              `"${sanitizedEnglish}" 용어의 번역이 필요합니다.`
             }
           | _ => comment
           }
@@ -130,7 +133,7 @@ let make = () => {
                 id: jargonID,
                 commentID,
                 authorID: user.uid,
-                name: english,
+                name: sanitizedEnglish,
                 comment,
               },
               ~onError=error => Js.Console.error(error),
@@ -148,9 +151,9 @@ let make = () => {
                 translationID,
                 commentID,
                 authorID: user.uid,
-                name: english,
+                name: sanitizedEnglish,
                 comment,
-                translation: korean,
+                translation: sanitizedKorean,
               },
               ~onError=error => Js.Console.error(error),
               ~onCompleted=({insert_jargon_one}, _errors) => {

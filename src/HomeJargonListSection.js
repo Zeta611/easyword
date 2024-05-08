@@ -53,7 +53,7 @@ var HomeJargonListSectionQuery = {
 
 function HomeJargonListSection(props) {
   var axis = props.axis;
-  var searchTerm = props.searchTerm.replace(/\s/g, "");
+  var searchTerm = props.searchTerm.replace(/\s+/g, " ").trim();
   var tmp;
   tmp = typeof axis !== "object" ? (
       axis === "English" ? [

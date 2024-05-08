@@ -86,6 +86,8 @@ function NewJargon(props) {
           return value;
         });
   };
+  var sanitizedEnglish = Util.sanitize(english);
+  var sanitizedKorean = Util.sanitize(korean);
   var match$3 = React.useState(function () {
         return false;
       });
@@ -108,11 +110,11 @@ function NewJargon(props) {
   var newJargonWithoutTranslationMutate = match$6[0];
   var handleSubmit = function ($$event) {
     $$event.preventDefault();
-    if (english.length < 1) {
+    if (sanitizedEnglish.length < 1) {
       window.alert("용어를 입력해주세요");
       return ;
     }
-    if (!withoutKorean && korean.length < 1) {
+    if (!withoutKorean && sanitizedKorean.length < 1) {
       window.alert("번역을 입력해주세요");
       return ;
     }
@@ -123,7 +125,7 @@ function NewJargon(props) {
       return RescriptReactRouter.replace("/logout");
     }
     var comment$1 = comment === "" ? (
-        withoutKorean ? "\"" + english + "\" 용어의 번역이 필요합니다." : Util.eulLeul(korean) + " 제안합니다."
+        withoutKorean ? "\"" + sanitizedEnglish + "\" 용어의 번역이 필요합니다." : Util.eulLeul(sanitizedKorean) + " 제안합니다."
       ) : comment;
     var jargonID = Uuid.v4();
     var translationID = Uuid.v4();
@@ -134,7 +136,7 @@ function NewJargon(props) {
             comment: comment$1,
             commentID: commentID,
             id: jargonID,
-            name: english
+            name: sanitizedEnglish
           }, undefined, undefined, undefined, (function (param, _errors) {
               var insert_jargon_one = param.insert_jargon_one;
               if (insert_jargon_one !== undefined) {
@@ -150,8 +152,8 @@ function NewJargon(props) {
             comment: comment$1,
             commentID: commentID,
             id: jargonID,
-            name: english,
-            translation: korean,
+            name: sanitizedEnglish,
+            translation: sanitizedKorean,
             translationID: translationID
           }, undefined, undefined, undefined, (function (param, _errors) {
               var insert_jargon_one = param.insert_jargon_one;
