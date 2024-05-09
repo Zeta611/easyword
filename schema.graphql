@@ -605,6 +605,11 @@ type jargon implements Node {
   """
   name_lower: String
 
+  """
+  A computed field, executes function "to_lowercase_no_spaces"
+  """
+  name_lower_no_spaces: String
+
   """An array relationship"""
   translations(
     """distinct select on columns"""
@@ -735,6 +740,7 @@ input jargon_bool_exp {
   id: uuid_comparison_exp
   name: String_comparison_exp
   name_lower: String_comparison_exp
+  name_lower_no_spaces: String_comparison_exp
   translations: translation_bool_exp
   translations_aggregate: translation_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
@@ -785,6 +791,11 @@ type jargon_max_fields {
   A computed field, executes function "to_lowercase"
   """
   name_lower: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces"
+  """
+  name_lower_no_spaces: String
   updated_at: timestamptz
 }
 
@@ -810,6 +821,11 @@ type jargon_min_fields {
   A computed field, executes function "to_lowercase"
   """
   name_lower: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces"
+  """
+  name_lower_no_spaces: String
   updated_at: timestamptz
 }
 
@@ -863,6 +879,7 @@ input jargon_order_by {
   id: order_by
   name: order_by
   name_lower: order_by
+  name_lower_no_spaces: order_by
   translations_aggregate: translation_aggregate_order_by
   updated_at: order_by
 }
@@ -1460,6 +1477,11 @@ type translation implements Node {
   jargon: jargon!
   jargon_id: uuid!
   name: String!
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces_translation"
+  """
+  name_lower_no_spaces: String
   updated_at: timestamptz!
 }
 
@@ -1539,6 +1561,7 @@ input translation_bool_exp {
   jargon: jargon_bool_exp
   jargon_id: uuid_comparison_exp
   name: String_comparison_exp
+  name_lower_no_spaces: String_comparison_exp
   updated_at: timestamptz_comparison_exp
 }
 
@@ -1586,6 +1609,11 @@ type translation_max_fields {
   id: uuid
   jargon_id: uuid
   name: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces_translation"
+  """
+  name_lower_no_spaces: String
   updated_at: timestamptz
 }
 
@@ -1610,6 +1638,11 @@ type translation_min_fields {
   id: uuid
   jargon_id: uuid
   name: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces_translation"
+  """
+  name_lower_no_spaces: String
   updated_at: timestamptz
 }
 
@@ -1667,6 +1700,7 @@ input translation_order_by {
   jargon: jargon_order_by
   jargon_id: order_by
   name: order_by
+  name_lower_no_spaces: order_by
   updated_at: order_by
 }
 

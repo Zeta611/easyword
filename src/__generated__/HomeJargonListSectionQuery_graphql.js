@@ -85,7 +85,7 @@ v2 = [
       }
     ],
     "kind": "ObjectValue",
-    "name": "name"
+    "name": "name_lower_no_spaces"
   }
 ],
 v3 = [
@@ -321,12 +321,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "26de04546946081e5ae513ac41868601",
+    "cacheID": "0760d86180f702aa986237775c808b18",
     "id": null,
     "metadata": {},
     "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name: {_iregex: $searchTerm}}, {translations: {name: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());

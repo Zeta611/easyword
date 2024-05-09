@@ -52,7 +52,7 @@ let connectionKey = "JargonListOrderQuery_jargon_connection"
 
 @live
 let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?) => {
-  let args = {"order_by": directions, "where": {"_or": [RescriptRelay_Internal.Arg({"name": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name": {"_iregex": searchTerm}}})]}}
+  let args = {"order_by": directions, "where": {"_or": [RescriptRelay_Internal.Arg({"name_lower_no_spaces": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name_lower_no_spaces": {"_iregex": searchTerm}}})]}}
   internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
@@ -89,7 +89,7 @@ v1 = [
       }
     ],
     "kind": "ObjectValue",
-    "name": "name"
+    "name": "name_lower_no_spaces"
   }
 ];
 return {

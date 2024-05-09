@@ -26,13 +26,13 @@ function makeConnectionId(connectionParentDataId, directions, searchTerm) {
     where: {
       _or: [
         {
-          name: {
+          name_lower_no_spaces: {
             _iregex: searchTerm
           }
         },
         {
           translations: {
-            name: {
+            name_lower_no_spaces: {
               _iregex: searchTerm
             }
           }
@@ -68,7 +68,7 @@ v1 = [
       }
     ],
     "kind": "ObjectValue",
-    "name": "name"
+    "name": "name_lower_no_spaces"
   }
 ];
 return {

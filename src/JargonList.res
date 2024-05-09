@@ -11,8 +11,8 @@ module JargonListOrderQuery = %relay(`
       after: $cursor
       where: {
         _or: [
-          { name: { _iregex: $searchTerm } }
-          { translations: { name: { _iregex: $searchTerm } } }
+          { name_lower_no_spaces: { _iregex: $searchTerm } }
+          { translations: { name_lower_no_spaces: { _iregex: $searchTerm } } }
         ]
       }
     ) @connection(key: "JargonListOrderQuery_jargon_connection") {

@@ -159,7 +159,7 @@ v1 = [
       }
     ],
     "kind": "ObjectValue",
-    "name": "name"
+    "name": "name_lower_no_spaces"
   }
 ],
 v2 = [
@@ -405,12 +405,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3cb4006fcf3652bc5ac431cf5350f059",
+    "cacheID": "aae100017fd2cfbc3785bc8092b065ae",
     "id": null,
     "metadata": {},
     "name": "JargonListOrderRefetchQuery",
     "operationKind": "query",
-    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_or: [{name: {_iregex: $searchTerm}}, {translations: {name: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)
