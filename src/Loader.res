@@ -1,2 +1,2 @@
-@module("./Loader.jsx") @react.component
-external make: unit => React.element = "Loader_"
+@react.component
+let make = () => <span className="loading loading-dots loading-lg" />

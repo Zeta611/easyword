@@ -26,7 +26,7 @@ function constructForest(comments) {
         if (parent === undefined) {
           return ;
         }
-        var parentNode = Core__Option.getExn(commentNodeTable.get(parent));
+        var parentNode = Core__Option.getExn(commentNodeTable.get(parent), undefined);
         parentNode.children = Core__List.add(parentNode.children, node);
         node.parent = parentNode;
       });

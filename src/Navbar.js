@@ -14,7 +14,7 @@ import * as Solid from "@heroicons/react/24/solid";
 import * as Outline from "@heroicons/react/24/outline";
 
 function unsafeGet(json, key) {
-  return Core__Option.getExn(Core__JSON.Decode.object(json))[key];
+  return Core__Option.getExn(Core__JSON.Decode.object(json), undefined)[key];
 }
 
 function Navbar(props) {
@@ -45,7 +45,7 @@ function Navbar(props) {
                         Error: new Error()
                       };
                 }
-                var count = Core__Option.getExn(Core__JSON.Decode.$$float(unsafeGet(unsafeGet(unsafeGet(json, "jargon_aggregate"), "aggregate"), "count"))) | 0;
+                var count = Core__Option.getExn(Core__JSON.Decode.$$float(unsafeGet(unsafeGet(unsafeGet(json, "jargon_aggregate"), "aggregate"), "count")), undefined) | 0;
                 return setJargonsCount(function (param) {
                             return count;
                           });

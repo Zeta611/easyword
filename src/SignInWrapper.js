@@ -59,7 +59,7 @@ function SignInWrapper(props) {
       });
   if (match.status === "success") {
     return JsxRuntime.jsx(SignInContext.Provider.make, {
-                value: Core__Option.getExn(match.data),
+                value: Core__Option.getExn(match.data, undefined),
                 children: JsxRuntime.jsx(TokenContext.Provider.make, {
                       value: match$1[0],
                       children: props.children

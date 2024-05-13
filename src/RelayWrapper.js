@@ -17,7 +17,7 @@ function RelayWrapper(props) {
           body: Caml_option.some(Core__Option.getExn(JSON.stringify({
                         query: operation.text,
                         variables: variables
-                      }, undefined, undefined))),
+                      }), undefined)),
           headers: Caml_option.some(token !== undefined ? new Headers({
                       "content-type": "application/json",
                       authorization: "Bearer " + token
@@ -34,8 +34,8 @@ function RelayWrapper(props) {
           Error: new Error()
         };
   };
-  var network = RelayRuntime.Network.create(fetchQuery, undefined);
-  var environment = RescriptRelay.Environment.make(network, RescriptRelay.Store.make(new RelayRuntime.RecordSource(undefined), 10, undefined), undefined, undefined, undefined, undefined, undefined);
+  var network = RelayRuntime.Network.create(fetchQuery);
+  var environment = RescriptRelay.Environment.make(network, RescriptRelay.Store.make(new RelayRuntime.RecordSource(), 10, undefined), undefined, undefined, undefined, undefined, undefined);
   return JsxRuntime.jsx(RescriptRelay.Context.Provider.make, {
               environment: environment,
               children: props.children

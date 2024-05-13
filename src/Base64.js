@@ -7,7 +7,7 @@ import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_ex
 
 function retrieveOriginalID(id) {
   try {
-    var decoded = Core__JSON.Decode.array(JSON.parse(atob(id), undefined));
+    var decoded = Core__JSON.Decode.array(JSON.parse(atob(id)));
     if (decoded !== undefined) {
       return Core__Option.flatMap(decoded[3], (function (x) {
                     return Core__JSON.Decode.string(x);
