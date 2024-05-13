@@ -88,6 +88,9 @@ v3 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v4 = {
+  "name": "asc"
 };
 return {
   "fragment": {
@@ -180,7 +183,15 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": null,
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "order_by",
+                        "value": {
+                          "category": (v4/*: any*/)
+                        }
+                      }
+                    ],
                     "concreteType": "jargon_category",
                     "kind": "LinkedField",
                     "name": "jargon_categories",
@@ -207,7 +218,7 @@ return {
                       },
                       (v2/*: any*/)
                     ],
-                    "storageKey": null
+                    "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
                   },
                   {
                     "alias": null,
@@ -220,9 +231,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": {
-                          "name": "asc"
-                        }
+                        "value": (v4/*: any*/)
                       }
                     ],
                     "concreteType": "translation",
@@ -276,12 +285,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6899a74e4c34d4a756251155c53bbc22",
+    "cacheID": "18254569cde389453222c2296b737b84",
     "id": null,
     "metadata": {},
     "name": "JargonRandomListOrderQuery",
     "operationKind": "query",
-    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
+    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
   }
 };
 })());

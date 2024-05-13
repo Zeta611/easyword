@@ -69,10 +69,19 @@ function JargonPost(props) {
                       children: [
                         JsxRuntime.jsxs("div", {
                               children: [
-                                JsxRuntime.jsx("div", {
-                                      children: node.jargon_categories.map(function (r) {
-                                            return badgify(r.category.acronym);
-                                          }),
+                                JsxRuntime.jsxs("div", {
+                                      children: [
+                                        node.jargon_categories.map(function (r) {
+                                              return badgify(r.category.acronym);
+                                            }),
+                                        JsxRuntime.jsx("button", {
+                                              children: "+",
+                                              className: "badge badge-md font-semibold",
+                                              onClick: (function (param) {
+                                                  RescriptReactRouter.replace("/edit-categories/" + jargonID);
+                                                })
+                                            })
+                                      ],
                                       className: "flex gap-1"
                                     }),
                                 JsxRuntime.jsx("div", {

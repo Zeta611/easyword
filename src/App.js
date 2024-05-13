@@ -9,6 +9,7 @@ import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as RelayWrapper from "./RelayWrapper.js";
 import * as SignInWrapper from "./SignInWrapper.js";
 import * as Auth from "firebase/auth";
+import * as EditCategories from "./EditCategories.js";
 import * as LazyComponents from "./LazyComponents.js";
 import * as NavbarContainer from "./NavbarContainer.js";
 import * as JsxRuntime from "react/jsx-runtime";
@@ -101,11 +102,17 @@ function App(props) {
         case "colophon" :
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(LazyComponents.Colophon.make, {});
             break;
-        case "jargon" :
+        case "edit-categories" :
             var match$1 = path.tl;
-            tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
+            tmp$1 = match$1 && !match$1.tl ? JsxRuntime.jsx(EditCategories.make, {
+                    jargonID: match$1.hd
+                  }) : "404";
+            break;
+        case "jargon" :
+            var match$2 = path.tl;
+            tmp$1 = match$2 && !match$2.tl ? JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
                     children: JsxRuntime.jsx(LazyComponents.JargonPost.make, {
-                          jargonID: match$1.hd
+                          jargonID: match$2.hd
                         }),
                     fallbackRender: (function (param) {
                         return JsxRuntime.jsx("div", {
@@ -119,9 +126,9 @@ function App(props) {
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(LazyComponents.NewJargon.make, {});
             break;
         case "new-translation" :
-            var match$2 = path.tl;
-            tmp$1 = match$2 && !match$2.tl ? JsxRuntime.jsx(LazyComponents.NewTranslation.make, {
-                    jargonID: match$2.hd
+            var match$3 = path.tl;
+            tmp$1 = match$3 && !match$3.tl ? JsxRuntime.jsx(LazyComponents.NewTranslation.make, {
+                    jargonID: match$3.hd
                   }) : "404";
             break;
         case "profile" :

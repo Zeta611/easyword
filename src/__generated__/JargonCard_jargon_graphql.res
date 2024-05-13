@@ -75,6 +75,9 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v2 = {
+  "name": "asc"
 };
 return {
   "argumentDefinitions": [],
@@ -93,7 +96,15 @@ return {
     },
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "order_by",
+          "value": {
+            "category": (v2/*: any*/)
+          }
+        }
+      ],
       "concreteType": "jargon_category",
       "kind": "LinkedField",
       "name": "jargon_categories",
@@ -118,7 +129,7 @@ return {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
     },
     {
       "alias": null,
@@ -131,9 +142,7 @@ return {
         {
           "kind": "Literal",
           "name": "order_by",
-          "value": {
-            "name": "asc"
-          }
+          "value": (v2/*: any*/)
         }
       ],
       "concreteType": "translation",

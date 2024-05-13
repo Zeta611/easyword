@@ -121,21 +121,33 @@ v4 = {
   "storageKey": null
 },
 v5 = {
+  "name": "asc"
+},
+v6 = [
+  {
+    "kind": "Literal",
+    "name": "order_by",
+    "value": {
+      "category": (v5/*: any*/)
+    }
+  }
+],
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "acronym",
   "storageKey": null
 },
-v6 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v7 = [
-  (v6/*: any*/)
+v9 = [
+  (v8/*: any*/)
 ];
 return {
   "fragment": {
@@ -160,7 +172,7 @@ return {
               (v4/*: any*/),
               {
                 "alias": null,
-                "args": null,
+                "args": (v6/*: any*/),
                 "concreteType": "jargon_category",
                 "kind": "LinkedField",
                 "name": "jargon_categories",
@@ -174,12 +186,12 @@ return {
                     "name": "category",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/)
+                      (v7/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
-                "storageKey": null
+                "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
               },
               {
                 "args": null,
@@ -224,7 +236,7 @@ return {
               (v4/*: any*/),
               {
                 "alias": null,
-                "args": null,
+                "args": (v6/*: any*/),
                 "concreteType": "jargon_category",
                 "kind": "LinkedField",
                 "name": "jargon_categories",
@@ -238,14 +250,14 @@ return {
                     "name": "category",
                     "plural": false,
                     "selections": [
-                      (v5/*: any*/),
-                      (v6/*: any*/)
+                      (v7/*: any*/),
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v6/*: any*/)
+                  (v8/*: any*/)
                 ],
-                "storageKey": null
+                "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
               },
               {
                 "alias": null,
@@ -253,9 +265,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "order_by",
-                    "value": {
-                      "name": "asc"
-                    }
+                    "value": (v5/*: any*/)
                   }
                 ],
                 "concreteType": "translation",
@@ -263,7 +273,7 @@ return {
                 "name": "translations",
                 "plural": true,
                 "selections": [
-                  (v6/*: any*/),
+                  (v8/*: any*/),
                   (v3/*: any*/),
                   {
                     "alias": null,
@@ -272,7 +282,7 @@ return {
                     "kind": "LinkedField",
                     "name": "comment",
                     "plural": false,
-                    "selections": (v7/*: any*/),
+                    "selections": (v9/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -302,7 +312,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v8/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -324,7 +334,7 @@ return {
                             "kind": "LinkedField",
                             "name": "parent",
                             "plural": false,
-                            "selections": (v7/*: any*/),
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -349,7 +359,7 @@ return {
                                 "name": "display_name",
                                 "storageKey": null
                               },
-                              (v6/*: any*/)
+                              (v8/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -361,7 +371,7 @@ return {
                             "name": "translation",
                             "plural": false,
                             "selections": [
-                              (v6/*: any*/),
+                              (v8/*: any*/),
                               (v3/*: any*/)
                             ],
                             "storageKey": null
@@ -391,19 +401,19 @@ return {
             "type": "jargon",
             "abstractKey": null
           },
-          (v6/*: any*/)
+          (v8/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "71a5ece12a3da9d760acd7eb36155d5d",
+    "cacheID": "48cfe7294454cf4024c5a38dcf762e7d",
     "id": null,
     "metadata": {},
     "name": "JargonPostQuery",
     "operationKind": "query",
-    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      jargon_categories {\n        category {\n          acronym\n          id\n        }\n        id\n      }\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations(order_by: {name: asc}) {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
+    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      jargon_categories(order_by: {category: {name: asc}}) {\n        category {\n          acronym\n          id\n        }\n        id\n      }\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations(order_by: {name: asc}) {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
   }
 };
 })());

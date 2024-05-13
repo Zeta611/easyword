@@ -8,7 +8,7 @@ module JargonPostQuery = %relay(`
             count
           }
         }
-        jargon_categories {
+        jargon_categories(order_by: { category: { name: asc } }) {
           category {
             acronym
           }
@@ -38,6 +38,11 @@ let make = (~jargonID) => {
           <div className="flex flex-col gap-2">
             <div className="flex gap-1">
               {jargon.jargon_categories->Array.map(r => r.category.acronym->badgify)->React.array}
+              <button
+                className="badge badge-md font-semibold"
+                onClick={_ => RescriptReactRouter.replace(`/edit-categories/${jargonID}`)}>
+                {"+"->React.string}
+              </button>
             </div>
             <div className="text-2xl font-bold"> {jargon.name->React.string} </div>
           </div>

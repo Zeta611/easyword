@@ -74,6 +74,7 @@ let make = () => {
                           | list{"profile"} => <Profile />
                           | list{"new-jargon"} => <NewJargon />
                           | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                          | list{"edit-categories", jargonID} => <EditCategories jargonID />
                           | list{"jargon", jargonID} =>
                             <ErrorBoundary
                               fallbackRender={_ => {

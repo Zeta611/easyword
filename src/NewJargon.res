@@ -34,9 +34,7 @@ module NewJargonMutation = %relay(`
     ) {
       id
     }
-    insert_jargon_category(
-      objects: $jargon_categories
-    ) {
+    insert_jargon_category(objects: $jargon_categories) {
       affected_rows
     }
   }
@@ -63,17 +61,15 @@ module NewJargonWithoutTranslationMutation = %relay(`
     ) {
       id
     }
-    insert_jargon_category(
-      objects: $jargon_categories
-    ) {
+    insert_jargon_category(objects: $jargon_categories) {
       affected_rows
     }
   }
 `)
 
-module NewJargonCategoryQuery = %relay(`
+module CategoryQuery = %relay(`
   query NewJargonCategoryQuery {
-    category_connection(order_by: {name: asc}) {
+    category_connection(order_by: { name: asc }) {
       edges {
         node {
           id
@@ -147,10 +143,13 @@ let make = () => {
     isNewJargonWithoutTranslationMutating,
   ) = NewJargonWithoutTranslationMutation.use()
 
-  let {category_connection: {edges: categoryEdges}} = NewJargonCategoryQuery.use(~variables=())
+  let {category_connection: {edges: categoryEdges}} = CategoryQuery.use(~variables=())
   let options = categoryEdges->Array.map(edge => {
     let {node: {id, name, acronym}} = edge
-    {Select.label: `${acronym} (${name})`, value: id}
+    {
+      Select.label: `${acronym} (${name})`,
+      value: id->Base64.retrieveOriginalIDInt->Option.getUnsafe,
+    }
   })
 
   let handleSubmit = event => {
@@ -280,11 +279,7 @@ let make = () => {
                   "cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box",
               }
               components={multiValueLabel: MultiValueLabel.make}
-              defaultValue=None
-              onChange={options =>
-                setCategoryIDs(_ =>
-                  options->Array.filterMap(({value}) => value->Base64.retrieveOriginalIDInt)
-                )}
+              onChange={options => setCategoryIDs(_ => options->Array.map(({value}) => value))}
               options
               isSearchable=false
               isMulti=true

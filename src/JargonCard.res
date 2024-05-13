@@ -3,7 +3,7 @@ module JargonCardFragment = %relay(`
     id
     name
     updated_at
-    jargon_categories {
+    jargon_categories(order_by: { category: { name: asc } }) {
       category {
         acronym
       }

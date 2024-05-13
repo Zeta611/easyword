@@ -141,6 +141,9 @@ v5 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v6 = {
+  "name": "asc"
 };
 return {
   "fragment": {
@@ -205,7 +208,15 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": null,
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "order_by",
+                        "value": {
+                          "category": (v6/*: any*/)
+                        }
+                      }
+                    ],
                     "concreteType": "jargon_category",
                     "kind": "LinkedField",
                     "name": "jargon_categories",
@@ -232,7 +243,7 @@ return {
                       },
                       (v4/*: any*/)
                     ],
-                    "storageKey": null
+                    "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
                   },
                   {
                     "alias": null,
@@ -245,9 +256,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": {
-                          "name": "asc"
-                        }
+                        "value": (v6/*: any*/)
                       }
                     ],
                     "concreteType": "translation",
@@ -352,12 +361,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "87ced507cfbb103f40428fdd4474530c",
+    "cacheID": "956fe35912dc7415ad86e849b856804f",
     "id": null,
     "metadata": {},
     "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());

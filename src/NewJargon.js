@@ -4,7 +4,6 @@ import * as Util from "./Util.js";
 import * as Uuid from "uuid";
 import * as React from "react";
 import * as Base64 from "./Base64.js";
-import * as Core__Array from "../node_modules/@rescript/core/src/Core__Array.js";
 import ReactSelect from "react-select";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
@@ -293,7 +292,7 @@ var fetchPromised = RescriptRelay_Query.fetchPromised(NewJargonCategoryQuery_gra
 
 var retain = RescriptRelay_Query.retain(NewJargonCategoryQuery_graphql.node, convertVariables$2);
 
-var NewJargonCategoryQuery = {
+var CategoryQuery = {
   Operation: undefined,
   Types: undefined,
   convertVariables: convertVariables$2,
@@ -396,7 +395,7 @@ function NewJargon(props) {
         var match = edge.node;
         return {
                 label: match.acronym + " (" + match.name + ")",
-                value: match.id
+                value: Base64.retrieveOriginalIDInt(match.id)
               };
       });
   var handleSubmit = function ($$event) {
@@ -554,9 +553,9 @@ function NewJargon(props) {
                                               },
                                               onChange: (function (options) {
                                                   setCategoryIDs(function (param) {
-                                                        return Core__Array.filterMap(options, (function (param) {
-                                                                      return Base64.retrieveOriginalIDInt(param.value);
-                                                                    }));
+                                                        return options.map(function (param) {
+                                                                    return param.value;
+                                                                  });
                                                       });
                                                 }),
                                               options: options,
@@ -634,7 +633,7 @@ var make = NewJargon;
 export {
   NewJargonMutation ,
   NewJargonWithoutTranslationMutation ,
-  NewJargonCategoryQuery ,
+  CategoryQuery ,
   MultiValueLabel ,
   jargonAndCategoryIDToGraphQLInput ,
   make ,
