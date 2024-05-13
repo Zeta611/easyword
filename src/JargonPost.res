@@ -8,12 +8,20 @@ module JargonPostQuery = %relay(`
             count
           }
         }
+        jargon_categories {
+          category {
+            acronym
+          }
+        }
         ...Translation_jargon
         ...CommentSection_jargon
       }
     }
   }
 `)
+
+let badgify = text =>
+  <div key={text} className="badge badge-md font-semibold"> {text->React.string} </div>
 
 @react.component
 let make = (~jargonID) => {
@@ -27,9 +35,11 @@ let make = (~jargonID) => {
       <div className="px-3 pb-10 max-w-xl mx-auto md:max-w-4xl text-sm">
         <main className="flex flex-col p-5 gap-4 bg-zinc-100 dark:bg-zinc-900 rounded-lg">
           // Jargon
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-1">
+              {jargon.jargon_categories->Array.map(r => r.category.acronym->badgify)->React.array}
+            </div>
             <div className="text-2xl font-bold"> {jargon.name->React.string} </div>
-            // <div className="text-2xl font-medium"> {korean->React.string} </div>
           </div>
           // Translation
           <Translation translationRefs={jargon.fragmentRefs} />

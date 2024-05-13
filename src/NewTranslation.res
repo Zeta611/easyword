@@ -93,7 +93,7 @@ let make = (~jargonID: string) => {
         | _ => comment
         }
 
-        let (id, jargonID) = (jargonID, jargonID->Base64.retrieveOriginalID)
+        let (id, jargonID) = (jargonID, jargonID->Base64.retrieveOriginalIDString)
         switch jargonID {
         | Some(jargonID) => {
             let (translationID, commentID) = (Uuid.v4(), Uuid.v4())

@@ -5,7 +5,7 @@ import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRe
 
 var Types = {};
 
-var variablesConverter = {"__root":{"translationID":{"b":""},"id":{"b":""},"commentID":{"b":""}}};
+var variablesConverter = {"category_obj_rel_insert_input":{"on_conflict":{"r":"category_on_conflict"},"data":{"r":"category_insert_input"}},"user_on_conflict":{"where":{"r":"user_bool_exp"}},"jargon_insert_input":{"updated_at":{"b":""},"translations":{"r":"translation_arr_rel_insert_input"},"jargon_categories":{"r":"jargon_category_arr_rel_insert_input"},"id":{"b":""},"created_at":{"b":""},"comments":{"r":"comment_arr_rel_insert_input"},"author":{"r":"user_obj_rel_insert_input"}},"comment_on_conflict":{"where":{"r":"comment_bool_exp"}},"category_insert_input":{"jargon_categories":{"r":"jargon_category_arr_rel_insert_input"}},"comment_aggregate_bool_exp_bool_or":{"predicate":{"r":"boolean_comparison_exp"},"filter":{"r":"comment_bool_exp"}},"jargon_category_arr_rel_insert_input":{"on_conflict":{"r":"jargon_category_on_conflict"},"data":{"r":"jargon_category_insert_input"}},"category_bool_exp":{"name":{"r":"string_comparison_exp"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_bool_exp"},"jargon_categories":{"r":"jargon_category_bool_exp"},"id":{"r":"int_comparison_exp"},"acronym":{"r":"string_comparison_exp"},"_or":{"r":"category_bool_exp"},"_not":{"r":"category_bool_exp"},"_and":{"r":"category_bool_exp"}},"jargon_category_on_conflict":{"where":{"r":"jargon_category_bool_exp"}},"jargon_category_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"jargon_category_bool_exp"}},"timestamptz_comparison_exp":{"_nin":{"b":"a"},"_neq":{"b":""},"_lte":{"b":""},"_lt":{"b":""},"_in":{"b":"a"},"_gte":{"b":""},"_gt":{"b":""},"_eq":{"b":""}},"jargon_category_aggregate_bool_exp":{"count":{"r":"jargon_category_aggregate_bool_exp_count"}},"comment_obj_rel_insert_input":{"on_conflict":{"r":"comment_on_conflict"},"data":{"r":"comment_insert_input"}},"translation_on_conflict":{"where":{"r":"translation_bool_exp"}},"jargon_on_conflict":{"where":{"r":"jargon_bool_exp"}},"uuid_comparison_exp":{"_nin":{"b":"a"},"_neq":{"b":""},"_lte":{"b":""},"_lt":{"b":""},"_in":{"b":"a"},"_gte":{"b":""},"_gt":{"b":""},"_eq":{"b":""}},"comment_bool_exp":{"updated_at":{"r":"timestamptz_comparison_exp"},"translation_id":{"r":"uuid_comparison_exp"},"translation":{"r":"translation_bool_exp"},"removed":{"r":"boolean_comparison_exp"},"parent_id":{"r":"uuid_comparison_exp"},"parent":{"r":"comment_bool_exp"},"jargon_id":{"r":"uuid_comparison_exp"},"jargon":{"r":"jargon_bool_exp"},"id":{"r":"uuid_comparison_exp"},"created_at":{"r":"timestamptz_comparison_exp"},"content":{"r":"string_comparison_exp"},"children_aggregate":{"r":"comment_aggregate_bool_exp"},"children":{"r":"comment_bool_exp"},"author_id":{"r":"string_comparison_exp"},"author":{"r":"user_bool_exp"},"_or":{"r":"comment_bool_exp"},"_not":{"r":"comment_bool_exp"},"_and":{"r":"comment_bool_exp"}},"jargon_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"jargon_bool_exp"}},"user_insert_input":{"translations":{"r":"translation_arr_rel_insert_input"},"last_seen":{"b":""},"jargons":{"r":"jargon_arr_rel_insert_input"},"comments":{"r":"comment_arr_rel_insert_input"}},"translation_insert_input":{"updated_at":{"b":""},"jargon_id":{"b":""},"jargon":{"r":"jargon_obj_rel_insert_input"},"id":{"b":""},"created_at":{"b":""},"comment_id":{"b":""},"comment":{"r":"comment_obj_rel_insert_input"},"author":{"r":"user_obj_rel_insert_input"}},"jargon_obj_rel_insert_input":{"on_conflict":{"r":"jargon_on_conflict"},"data":{"r":"jargon_insert_input"}},"translation_arr_rel_insert_input":{"on_conflict":{"r":"translation_on_conflict"},"data":{"r":"translation_insert_input"}},"string_comparison_exp":{},"int_comparison_exp":{},"comment_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"comment_bool_exp"}},"user_obj_rel_insert_input":{"on_conflict":{"r":"user_on_conflict"},"data":{"r":"user_insert_input"}},"jargon_category_bool_exp":{"jargon_id":{"r":"uuid_comparison_exp"},"jargon":{"r":"jargon_bool_exp"},"category_id":{"r":"int_comparison_exp"},"category":{"r":"category_bool_exp"},"_or":{"r":"jargon_category_bool_exp"},"_not":{"r":"jargon_category_bool_exp"},"_and":{"r":"jargon_category_bool_exp"}},"comment_aggregate_bool_exp":{"count":{"r":"comment_aggregate_bool_exp_count"},"bool_or":{"r":"comment_aggregate_bool_exp_bool_or"},"bool_and":{"r":"comment_aggregate_bool_exp_bool_and"}},"translation_bool_exp":{"updated_at":{"r":"timestamptz_comparison_exp"},"name_lower_no_spaces":{"r":"string_comparison_exp"},"name":{"r":"string_comparison_exp"},"jargon_id":{"r":"uuid_comparison_exp"},"jargon":{"r":"jargon_bool_exp"},"id":{"r":"uuid_comparison_exp"},"created_at":{"r":"timestamptz_comparison_exp"},"comment_id":{"r":"uuid_comparison_exp"},"comment":{"r":"comment_bool_exp"},"author_id":{"r":"string_comparison_exp"},"author":{"r":"user_bool_exp"},"_or":{"r":"translation_bool_exp"},"_not":{"r":"translation_bool_exp"},"_and":{"r":"translation_bool_exp"}},"translation_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"translation_bool_exp"}},"comment_insert_input":{"updated_at":{"b":""},"translation_id":{"b":""},"translation":{"r":"translation_obj_rel_insert_input"},"parent_id":{"b":""},"parent":{"r":"comment_obj_rel_insert_input"},"jargon_id":{"b":""},"jargon":{"r":"jargon_obj_rel_insert_input"},"id":{"b":""},"created_at":{"b":""},"children":{"r":"comment_arr_rel_insert_input"},"author":{"r":"user_obj_rel_insert_input"}},"jargon_arr_rel_insert_input":{"on_conflict":{"r":"jargon_on_conflict"},"data":{"r":"jargon_insert_input"}},"category_on_conflict":{"where":{"r":"category_bool_exp"}},"jargon_category_insert_input":{"jargon_id":{"b":""},"jargon":{"r":"jargon_obj_rel_insert_input"},"category":{"r":"category_obj_rel_insert_input"}},"user_bool_exp":{"translations_aggregate":{"r":"translation_aggregate_bool_exp"},"translations":{"r":"translation_bool_exp"},"photo_url":{"r":"string_comparison_exp"},"last_seen":{"r":"timestamptz_comparison_exp"},"jargons_aggregate":{"r":"jargon_aggregate_bool_exp"},"jargons":{"r":"jargon_bool_exp"},"id":{"r":"string_comparison_exp"},"email":{"r":"string_comparison_exp"},"display_name":{"r":"string_comparison_exp"},"comments_aggregate":{"r":"comment_aggregate_bool_exp"},"comments":{"r":"comment_bool_exp"},"_or":{"r":"user_bool_exp"},"_not":{"r":"user_bool_exp"},"_and":{"r":"user_bool_exp"}},"translation_aggregate_bool_exp":{"count":{"r":"translation_aggregate_bool_exp_count"}},"boolean_comparison_exp":{},"jargon_aggregate_bool_exp":{"count":{"r":"jargon_aggregate_bool_exp_count"}},"translation_obj_rel_insert_input":{"on_conflict":{"r":"translation_on_conflict"},"data":{"r":"translation_insert_input"}},"jargon_bool_exp":{"updated_at":{"r":"timestamptz_comparison_exp"},"translations_aggregate":{"r":"translation_aggregate_bool_exp"},"translations":{"r":"translation_bool_exp"},"name_lower_no_spaces":{"r":"string_comparison_exp"},"name_lower":{"r":"string_comparison_exp"},"name":{"r":"string_comparison_exp"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_bool_exp"},"jargon_categories":{"r":"jargon_category_bool_exp"},"id":{"r":"uuid_comparison_exp"},"created_at":{"r":"timestamptz_comparison_exp"},"comments_aggregate":{"r":"comment_aggregate_bool_exp"},"comments":{"r":"comment_bool_exp"},"author_id":{"r":"string_comparison_exp"},"author":{"r":"user_bool_exp"},"_or":{"r":"jargon_bool_exp"},"_not":{"r":"jargon_bool_exp"},"_and":{"r":"jargon_bool_exp"}},"comment_arr_rel_insert_input":{"on_conflict":{"r":"comment_on_conflict"},"data":{"r":"comment_insert_input"}},"comment_aggregate_bool_exp_bool_and":{"predicate":{"r":"boolean_comparison_exp"},"filter":{"r":"comment_bool_exp"}},"__root":{"translationID":{"b":""},"jargon_categories":{"r":"jargon_category_insert_input"},"id":{"b":""},"commentID":{"b":""}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -37,7 +37,242 @@ var Internal = {
   convertRawResponse: convertResponse
 };
 
-var Utils = {};
+function category_constraint_decode($$enum) {
+  if ($$enum === "category_name_key" || $$enum === "category_acronym_key" || $$enum === "category_pkey") {
+    return $$enum;
+  }
+  
+}
+
+function category_constraint_fromString(str) {
+  return category_constraint_decode(str);
+}
+
+function category_update_column_decode($$enum) {
+  if ($$enum === "id" || $$enum === "acronym" || $$enum === "name") {
+    return $$enum;
+  }
+  
+}
+
+function category_update_column_fromString(str) {
+  return category_update_column_decode(str);
+}
+
+function comment_constraint_decode($$enum) {
+  if ($$enum === "comment_pkey" || $$enum === "comment_id_key" || $$enum === "comment_translation_id_new_key") {
+    return $$enum;
+  }
+  
+}
+
+function comment_constraint_fromString(str) {
+  return comment_constraint_decode(str);
+}
+
+function comment_select_column_decode($$enum) {
+  if ($$enum === "translation_id" || $$enum === "removed" || $$enum === "parent_id" || $$enum === "jargon_id" || $$enum === "id" || $$enum === "created_at" || $$enum === "content" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function comment_select_column_fromString(str) {
+  return comment_select_column_decode(str);
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode($$enum) {
+  if ($$enum === "removed") {
+    return $$enum;
+  }
+  
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString(str) {
+  return comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode(str);
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode($$enum) {
+  if ($$enum === "removed") {
+    return $$enum;
+  }
+  
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString(str) {
+  return comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode(str);
+}
+
+function comment_update_column_decode($$enum) {
+  if ($$enum === "translation_id" || $$enum === "removed" || $$enum === "parent_id" || $$enum === "jargon_id" || $$enum === "id" || $$enum === "created_at" || $$enum === "content" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function comment_update_column_fromString(str) {
+  return comment_update_column_decode(str);
+}
+
+function jargon_category_constraint_decode($$enum) {
+  if ($$enum === "jargon_category_pkey") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_category_constraint_fromString(str) {
+  return jargon_category_constraint_decode(str);
+}
+
+function jargon_category_select_column_decode($$enum) {
+  if ($$enum === "category_id" || $$enum === "jargon_id") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_category_select_column_fromString(str) {
+  return jargon_category_select_column_decode(str);
+}
+
+function jargon_category_update_column_decode($$enum) {
+  if ($$enum === "category_id" || $$enum === "jargon_id") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_category_update_column_fromString(str) {
+  return jargon_category_update_column_decode(str);
+}
+
+function jargon_constraint_decode($$enum) {
+  if ($$enum === "jargon_name_key" || $$enum === "jargon_id_key" || $$enum === "jargon_pkey") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_constraint_fromString(str) {
+  return jargon_constraint_decode(str);
+}
+
+function jargon_select_column_decode($$enum) {
+  if ($$enum === "name" || $$enum === "id" || $$enum === "created_at" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_select_column_fromString(str) {
+  return jargon_select_column_decode(str);
+}
+
+function jargon_update_column_decode($$enum) {
+  if ($$enum === "name" || $$enum === "id" || $$enum === "created_at" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_update_column_fromString(str) {
+  return jargon_update_column_decode(str);
+}
+
+function translation_constraint_decode($$enum) {
+  if ($$enum === "translation_id_key" || $$enum === "translation_comment_id_new_key" || $$enum === "translation_pkey") {
+    return $$enum;
+  }
+  
+}
+
+function translation_constraint_fromString(str) {
+  return translation_constraint_decode(str);
+}
+
+function translation_select_column_decode($$enum) {
+  if ($$enum === "name" || $$enum === "jargon_id" || $$enum === "id" || $$enum === "created_at" || $$enum === "comment_id" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function translation_select_column_fromString(str) {
+  return translation_select_column_decode(str);
+}
+
+function translation_update_column_decode($$enum) {
+  if ($$enum === "name" || $$enum === "jargon_id" || $$enum === "id" || $$enum === "created_at" || $$enum === "comment_id" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function translation_update_column_fromString(str) {
+  return translation_update_column_decode(str);
+}
+
+function user_constraint_decode($$enum) {
+  if ($$enum === "user_photo_url_key" || $$enum === "user_email_key" || $$enum === "user_pkey") {
+    return $$enum;
+  }
+  
+}
+
+function user_constraint_fromString(str) {
+  return user_constraint_decode(str);
+}
+
+function user_update_column_decode($$enum) {
+  if ($$enum === "last_seen" || $$enum === "id" || $$enum === "email" || $$enum === "display_name" || $$enum === "photo_url") {
+    return $$enum;
+  }
+  
+}
+
+function user_update_column_fromString(str) {
+  return user_update_column_decode(str);
+}
+
+var Utils = {
+  category_constraint_decode: category_constraint_decode,
+  category_constraint_fromString: category_constraint_fromString,
+  category_update_column_decode: category_update_column_decode,
+  category_update_column_fromString: category_update_column_fromString,
+  comment_constraint_decode: comment_constraint_decode,
+  comment_constraint_fromString: comment_constraint_fromString,
+  comment_select_column_decode: comment_select_column_decode,
+  comment_select_column_fromString: comment_select_column_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode: comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString: comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode: comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString: comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString,
+  comment_update_column_decode: comment_update_column_decode,
+  comment_update_column_fromString: comment_update_column_fromString,
+  jargon_category_constraint_decode: jargon_category_constraint_decode,
+  jargon_category_constraint_fromString: jargon_category_constraint_fromString,
+  jargon_category_select_column_decode: jargon_category_select_column_decode,
+  jargon_category_select_column_fromString: jargon_category_select_column_fromString,
+  jargon_category_update_column_decode: jargon_category_update_column_decode,
+  jargon_category_update_column_fromString: jargon_category_update_column_fromString,
+  jargon_constraint_decode: jargon_constraint_decode,
+  jargon_constraint_fromString: jargon_constraint_fromString,
+  jargon_select_column_decode: jargon_select_column_decode,
+  jargon_select_column_fromString: jargon_select_column_fromString,
+  jargon_update_column_decode: jargon_update_column_decode,
+  jargon_update_column_fromString: jargon_update_column_fromString,
+  translation_constraint_decode: translation_constraint_decode,
+  translation_constraint_fromString: translation_constraint_fromString,
+  translation_select_column_decode: translation_select_column_decode,
+  translation_select_column_fromString: translation_select_column_fromString,
+  translation_update_column_decode: translation_update_column_decode,
+  translation_update_column_fromString: translation_update_column_fromString,
+  user_constraint_decode: user_constraint_decode,
+  user_constraint_fromString: user_constraint_fromString,
+  user_update_column_decode: user_update_column_decode,
+  user_update_column_fromString: user_update_column_fromString
+};
 
 var node = ((function(){
 var v0 = {
@@ -63,35 +298,40 @@ v3 = {
 v4 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "name"
+  "name": "jargon_categories"
 },
 v5 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "translation"
+  "name": "name"
 },
 v6 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "translationID"
+  "name": "translation"
 },
 v7 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "translationID"
+},
+v8 = {
   "kind": "Variable",
   "name": "author_id",
   "variableName": "authorID"
 },
-v8 = [
+v9 = [
   {
     "alias": null,
     "args": [
       {
         "fields": [
-          (v7/*: any*/),
+          (v8/*: any*/),
           {
             "fields": [
               {
                 "fields": [
-                  (v7/*: any*/),
+                  (v8/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "content",
@@ -129,7 +369,7 @@ v8 = [
             "fields": [
               {
                 "fields": [
-                  (v7/*: any*/),
+                  (v8/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "comment_id",
@@ -172,6 +412,30 @@ v8 = [
       }
     ],
     "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "objects",
+        "variableName": "jargon_categories"
+      }
+    ],
+    "concreteType": "jargon_category_mutation_response",
+    "kind": "LinkedField",
+    "name": "insert_jargon_category",
+    "plural": false,
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "affected_rows",
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
   }
 ];
 return {
@@ -183,12 +447,13 @@ return {
       (v3/*: any*/),
       (v4/*: any*/),
       (v5/*: any*/),
-      (v6/*: any*/)
+      (v6/*: any*/),
+      (v7/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
     "name": "NewJargonMutation",
-    "selections": (v8/*: any*/),
+    "selections": (v9/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -197,23 +462,24 @@ return {
     "argumentDefinitions": [
       (v3/*: any*/),
       (v0/*: any*/),
-      (v4/*: any*/),
-      (v6/*: any*/),
       (v5/*: any*/),
+      (v7/*: any*/),
+      (v6/*: any*/),
+      (v4/*: any*/),
       (v2/*: any*/),
       (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "NewJargonMutation",
-    "selections": (v8/*: any*/)
+    "selections": (v9/*: any*/)
   },
   "params": {
-    "cacheID": "a43c526da42b2fa6d6551f6f76c7db4d",
+    "cacheID": "b03080161277f097726413faf01826b4",
     "id": null,
     "metadata": {},
     "name": "NewJargonMutation",
     "operationKind": "mutation",
-    "text": "mutation NewJargonMutation(\n  $id: uuid!\n  $authorID: String!\n  $name: String!\n  $translationID: uuid!\n  $translation: String!\n  $commentID: uuid!\n  $comment: String!\n) {\n  insert_jargon_one(object: {id: $id, author_id: $authorID, name: $name, comments: {data: {id: $commentID, author_id: $authorID, translation_id: $translationID, content: $comment}}, translations: {data: {id: $translationID, comment_id: $commentID, author_id: $authorID, name: $translation}}}) {\n    id\n  }\n}\n"
+    "text": "mutation NewJargonMutation(\n  $id: uuid!\n  $authorID: String!\n  $name: String!\n  $translationID: uuid!\n  $translation: String!\n  $jargon_categories: [jargon_category_insert_input!]!\n  $commentID: uuid!\n  $comment: String!\n) {\n  insert_jargon_one(object: {id: $id, author_id: $authorID, name: $name, comments: {data: {id: $commentID, author_id: $authorID, translation_id: $translationID, content: $comment}}, translations: {data: {id: $translationID, comment_id: $commentID, author_id: $authorID, name: $translation}}}) {\n    id\n  }\n  insert_jargon_category(objects: $jargon_categories) {\n    affected_rows\n  }\n}\n"
   }
 };
 })());

@@ -39,7 +39,7 @@ let make = (~jargonID) => {
     if content->String.length < 3 {
       Window.alert("댓글은 세 글자 이상이어야 해요")
     } else {
-      let jargonID = jargonID->Base64.retrieveOriginalID
+      let jargonID = jargonID->Base64.retrieveOriginalIDString
       switch (user->Nullable.toOption, jargonID) {
       | (Some(user), Some(jargonID)) =>
         mutate(

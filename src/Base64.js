@@ -9,9 +9,7 @@ function retrieveOriginalID(id) {
   try {
     var decoded = Core__JSON.Decode.array(JSON.parse(atob(id)));
     if (decoded !== undefined) {
-      return Core__Option.flatMap(decoded[3], (function (x) {
-                    return Core__JSON.Decode.string(x);
-                  }));
+      return decoded[3];
     } else {
       return ;
     }
@@ -26,7 +24,27 @@ function retrieveOriginalID(id) {
   }
 }
 
+function retrieveOriginalIDString(id) {
+  var originalID = retrieveOriginalID(id);
+  if (originalID !== undefined) {
+    return Core__JSON.Decode.string(originalID);
+  }
+  
+}
+
+function retrieveOriginalIDInt(id) {
+  var originalID = retrieveOriginalID(id);
+  if (originalID !== undefined) {
+    return Core__Option.map(Core__JSON.Decode.$$float(originalID), (function (n) {
+                  return n | 0;
+                }));
+  }
+  
+}
+
 export {
   retrieveOriginalID ,
+  retrieveOriginalIDString ,
+  retrieveOriginalIDInt ,
 }
 /* No side effect */

@@ -10,6 +10,12 @@ module Types = {
   and fragment_comments_aggregate = {
     aggregate: option<fragment_comments_aggregate_aggregate>,
   }
+  and fragment_jargon_categories_category = {
+    acronym: string,
+  }
+  and fragment_jargon_categories = {
+    category: fragment_jargon_categories_category,
+  }
   and fragment_translations = {
     @live id: string,
     name: string,
@@ -17,6 +23,7 @@ module Types = {
   type fragment = {
     comments_aggregate: fragment_comments_aggregate,
     @live id: string,
+    jargon_categories: array<fragment_jargon_categories>,
     name: string,
     translations: array<fragment_translations>,
     updated_at: string,
@@ -82,6 +89,35 @@ return {
       "args": null,
       "kind": "ScalarField",
       "name": "updated_at",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "jargon_category",
+      "kind": "LinkedField",
+      "name": "jargon_categories",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "category",
+          "kind": "LinkedField",
+          "name": "category",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "acronym",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {

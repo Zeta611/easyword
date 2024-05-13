@@ -2,6 +2,51 @@
 @@warning("-30")
 
 @live @unboxed
+type enum_category_constraint = 
+  | @as("category_acronym_key") Category_acronym_key
+  | @as("category_name_key") Category_name_key
+  | @as("category_pkey") Category_pkey
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_category_constraint_input = 
+  | @as("category_acronym_key") Category_acronym_key
+  | @as("category_name_key") Category_name_key
+  | @as("category_pkey") Category_pkey
+
+
+@live @unboxed
+type enum_category_select_column = 
+  | @as("acronym") Acronym
+  | @as("id") Id
+  | @as("name") Name
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_category_select_column_input = 
+  | @as("acronym") Acronym
+  | @as("id") Id
+  | @as("name") Name
+
+
+@live @unboxed
+type enum_category_update_column = 
+  | @as("acronym") Acronym
+  | @as("id") Id
+  | @as("name") Name
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_category_update_column_input = 
+  | @as("acronym") Acronym
+  | @as("id") Id
+  | @as("name") Name
+
+
+@live @unboxed
 type enum_comment_constraint = 
   | @as("comment_id_key") Comment_id_key
   | @as("comment_pkey") Comment_pkey
@@ -90,6 +135,43 @@ type enum_comment_update_column_input =
   | @as("removed") Removed
   | @as("translation_id") Translation_id
   | @as("updated_at") Updated_at
+
+
+@live @unboxed
+type enum_jargon_category_constraint = 
+  | @as("jargon_category_pkey") Jargon_category_pkey
+  | FutureAddedValue(string)
+
+
+@live
+type enum_jargon_category_constraint_input = 
+  | @as("jargon_category_pkey") Jargon_category_pkey
+
+
+@live @unboxed
+type enum_jargon_category_select_column = 
+  | @as("category_id") Category_id
+  | @as("jargon_id") Jargon_id
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_jargon_category_select_column_input = 
+  | @as("category_id") Category_id
+  | @as("jargon_id") Jargon_id
+
+
+@live @unboxed
+type enum_jargon_category_update_column = 
+  | @as("category_id") Category_id
+  | @as("jargon_id") Jargon_id
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_jargon_category_update_column_input = 
+  | @as("category_id") Category_id
+  | @as("jargon_id") Jargon_id
 
 
 @live @unboxed
@@ -391,6 +473,136 @@ and input_String_comparison_exp_nullable = {
   _nsimilar?: Js.Null.t<string>,
   _regex?: Js.Null.t<string>,
   _similar?: Js.Null.t<string>,
+}
+
+@live
+and input_category_bool_exp = {
+  _and?: array<input_category_bool_exp>,
+  _not?: input_category_bool_exp,
+  _or?: array<input_category_bool_exp>,
+  acronym?: input_String_comparison_exp,
+  id?: input_Int_comparison_exp,
+  jargon_categories?: input_jargon_category_bool_exp,
+  jargon_categories_aggregate?: input_jargon_category_aggregate_bool_exp,
+  name?: input_String_comparison_exp,
+}
+
+@live
+and input_category_bool_exp_nullable = {
+  _and?: Js.Null.t<array<input_category_bool_exp_nullable>>,
+  _not?: Js.Null.t<input_category_bool_exp_nullable>,
+  _or?: Js.Null.t<array<input_category_bool_exp_nullable>>,
+  acronym?: Js.Null.t<input_String_comparison_exp_nullable>,
+  id?: Js.Null.t<input_Int_comparison_exp_nullable>,
+  jargon_categories?: Js.Null.t<input_jargon_category_bool_exp_nullable>,
+  jargon_categories_aggregate?: Js.Null.t<input_jargon_category_aggregate_bool_exp_nullable>,
+  name?: Js.Null.t<input_String_comparison_exp_nullable>,
+}
+
+@live
+and input_category_inc_input = {
+  id?: int,
+}
+
+@live
+and input_category_inc_input_nullable = {
+  id?: Js.Null.t<int>,
+}
+
+@live
+and input_category_insert_input = {
+  acronym?: string,
+  id?: int,
+  jargon_categories?: input_jargon_category_arr_rel_insert_input,
+  name?: string,
+}
+
+@live
+and input_category_insert_input_nullable = {
+  acronym?: Js.Null.t<string>,
+  id?: Js.Null.t<int>,
+  jargon_categories?: Js.Null.t<input_jargon_category_arr_rel_insert_input_nullable>,
+  name?: Js.Null.t<string>,
+}
+
+@live
+and input_category_obj_rel_insert_input = {
+  data: input_category_insert_input,
+  on_conflict?: input_category_on_conflict,
+}
+
+@live
+and input_category_obj_rel_insert_input_nullable = {
+  data: input_category_insert_input_nullable,
+  on_conflict?: Js.Null.t<input_category_on_conflict_nullable>,
+}
+
+@live
+and input_category_on_conflict = {
+  @as("constraint") constraint_: enum_category_constraint_input,
+  update_columns: array<enum_category_update_column_input>,
+  where?: input_category_bool_exp,
+}
+
+@live
+and input_category_on_conflict_nullable = {
+  @as("constraint") constraint_: enum_category_constraint_input,
+  update_columns: array<enum_category_update_column_input>,
+  where?: Js.Null.t<input_category_bool_exp_nullable>,
+}
+
+@live
+and input_category_order_by = {
+  acronym?: enum_order_by_input,
+  id?: enum_order_by_input,
+  jargon_categories_aggregate?: input_jargon_category_aggregate_order_by,
+  name?: enum_order_by_input,
+}
+
+@live
+and input_category_order_by_nullable = {
+  acronym?: Js.Null.t<enum_order_by_input>,
+  id?: Js.Null.t<enum_order_by_input>,
+  jargon_categories_aggregate?: Js.Null.t<input_jargon_category_aggregate_order_by_nullable>,
+  name?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_category_pk_columns_input = {
+  id: int,
+}
+
+@live
+and input_category_pk_columns_input_nullable = {
+  id: int,
+}
+
+@live
+and input_category_set_input = {
+  acronym?: string,
+  id?: int,
+  name?: string,
+}
+
+@live
+and input_category_set_input_nullable = {
+  acronym?: Js.Null.t<string>,
+  id?: Js.Null.t<int>,
+  name?: Js.Null.t<string>,
+}
+
+@live
+and input_category_updates = {
+  _inc?: input_category_inc_input,
+  _set?: input_category_set_input,
+  where: input_category_bool_exp,
+}
+
+@live
+and input_category_updates_nullable = {
+  _inc?: Js.Null.t<input_category_inc_input_nullable>,
+  _set?: Js.Null.t<input_category_set_input_nullable>,
+  where: input_category_bool_exp_nullable,
 }
 
 @live
@@ -782,6 +994,8 @@ and input_jargon_bool_exp = {
   comments_aggregate?: input_comment_aggregate_bool_exp,
   created_at?: input_timestamptz_comparison_exp,
   id?: input_uuid_comparison_exp,
+  jargon_categories?: input_jargon_category_bool_exp,
+  jargon_categories_aggregate?: input_jargon_category_aggregate_bool_exp,
   name?: input_String_comparison_exp,
   name_lower?: input_String_comparison_exp,
   name_lower_no_spaces?: input_String_comparison_exp,
@@ -801,6 +1015,8 @@ and input_jargon_bool_exp_nullable = {
   comments_aggregate?: Js.Null.t<input_comment_aggregate_bool_exp_nullable>,
   created_at?: Js.Null.t<input_timestamptz_comparison_exp_nullable>,
   id?: Js.Null.t<input_uuid_comparison_exp_nullable>,
+  jargon_categories?: Js.Null.t<input_jargon_category_bool_exp_nullable>,
+  jargon_categories_aggregate?: Js.Null.t<input_jargon_category_aggregate_bool_exp_nullable>,
   name?: Js.Null.t<input_String_comparison_exp_nullable>,
   name_lower?: Js.Null.t<input_String_comparison_exp_nullable>,
   name_lower_no_spaces?: Js.Null.t<input_String_comparison_exp_nullable>,
@@ -810,12 +1026,301 @@ and input_jargon_bool_exp_nullable = {
 }
 
 @live
+and input_jargon_category_aggregate_bool_exp = {
+  count?: input_jargon_category_aggregate_bool_exp_count,
+}
+
+@live
+and input_jargon_category_aggregate_bool_exp_nullable = {
+  count?: Js.Null.t<input_jargon_category_aggregate_bool_exp_count_nullable>,
+}
+
+@live
+and input_jargon_category_aggregate_bool_exp_count = {
+  arguments?: array<enum_jargon_category_select_column_input>,
+  distinct?: bool,
+  filter?: input_jargon_category_bool_exp,
+  predicate: input_Int_comparison_exp,
+}
+
+@live
+and input_jargon_category_aggregate_bool_exp_count_nullable = {
+  arguments?: Js.Null.t<array<enum_jargon_category_select_column_input>>,
+  distinct?: Js.Null.t<bool>,
+  filter?: Js.Null.t<input_jargon_category_bool_exp_nullable>,
+  predicate: input_Int_comparison_exp_nullable,
+}
+
+@live
+and input_jargon_category_aggregate_order_by = {
+  avg?: input_jargon_category_avg_order_by,
+  count?: enum_order_by_input,
+  max?: input_jargon_category_max_order_by,
+  min?: input_jargon_category_min_order_by,
+  stddev?: input_jargon_category_stddev_order_by,
+  stddev_pop?: input_jargon_category_stddev_pop_order_by,
+  stddev_samp?: input_jargon_category_stddev_samp_order_by,
+  sum?: input_jargon_category_sum_order_by,
+  var_pop?: input_jargon_category_var_pop_order_by,
+  var_samp?: input_jargon_category_var_samp_order_by,
+  variance?: input_jargon_category_variance_order_by,
+}
+
+@live
+and input_jargon_category_aggregate_order_by_nullable = {
+  avg?: Js.Null.t<input_jargon_category_avg_order_by_nullable>,
+  count?: Js.Null.t<enum_order_by_input>,
+  max?: Js.Null.t<input_jargon_category_max_order_by_nullable>,
+  min?: Js.Null.t<input_jargon_category_min_order_by_nullable>,
+  stddev?: Js.Null.t<input_jargon_category_stddev_order_by_nullable>,
+  stddev_pop?: Js.Null.t<input_jargon_category_stddev_pop_order_by_nullable>,
+  stddev_samp?: Js.Null.t<input_jargon_category_stddev_samp_order_by_nullable>,
+  sum?: Js.Null.t<input_jargon_category_sum_order_by_nullable>,
+  var_pop?: Js.Null.t<input_jargon_category_var_pop_order_by_nullable>,
+  var_samp?: Js.Null.t<input_jargon_category_var_samp_order_by_nullable>,
+  variance?: Js.Null.t<input_jargon_category_variance_order_by_nullable>,
+}
+
+@live
+and input_jargon_category_arr_rel_insert_input = {
+  data: array<input_jargon_category_insert_input>,
+  on_conflict?: input_jargon_category_on_conflict,
+}
+
+@live
+and input_jargon_category_arr_rel_insert_input_nullable = {
+  data: array<input_jargon_category_insert_input_nullable>,
+  on_conflict?: Js.Null.t<input_jargon_category_on_conflict_nullable>,
+}
+
+@live
+and input_jargon_category_avg_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_avg_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_bool_exp = {
+  _and?: array<input_jargon_category_bool_exp>,
+  _not?: input_jargon_category_bool_exp,
+  _or?: array<input_jargon_category_bool_exp>,
+  category?: input_category_bool_exp,
+  category_id?: input_Int_comparison_exp,
+  jargon?: input_jargon_bool_exp,
+  jargon_id?: input_uuid_comparison_exp,
+}
+
+@live
+and input_jargon_category_bool_exp_nullable = {
+  _and?: Js.Null.t<array<input_jargon_category_bool_exp_nullable>>,
+  _not?: Js.Null.t<input_jargon_category_bool_exp_nullable>,
+  _or?: Js.Null.t<array<input_jargon_category_bool_exp_nullable>>,
+  category?: Js.Null.t<input_category_bool_exp_nullable>,
+  category_id?: Js.Null.t<input_Int_comparison_exp_nullable>,
+  jargon?: Js.Null.t<input_jargon_bool_exp_nullable>,
+  jargon_id?: Js.Null.t<input_uuid_comparison_exp_nullable>,
+}
+
+@live
+and input_jargon_category_inc_input = {
+  category_id?: int,
+}
+
+@live
+and input_jargon_category_inc_input_nullable = {
+  category_id?: Js.Null.t<int>,
+}
+
+@live
+and input_jargon_category_insert_input = {
+  category?: input_category_obj_rel_insert_input,
+  category_id?: int,
+  jargon?: input_jargon_obj_rel_insert_input,
+  jargon_id?: string,
+}
+
+@live
+and input_jargon_category_insert_input_nullable = {
+  category?: Js.Null.t<input_category_obj_rel_insert_input_nullable>,
+  category_id?: Js.Null.t<int>,
+  jargon?: Js.Null.t<input_jargon_obj_rel_insert_input_nullable>,
+  jargon_id?: Js.Null.t<string>,
+}
+
+@live
+and input_jargon_category_max_order_by = {
+  category_id?: enum_order_by_input,
+  jargon_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_max_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+  jargon_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_min_order_by = {
+  category_id?: enum_order_by_input,
+  jargon_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_min_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+  jargon_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_on_conflict = {
+  @as("constraint") constraint_: enum_jargon_category_constraint_input,
+  update_columns: array<enum_jargon_category_update_column_input>,
+  where?: input_jargon_category_bool_exp,
+}
+
+@live
+and input_jargon_category_on_conflict_nullable = {
+  @as("constraint") constraint_: enum_jargon_category_constraint_input,
+  update_columns: array<enum_jargon_category_update_column_input>,
+  where?: Js.Null.t<input_jargon_category_bool_exp_nullable>,
+}
+
+@live
+and input_jargon_category_order_by = {
+  category?: input_category_order_by,
+  category_id?: enum_order_by_input,
+  jargon?: input_jargon_order_by,
+  jargon_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_order_by_nullable = {
+  category?: Js.Null.t<input_category_order_by_nullable>,
+  category_id?: Js.Null.t<enum_order_by_input>,
+  jargon?: Js.Null.t<input_jargon_order_by_nullable>,
+  jargon_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_pk_columns_input = {
+  category_id: int,
+  jargon_id: string,
+}
+
+@live
+and input_jargon_category_pk_columns_input_nullable = {
+  category_id: int,
+  jargon_id: string,
+}
+
+@live
+and input_jargon_category_set_input = {
+  category_id?: int,
+  jargon_id?: string,
+}
+
+@live
+and input_jargon_category_set_input_nullable = {
+  category_id?: Js.Null.t<int>,
+  jargon_id?: Js.Null.t<string>,
+}
+
+@live
+and input_jargon_category_stddev_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_stddev_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_stddev_pop_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_stddev_pop_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_stddev_samp_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_stddev_samp_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_sum_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_sum_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_updates = {
+  _inc?: input_jargon_category_inc_input,
+  _set?: input_jargon_category_set_input,
+  where: input_jargon_category_bool_exp,
+}
+
+@live
+and input_jargon_category_updates_nullable = {
+  _inc?: Js.Null.t<input_jargon_category_inc_input_nullable>,
+  _set?: Js.Null.t<input_jargon_category_set_input_nullable>,
+  where: input_jargon_category_bool_exp_nullable,
+}
+
+@live
+and input_jargon_category_var_pop_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_var_pop_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_var_samp_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_var_samp_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_jargon_category_variance_order_by = {
+  category_id?: enum_order_by_input,
+}
+
+@live
+and input_jargon_category_variance_order_by_nullable = {
+  category_id?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
 and input_jargon_insert_input = {
   author?: input_user_obj_rel_insert_input,
   author_id?: string,
   comments?: input_comment_arr_rel_insert_input,
   created_at?: string,
   id?: string,
+  jargon_categories?: input_jargon_category_arr_rel_insert_input,
   name?: string,
   translations?: input_translation_arr_rel_insert_input,
   updated_at?: string,
@@ -828,6 +1333,7 @@ and input_jargon_insert_input_nullable = {
   comments?: Js.Null.t<input_comment_arr_rel_insert_input_nullable>,
   created_at?: Js.Null.t<string>,
   id?: Js.Null.t<string>,
+  jargon_categories?: Js.Null.t<input_jargon_category_arr_rel_insert_input_nullable>,
   name?: Js.Null.t<string>,
   translations?: Js.Null.t<input_translation_arr_rel_insert_input_nullable>,
   updated_at?: Js.Null.t<string>,
@@ -902,6 +1408,7 @@ and input_jargon_order_by = {
   comments_aggregate?: input_comment_aggregate_order_by,
   created_at?: enum_order_by_input,
   id?: enum_order_by_input,
+  jargon_categories_aggregate?: input_jargon_category_aggregate_order_by,
   name?: enum_order_by_input,
   name_lower?: enum_order_by_input,
   name_lower_no_spaces?: enum_order_by_input,
@@ -916,6 +1423,7 @@ and input_jargon_order_by_nullable = {
   comments_aggregate?: Js.Null.t<input_comment_aggregate_order_by_nullable>,
   created_at?: Js.Null.t<enum_order_by_input>,
   id?: Js.Null.t<enum_order_by_input>,
+  jargon_categories_aggregate?: Js.Null.t<input_jargon_category_aggregate_order_by_nullable>,
   name?: Js.Null.t<enum_order_by_input>,
   name_lower?: Js.Null.t<enum_order_by_input>,
   name_lower_no_spaces?: Js.Null.t<enum_order_by_input>,

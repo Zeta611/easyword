@@ -51,6 +51,35 @@ return {
     },
     {
       "alias": null,
+      "args": null,
+      "concreteType": "jargon_category",
+      "kind": "LinkedField",
+      "name": "jargon_categories",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "category",
+          "kind": "LinkedField",
+          "name": "category",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "acronym",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": [
         {
           "kind": "Literal",

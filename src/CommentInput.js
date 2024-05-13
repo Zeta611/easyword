@@ -50,7 +50,7 @@ function CommentInput(props) {
       window.alert("댓글은 세 글자 이상이어야 해요");
       return ;
     }
-    var jargonID$1 = Base64.retrieveOriginalID(jargonID);
+    var jargonID$1 = Base64.retrieveOriginalIDString(jargonID);
     if (user == null) {
       window.alert("로그인해야 합니다");
     } else if (jargonID$1 !== undefined) {

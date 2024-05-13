@@ -16,7 +16,7 @@ var Types = {
   makeRefetchVariables: makeRefetchVariables
 };
 
-var variablesConverter = {"translation_max_order_by":{},"comment_aggregate_order_by":{"min":{"r":"comment_min_order_by"},"max":{"r":"comment_max_order_by"}},"translation_min_order_by":{},"jargon_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"},"author":{"r":"user_order_by"}},"jargon_aggregate_order_by":{"min":{"r":"jargon_min_order_by"},"max":{"r":"jargon_max_order_by"}},"jargon_max_order_by":{},"translation_aggregate_order_by":{"min":{"r":"translation_min_order_by"},"max":{"r":"translation_max_order_by"}},"comment_min_order_by":{},"user_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargons_aggregate":{"r":"jargon_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"}},"comment_max_order_by":{},"jargon_min_order_by":{},"__root":{"directions":{"r":"jargon_order_by"}}};
+var variablesConverter = {"jargon_category_aggregate_order_by":{"variance":{"r":"jargon_category_variance_order_by"},"var_samp":{"r":"jargon_category_var_samp_order_by"},"var_pop":{"r":"jargon_category_var_pop_order_by"},"sum":{"r":"jargon_category_sum_order_by"},"stddev_samp":{"r":"jargon_category_stddev_samp_order_by"},"stddev_pop":{"r":"jargon_category_stddev_pop_order_by"},"stddev":{"r":"jargon_category_stddev_order_by"},"min":{"r":"jargon_category_min_order_by"},"max":{"r":"jargon_category_max_order_by"},"avg":{"r":"jargon_category_avg_order_by"}},"jargon_category_variance_order_by":{},"translation_max_order_by":{},"comment_aggregate_order_by":{"min":{"r":"comment_min_order_by"},"max":{"r":"comment_max_order_by"}},"translation_min_order_by":{},"jargon_category_stddev_samp_order_by":{},"jargon_category_var_pop_order_by":{},"jargon_max_order_by":{},"translation_aggregate_order_by":{"min":{"r":"translation_min_order_by"},"max":{"r":"translation_max_order_by"}},"jargon_category_sum_order_by":{},"user_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargons_aggregate":{"r":"jargon_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"}},"comment_max_order_by":{},"jargon_category_min_order_by":{},"jargon_category_stddev_order_by":{},"jargon_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"},"author":{"r":"user_order_by"}},"jargon_aggregate_order_by":{"min":{"r":"jargon_min_order_by"},"max":{"r":"jargon_max_order_by"}},"jargon_category_var_samp_order_by":{},"jargon_category_avg_order_by":{},"comment_min_order_by":{},"jargon_category_max_order_by":{},"jargon_category_stddev_pop_order_by":{},"jargon_min_order_by":{},"__root":{"directions":{"r":"jargon_order_by"}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -205,6 +205,37 @@ return {
                   },
                   {
                     "alias": null,
+                    "args": null,
+                    "concreteType": "jargon_category",
+                    "kind": "LinkedField",
+                    "name": "jargon_categories",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "category",
+                        "kind": "LinkedField",
+                        "name": "category",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "acronym",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
                     "args": [
                       {
                         "kind": "Literal",
@@ -321,12 +352,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0760d86180f702aa986237775c808b18",
+    "cacheID": "87ced507cfbb103f40428fdd4474530c",
     "id": null,
     "metadata": {},
     "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());

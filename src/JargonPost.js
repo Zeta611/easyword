@@ -47,6 +47,13 @@ var JargonPostQuery = {
   retain: retain
 };
 
+function badgify(text) {
+  return JsxRuntime.jsx("div", {
+              children: text,
+              className: "badge badge-md font-semibold"
+            }, text);
+}
+
 function JargonPost(props) {
   var jargonID = props.jargonID;
   var match = use({
@@ -60,12 +67,20 @@ function JargonPost(props) {
     return JsxRuntime.jsx("div", {
                 children: JsxRuntime.jsxs("main", {
                       children: [
-                        JsxRuntime.jsx("div", {
-                              children: JsxRuntime.jsx("div", {
-                                    children: node.name,
-                                    className: "text-2xl font-bold"
-                                  }),
-                              className: "flex flex-col gap-1"
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("div", {
+                                      children: node.jargon_categories.map(function (r) {
+                                            return badgify(r.category.acronym);
+                                          }),
+                                      className: "flex gap-1"
+                                    }),
+                                JsxRuntime.jsx("div", {
+                                      children: node.name,
+                                      className: "text-2xl font-bold"
+                                    })
+                              ],
+                              className: "flex flex-col gap-2"
                             }),
                         JsxRuntime.jsx(Translation.make, {
                               translationRefs: node.fragmentRefs
@@ -116,6 +131,7 @@ var make = JargonPost;
 
 export {
   JargonPostQuery ,
+  badgify ,
   make ,
 }
 /* use Not a pure module */

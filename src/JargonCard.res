@@ -3,6 +3,11 @@ module JargonCardFragment = %relay(`
     id
     name
     updated_at
+    jargon_categories {
+      category {
+        acronym
+      }
+    }
     translations(order_by: { name: asc }, limit: 20) {
       id
       name
@@ -15,18 +20,30 @@ module JargonCardFragment = %relay(`
   }
 `)
 
+let badgify = text => <div key={text} className="badge badge-sm"> {text->React.string} </div>
+
 @react.component
 let make = (~jargonCardRef) => {
-  let {id, name, updated_at, translations, comments_aggregate} = JargonCardFragment.use(
-    jargonCardRef,
-  )
+  let {
+    id,
+    name,
+    updated_at,
+    jargon_categories,
+    translations,
+    comments_aggregate,
+  } = JargonCardFragment.use(jargonCardRef)
 
   <div className="h-[100%] p-4" onClick={_ => RescriptReactRouter.push(`/jargon/${id}`)}>
     // first row
-    <div className="flex-none">
-      {<div className="text-xs dark:text-zinc-500">
+    <div className="flex justify-between">
+      <div className="text-xs dark:text-zinc-500">
         {`최근 활동 ${updated_at->Date.fromString->DateFormat.timeAgo}`->React.string}
-      </div>}
+      </div>
+      <div className="flex gap-1">
+        {jargon_categories
+        ->Array.map(r => r.category.acronym->badgify)
+        ->React.array}
+      </div>
     </div>
     // second row
     <div className="flex-none inline-grid grid-cols-1">

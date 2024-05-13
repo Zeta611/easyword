@@ -26,17 +26,32 @@ var JargonCardFragment = {
   useOpt: useOpt
 };
 
+function badgify(text) {
+  return JsxRuntime.jsx("div", {
+              children: text,
+              className: "badge badge-sm"
+            }, text);
+}
+
 function JargonCard(props) {
   var match = use(props.jargonCardRef);
   var id = match.id;
   return JsxRuntime.jsxs("div", {
               children: [
-                JsxRuntime.jsx("div", {
-                      children: JsxRuntime.jsx("div", {
-                            children: "최근 활동 " + DateFormat.timeAgo(new Date(match.updated_at)),
-                            className: "text-xs dark:text-zinc-500"
-                          }),
-                      className: "flex-none"
+                JsxRuntime.jsxs("div", {
+                      children: [
+                        JsxRuntime.jsx("div", {
+                              children: "최근 활동 " + DateFormat.timeAgo(new Date(match.updated_at)),
+                              className: "text-xs dark:text-zinc-500"
+                            }),
+                        JsxRuntime.jsx("div", {
+                              children: match.jargon_categories.map(function (r) {
+                                    return badgify(r.category.acronym);
+                                  }),
+                              className: "flex gap-1"
+                            })
+                      ],
+                      className: "flex justify-between"
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [
@@ -75,6 +90,7 @@ var make = JargonCard;
 
 export {
   JargonCardFragment ,
+  badgify ,
   make ,
 }
 /* react/jsx-runtime Not a pure module */

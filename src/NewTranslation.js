@@ -121,7 +121,7 @@ function NewTranslation(props) {
       return RescriptReactRouter.replace("/logout");
     }
     var comment$1 = comment === "" ? Util.eulLeul(sanitizedKorean) + " 제안합니다." : comment;
-    var jargonID$1 = Base64.retrieveOriginalID(jargonID);
+    var jargonID$1 = Base64.retrieveOriginalIDString(jargonID);
     if (jargonID$1 === undefined) {
       return ;
     }

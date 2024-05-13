@@ -110,6 +110,223 @@ input String_comparison_exp {
 }
 
 """
+columns and relationships of "category"
+"""
+type category implements Node {
+  acronym: String!
+  id: ID!
+
+  """An array relationship"""
+  jargon_categories(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+
+  """An aggregate relationship"""
+  jargon_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): jargon_category_aggregate!
+
+  """An array relationship connection"""
+  jargon_categories_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): jargon_categoryConnection!
+  name: String!
+}
+
+"""
+A Relay connection object on "category"
+"""
+type categoryConnection {
+  edges: [categoryEdge!]!
+  pageInfo: PageInfo!
+}
+
+type categoryEdge {
+  cursor: String!
+  node: category!
+}
+
+"""
+Boolean expression to filter rows from the table "category". All fields are combined with a logical 'AND'.
+"""
+input category_bool_exp {
+  _and: [category_bool_exp!]
+  _not: category_bool_exp
+  _or: [category_bool_exp!]
+  acronym: String_comparison_exp
+  id: Int_comparison_exp
+  jargon_categories: jargon_category_bool_exp
+  jargon_categories_aggregate: jargon_category_aggregate_bool_exp
+  name: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "category"
+"""
+enum category_constraint {
+  """
+  unique or primary key constraint on columns "acronym"
+  """
+  category_acronym_key
+
+  """
+  unique or primary key constraint on columns "name"
+  """
+  category_name_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  category_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "category"
+"""
+input category_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "category"
+"""
+input category_insert_input {
+  acronym: String
+  id: Int
+  jargon_categories: jargon_category_arr_rel_insert_input
+  name: String
+}
+
+"""
+response of any mutation on the table "category"
+"""
+type category_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [category!]!
+}
+
+"""
+input type for inserting object relation for remote table "category"
+"""
+input category_obj_rel_insert_input {
+  data: category_insert_input!
+
+  """upsert condition"""
+  on_conflict: category_on_conflict
+}
+
+"""
+on_conflict condition type for table "category"
+"""
+input category_on_conflict {
+  constraint: category_constraint!
+  update_columns: [category_update_column!]! = []
+  where: category_bool_exp
+}
+
+"""Ordering options when selecting data from "category"."""
+input category_order_by {
+  acronym: order_by
+  id: order_by
+  jargon_categories_aggregate: jargon_category_aggregate_order_by
+  name: order_by
+}
+
+"""primary key columns input for table: category"""
+input category_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "category"
+"""
+enum category_select_column {
+  """column name"""
+  acronym
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "category"
+"""
+input category_set_input {
+  acronym: String
+  id: Int
+  name: String
+}
+
+"""
+update columns of table "category"
+"""
+enum category_update_column {
+  """column name"""
+  acronym
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+input category_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: category_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: category_set_input
+
+  """filter the rows which have to be updated"""
+  where: category_bool_exp!
+}
+
+"""
 columns and relationships of "comment"
 """
 type comment implements Node {
@@ -598,6 +815,59 @@ type jargon implements Node {
   ): commentConnection!
   created_at: timestamptz!
   id: ID!
+
+  """An array relationship"""
+  jargon_categories(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+
+  """An aggregate relationship"""
+  jargon_categories_aggregate(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): jargon_category_aggregate!
+
+  """An array relationship connection"""
+  jargon_categories_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): jargon_categoryConnection!
   name: String!
 
   """
@@ -738,12 +1008,343 @@ input jargon_bool_exp {
   comments_aggregate: comment_aggregate_bool_exp
   created_at: timestamptz_comparison_exp
   id: uuid_comparison_exp
+  jargon_categories: jargon_category_bool_exp
+  jargon_categories_aggregate: jargon_category_aggregate_bool_exp
   name: String_comparison_exp
   name_lower: String_comparison_exp
   name_lower_no_spaces: String_comparison_exp
   translations: translation_bool_exp
   translations_aggregate: translation_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
+}
+
+"""
+columns and relationships of "jargon_category"
+"""
+type jargon_category implements Node {
+  """An object relationship"""
+  category: category!
+  category_id: Int!
+  id: ID!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon_id: uuid!
+}
+
+"""
+A Relay connection object on "jargon_category"
+"""
+type jargon_categoryConnection {
+  edges: [jargon_categoryEdge!]!
+  pageInfo: PageInfo!
+}
+
+type jargon_categoryEdge {
+  cursor: String!
+  node: jargon_category!
+}
+
+"""
+aggregated selection of "jargon_category"
+"""
+type jargon_category_aggregate {
+  aggregate: jargon_category_aggregate_fields
+  nodes: [jargon_category!]!
+}
+
+input jargon_category_aggregate_bool_exp {
+  count: jargon_category_aggregate_bool_exp_count
+}
+
+input jargon_category_aggregate_bool_exp_count {
+  arguments: [jargon_category_select_column!]
+  distinct: Boolean
+  filter: jargon_category_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "jargon_category"
+"""
+type jargon_category_aggregate_fields {
+  avg: jargon_category_avg_fields
+  count(columns: [jargon_category_select_column!], distinct: Boolean): Int!
+  max: jargon_category_max_fields
+  min: jargon_category_min_fields
+  stddev: jargon_category_stddev_fields
+  stddev_pop: jargon_category_stddev_pop_fields
+  stddev_samp: jargon_category_stddev_samp_fields
+  sum: jargon_category_sum_fields
+  var_pop: jargon_category_var_pop_fields
+  var_samp: jargon_category_var_samp_fields
+  variance: jargon_category_variance_fields
+}
+
+"""
+order by aggregate values of table "jargon_category"
+"""
+input jargon_category_aggregate_order_by {
+  avg: jargon_category_avg_order_by
+  count: order_by
+  max: jargon_category_max_order_by
+  min: jargon_category_min_order_by
+  stddev: jargon_category_stddev_order_by
+  stddev_pop: jargon_category_stddev_pop_order_by
+  stddev_samp: jargon_category_stddev_samp_order_by
+  sum: jargon_category_sum_order_by
+  var_pop: jargon_category_var_pop_order_by
+  var_samp: jargon_category_var_samp_order_by
+  variance: jargon_category_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "jargon_category"
+"""
+input jargon_category_arr_rel_insert_input {
+  data: [jargon_category_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: jargon_category_on_conflict
+}
+
+"""aggregate avg on columns"""
+type jargon_category_avg_fields {
+  category_id: Float
+}
+
+"""
+order by avg() on columns of table "jargon_category"
+"""
+input jargon_category_avg_order_by {
+  category_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "jargon_category". All fields are combined with a logical 'AND'.
+"""
+input jargon_category_bool_exp {
+  _and: [jargon_category_bool_exp!]
+  _not: jargon_category_bool_exp
+  _or: [jargon_category_bool_exp!]
+  category: category_bool_exp
+  category_id: Int_comparison_exp
+  jargon: jargon_bool_exp
+  jargon_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "jargon_category"
+"""
+enum jargon_category_constraint {
+  """
+  unique or primary key constraint on columns "jargon_id", "category_id"
+  """
+  jargon_category_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "jargon_category"
+"""
+input jargon_category_inc_input {
+  category_id: Int
+}
+
+"""
+input type for inserting data into table "jargon_category"
+"""
+input jargon_category_insert_input {
+  category: category_obj_rel_insert_input
+  category_id: Int
+  jargon: jargon_obj_rel_insert_input
+  jargon_id: uuid
+}
+
+"""aggregate max on columns"""
+type jargon_category_max_fields {
+  category_id: Int
+  jargon_id: uuid
+}
+
+"""
+order by max() on columns of table "jargon_category"
+"""
+input jargon_category_max_order_by {
+  category_id: order_by
+  jargon_id: order_by
+}
+
+"""aggregate min on columns"""
+type jargon_category_min_fields {
+  category_id: Int
+  jargon_id: uuid
+}
+
+"""
+order by min() on columns of table "jargon_category"
+"""
+input jargon_category_min_order_by {
+  category_id: order_by
+  jargon_id: order_by
+}
+
+"""
+response of any mutation on the table "jargon_category"
+"""
+type jargon_category_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [jargon_category!]!
+}
+
+"""
+on_conflict condition type for table "jargon_category"
+"""
+input jargon_category_on_conflict {
+  constraint: jargon_category_constraint!
+  update_columns: [jargon_category_update_column!]! = []
+  where: jargon_category_bool_exp
+}
+
+"""Ordering options when selecting data from "jargon_category"."""
+input jargon_category_order_by {
+  category: category_order_by
+  category_id: order_by
+  jargon: jargon_order_by
+  jargon_id: order_by
+}
+
+"""primary key columns input for table: jargon_category"""
+input jargon_category_pk_columns_input {
+  category_id: Int!
+  jargon_id: uuid!
+}
+
+"""
+select columns of table "jargon_category"
+"""
+enum jargon_category_select_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  jargon_id
+}
+
+"""
+input type for updating data in table "jargon_category"
+"""
+input jargon_category_set_input {
+  category_id: Int
+  jargon_id: uuid
+}
+
+"""aggregate stddev on columns"""
+type jargon_category_stddev_fields {
+  category_id: Float
+}
+
+"""
+order by stddev() on columns of table "jargon_category"
+"""
+input jargon_category_stddev_order_by {
+  category_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type jargon_category_stddev_pop_fields {
+  category_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "jargon_category"
+"""
+input jargon_category_stddev_pop_order_by {
+  category_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type jargon_category_stddev_samp_fields {
+  category_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "jargon_category"
+"""
+input jargon_category_stddev_samp_order_by {
+  category_id: order_by
+}
+
+"""aggregate sum on columns"""
+type jargon_category_sum_fields {
+  category_id: Int
+}
+
+"""
+order by sum() on columns of table "jargon_category"
+"""
+input jargon_category_sum_order_by {
+  category_id: order_by
+}
+
+"""
+update columns of table "jargon_category"
+"""
+enum jargon_category_update_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  jargon_id
+}
+
+input jargon_category_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: jargon_category_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: jargon_category_set_input
+
+  """filter the rows which have to be updated"""
+  where: jargon_category_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type jargon_category_var_pop_fields {
+  category_id: Float
+}
+
+"""
+order by var_pop() on columns of table "jargon_category"
+"""
+input jargon_category_var_pop_order_by {
+  category_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type jargon_category_var_samp_fields {
+  category_id: Float
+}
+
+"""
+order by var_samp() on columns of table "jargon_category"
+"""
+input jargon_category_var_samp_order_by {
+  category_id: order_by
+}
+
+"""aggregate variance on columns"""
+type jargon_category_variance_fields {
+  category_id: Float
+}
+
+"""
+order by variance() on columns of table "jargon_category"
+"""
+input jargon_category_variance_order_by {
+  category_id: order_by
 }
 
 """
@@ -775,6 +1376,7 @@ input jargon_insert_input {
   comments: comment_arr_rel_insert_input
   created_at: timestamptz
   id: uuid
+  jargon_categories: jargon_category_arr_rel_insert_input
   name: String
   translations: translation_arr_rel_insert_input
   updated_at: timestamptz
@@ -877,6 +1479,7 @@ input jargon_order_by {
   comments_aggregate: comment_aggregate_order_by
   created_at: order_by
   id: order_by
+  jargon_categories_aggregate: jargon_category_aggregate_order_by
   name: order_by
   name_lower: order_by
   name_lower_no_spaces: order_by
@@ -955,6 +1558,19 @@ input list_jargon_random_args {
 """mutation root"""
 type mutation_root {
   """
+  delete data from the table: "category"
+  """
+  delete_category(
+    """filter the rows which have to be deleted"""
+    where: category_bool_exp!
+  ): category_mutation_response
+
+  """
+  delete single row from the table: "category"
+  """
+  delete_category_by_pk(id: Int!): category
+
+  """
   delete data from the table: "comment"
   """
   delete_comment(
@@ -981,6 +1597,19 @@ type mutation_root {
   delete_jargon_by_pk(id: uuid!): jargon
 
   """
+  delete data from the table: "jargon_category"
+  """
+  delete_jargon_category(
+    """filter the rows which have to be deleted"""
+    where: jargon_category_bool_exp!
+  ): jargon_category_mutation_response
+
+  """
+  delete single row from the table: "jargon_category"
+  """
+  delete_jargon_category_by_pk(category_id: Int!, jargon_id: uuid!): jargon_category
+
+  """
   delete data from the table: "translation"
   """
   delete_translation(
@@ -1005,6 +1634,28 @@ type mutation_root {
   delete single row from the table: "user"
   """
   delete_user_by_pk(id: String!): user
+
+  """
+  insert data into the table: "category"
+  """
+  insert_category(
+    """the rows to be inserted"""
+    objects: [category_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: category_on_conflict
+  ): category_mutation_response
+
+  """
+  insert a single row into the table: "category"
+  """
+  insert_category_one(
+    """the row to be inserted"""
+    object: category_insert_input!
+
+    """upsert condition"""
+    on_conflict: category_on_conflict
+  ): category
 
   """
   insert data into the table: "comment"
@@ -1038,6 +1689,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: jargon_on_conflict
   ): jargon_mutation_response
+
+  """
+  insert data into the table: "jargon_category"
+  """
+  insert_jargon_category(
+    """the rows to be inserted"""
+    objects: [jargon_category_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: jargon_category_on_conflict
+  ): jargon_category_mutation_response
+
+  """
+  insert a single row into the table: "jargon_category"
+  """
+  insert_jargon_category_one(
+    """the row to be inserted"""
+    object: jargon_category_insert_input!
+
+    """upsert condition"""
+    on_conflict: jargon_category_on_conflict
+  ): jargon_category
 
   """
   insert a single row into the table: "jargon"
@@ -1095,6 +1768,40 @@ type mutation_root {
   ): user
 
   """
+  update data of the table: "category"
+  """
+  update_category(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: category_set_input
+
+    """filter the rows which have to be updated"""
+    where: category_bool_exp!
+  ): category_mutation_response
+
+  """
+  update single row of the table: "category"
+  """
+  update_category_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: category_set_input
+    pk_columns: category_pk_columns_input!
+  ): category
+
+  """
+  update multiples rows of table: "category"
+  """
+  update_category_many(
+    """updates to execute, in order"""
+    updates: [category_updates!]!
+  ): [category_mutation_response]
+
+  """
   update data of the table: "comment"
   """
   update_comment(
@@ -1141,6 +1848,40 @@ type mutation_root {
     _set: jargon_set_input
     pk_columns: jargon_pk_columns_input!
   ): jargon
+
+  """
+  update data of the table: "jargon_category"
+  """
+  update_jargon_category(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: jargon_category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: jargon_category_set_input
+
+    """filter the rows which have to be updated"""
+    where: jargon_category_bool_exp!
+  ): jargon_category_mutation_response
+
+  """
+  update single row of the table: "jargon_category"
+  """
+  update_jargon_category_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: jargon_category_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: jargon_category_set_input
+    pk_columns: jargon_category_pk_columns_input!
+  ): jargon_category
+
+  """
+  update multiples rows of table: "jargon_category"
+  """
+  update_jargon_category_many(
+    """updates to execute, in order"""
+    updates: [jargon_category_updates!]!
+  ): [jargon_category_mutation_response]
 
   """
   update multiples rows of table: "jargon"
@@ -1230,6 +1971,25 @@ enum order_by {
 
 type query_root {
   """
+  fetch data from the table: "category"
+  """
+  category_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): categoryConnection!
+
+  """
   fetch data from the table: "comment"
   """
   comment_connection(
@@ -1247,6 +2007,25 @@ type query_root {
     """filter the rows returned"""
     where: comment_bool_exp
   ): commentConnection!
+
+  """
+  fetch data from the table: "jargon_category"
+  """
+  jargon_category_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): jargon_categoryConnection!
 
   """
   fetch data from the table: "jargon"
@@ -1338,6 +2117,25 @@ scalar seed_float
 
 type subscription_root {
   """
+  fetch data from the table: "category"
+  """
+  category_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): categoryConnection!
+
+  """
   fetch data from the table: "comment"
   """
   comment_connection(
@@ -1355,6 +2153,25 @@ type subscription_root {
     """filter the rows returned"""
     where: comment_bool_exp
   ): commentConnection!
+
+  """
+  fetch data from the table: "jargon_category"
+  """
+  jargon_category_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): jargon_categoryConnection!
 
   """
   fetch data from the table: "jargon"

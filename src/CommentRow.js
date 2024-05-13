@@ -92,8 +92,8 @@ function CommentRow$CommentNode(props) {
       window.alert("댓글은 세 글자 이상이어야 해요");
       return ;
     }
-    var jargonID$1 = Base64.retrieveOriginalID(jargonID);
-    var commentID = Base64.retrieveOriginalID(comment.id);
+    var jargonID$1 = Base64.retrieveOriginalIDString(jargonID);
+    var commentID = Base64.retrieveOriginalIDString(comment.id);
     if (user == null) {
       window.alert("로그인해야 합니다.");
     } else if (jargonID$1 !== undefined && commentID !== undefined) {
