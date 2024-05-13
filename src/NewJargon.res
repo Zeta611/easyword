@@ -244,7 +244,8 @@ let make = () => {
           <label className="block">
             <label className="label">
               <span className="label-text"> {"번역"->React.string} </span>
-              {React.cloneElement(
+              {// data-* is invalid in ReScript--this is a warkaround
+              React.cloneElement(
                 <div className="flex gap-1 text-xs place-items-center tooltip tooltip-bottom">
                   <input
                     type_="checkbox"
@@ -291,6 +292,18 @@ let make = () => {
               placeholder="분야를 선택해주세요"
               noOptionsMessage={_ => "더 이상의 분야가 없어요"}
             />
+            <label className="label">
+              <span className="label-text-alt" />
+              <span className="label-text-alt text-zinc-700">
+                {"원하는 분야가 없으면 '"->React.string}
+                <a
+                  href="https://github.com/Zeta611/easyword/discussions"
+                  className="link text-zinc-700">
+                  {"제작참여"->React.string}
+                </a>
+                {"'에서 요청해주세요"->React.string}
+              </span>
+            </label>
           </label>
           <label className="block">
             <label className="label">

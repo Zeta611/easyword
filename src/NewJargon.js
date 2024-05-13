@@ -567,6 +567,26 @@ function NewJargon(props) {
                                               noOptionsMessage: (function (param) {
                                                   return "더 이상의 분야가 없어요";
                                                 })
+                                            }),
+                                        JsxRuntime.jsxs("label", {
+                                              children: [
+                                                JsxRuntime.jsx("span", {
+                                                      className: "label-text-alt"
+                                                    }),
+                                                JsxRuntime.jsxs("span", {
+                                                      children: [
+                                                        "원하는 분야가 없으면 '",
+                                                        JsxRuntime.jsx("a", {
+                                                              children: "제작참여",
+                                                              className: "link text-zinc-700",
+                                                              href: "https://github.com/Zeta611/easyword/discussions"
+                                                            }),
+                                                        "'에서 요청해주세요"
+                                                      ],
+                                                      className: "label-text-alt text-zinc-700"
+                                                    })
+                                              ],
+                                              className: "label"
                                             })
                                       ],
                                       className: "block"
