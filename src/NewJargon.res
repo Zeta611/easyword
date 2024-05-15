@@ -274,9 +274,8 @@ let make = () => {
               classNames={
                 control: _ => "rounded-btn border text-base border-base-content/20 px-4 py-2",
                 menuList: _ =>
-                  "focus:cursor-pointer menu bg-zinc-50 dark:bg-zinc-800 rounded-box px-2 py-2 mt-1 text-base shadow-lg",
-                option: _ =>
-                  "cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box",
+                  "grid grid-cols-1 menu bg-zinc-50 dark:bg-zinc-800 rounded-box px-2 py-2 mt-1 text-base shadow-lg",
+                option: _ => "hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box",
               }
               components={multiValueLabel: MultiValueLabel.make}
               onChange={options => setCategoryIDs(_ => options->Array.map(({value}) => value))}
