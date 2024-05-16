@@ -560,6 +560,7 @@ function NewJargon(props) {
                                                 }),
                                               options: options,
                                               isSearchable: false,
+                                              isClearable: false,
                                               isMulti: true,
                                               unstyled: true,
                                               placeholder: "분야를 선택해주세요",

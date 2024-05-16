@@ -338,10 +338,10 @@ function EditCategories(props) {
                                                     return "rounded-btn border text-base border-base-content/20 px-4 py-2";
                                                   }),
                                                 menuList: (function (param) {
-                                                    return "focus:cursor-pointer menu bg-zinc-50 dark:bg-zinc-800 rounded-box px-2 py-2 mt-1 text-base shadow-lg";
+                                                    return "grid grid-cols-1 menu bg-zinc-50 dark:bg-zinc-800 rounded-box px-2 py-2 mt-1 text-base shadow-lg";
                                                   }),
                                                 option: (function (param) {
-                                                    return "cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box";
+                                                    return "hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box";
                                                   })
                                               },
                                               components: {
@@ -359,6 +359,7 @@ function EditCategories(props) {
                                                 }),
                                               options: options,
                                               isSearchable: false,
+                                              isClearable: false,
                                               isMulti: true,
                                               unstyled: true,
                                               placeholder: "분야를 선택해주세요",
@@ -393,7 +394,7 @@ function EditCategories(props) {
                                       className: "btn btn-primary",
                                       disabled: match$2[1],
                                       type: "submit",
-                                      value: "제안하기"
+                                      value: "수정하기"
                                     })
                               ],
                               className: "grid grid-cols-1 gap-6"

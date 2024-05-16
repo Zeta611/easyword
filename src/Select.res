@@ -60,6 +60,7 @@ external make: (
   ~onChange: array<selectOption<'a>> => unit,
   ~options: array<selectOption<'a>>,
   ~isSearchable: bool=?,
+  ~isClearable: bool=?,
   ~isMulti: bool=?,
   ~unstyled: bool=?,
   ~placeholder: string=?,

@@ -281,6 +281,7 @@ let make = () => {
               onChange={options => setCategoryIDs(_ => options->Array.map(({value}) => value))}
               options
               isSearchable=false
+              isClearable=false
               isMulti=true
               unstyled=true
               placeholder="분야를 선택해주세요"
