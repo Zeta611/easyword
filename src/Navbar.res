@@ -57,7 +57,7 @@ let make = () => {
   <div className="navbar sticky top-0 z-50 bg-base-100">
     <div className="navbar-start">
       <details id="menu-dropdown-btn" className="dropdown">
-        <summary className="btn btn-ghost md:hidden">
+        <summary className="btn btn-ghost lg:hidden">
           <Heroicons.Solid.Bars3Icon className="h-5 w-5" />
         </summary>
         <ul
@@ -81,6 +81,12 @@ let make = () => {
               <Heroicons.Outline.PencilSquareIcon className="h-4 w-4" />
               {"용어제안"->React.string}
             </button>
+          </li>
+          <li>
+            <a href="https://zeta611-easyword-translator.hf.space">
+              <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
+              {"번역기 β"->React.string}
+            </a>
           </li>
           <li>
             <button
@@ -120,7 +126,7 @@ let make = () => {
         </div>
       </button>
     </div>
-    <div className="navbar-center hidden md:flex">
+    <div className="navbar-center hidden lg:flex">
       <ul className="menu menu-horizontal px-1 text-xs">
         <li>
           <button onClick={_ => RescriptReactRouter.push("/why")}>
@@ -137,6 +143,14 @@ let make = () => {
               {"용어제안"->React.string}
             </div>
           </button>
+        </li>
+        <li>
+          <a href="https://zeta611-easyword-translator.hf.space">
+            <div className="grid justify-items-center">
+              <Heroicons.Outline.LanguageIcon className="h-5 w-5 hidden sm:flex" />
+              {"번역기 β"->React.string}
+            </div>
+          </a>
         </li>
         <li>
           <button onClick={_ => RescriptReactRouter.push("/colophon")}>

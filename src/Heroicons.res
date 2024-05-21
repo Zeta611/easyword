@@ -30,6 +30,11 @@ module Solid = {
 }
 
 module Outline = {
+  module LanguageIcon = {
+    @module("@heroicons/react/24/outline") @react.component
+    external make: (~className: string=?) => React.element = "LanguageIcon"
+  }
+
   module ClockIcon = {
     @module("@heroicons/react/24/outline") @react.component
     external make: (~className: string=?) => React.element = "ClockIcon"

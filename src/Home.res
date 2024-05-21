@@ -35,7 +35,7 @@ let make = () => {
       <i className="fa-solid fa-dice" />
     </HideUs>
     <div
-      className="flex items-center space-x-2 sticky top-[4rem] md:top-[5.25rem] pt-1 -mt-5 mb-5 z-40 bg-base-100">
+      className="flex items-center space-x-2 sticky top-[4rem] lg:top-[5.25rem] pt-1 -mt-5 mb-5 z-40 bg-base-100">
       <div className="flex-auto">
         <SearchBar searchTerm onChange />
       </div>

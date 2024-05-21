@@ -63,7 +63,7 @@ function Navbar(props) {
                                       children: JsxRuntime.jsx(Solid.Bars3Icon, {
                                             className: "h-5 w-5"
                                           }),
-                                      className: "btn btn-ghost md:hidden"
+                                      className: "btn btn-ghost lg:hidden"
                                     }),
                                 JsxRuntime.jsxs("ul", {
                                       children: [
@@ -93,6 +93,17 @@ function Navbar(props) {
                                                         RescriptReactRouter.push("/new-jargon");
                                                         closeMenu();
                                                       })
+                                                  })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsxs("a", {
+                                                    children: [
+                                                      JsxRuntime.jsx(Outline.LanguageIcon, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "번역기 β"
+                                                    ],
+                                                    href: "https://zeta611-easyword-translator.hf.space"
                                                   })
                                             }),
                                         JsxRuntime.jsx("li", {
@@ -204,6 +215,20 @@ function Navbar(props) {
                                         })
                                   }),
                               JsxRuntime.jsx("li", {
+                                    children: JsxRuntime.jsx("a", {
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Outline.LanguageIcon, {
+                                                        className: "h-5 w-5 hidden sm:flex"
+                                                      }),
+                                                  "번역기 β"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
+                                          href: "https://zeta611-easyword-translator.hf.space"
+                                        })
+                                  }),
+                              JsxRuntime.jsx("li", {
                                     children: JsxRuntime.jsx("button", {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
@@ -238,7 +263,7 @@ function Navbar(props) {
                             ],
                             className: "menu menu-horizontal px-1 text-xs"
                           }),
-                      className: "navbar-center hidden md:flex"
+                      className: "navbar-center hidden lg:flex"
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [

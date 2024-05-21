@@ -22,6 +22,8 @@ var Solid = {
   StarIcon: StarIcon
 };
 
+var LanguageIcon = {};
+
 var ClockIcon = {};
 
 var ListBulletIcon = {};
@@ -41,6 +43,7 @@ var PencilSquareIcon = {};
 var WrenchIcon = {};
 
 var Outline = {
+  LanguageIcon: LanguageIcon,
   ClockIcon: ClockIcon,
   ListBulletIcon: ListBulletIcon,
   UserCircleIcon: UserCircleIcon,
