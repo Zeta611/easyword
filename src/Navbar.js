@@ -96,14 +96,17 @@ function Navbar(props) {
                                                   })
                                             }),
                                         JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsxs("a", {
+                                              children: JsxRuntime.jsxs("button", {
                                                     children: [
                                                       JsxRuntime.jsx(Outline.LanguageIcon, {
                                                             className: "h-4 w-4"
                                                           }),
-                                                      "번역기 β"
+                                                      "번역기"
                                                     ],
-                                                    href: "https://zeta611-easyword-translator.hf.space"
+                                                    onClick: (function (param) {
+                                                        RescriptReactRouter.push("/trans");
+                                                        closeMenu();
+                                                      })
                                                   })
                                             }),
                                         JsxRuntime.jsx("li", {
@@ -215,17 +218,20 @@ function Navbar(props) {
                                         })
                                   }),
                               JsxRuntime.jsx("li", {
-                                    children: JsxRuntime.jsx("a", {
+                                    children: JsxRuntime.jsx("button", {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Outline.LanguageIcon, {
                                                         className: "h-5 w-5 hidden sm:flex"
                                                       }),
-                                                  "번역기 β"
+                                                  "번역기"
                                                 ],
                                                 className: "grid justify-items-center"
                                               }),
-                                          href: "https://zeta611-easyword-translator.hf.space"
+                                          onClick: (function (param) {
+                                              RescriptReactRouter.push("/trans");
+                                              closeMenu();
+                                            })
                                         })
                                   }),
                               JsxRuntime.jsx("li", {

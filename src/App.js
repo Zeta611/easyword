@@ -5,6 +5,7 @@ import * as React from "react";
 import * as Loader from "./Loader.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
+import * as Translator from "./Translator.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as RelayWrapper from "./RelayWrapper.js";
 import * as SignInWrapper from "./SignInWrapper.js";
@@ -133,6 +134,9 @@ function App(props) {
             break;
         case "profile" :
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(LazyComponents.Profile.make, {});
+            break;
+        case "trans" :
+            tmp$1 = path.tl ? "404" : JsxRuntime.jsx(Translator.make, {});
             break;
         case "why" :
             tmp$1 = path.tl ? "404" : JsxRuntime.jsx(LazyComponents.Why.make, {});

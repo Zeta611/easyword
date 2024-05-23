@@ -83,10 +83,14 @@ let make = () => {
             </button>
           </li>
           <li>
-            <a href="https://zeta611-easyword-translator.hf.space">
+            <button
+              onClick={_ => {
+                RescriptReactRouter.push("/trans")
+                closeMenu()
+              }}>
               <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
-              {"번역기 β"->React.string}
-            </a>
+              {"번역기"->React.string}
+            </button>
           </li>
           <li>
             <button
@@ -145,12 +149,16 @@ let make = () => {
           </button>
         </li>
         <li>
-          <a href="https://zeta611-easyword-translator.hf.space">
+          <button
+            onClick={_ => {
+              RescriptReactRouter.push("/trans")
+              closeMenu()
+            }}>
             <div className="grid justify-items-center">
               <Heroicons.Outline.LanguageIcon className="h-5 w-5 hidden sm:flex" />
-              {"번역기 β"->React.string}
+              {"번역기"->React.string}
             </div>
-          </a>
+          </button>
         </li>
         <li>
           <button onClick={_ => RescriptReactRouter.push("/colophon")}>
