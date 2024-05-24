@@ -82,16 +82,16 @@ let make = () => {
               {"용어제안"->React.string}
             </button>
           </li>
-          <li>
-            <button
-              onClick={_ => {
-                RescriptReactRouter.push("/trans")
-                closeMenu()
-              }}>
-              <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
-              {"번역기"->React.string}
-            </button>
-          </li>
+          // <li>
+          //   <button
+          //     onClick={_ => {
+          //       RescriptReactRouter.push("/trans")
+          //       closeMenu()
+          //     }}>
+          //     <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
+          //     {"번역기"->React.string}
+          //   </button>
+          // </li>
           <li>
             <button
               onClick={_ => {
@@ -148,18 +148,18 @@ let make = () => {
             </div>
           </button>
         </li>
-        <li>
-          <button
-            onClick={_ => {
-              RescriptReactRouter.push("/trans")
-              closeMenu()
-            }}>
-            <div className="grid justify-items-center">
-              <Heroicons.Outline.LanguageIcon className="h-5 w-5 hidden sm:flex" />
-              {"번역기"->React.string}
-            </div>
-          </button>
-        </li>
+        // <li>
+        //   <button
+        //     onClick={_ => {
+        //       RescriptReactRouter.push("/trans")
+        //       closeMenu()
+        //     }}>
+        //     <div className="grid justify-items-center">
+        //       <Heroicons.Outline.LanguageIcon className="h-5 w-5 hidden sm:flex" />
+        //       {"번역기"->React.string}
+        //     </div>
+        //   </button>
+        // </li>
         <li>
           <button onClick={_ => RescriptReactRouter.push("/colophon")}>
             <div className="grid justify-items-center">

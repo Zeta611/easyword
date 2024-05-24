@@ -85,7 +85,7 @@ let make = () => {
                               <JargonPost jargonID />
                             </ErrorBoundary>
 
-                          | list{"trans"} => <Translator />
+                          // | list{"trans"} => <Translator />
                           | list{"why"} => <Why />
                           | list{"colophon"} => <Colophon />
 
