@@ -6,7 +6,7 @@ function Translator(props) {
   return JsxRuntime.jsx("iframe", {
               className: "h-screen w-full",
               allowFullScreen: true,
-              src: "https://zeta611-easyword-translator.hf.space/"
+              src: "https://ghoh-eng2koreasyword.hf.space"
             });
 }
 

@@ -1,7 +1,5 @@
 @react.component
 let make = () =>
   <iframe
-    className="h-screen w-full"
-    src="https://zeta611-easyword-translator.hf.space/"
-    allowFullScreen=true
+    className="h-screen w-full" src="https://ghoh-eng2koreasyword.hf.space" allowFullScreen=true
   />
