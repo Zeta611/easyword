@@ -24,10 +24,18 @@ function sanitize(word) {
   return word.replace(/\s+/g, " ").trim();
 }
 
+var asHtmlDialogElement = (function(element) {
+      if ((window.constructor.name !== undefined && /^HTMLDialogElement$/.test(element.constructor.name))
+          || (/^\[object HTMLDialogElement\]$/.test(element.constructor.toString()))) {
+        return element;
+      }
+    });
+
 export {
   getCode ,
   endsWithJong ,
   eulLeul ,
   sanitize ,
+  asHtmlDialogElement ,
 }
 /* No side effect */

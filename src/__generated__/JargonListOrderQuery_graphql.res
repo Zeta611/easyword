@@ -51,8 +51,8 @@ let connectionKey = "JargonListOrderQuery_jargon_connection"
 )
 
 @live
-let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?) => {
-  let args = {"order_by": directions, "where": {"_or": [RescriptRelay_Internal.Arg({"name_lower_no_spaces": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name_lower_no_spaces": {"_iregex": searchTerm}}})]}}
+let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?, ~categoryIDs: option<array<int>>=?) => {
+  let args = {"order_by": directions, "where": {"_and": [RescriptRelay_Internal.Arg({"_or": [RescriptRelay_Internal.Arg({"name_lower_no_spaces": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name_lower_no_spaces": {"_iregex": searchTerm}}})]}), RescriptRelay_Internal.Arg({"jargon_categories": {"category_id": {"_in": categoryIDs}}})]}}
   internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
@@ -94,6 +94,10 @@ v1 = [
 ];
 return {
   "argumentDefinitions": [
+    {
+      "kind": "RootArgument",
+      "name": "categoryIDs"
+    },
     {
       "defaultValue": 40,
       "kind": "LocalArgument",
@@ -151,24 +155,59 @@ return {
             {
               "items": [
                 {
-                  "fields": (v1/*: any*/),
+                  "fields": [
+                    {
+                      "items": [
+                        {
+                          "fields": (v1/*: any*/),
+                          "kind": "ObjectValue",
+                          "name": "_or.0"
+                        },
+                        {
+                          "fields": [
+                            {
+                              "fields": (v1/*: any*/),
+                              "kind": "ObjectValue",
+                              "name": "translations"
+                            }
+                          ],
+                          "kind": "ObjectValue",
+                          "name": "_or.1"
+                        }
+                      ],
+                      "kind": "ListValue",
+                      "name": "_or"
+                    }
+                  ],
                   "kind": "ObjectValue",
-                  "name": "_or.0"
+                  "name": "_and.0"
                 },
                 {
                   "fields": [
                     {
-                      "fields": (v1/*: any*/),
+                      "fields": [
+                        {
+                          "fields": [
+                            {
+                              "kind": "Variable",
+                              "name": "_in",
+                              "variableName": "categoryIDs"
+                            }
+                          ],
+                          "kind": "ObjectValue",
+                          "name": "category_id"
+                        }
+                      ],
                       "kind": "ObjectValue",
-                      "name": "translations"
+                      "name": "jargon_categories"
                     }
                   ],
                   "kind": "ObjectValue",
-                  "name": "_or.1"
+                  "name": "_and.1"
                 }
               ],
               "kind": "ListValue",
-              "name": "_or"
+              "name": "_and"
             }
           ],
           "kind": "ObjectValue",

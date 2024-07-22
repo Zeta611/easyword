@@ -18,3 +18,13 @@ let eulLeul = korean => {
 }
 
 let sanitize = word => word->String.replaceRegExp(%re(`/\s+/g`), " ")->String.trim
+
+@val external htmlDialogElement: 'a = "HTMLDialogElement"
+let asHtmlDialogElement: Webapi.Dom.Element.t => option<'htmlDialogElement> = %raw(`
+    function(element) {
+      if ((window.constructor.name !== undefined && /^HTMLDialogElement$/.test(element.constructor.name))
+          || (/^\[object HTMLDialogElement\]$/.test(element.constructor.toString()))) {
+        return element;
+      }
+    }
+  `)

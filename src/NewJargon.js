@@ -6,6 +6,7 @@ import * as React from "react";
 import * as Base64 from "./Base64.js";
 import ReactSelect from "react-select";
 import * as SignInContext from "./SignInContext.js";
+import * as MultiValueLabel from "./MultiValueLabel.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
 import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
@@ -306,18 +307,6 @@ var CategoryQuery = {
   retain: retain
 };
 
-function NewJargon$MultiValueLabel(props) {
-  var acronym = props.children.split(" ")[0];
-  return JsxRuntime.jsx("div", {
-              children: acronym,
-              className: "badge badge-md ml-1"
-            });
-}
-
-var MultiValueLabel = {
-  make: NewJargon$MultiValueLabel
-};
-
 function jargonAndCategoryIDToGraphQLInput(jargonID) {
   return function (categoryID) {
     return {
@@ -549,7 +538,7 @@ function NewJargon(props) {
                                                   })
                                               },
                                               components: {
-                                                MultiValueLabel: NewJargon$MultiValueLabel
+                                                MultiValueLabel: MultiValueLabel.make
                                               },
                                               onChange: (function (options) {
                                                   setCategoryIDs(function (param) {
@@ -635,7 +624,6 @@ export {
   NewJargonMutation ,
   NewJargonWithoutTranslationMutation ,
   CategoryQuery ,
-  MultiValueLabel ,
   jargonAndCategoryIDToGraphQLInput ,
   make ,
 }

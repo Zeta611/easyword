@@ -34,6 +34,7 @@ module Types = {
   type rawResponse = response
   @live
   type variables = {
+    categoryIDs?: array<int>,
     count?: int,
     cursor?: string,
     directions?: array<jargon_order_by>,
@@ -41,17 +42,20 @@ module Types = {
   }
   @live
   type refetchVariables = {
+    categoryIDs: option<option<array<int>>>,
     count: option<option<int>>,
     cursor: option<option<string>>,
     directions: option<option<array<jargon_order_by>>>,
     searchTerm: option<option<string>>,
   }
   @live let makeRefetchVariables = (
+    ~categoryIDs=?,
     ~count=?,
     ~cursor=?,
     ~directions=?,
     ~searchTerm=?,
   ): refetchVariables => {
+    categoryIDs: categoryIDs,
     count: count,
     cursor: cursor,
     directions: directions,
@@ -140,6 +144,11 @@ type operationType = RescriptRelay.queryNode<relayOperationNode>
 let node: operationType = %raw(json` (function(){
 var v0 = [
   {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "categoryIDs"
+  },
+  {
     "defaultValue": 40,
     "kind": "LocalArgument",
     "name": "count"
@@ -194,24 +203,59 @@ v2 = [
       {
         "items": [
           {
-            "fields": (v1/*: any*/),
+            "fields": [
+              {
+                "items": [
+                  {
+                    "fields": (v1/*: any*/),
+                    "kind": "ObjectValue",
+                    "name": "_or.0"
+                  },
+                  {
+                    "fields": [
+                      {
+                        "fields": (v1/*: any*/),
+                        "kind": "ObjectValue",
+                        "name": "translations"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "_or.1"
+                  }
+                ],
+                "kind": "ListValue",
+                "name": "_or"
+              }
+            ],
             "kind": "ObjectValue",
-            "name": "_or.0"
+            "name": "_and.0"
           },
           {
             "fields": [
               {
-                "fields": (v1/*: any*/),
+                "fields": [
+                  {
+                    "fields": [
+                      {
+                        "kind": "Variable",
+                        "name": "_in",
+                        "variableName": "categoryIDs"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "category_id"
+                  }
+                ],
                 "kind": "ObjectValue",
-                "name": "translations"
+                "name": "jargon_categories"
               }
             ],
             "kind": "ObjectValue",
-            "name": "_or.1"
+            "name": "_and.1"
           }
         ],
         "kind": "ListValue",
-        "name": "_or"
+        "name": "_and"
       }
     ],
     "kind": "ObjectValue",
@@ -456,12 +500,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "49fd09ca4faa33fd6ea37c2f144e3fb0",
+    "cacheID": "66ae8b225da4bf4202674f861a6e1f46",
     "id": null,
     "metadata": {},
     "name": "JargonListOrderRefetchQuery",
     "operationKind": "query",
-    "text": "query JargonListOrderRefetchQuery(\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query JargonListOrderRefetchQuery(\n  $categoryIDs: [Int!]\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {jargon_categories: {category_id: {_in: $categoryIDs}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)

@@ -5,8 +5,9 @@ import * as Caml_option from "../../node_modules/rescript/lib/es6/caml_option.js
 import * as ReactRelay from "react-relay";
 import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRelay.js";
 
-function makeRefetchVariables(directions, searchTerm) {
+function makeRefetchVariables(categoryIDs, directions, searchTerm) {
   return {
+          categoryIDs: categoryIDs,
           directions: directions,
           searchTerm: searchTerm
         };
@@ -68,14 +69,19 @@ var node = ((function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "directions"
+  "name": "categoryIDs"
 },
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "directions"
+},
+v2 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "searchTerm"
 },
-v2 = [
+v3 = [
   {
     "fields": [
       {
@@ -88,7 +94,7 @@ v2 = [
     "name": "name_lower_no_spaces"
   }
 ],
-v3 = [
+v4 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -104,52 +110,88 @@ v3 = [
       {
         "items": [
           {
-            "fields": (v2/*: any*/),
+            "fields": [
+              {
+                "items": [
+                  {
+                    "fields": (v3/*: any*/),
+                    "kind": "ObjectValue",
+                    "name": "_or.0"
+                  },
+                  {
+                    "fields": [
+                      {
+                        "fields": (v3/*: any*/),
+                        "kind": "ObjectValue",
+                        "name": "translations"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "_or.1"
+                  }
+                ],
+                "kind": "ListValue",
+                "name": "_or"
+              }
+            ],
             "kind": "ObjectValue",
-            "name": "_or.0"
+            "name": "_and.0"
           },
           {
             "fields": [
               {
-                "fields": (v2/*: any*/),
+                "fields": [
+                  {
+                    "fields": [
+                      {
+                        "kind": "Variable",
+                        "name": "_in",
+                        "variableName": "categoryIDs"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "category_id"
+                  }
+                ],
                 "kind": "ObjectValue",
-                "name": "translations"
+                "name": "jargon_categories"
               }
             ],
             "kind": "ObjectValue",
-            "name": "_or.1"
+            "name": "_and.1"
           }
         ],
         "kind": "ListValue",
-        "name": "_or"
+        "name": "_and"
       }
     ],
     "kind": "ObjectValue",
     "name": "where"
   }
 ],
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "name": "asc"
 };
 return {
   "fragment": {
     "argumentDefinitions": [
       (v0/*: any*/),
-      (v1/*: any*/)
+      (v1/*: any*/),
+      (v2/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -167,15 +209,16 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
+      (v2/*: any*/),
+      (v0/*: any*/),
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "HomeJargonListSectionQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "jargon_connection",
@@ -197,8 +240,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
                   (v5/*: any*/),
+                  (v6/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -213,7 +256,7 @@ return {
                         "kind": "Literal",
                         "name": "order_by",
                         "value": {
-                          "category": (v6/*: any*/)
+                          "category": (v7/*: any*/)
                         }
                       }
                     ],
@@ -237,11 +280,11 @@ return {
                             "name": "acronym",
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
                   },
@@ -256,7 +299,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": (v6/*: any*/)
+                        "value": (v7/*: any*/)
                       }
                     ],
                     "concreteType": "translation",
@@ -264,8 +307,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v4/*: any*/),
-                      (v5/*: any*/)
+                      (v5/*: any*/),
+                      (v6/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -348,7 +391,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v4/*: any*/),
         "filters": [
           "order_by",
           "where"
@@ -361,12 +404,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "956fe35912dc7415ad86e849b856804f",
+    "cacheID": "d47a5fe25abef6dc014f8ca6c80b68b8",
     "id": null,
     "metadata": {},
     "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $categoryIDs: [Int!]!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {jargon_categories: {category_id: {_in: $categoryIDs}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());

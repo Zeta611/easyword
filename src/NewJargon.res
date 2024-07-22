@@ -81,14 +81,6 @@ module CategoryQuery = %relay(`
   }
 `)
 
-module MultiValueLabel = {
-  @react.component
-  let make = (~children: string) => {
-    let acronym = children->String.split(" ")->Array.getUnsafe(0)
-    <div className="badge badge-md ml-1"> {acronym->React.string} </div>
-  }
-}
-
 let jargonAndCategoryIDToGraphQLInput = jargonID => (
   categoryID
 ): RelaySchemaAssets_graphql.input_jargon_category_insert_input => {

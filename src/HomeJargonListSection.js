@@ -73,6 +73,7 @@ function HomeJargonListSection(props) {
         ]
     ) : [];
   var match = use({
+        categoryIDs: props.categoryIDs,
         directions: tmp,
         searchTerm: searchTerm
       }, undefined, undefined, undefined);
