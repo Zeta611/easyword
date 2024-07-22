@@ -6,10 +6,9 @@ import * as React from "react";
 import * as Base64 from "./Base64.js";
 import * as HideUs from "./HideUs.js";
 import * as SearchBar from "./SearchBar.js";
+import * as Belt_Array from "../node_modules/rescript/lib/es6/belt_Array.js";
 import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
 import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
-import ReactSelect from "react-select";
-import * as MultiValueLabel from "./MultiValueLabel.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
 import * as ReactErrorBoundary from "react-error-boundary";
@@ -105,10 +104,12 @@ function Home(props) {
         return [];
       });
   var setCategoryIDs = match$4[1];
+  var categoryIDs = match$4[0];
   var match$5 = use(undefined, undefined, undefined, undefined);
   var match$6 = React.useState(function () {
         return 0;
       });
+  var categoryCnt = match$6[0];
   var options = match$5.category_connection.edges.map(function (edge) {
         var match = edge.node;
         return {
@@ -116,7 +117,7 @@ function Home(props) {
                 value: Base64.retrieveOriginalIDInt(match.id)
               };
       });
-  if (options.length > 0 && match$6[0] === 0) {
+  if (options.length > 0 && categoryCnt === 0) {
     match$6[1](function (param) {
           return options.length;
         });
@@ -165,8 +166,16 @@ function Home(props) {
                               className: "flex-auto"
                             }),
                         JsxRuntime.jsx("button", {
-                              children: JsxRuntime.jsx(Outline.FunnelIcon, {
-                                    className: "h-5 w-5"
+                              children: JsxRuntime.jsxs("div", {
+                                    children: [
+                                      categoryIDs.length !== categoryCnt ? JsxRuntime.jsx("span", {
+                                              className: "indicator-item badge badge-accent badge-xs"
+                                            }) : null,
+                                      JsxRuntime.jsx(Outline.FunnelIcon, {
+                                            className: "h-5 w-5"
+                                          })
+                                    ],
+                                    className: "indicator"
                                   }),
                               className: "btn btn-square btn-primary btn-outline text-lg",
                               onClick: (function (param) {
@@ -270,69 +279,96 @@ function Home(props) {
                       ],
                       className: "flex items-center space-x-2 sticky top-[4rem] lg:top-[5.25rem] pt-1 -mt-5 mb-5 z-40 bg-base-100"
                     }),
-                JsxRuntime.jsx("dialog", {
-                      children: JsxRuntime.jsxs("div", {
-                            children: [
-                              JsxRuntime.jsx("h3", {
-                                    children: "분야 필터",
-                                    className: "font-bold text-lg"
-                                  }),
-                              JsxRuntime.jsx("div", {
-                                    children: JsxRuntime.jsx(ReactSelect, {
-                                          classNames: {
-                                            control: (function (param) {
-                                                return "rounded-btn border text-base border-base-content/20 px-4 py-2";
-                                              }),
-                                            menuList: (function (param) {
-                                                return "grid grid-cols-1 menu bg-zinc-50 dark:bg-zinc-800 rounded-box px-2 py-2 mt-1 text-base shadow-lg";
-                                              }),
-                                            option: (function (param) {
-                                                return "hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box";
-                                              })
-                                          },
-                                          components: {
-                                            MultiValueLabel: MultiValueLabel.make
-                                          },
-                                          defaultValue: options,
-                                          onChange: (function (options) {
-                                              setCategoryIDs(function (param) {
-                                                    return options.map(function (param) {
-                                                                return param.value;
-                                                              });
-                                                  });
+                JsxRuntime.jsxs("dialog", {
+                      children: [
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("h3", {
+                                      children: "분야 필터",
+                                      className: "font-bold text-lg"
+                                    }),
+                                JsxRuntime.jsxs("div", {
+                                      children: [
+                                        JsxRuntime.jsx("button", {
+                                              children: "모두 선택",
+                                              className: "m-1 p-2 badge badge-lg badge-neutral",
+                                              onClick: (function (param) {
+                                                  setCategoryIDs(function (param) {
+                                                        return options.map(function (param) {
+                                                                    return param.value;
+                                                                  });
+                                                      });
+                                                })
                                             }),
-                                          options: options,
-                                          isSearchable: false,
-                                          isClearable: true,
-                                          isMulti: true,
-                                          unstyled: true,
-                                          placeholder: "분야를 선택해주세요",
-                                          noOptionsMessage: (function (param) {
-                                              return "더 이상의 분야가 없어요";
+                                        JsxRuntime.jsx("button", {
+                                              children: "모두 해제",
+                                              className: "m-1 p-2 badge badge-lg",
+                                              onClick: (function (param) {
+                                                  setCategoryIDs(function (param) {
+                                                        return [];
+                                                      });
+                                                })
                                             })
-                                        }),
-                                    className: "py-2 pb-[20em]"
+                                      ],
+                                      className: "flex py-1"
+                                    }),
+                                JsxRuntime.jsx("ul", {
+                                      children: options.map(function (param) {
+                                            var value = param.value;
+                                            return JsxRuntime.jsx("li", {
+                                                        children: JsxRuntime.jsx("button", {
+                                                              children: param.label,
+                                                              className: "badge badge-lg " + (
+                                                                categoryIDs.includes(value) ? "badge-primary" : ""
+                                                              ),
+                                                              onClick: (function (param) {
+                                                                  setCategoryIDs(function (categoryIDs) {
+                                                                        if (categoryIDs.includes(value)) {
+                                                                          return categoryIDs.filter(function (v) {
+                                                                                      return v !== value;
+                                                                                    });
+                                                                        } else {
+                                                                          return Belt_Array.concatMany([
+                                                                                      [value],
+                                                                                      categoryIDs
+                                                                                    ]);
+                                                                        }
+                                                                      });
+                                                                })
+                                                            }),
+                                                        className: "p-1"
+                                                      }, value.toString());
+                                          }),
+                                      className: "py-2 flex flex-wrap"
+                                    }),
+                                JsxRuntime.jsx("div", {
+                                      children: JsxRuntime.jsx("form", {
+                                            children: JsxRuntime.jsx("button", {
+                                                  children: "✕",
+                                                  className: "btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                                                }),
+                                            method: "dialog"
+                                          }),
+                                      className: "modal-action"
+                                    })
+                              ],
+                              className: "modal-box overflow-visible"
+                            }),
+                        JsxRuntime.jsx("form", {
+                              children: JsxRuntime.jsx("button", {
+                                    className: "cursor-default"
                                   }),
-                              JsxRuntime.jsx("div", {
-                                    children: JsxRuntime.jsx("form", {
-                                          children: JsxRuntime.jsx("button", {
-                                                children: "✕",
-                                                className: "btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                                              }),
-                                          method: "dialog"
-                                        }),
-                                    className: "modal-action"
-                                  })
-                            ],
-                            className: "modal-box overflow-visible"
-                          }),
+                              className: "modal-backdrop",
+                              method: "dialog"
+                            })
+                      ],
                       className: "modal modal-bottom sm:modal-middle",
                       id: filterModalId
                     }),
                 JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
                       children: JsxRuntime.jsx(HomeJargonListSection.make, {
                             searchTerm: debouncedSearchTerm,
-                            categoryIDs: match$4[0],
+                            categoryIDs: categoryIDs,
                             axis: axis,
                             direction: direction
                           }),

@@ -12,6 +12,11 @@ module CategoryQuery = %relay(`
   }
 `)
 
+type filter = {
+  label: string,
+  value: int,
+}
+
 let seed = () => Math.random() *. 2. -. 1.
 @react.component
 let make = () => {
@@ -47,7 +52,7 @@ let make = () => {
   let options = categoryEdges->Array.map(edge => {
     let {node: {id, name, acronym}} = edge
     {
-      Select.label: `${acronym} (${name})`,
+      label: `${acronym} (${name})`,
       value: id->Base64.retrieveOriginalIDInt->Option.getUnsafe,
     }
   })
@@ -83,7 +88,14 @@ let make = () => {
 
           closeDropdown()
         }}>
-        <Outline.FunnelIcon className="h-5 w-5" />
+        <div className="indicator">
+          {if categoryIDs->Array.length != categoryCnt {
+            <span className="indicator-item badge badge-accent badge-xs" />
+          } else {
+            React.null
+          }}
+          <Outline.FunnelIcon className="h-5 w-5" />
+        </div>
       </button>
       <button
         className="btn btn-square btn-primary btn-outline text-lg"
@@ -148,26 +160,40 @@ let make = () => {
     <dialog id=filterModalId className="modal modal-bottom sm:modal-middle">
       <div className="modal-box overflow-visible">
         <h3 className="font-bold text-lg"> {"분야 필터"->React.string} </h3>
-        <div className="py-2 pb-[20em]">
-          <Select
-            classNames={
-              control: _ => "rounded-btn border text-base border-base-content/20 px-4 py-2",
-              menuList: _ =>
-                "grid grid-cols-1 menu bg-zinc-50 dark:bg-zinc-800 rounded-box px-2 py-2 mt-1 text-base shadow-lg",
-              option: _ => "hover:bg-zinc-200 dark:hover:bg-zinc-600 px-2 py-1 rounded-box",
-            }
-            components={multiValueLabel: MultiValueLabel.make}
-            onChange={options => setCategoryIDs(_ => options->Array.map(({value}) => value))}
-            defaultValue=options
-            options
-            isSearchable=false
-            isClearable=true
-            isMulti=true
-            unstyled=true
-            placeholder="분야를 선택해주세요"
-            noOptionsMessage={_ => "더 이상의 분야가 없어요"}
-          />
+        <div className="flex py-1">
+          <button
+            className="m-1 p-2 badge badge-lg badge-neutral"
+            onClick={_ => setCategoryIDs(_ => options->Array.map(({value}) => value))}>
+            {"모두 선택"->React.string}
+          </button>
+          <button className="m-1 p-2 badge badge-lg" onClick={_ => setCategoryIDs(_ => [])}>
+            {"모두 해제"->React.string}
+          </button>
         </div>
+        <ul className="py-2 flex flex-wrap">
+          {options
+          ->Array.map(({label, value}) =>
+            <li key={value->Int.toString} className="p-1">
+              <button
+                className={`badge badge-lg ${if categoryIDs->Array.includes(value) {
+                    "badge-primary"
+                  } else {
+                    ""
+                  }}`}
+                onClick={_ =>
+                  setCategoryIDs(categoryIDs =>
+                    if categoryIDs->Array.includes(value) {
+                      categoryIDs->Array.filter(v => v != value)
+                    } else {
+                      [value, ...categoryIDs]
+                    }
+                  )}>
+                {label->React.string}
+              </button>
+            </li>
+          )
+          ->React.array}
+        </ul>
         <div className="modal-action">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -176,6 +202,9 @@ let make = () => {
           </form>
         </div>
       </div>
+      <form method="dialog" className="modal-backdrop">
+        <button className="cursor-default" />
+      </form>
     </dialog>
     <ErrorBoundary
       fallbackRender={({error, resetErrorBoundary}) => {
