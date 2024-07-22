@@ -72,6 +72,22 @@ let make = () => {
       <button
         className="btn btn-square btn-primary btn-outline text-lg"
         onClick={_ => {
+          open! Webapi.Dom // suppress warning for document
+
+          (
+            document
+            ->Document.getElementById(filterModalId)
+            ->Option.flatMap(Util.asHtmlDialogElement)
+            ->Option.getExn
+          )["showModal"]()->ignore
+
+          closeDropdown()
+        }}>
+        <Outline.FunnelIcon className="h-5 w-5" />
+      </button>
+      <button
+        className="btn btn-square btn-primary btn-outline text-lg"
+        onClick={_ => {
           switch (axis, direction) {
           | (Chrono, _) => ()
           | (English, #asc) => setDirection(_ => #desc)
@@ -124,23 +140,6 @@ let make = () => {
                 closeDropdown()
               }}>
               {"무작위순"->React.string}
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={_ => {
-                open! Webapi.Dom // suppress warning for document
-
-                (
-                  document
-                  ->Document.getElementById(filterModalId)
-                  ->Option.flatMap(Util.asHtmlDialogElement)
-                  ->Option.getExn
-                )["showModal"]()->ignore
-
-                closeDropdown()
-              }}>
-              {"분야 필터"->React.string}
             </button>
           </li>
         </ul>

@@ -36,6 +36,8 @@ var ChatBubbleLeftRightIcon = {};
 
 var ChartBarSquareIcon = {};
 
+var FunnelIcon = {};
+
 var HomeIcon = {};
 
 var PencilSquareIcon = {};
@@ -50,6 +52,7 @@ var Outline = {
   ChatBubbleLeftIcon: ChatBubbleLeftIcon,
   ChatBubbleLeftRightIcon: ChatBubbleLeftRightIcon,
   ChartBarSquareIcon: ChartBarSquareIcon,
+  FunnelIcon: FunnelIcon,
   HomeIcon: HomeIcon,
   PencilSquareIcon: PencilSquareIcon,
   WrenchIcon: WrenchIcon

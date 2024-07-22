@@ -165,6 +165,16 @@ function Home(props) {
                               className: "flex-auto"
                             }),
                         JsxRuntime.jsx("button", {
+                              children: JsxRuntime.jsx(Outline.FunnelIcon, {
+                                    className: "h-5 w-5"
+                                  }),
+                              className: "btn btn-square btn-primary btn-outline text-lg",
+                              onClick: (function (param) {
+                                  Core__Option.getExn(Core__Option.flatMap(Caml_option.nullable_to_opt(document.getElementById(filterModalId)), Util.asHtmlDialogElement), undefined).showModal();
+                                  closeDropdown();
+                                })
+                            }),
+                        JsxRuntime.jsx("button", {
                               children: tmp,
                               className: "btn btn-square btn-primary btn-outline text-lg",
                               onClick: (function (param) {
@@ -246,15 +256,6 @@ function Home(props) {
                                                         setSearchTerm(function (param) {
                                                               return "";
                                                             });
-                                                        closeDropdown();
-                                                      })
-                                                  })
-                                            }),
-                                        JsxRuntime.jsx("li", {
-                                              children: JsxRuntime.jsx("button", {
-                                                    children: "분야 필터",
-                                                    onClick: (function (param) {
-                                                        Core__Option.getExn(Core__Option.flatMap(Caml_option.nullable_to_opt(document.getElementById(filterModalId)), Util.asHtmlDialogElement), undefined).showModal();
                                                         closeDropdown();
                                                       })
                                                   })
