@@ -5,8 +5,9 @@ import * as Caml_option from "../../node_modules/rescript/lib/es6/caml_option.js
 import * as ReactRelay from "react-relay";
 import * as RescriptRelay from "../../node_modules/rescript-relay/src/RescriptRelay.js";
 
-function makeRefetchVariables(seed) {
+function makeRefetchVariables(categoryIDs, seed) {
   return {
+          categoryIDs: categoryIDs,
           seed: seed
         };
 }
@@ -50,14 +51,17 @@ var Internal = {
 var Utils = {};
 
 var node = ((function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "seed"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "categoryIDs"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "seed"
+},
+v2 = [
   {
     "fields": [
       {
@@ -73,35 +77,61 @@ v1 = [
     "kind": "Literal",
     "name": "first",
     "value": 40
+  },
+  {
+    "fields": [
+      {
+        "fields": [
+          {
+            "fields": [
+              {
+                "kind": "Variable",
+                "name": "_in",
+                "variableName": "categoryIDs"
+              }
+            ],
+            "kind": "ObjectValue",
+            "name": "category_id"
+          }
+        ],
+        "kind": "ObjectValue",
+        "name": "jargon_categories"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "where"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v4 = {
+v5 = {
   "name": "asc"
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
     "name": "JargonRandomListOrderQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "list_jargon_random_connection",
@@ -123,7 +153,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
+                  (v3/*: any*/),
                   {
                     "args": null,
                     "kind": "FragmentSpread",
@@ -144,13 +174,16 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "JargonRandomListOrderQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "list_jargon_random_connection",
@@ -172,8 +205,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
                   (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -188,7 +221,7 @@ return {
                         "kind": "Literal",
                         "name": "order_by",
                         "value": {
-                          "category": (v4/*: any*/)
+                          "category": (v5/*: any*/)
                         }
                       }
                     ],
@@ -212,11 +245,11 @@ return {
                             "name": "acronym",
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      (v3/*: any*/)
                     ],
                     "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
                   },
@@ -231,7 +264,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": (v4/*: any*/)
+                        "value": (v5/*: any*/)
                       }
                     ],
                     "concreteType": "translation",
@@ -239,8 +272,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v2/*: any*/),
-                      (v3/*: any*/)
+                      (v3/*: any*/),
+                      (v4/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -285,12 +318,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "18254569cde389453222c2296b737b84",
+    "cacheID": "c41d1ac10984122a38dd712f6017a435",
     "id": null,
     "metadata": {},
     "name": "JargonRandomListOrderQuery",
     "operationKind": "query",
-    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
+    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n  $categoryIDs: [Int!]!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, where: {jargon_categories: {category_id: {_in: $categoryIDs}}}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
   }
 };
 })());

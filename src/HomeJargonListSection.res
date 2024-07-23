@@ -38,7 +38,7 @@ let make = (~searchTerm, ~categoryIDs, ~axis, ~direction) => {
       <Loader />
     </div>}>
     {switch axis {
-    | Random(seed) => <JargonRandomList seed />
+    | Random(seed) => <JargonRandomList seed categoryIDs />
     | _ => <JargonList query />
     }}
   </React.Suspense>

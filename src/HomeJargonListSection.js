@@ -53,6 +53,7 @@ var HomeJargonListSectionQuery = {
 
 function HomeJargonListSection(props) {
   var axis = props.axis;
+  var categoryIDs = props.categoryIDs;
   var searchTerm = props.searchTerm.replace(/\s+/g, "");
   var tmp;
   tmp = typeof axis !== "object" ? (
@@ -73,7 +74,7 @@ function HomeJargonListSection(props) {
         ]
     ) : [];
   var match = use({
-        categoryIDs: props.categoryIDs,
+        categoryIDs: categoryIDs,
         directions: tmp,
         searchTerm: searchTerm
       }, undefined, undefined, undefined);
@@ -82,7 +83,8 @@ function HomeJargonListSection(props) {
   tmp$1 = typeof axis !== "object" ? JsxRuntime.jsx(JargonList.make, {
           query: query
         }) : JsxRuntime.jsx(JargonRandomList.make, {
-          seed: axis._0
+          seed: axis._0,
+          categoryIDs: categoryIDs
         });
   return JsxRuntime.jsx(React.Suspense, {
               children: Caml_option.some(tmp$1),

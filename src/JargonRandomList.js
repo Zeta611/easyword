@@ -43,6 +43,7 @@ var JargonRandomListOrderQuery = {
 
 function JargonRandomList(props) {
   var match = use({
+        categoryIDs: props.categoryIDs,
         seed: props.seed.toString()
       }, undefined, undefined, undefined);
   var rows = match.list_jargon_random_connection.edges.map(function (param) {
