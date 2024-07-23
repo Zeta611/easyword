@@ -147,6 +147,16 @@ let make = (~jargonID: string) => {
                 onChange={handleTranslationChange}
                 className="input input-bordered w-full"
               />
+              <label className="label">
+                <span className="label-text-alt" />
+                <span className="label-text-alt text-zinc-700">
+                  {"번역을 새로 제안할 때는 "->React.string}
+                  <a href="https://claude.ai/" className="link text-zinc-700">
+                    {"Claude"->React.string}
+                  </a>
+                  {"등의 LLM도 활용해보세요"->React.string}
+                </span>
+              </label>
             </label>
             <label className="block">
               <label className="label">

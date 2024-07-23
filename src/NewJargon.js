@@ -512,6 +512,26 @@ function NewJargon(props) {
                                               type: "text",
                                               value: korean,
                                               onChange: handleTranslationChange
+                                            }),
+                                        JsxRuntime.jsxs("label", {
+                                              children: [
+                                                JsxRuntime.jsx("span", {
+                                                      className: "label-text-alt"
+                                                    }),
+                                                JsxRuntime.jsxs("span", {
+                                                      children: [
+                                                        "번역을 새로 제안할 때는 ",
+                                                        JsxRuntime.jsx("a", {
+                                                              children: "Claude",
+                                                              className: "link text-zinc-700",
+                                                              href: "https://claude.ai/"
+                                                            }),
+                                                        "등의 LLM도 활용해보세요"
+                                                      ],
+                                                      className: "label-text-alt text-zinc-700"
+                                                    })
+                                              ],
+                                              className: "label"
                                             })
                                       ],
                                       className: "block"
