@@ -40,6 +40,8 @@ var FunnelIcon = {};
 
 var HomeIcon = {};
 
+var LightBulbIcon = {};
+
 var PencilSquareIcon = {};
 
 var WrenchIcon = {};
@@ -54,6 +56,7 @@ var Outline = {
   ChartBarSquareIcon: ChartBarSquareIcon,
   FunnelIcon: FunnelIcon,
   HomeIcon: HomeIcon,
+  LightBulbIcon: LightBulbIcon,
   PencilSquareIcon: PencilSquareIcon,
   WrenchIcon: WrenchIcon
 };

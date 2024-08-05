@@ -95,6 +95,16 @@ let make = () => {
           <li>
             <button
               onClick={_ => {
+                RescriptReactRouter.push("/tips")
+                closeMenu()
+              }}>
+              <Heroicons.Outline.LightBulbIcon className="h-4 w-4" />
+              {"번역팁"->React.string}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={_ => {
                 RescriptReactRouter.push("/colophon")
                 closeMenu()
               }}>
@@ -120,14 +130,6 @@ let make = () => {
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>
-      // <button
-      //   className="btn btn-ghost text-xl hidden lg:flex"
-      //   onClick={_ => RescriptReactRouter.push("/")}>
-      //   <div className="flex flex-col items-baseline gap-1">
-      //     <span> {"쉬운 전문용어"->React.string} </span>
-      //     <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
-      //   </div>
-      // </button>
     </div>
     <div className="navbar-center hidden md:flex">
       <ul className="menu menu-horizontal px-1 text-xs">
@@ -156,6 +158,14 @@ let make = () => {
             <div className="grid justify-items-center">
               <Heroicons.Outline.LanguageIcon className="h-5 w-5" />
               {"번역기"->React.string}
+            </div>
+          </button>
+        </li>
+        <li>
+          <button onClick={_ => RescriptReactRouter.push("/tips")}>
+            <div className="grid justify-items-center">
+              <Heroicons.Outline.LightBulbIcon className="h-5 w-5" />
+              {"번역팁"->React.string}
             </div>
           </button>
         </li>

@@ -112,6 +112,20 @@ function Navbar(props) {
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
+                                                      JsxRuntime.jsx(Outline.LightBulbIcon, {
+                                                            className: "h-4 w-4"
+                                                          }),
+                                                      "번역팁"
+                                                    ],
+                                                    onClick: (function (param) {
+                                                        RescriptReactRouter.push("/tips");
+                                                        closeMenu();
+                                                      })
+                                                  })
+                                            }),
+                                        JsxRuntime.jsx("li", {
+                                              children: JsxRuntime.jsxs("button", {
+                                                    children: [
                                                       JsxRuntime.jsx(Outline.WrenchIcon, {
                                                             className: "h-4 w-4"
                                                           }),
@@ -213,6 +227,22 @@ function Navbar(props) {
                                           onClick: (function (param) {
                                               RescriptReactRouter.push("/trans");
                                               closeMenu();
+                                            })
+                                        })
+                                  }),
+                              JsxRuntime.jsx("li", {
+                                    children: JsxRuntime.jsx("button", {
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
+                                                  JsxRuntime.jsx(Outline.LightBulbIcon, {
+                                                        className: "h-5 w-5"
+                                                      }),
+                                                  "번역팁"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
+                                          onClick: (function (param) {
+                                              RescriptReactRouter.push("/tips");
                                             })
                                         })
                                   }),
