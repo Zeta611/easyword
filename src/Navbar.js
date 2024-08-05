@@ -63,7 +63,7 @@ function Navbar(props) {
                                       children: JsxRuntime.jsx(Solid.Bars3Icon, {
                                             className: "h-5 w-5"
                                           }),
-                                      className: "btn btn-ghost lg:hidden"
+                                      className: "btn btn-ghost md:hidden"
                                     }),
                                 JsxRuntime.jsxs("ul", {
                                       children: [
@@ -154,27 +154,9 @@ function Navbar(props) {
                                             className: "text-xs"
                                           })
                                     ],
-                                    className: "flex items-baseline gap-1"
+                                    className: "flex flex-col items-baseline gap-1"
                                   }),
-                              className: "btn btn-ghost text-xl lg:hidden",
-                              onClick: (function (param) {
-                                  RescriptReactRouter.push("/");
-                                })
-                            }),
-                        JsxRuntime.jsx("button", {
-                              children: JsxRuntime.jsxs("div", {
-                                    children: [
-                                      JsxRuntime.jsx("span", {
-                                            children: "쉬운 전문용어"
-                                          }),
-                                      JsxRuntime.jsx("span", {
-                                            children: "컴퓨터과학/컴퓨터공학",
-                                            className: "text-xs"
-                                          })
-                                    ],
-                                    className: "flex items-baseline gap-1"
-                                  }),
-                              className: "btn btn-ghost text-xl hidden lg:flex",
+                              className: "btn btn-ghost text-xl",
                               onClick: (function (param) {
                                   RescriptReactRouter.push("/");
                                 })
@@ -190,7 +172,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Solid.StarIcon, {
-                                                        className: "h-5 w-5 hidden sm:flex"
+                                                        className: "h-5 w-5"
                                                       }),
                                                   "배경/원칙"
                                                 ],
@@ -206,7 +188,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Outline.PencilSquareIcon, {
-                                                        className: "h-5 w-5 hidden sm:flex"
+                                                        className: "h-5 w-5"
                                                       }),
                                                   "용어제안"
                                                 ],
@@ -222,7 +204,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Outline.LanguageIcon, {
-                                                        className: "h-5 w-5 hidden sm:flex"
+                                                        className: "h-5 w-5"
                                                       }),
                                                   "번역기"
                                                 ],
@@ -239,7 +221,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Outline.WrenchIcon, {
-                                                        className: "h-5 w-5 hidden sm:flex"
+                                                        className: "h-5 w-5"
                                                       }),
                                                   "제작기"
                                                 ],
@@ -255,7 +237,7 @@ function Navbar(props) {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
                                                   JsxRuntime.jsx(Fa.FaGithub, {
-                                                        className: "h-5 w-5 hidden sm:flex"
+                                                        className: "h-5 w-5"
                                                       }),
                                                   "제작참여"
                                                 ],
@@ -269,7 +251,7 @@ function Navbar(props) {
                             ],
                             className: "menu menu-horizontal px-1 text-xs"
                           }),
-                      className: "navbar-center hidden lg:flex"
+                      className: "navbar-center hidden md:flex"
                     }),
                 JsxRuntime.jsxs("div", {
                       children: [

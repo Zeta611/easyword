@@ -57,7 +57,7 @@ let make = () => {
   <div className="navbar sticky top-0 z-50 bg-base-100">
     <div className="navbar-start">
       <details id="menu-dropdown-btn" className="dropdown">
-        <summary className="btn btn-ghost lg:hidden">
+        <summary className="btn btn-ghost md:hidden">
           <Heroicons.Solid.Bars3Icon className="h-5 w-5" />
         </summary>
         <ul
@@ -114,28 +114,27 @@ let make = () => {
           </li>
         </ul>
       </details>
-      <button
-        className="btn btn-ghost text-xl lg:hidden" onClick={_ => RescriptReactRouter.push("/")}>
-        <div className="flex items-baseline gap-1">
+      <button className="btn btn-ghost text-xl" onClick={_ => RescriptReactRouter.push("/")}>
+        <div className="flex flex-col items-baseline gap-1">
           <span> {"쉬운 전문용어"->React.string} </span>
           <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
         </div>
       </button>
-      <button
-        className="btn btn-ghost text-xl hidden lg:flex"
-        onClick={_ => RescriptReactRouter.push("/")}>
-        <div className="flex items-baseline gap-1">
-          <span> {"쉬운 전문용어"->React.string} </span>
-          <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
-        </div>
-      </button>
+      // <button
+      //   className="btn btn-ghost text-xl hidden lg:flex"
+      //   onClick={_ => RescriptReactRouter.push("/")}>
+      //   <div className="flex flex-col items-baseline gap-1">
+      //     <span> {"쉬운 전문용어"->React.string} </span>
+      //     <span className="text-xs"> {"컴퓨터과학/컴퓨터공학"->React.string} </span>
+      //   </div>
+      // </button>
     </div>
-    <div className="navbar-center hidden lg:flex">
+    <div className="navbar-center hidden md:flex">
       <ul className="menu menu-horizontal px-1 text-xs">
         <li>
           <button onClick={_ => RescriptReactRouter.push("/why")}>
             <div className="grid justify-items-center">
-              <Heroicons.Solid.StarIcon className="h-5 w-5 hidden sm:flex" />
+              <Heroicons.Solid.StarIcon className="h-5 w-5" />
               {"배경/원칙"->React.string}
             </div>
           </button>
@@ -143,7 +142,7 @@ let make = () => {
         <li>
           <button onClick={_ => RescriptReactRouter.push("/new-jargon")}>
             <div className="grid justify-items-center">
-              <Heroicons.Outline.PencilSquareIcon className="h-5 w-5 hidden sm:flex" />
+              <Heroicons.Outline.PencilSquareIcon className="h-5 w-5" />
               {"용어제안"->React.string}
             </div>
           </button>
@@ -155,7 +154,7 @@ let make = () => {
               closeMenu()
             }}>
             <div className="grid justify-items-center">
-              <Heroicons.Outline.LanguageIcon className="h-5 w-5 hidden sm:flex" />
+              <Heroicons.Outline.LanguageIcon className="h-5 w-5" />
               {"번역기"->React.string}
             </div>
           </button>
@@ -163,7 +162,7 @@ let make = () => {
         <li>
           <button onClick={_ => RescriptReactRouter.push("/colophon")}>
             <div className="grid justify-items-center">
-              <Heroicons.Outline.WrenchIcon className="h-5 w-5 hidden sm:flex" />
+              <Heroicons.Outline.WrenchIcon className="h-5 w-5" />
               {"제작기"->React.string}
             </div>
           </button>
@@ -175,7 +174,7 @@ let make = () => {
               ->Webapi.Dom.Window.open_(~url=gitHubURL, ~name="_blank", ())
               ->ignore}>
             <div className="grid justify-items-center">
-              <ReactIcons.FaGithub className="h-5 w-5 hidden sm:flex" />
+              <ReactIcons.FaGithub className="h-5 w-5" />
               {"제작참여"->React.string}
             </div>
           </button>
