@@ -86,6 +86,7 @@ let make = () => {
                             </ErrorBoundary>
 
                           | list{"trans"} => <Translator />
+                          | list{"tips"} => <Tips />
                           | list{"why"} => <Why />
                           | list{"colophon"} => <Colophon />
 

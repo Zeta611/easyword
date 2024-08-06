@@ -754,6 +754,157 @@ input comment_updates {
 }
 
 """
+columns and relationships of "html"
+"""
+type html implements Node {
+  created_at: timestamptz!
+  data: String!
+  id: ID!
+  updated_at: timestamptz!
+}
+
+"""
+A Relay connection object on "html"
+"""
+type htmlConnection {
+  edges: [htmlEdge!]!
+  pageInfo: PageInfo!
+}
+
+type htmlEdge {
+  cursor: String!
+  node: html!
+}
+
+"""
+Boolean expression to filter rows from the table "html". All fields are combined with a logical 'AND'.
+"""
+input html_bool_exp {
+  _and: [html_bool_exp!]
+  _not: html_bool_exp
+  _or: [html_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  data: String_comparison_exp
+  id: Int_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "html"
+"""
+enum html_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  html_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "html"
+"""
+input html_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "html"
+"""
+input html_insert_input {
+  created_at: timestamptz
+  data: String
+  id: Int
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "html"
+"""
+type html_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [html!]!
+}
+
+"""
+on_conflict condition type for table "html"
+"""
+input html_on_conflict {
+  constraint: html_constraint!
+  update_columns: [html_update_column!]! = []
+  where: html_bool_exp
+}
+
+"""Ordering options when selecting data from "html"."""
+input html_order_by {
+  created_at: order_by
+  data: order_by
+  id: order_by
+  updated_at: order_by
+}
+
+"""primary key columns input for table: html"""
+input html_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "html"
+"""
+enum html_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  data
+
+  """column name"""
+  id
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "html"
+"""
+input html_set_input {
+  created_at: timestamptz
+  data: String
+  id: Int
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "html"
+"""
+enum html_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  data
+
+  """column name"""
+  id
+
+  """column name"""
+  updated_at
+}
+
+input html_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: html_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: html_set_input
+
+  """filter the rows which have to be updated"""
+  where: html_bool_exp!
+}
+
+"""
 columns and relationships of "jargon"
 """
 type jargon implements Node {
@@ -1584,6 +1735,19 @@ type mutation_root {
   delete_comment_by_pk(id: uuid!): comment
 
   """
+  delete data from the table: "html"
+  """
+  delete_html(
+    """filter the rows which have to be deleted"""
+    where: html_bool_exp!
+  ): html_mutation_response
+
+  """
+  delete single row from the table: "html"
+  """
+  delete_html_by_pk(id: Int!): html
+
+  """
   delete data from the table: "jargon"
   """
   delete_jargon(
@@ -1678,6 +1842,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: comment_on_conflict
   ): comment
+
+  """
+  insert data into the table: "html"
+  """
+  insert_html(
+    """the rows to be inserted"""
+    objects: [html_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: html_on_conflict
+  ): html_mutation_response
+
+  """
+  insert a single row into the table: "html"
+  """
+  insert_html_one(
+    """the row to be inserted"""
+    object: html_insert_input!
+
+    """upsert condition"""
+    on_conflict: html_on_conflict
+  ): html
 
   """
   insert data into the table: "jargon"
@@ -1828,6 +2014,40 @@ type mutation_root {
     """updates to execute, in order"""
     updates: [comment_updates!]!
   ): [comment_mutation_response]
+
+  """
+  update data of the table: "html"
+  """
+  update_html(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: html_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: html_set_input
+
+    """filter the rows which have to be updated"""
+    where: html_bool_exp!
+  ): html_mutation_response
+
+  """
+  update single row of the table: "html"
+  """
+  update_html_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: html_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: html_set_input
+    pk_columns: html_pk_columns_input!
+  ): html
+
+  """
+  update multiples rows of table: "html"
+  """
+  update_html_many(
+    """updates to execute, in order"""
+    updates: [html_updates!]!
+  ): [html_mutation_response]
 
   """
   update data of the table: "jargon"
@@ -2009,6 +2229,25 @@ type query_root {
   ): commentConnection!
 
   """
+  fetch data from the table: "html"
+  """
+  html_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [html_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [html_order_by!]
+
+    """filter the rows returned"""
+    where: html_bool_exp
+  ): htmlConnection!
+
+  """
   fetch data from the table: "jargon_category"
   """
   jargon_category_connection(
@@ -2153,6 +2392,25 @@ type subscription_root {
     """filter the rows returned"""
     where: comment_bool_exp
   ): commentConnection!
+
+  """
+  fetch data from the table: "html"
+  """
+  html_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [html_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [html_order_by!]
+
+    """filter the rows returned"""
+    where: html_bool_exp
+  ): htmlConnection!
 
   """
   fetch data from the table: "jargon_category"

@@ -138,6 +138,51 @@ type enum_comment_update_column_input =
 
 
 @live @unboxed
+type enum_html_constraint = 
+  | @as("html_pkey") Html_pkey
+  | FutureAddedValue(string)
+
+
+@live
+type enum_html_constraint_input = 
+  | @as("html_pkey") Html_pkey
+
+
+@live @unboxed
+type enum_html_select_column = 
+  | @as("created_at") Created_at
+  | @as("data") Data
+  | @as("id") Id
+  | @as("updated_at") Updated_at
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_html_select_column_input = 
+  | @as("created_at") Created_at
+  | @as("data") Data
+  | @as("id") Id
+  | @as("updated_at") Updated_at
+
+
+@live @unboxed
+type enum_html_update_column = 
+  | @as("created_at") Created_at
+  | @as("data") Data
+  | @as("id") Id
+  | @as("updated_at") Updated_at
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_html_update_column_input = 
+  | @as("created_at") Created_at
+  | @as("data") Data
+  | @as("id") Id
+  | @as("updated_at") Updated_at
+
+
+@live @unboxed
 type enum_jargon_category_constraint = 
   | @as("jargon_category_pkey") Jargon_category_pkey
   | FutureAddedValue(string)
@@ -929,6 +974,124 @@ and input_comment_updates = {
 and input_comment_updates_nullable = {
   _set?: Js.Null.t<input_comment_set_input_nullable>,
   where: input_comment_bool_exp_nullable,
+}
+
+@live
+and input_html_bool_exp = {
+  _and?: array<input_html_bool_exp>,
+  _not?: input_html_bool_exp,
+  _or?: array<input_html_bool_exp>,
+  created_at?: input_timestamptz_comparison_exp,
+  data?: input_String_comparison_exp,
+  id?: input_Int_comparison_exp,
+  updated_at?: input_timestamptz_comparison_exp,
+}
+
+@live
+and input_html_bool_exp_nullable = {
+  _and?: Js.Null.t<array<input_html_bool_exp_nullable>>,
+  _not?: Js.Null.t<input_html_bool_exp_nullable>,
+  _or?: Js.Null.t<array<input_html_bool_exp_nullable>>,
+  created_at?: Js.Null.t<input_timestamptz_comparison_exp_nullable>,
+  data?: Js.Null.t<input_String_comparison_exp_nullable>,
+  id?: Js.Null.t<input_Int_comparison_exp_nullable>,
+  updated_at?: Js.Null.t<input_timestamptz_comparison_exp_nullable>,
+}
+
+@live
+and input_html_inc_input = {
+  id?: int,
+}
+
+@live
+and input_html_inc_input_nullable = {
+  id?: Js.Null.t<int>,
+}
+
+@live
+and input_html_insert_input = {
+  created_at?: string,
+  data?: string,
+  id?: int,
+  updated_at?: string,
+}
+
+@live
+and input_html_insert_input_nullable = {
+  created_at?: Js.Null.t<string>,
+  data?: Js.Null.t<string>,
+  id?: Js.Null.t<int>,
+  updated_at?: Js.Null.t<string>,
+}
+
+@live
+and input_html_on_conflict = {
+  @as("constraint") constraint_: enum_html_constraint_input,
+  update_columns: array<enum_html_update_column_input>,
+  where?: input_html_bool_exp,
+}
+
+@live
+and input_html_on_conflict_nullable = {
+  @as("constraint") constraint_: enum_html_constraint_input,
+  update_columns: array<enum_html_update_column_input>,
+  where?: Js.Null.t<input_html_bool_exp_nullable>,
+}
+
+@live
+and input_html_order_by = {
+  created_at?: enum_order_by_input,
+  data?: enum_order_by_input,
+  id?: enum_order_by_input,
+  updated_at?: enum_order_by_input,
+}
+
+@live
+and input_html_order_by_nullable = {
+  created_at?: Js.Null.t<enum_order_by_input>,
+  data?: Js.Null.t<enum_order_by_input>,
+  id?: Js.Null.t<enum_order_by_input>,
+  updated_at?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_html_pk_columns_input = {
+  id: int,
+}
+
+@live
+and input_html_pk_columns_input_nullable = {
+  id: int,
+}
+
+@live
+and input_html_set_input = {
+  created_at?: string,
+  data?: string,
+  id?: int,
+  updated_at?: string,
+}
+
+@live
+and input_html_set_input_nullable = {
+  created_at?: Js.Null.t<string>,
+  data?: Js.Null.t<string>,
+  id?: Js.Null.t<int>,
+  updated_at?: Js.Null.t<string>,
+}
+
+@live
+and input_html_updates = {
+  _inc?: input_html_inc_input,
+  _set?: input_html_set_input,
+  where: input_html_bool_exp,
+}
+
+@live
+and input_html_updates_nullable = {
+  _inc?: Js.Null.t<input_html_inc_input_nullable>,
+  _set?: Js.Null.t<input_html_set_input_nullable>,
+  where: input_html_bool_exp_nullable,
 }
 
 @live
