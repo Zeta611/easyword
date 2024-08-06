@@ -85,21 +85,21 @@ let make = () => {
           <li>
             <button
               onClick={_ => {
-                RescriptReactRouter.push("/trans")
+                RescriptReactRouter.push("/tips")
                 closeMenu()
               }}>
-              <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
-              {"번역기"->React.string}
+              <Heroicons.Outline.LightBulbIcon className="h-4 w-4" />
+              {"용어팁"->React.string}
             </button>
           </li>
           <li>
             <button
               onClick={_ => {
-                RescriptReactRouter.push("/tips")
+                RescriptReactRouter.push("/trans")
                 closeMenu()
               }}>
-              <Heroicons.Outline.LightBulbIcon className="h-4 w-4" />
-              {"번역팁"->React.string}
+              <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
+              {"번역기"->React.string}
             </button>
           </li>
           <li>
@@ -150,6 +150,14 @@ let make = () => {
           </button>
         </li>
         <li>
+          <button onClick={_ => RescriptReactRouter.push("/tips")}>
+            <div className="grid justify-items-center">
+              <Heroicons.Outline.LightBulbIcon className="h-5 w-5" />
+              {"용어팁"->React.string}
+            </div>
+          </button>
+        </li>
+        <li>
           <button
             onClick={_ => {
               RescriptReactRouter.push("/trans")
@@ -158,14 +166,6 @@ let make = () => {
             <div className="grid justify-items-center">
               <Heroicons.Outline.LanguageIcon className="h-5 w-5" />
               {"번역기"->React.string}
-            </div>
-          </button>
-        </li>
-        <li>
-          <button onClick={_ => RescriptReactRouter.push("/tips")}>
-            <div className="grid justify-items-center">
-              <Heroicons.Outline.LightBulbIcon className="h-5 w-5" />
-              {"번역팁"->React.string}
             </div>
           </button>
         </li>

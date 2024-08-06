@@ -98,13 +98,13 @@ function Navbar(props) {
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
-                                                      JsxRuntime.jsx(Outline.LanguageIcon, {
+                                                      JsxRuntime.jsx(Outline.LightBulbIcon, {
                                                             className: "h-4 w-4"
                                                           }),
-                                                      "번역기"
+                                                      "용어팁"
                                                     ],
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.push("/trans");
+                                                        RescriptReactRouter.push("/tips");
                                                         closeMenu();
                                                       })
                                                   })
@@ -112,13 +112,13 @@ function Navbar(props) {
                                         JsxRuntime.jsx("li", {
                                               children: JsxRuntime.jsxs("button", {
                                                     children: [
-                                                      JsxRuntime.jsx(Outline.LightBulbIcon, {
+                                                      JsxRuntime.jsx(Outline.LanguageIcon, {
                                                             className: "h-4 w-4"
                                                           }),
-                                                      "번역팁"
+                                                      "번역기"
                                                     ],
                                                     onClick: (function (param) {
-                                                        RescriptReactRouter.push("/tips");
+                                                        RescriptReactRouter.push("/trans");
                                                         closeMenu();
                                                       })
                                                   })
@@ -217,6 +217,22 @@ function Navbar(props) {
                                     children: JsxRuntime.jsx("button", {
                                           children: JsxRuntime.jsxs("div", {
                                                 children: [
+                                                  JsxRuntime.jsx(Outline.LightBulbIcon, {
+                                                        className: "h-5 w-5"
+                                                      }),
+                                                  "용어팁"
+                                                ],
+                                                className: "grid justify-items-center"
+                                              }),
+                                          onClick: (function (param) {
+                                              RescriptReactRouter.push("/tips");
+                                            })
+                                        })
+                                  }),
+                              JsxRuntime.jsx("li", {
+                                    children: JsxRuntime.jsx("button", {
+                                          children: JsxRuntime.jsxs("div", {
+                                                children: [
                                                   JsxRuntime.jsx(Outline.LanguageIcon, {
                                                         className: "h-5 w-5"
                                                       }),
@@ -227,22 +243,6 @@ function Navbar(props) {
                                           onClick: (function (param) {
                                               RescriptReactRouter.push("/trans");
                                               closeMenu();
-                                            })
-                                        })
-                                  }),
-                              JsxRuntime.jsx("li", {
-                                    children: JsxRuntime.jsx("button", {
-                                          children: JsxRuntime.jsxs("div", {
-                                                children: [
-                                                  JsxRuntime.jsx(Outline.LightBulbIcon, {
-                                                        className: "h-5 w-5"
-                                                      }),
-                                                  "번역팁"
-                                                ],
-                                                className: "grid justify-items-center"
-                                              }),
-                                          onClick: (function (param) {
-                                              RescriptReactRouter.push("/tips");
                                             })
                                         })
                                   }),
