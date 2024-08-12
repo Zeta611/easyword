@@ -51,8 +51,8 @@ let connectionKey = "JargonListOrderQuery_jargon_connection"
 )
 
 @live
-let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?, ~categoryIDs: option<array<int>>=?) => {
-  let args = {"order_by": directions, "where": {"_and": [RescriptRelay_Internal.Arg({"_or": [RescriptRelay_Internal.Arg({"name_lower_no_spaces": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name_lower_no_spaces": {"_iregex": searchTerm}}})]}), RescriptRelay_Internal.Arg({"jargon_categories": {"category_id": {"_in": categoryIDs}}})]}}
+let makeConnectionId = (connectionParentDataId: RescriptRelay.dataId, ~directions: option<array<RelaySchemaAssets_graphql.input_jargon_order_by>>=?, ~searchTerm: option<string>=?, ~categoriesFilter: option<array<RelaySchemaAssets_graphql.input_jargon_bool_exp>>=?) => {
+  let args = {"order_by": directions, "where": {"_and": [RescriptRelay_Internal.Arg({"_or": [RescriptRelay_Internal.Arg({"name_lower_no_spaces": {"_iregex": searchTerm}}), RescriptRelay_Internal.Arg({"translations": {"name_lower_no_spaces": {"_iregex": searchTerm}}})]}), RescriptRelay_Internal.Arg({"_and": categoriesFilter})]}}
   internal_makeConnectionId(connectionParentDataId, args)
 }
 module Utils = {
@@ -96,7 +96,7 @@ return {
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
-      "name": "categoryIDs"
+      "name": "categoriesFilter"
     },
     {
       "defaultValue": 40,
@@ -185,21 +185,9 @@ return {
                 {
                   "fields": [
                     {
-                      "fields": [
-                        {
-                          "fields": [
-                            {
-                              "kind": "Variable",
-                              "name": "_in",
-                              "variableName": "categoryIDs"
-                            }
-                          ],
-                          "kind": "ObjectValue",
-                          "name": "category_id"
-                        }
-                      ],
-                      "kind": "ObjectValue",
-                      "name": "jargon_categories"
+                      "kind": "Variable",
+                      "name": "_and",
+                      "variableName": "categoriesFilter"
                     }
                   ],
                   "kind": "ObjectValue",

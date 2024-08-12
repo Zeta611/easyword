@@ -27,7 +27,43 @@ var fetchPromised = RescriptRelay_Query.fetchPromised(JargonRandomListOrderQuery
 
 var retain = RescriptRelay_Query.retain(JargonRandomListOrderQuery_graphql.node, convertVariables);
 
+var JargonRandomListOrderQuery_comment_select_column_decode = JargonRandomListOrderQuery_graphql.Utils.comment_select_column_decode;
+
+var JargonRandomListOrderQuery_comment_select_column_fromString = JargonRandomListOrderQuery_graphql.Utils.comment_select_column_fromString;
+
+var JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode = JargonRandomListOrderQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode;
+
+var JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString = JargonRandomListOrderQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString;
+
+var JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode = JargonRandomListOrderQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode;
+
+var JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString = JargonRandomListOrderQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString;
+
+var JargonRandomListOrderQuery_jargon_category_select_column_decode = JargonRandomListOrderQuery_graphql.Utils.jargon_category_select_column_decode;
+
+var JargonRandomListOrderQuery_jargon_category_select_column_fromString = JargonRandomListOrderQuery_graphql.Utils.jargon_category_select_column_fromString;
+
+var JargonRandomListOrderQuery_jargon_select_column_decode = JargonRandomListOrderQuery_graphql.Utils.jargon_select_column_decode;
+
+var JargonRandomListOrderQuery_jargon_select_column_fromString = JargonRandomListOrderQuery_graphql.Utils.jargon_select_column_fromString;
+
+var JargonRandomListOrderQuery_translation_select_column_decode = JargonRandomListOrderQuery_graphql.Utils.translation_select_column_decode;
+
+var JargonRandomListOrderQuery_translation_select_column_fromString = JargonRandomListOrderQuery_graphql.Utils.translation_select_column_fromString;
+
 var JargonRandomListOrderQuery = {
+  comment_select_column_decode: JargonRandomListOrderQuery_comment_select_column_decode,
+  comment_select_column_fromString: JargonRandomListOrderQuery_comment_select_column_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode: JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString: JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode: JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString: JargonRandomListOrderQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString,
+  jargon_category_select_column_decode: JargonRandomListOrderQuery_jargon_category_select_column_decode,
+  jargon_category_select_column_fromString: JargonRandomListOrderQuery_jargon_category_select_column_fromString,
+  jargon_select_column_decode: JargonRandomListOrderQuery_jargon_select_column_decode,
+  jargon_select_column_fromString: JargonRandomListOrderQuery_jargon_select_column_fromString,
+  translation_select_column_decode: JargonRandomListOrderQuery_translation_select_column_decode,
+  translation_select_column_fromString: JargonRandomListOrderQuery_translation_select_column_fromString,
   Operation: undefined,
   Types: undefined,
   convertVariables: convertVariables,
@@ -42,8 +78,15 @@ var JargonRandomListOrderQuery = {
 };
 
 function JargonRandomList(props) {
+  var categoryIDs = props.categoryIDs;
   var match = use({
-        categoryIDs: props.categoryIDs,
+        categoriesFilter: props.categoryCnt === categoryIDs.length ? [] : [{
+              jargon_categories: {
+                category_id: {
+                  _in: categoryIDs
+                }
+              }
+            }],
         seed: props.seed.toString()
       }, undefined, undefined, undefined);
   var rows = match.list_jargon_random_connection.edges.map(function (param) {

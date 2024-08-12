@@ -17,7 +17,7 @@ module JargonListOrderQuery = %relay(`
               { translations: { name_lower_no_spaces: { _iregex: $searchTerm } } }
             ]
           }
-          { jargon_categories: { category_id: { _in: $categoryIDs } } }
+          { _and: $categoriesFilter }
         ]
       }
     ) @connection(key: "JargonListOrderQuery_jargon_connection") {
@@ -30,6 +30,8 @@ module JargonListOrderQuery = %relay(`
     }
   }
 `)
+
+// { jargon_categories: { category_id: { _in: $categoryIDs } } }
 
 @react.component
 let make = (~query) => {
