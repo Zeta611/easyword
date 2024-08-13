@@ -31,6 +31,8 @@ module JargonListOrderQuery = %relay(`
   }
 `)
 
+// { jargon_categories: { category_id: { _in: $categoryIDs } } }
+
 @react.component
 let make = (~query) => {
   let (rows, hasMore, loadNext) = {
