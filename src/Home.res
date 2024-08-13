@@ -212,9 +212,7 @@ let make = () => {
         setResetErrorBoundary(_ => Some(resetErrorBoundary))
         React.null
       }}>
-      <HomeJargonListSection
-        searchTerm=debouncedSearchTerm categoryCnt categoryIDs axis direction
-      />
+      <HomeJargonListSection searchTerm=debouncedSearchTerm categoryIDs axis direction />
     </ErrorBoundary>
   </div>
 }

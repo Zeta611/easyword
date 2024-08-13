@@ -368,7 +368,6 @@ function Home(props) {
                 JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
                       children: JsxRuntime.jsx(HomeJargonListSection.make, {
                             searchTerm: debouncedSearchTerm,
-                            categoryCnt: categoryCnt,
                             categoryIDs: categoryIDs,
                             axis: axis,
                             direction: direction

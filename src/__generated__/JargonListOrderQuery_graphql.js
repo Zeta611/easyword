@@ -20,7 +20,7 @@ var Internal = {
   convertFragment: convertFragment
 };
 
-function makeConnectionId(connectionParentDataId, directions, searchTerm, categoriesFilter) {
+function makeConnectionId(connectionParentDataId, directions, searchTerm, categoryIDs) {
   var args = {
     order_by: directions,
     where: {
@@ -42,7 +42,11 @@ function makeConnectionId(connectionParentDataId, directions, searchTerm, catego
           ]
         },
         {
-          _and: categoriesFilter
+          jargon_categories: {
+            category_id: {
+              _in: categoryIDs
+            }
+          }
         }
       ]
     }
@@ -82,7 +86,7 @@ return {
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
-      "name": "categoriesFilter"
+      "name": "categoryIDs"
     },
     {
       "defaultValue": 40,
@@ -171,9 +175,21 @@ return {
                 {
                   "fields": [
                     {
-                      "kind": "Variable",
-                      "name": "_and",
-                      "variableName": "categoriesFilter"
+                      "fields": [
+                        {
+                          "fields": [
+                            {
+                              "kind": "Variable",
+                              "name": "_in",
+                              "variableName": "categoryIDs"
+                            }
+                          ],
+                          "kind": "ObjectValue",
+                          "name": "category_id"
+                        }
+                      ],
+                      "kind": "ObjectValue",
+                      "name": "jargon_categories"
                     }
                   ],
                   "kind": "ObjectValue",

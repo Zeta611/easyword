@@ -1,7 +1,7 @@
 module HomeJargonListSectionQuery = %relay(`
   query HomeJargonListSectionQuery(
     $searchTerm: String!
-    $categoriesFilter: [jargon_bool_exp!]!
+    $categoryIDs: [Int!]!
     $directions: [jargon_order_by!]!
   ) {
     ...JargonListOrderQuery
@@ -9,22 +9,12 @@ module HomeJargonListSectionQuery = %relay(`
 `)
 
 @react.component
-let make = (~searchTerm, ~categoryCnt, ~categoryIDs, ~axis, ~direction) => {
+let make = (~searchTerm, ~categoryIDs, ~axis, ~direction) => {
   let searchTerm = searchTerm->String.replaceRegExp(%re(`/\s+/g`), "")
   let {fragmentRefs: query} = HomeJargonListSectionQuery.use(
     ~variables={
       searchTerm,
-      categoriesFilter: if categoryCnt == Array.length(categoryIDs) {
-        []
-      } else {
-        [
-          {
-            jargon_categories: {
-              category_id: {_in: categoryIDs},
-            },
-          },
-        ]
-      },
+      categoryIDs,
       directions: {
         switch axis {
         | Jargon.English => [
@@ -48,7 +38,7 @@ let make = (~searchTerm, ~categoryCnt, ~categoryIDs, ~axis, ~direction) => {
       <Loader />
     </div>}>
     {switch axis {
-    | Random(seed) => <JargonRandomList seed categoryCnt categoryIDs />
+    | Random(seed) => <JargonRandomList seed categoryIDs />
     | _ => <JargonList query />
     }}
   </React.Suspense>

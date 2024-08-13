@@ -1,6 +1,6 @@
 module WhyQuery = %relay(`
   query WhyQuery {
-    html_connection(where: { id: { _eq: 2 } }) {
+    html_connection(where: {id: {_eq: 2}}) {
       edges {
         node {
           data

@@ -1,6 +1,6 @@
 module TipsQuery = %relay(`
   query TipsQuery {
-    html_connection(where: { id: { _eq: 1 } }) {
+    html_connection(where: {id: {_eq: 1}}) {
       edges {
         node {
           data
