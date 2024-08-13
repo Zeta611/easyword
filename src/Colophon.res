@@ -1,6 +1,6 @@
 module ColophonQuery = %relay(`
   query ColophonQuery {
-    html_connection(where: {id: {_eq: 3}}) {
+    html_connection(where: { id: { _eq: 3 } }) {
       edges {
         node {
           data

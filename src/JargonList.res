@@ -17,7 +17,12 @@ module JargonListOrderQuery = %relay(`
               { translations: { name_lower_no_spaces: { _iregex: $searchTerm } } }
             ]
           }
-          { jargon_categories: { category_id: { _in: $categoryIDs } } }
+          {
+            _or: [
+              { jargon_categories: { category_id: { _in: $categoryIDs } } }
+              { _not: { jargon_categories: { _and: [] } } }
+            ]
+          }
         ]
       }
     ) @connection(key: "JargonListOrderQuery_jargon_connection") {

@@ -2,7 +2,12 @@ module JargonRandomListOrderQuery = %relay(`
   query JargonRandomListOrderQuery($seed: seed_float!, $categoryIDs: [Int!]!) {
     list_jargon_random_connection(
       args: { seed: $seed }
-      where: { jargon_categories: { category_id: { _in: $categoryIDs } } }
+      where: {
+        _or: [
+          { jargon_categories: { category_id: { _in: $categoryIDs } } }
+          { _not: { jargon_categories: { _and: [] } } }
+        ]
+      }
       first: 40
     ) {
       edges {

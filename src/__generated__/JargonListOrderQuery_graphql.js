@@ -42,11 +42,22 @@ function makeConnectionId(connectionParentDataId, directions, searchTerm, catego
           ]
         },
         {
-          jargon_categories: {
-            category_id: {
-              _in: categoryIDs
+          _or: [
+            {
+              jargon_categories: {
+                category_id: {
+                  _in: categoryIDs
+                }
+              }
+            },
+            {
+              _not: {
+                jargon_categories: {
+                  _and: []
+                }
+              }
             }
-          }
+          ]
         }
       ]
     }
@@ -175,21 +186,44 @@ return {
                 {
                   "fields": [
                     {
-                      "fields": [
+                      "items": [
                         {
                           "fields": [
                             {
-                              "kind": "Variable",
-                              "name": "_in",
-                              "variableName": "categoryIDs"
+                              "fields": [
+                                {
+                                  "fields": [
+                                    {
+                                      "kind": "Variable",
+                                      "name": "_in",
+                                      "variableName": "categoryIDs"
+                                    }
+                                  ],
+                                  "kind": "ObjectValue",
+                                  "name": "category_id"
+                                }
+                              ],
+                              "kind": "ObjectValue",
+                              "name": "jargon_categories"
                             }
                           ],
                           "kind": "ObjectValue",
-                          "name": "category_id"
+                          "name": "_or.0"
+                        },
+                        {
+                          "kind": "Literal",
+                          "name": "_or.1",
+                          "value": {
+                            "_not": {
+                              "jargon_categories": {
+                                "_and": []
+                              }
+                            }
+                          }
                         }
                       ],
-                      "kind": "ObjectValue",
-                      "name": "jargon_categories"
+                      "kind": "ListValue",
+                      "name": "_or"
                     }
                   ],
                   "kind": "ObjectValue",

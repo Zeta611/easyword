@@ -233,21 +233,44 @@ v2 = [
           {
             "fields": [
               {
-                "fields": [
+                "items": [
                   {
                     "fields": [
                       {
-                        "kind": "Variable",
-                        "name": "_in",
-                        "variableName": "categoryIDs"
+                        "fields": [
+                          {
+                            "fields": [
+                              {
+                                "kind": "Variable",
+                                "name": "_in",
+                                "variableName": "categoryIDs"
+                              }
+                            ],
+                            "kind": "ObjectValue",
+                            "name": "category_id"
+                          }
+                        ],
+                        "kind": "ObjectValue",
+                        "name": "jargon_categories"
                       }
                     ],
                     "kind": "ObjectValue",
-                    "name": "category_id"
+                    "name": "_or.0"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "_or.1",
+                    "value": {
+                      "_not": {
+                        "jargon_categories": {
+                          "_and": ([]/*: any*/)
+                        }
+                      }
+                    }
                   }
                 ],
-                "kind": "ObjectValue",
-                "name": "jargon_categories"
+                "kind": "ListValue",
+                "name": "_or"
               }
             ],
             "kind": "ObjectValue",
@@ -500,12 +523,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "66ae8b225da4bf4202674f861a6e1f46",
+    "cacheID": "c6825e770bd4b7f4e97d1de84c4cc529",
     "id": null,
     "metadata": {},
     "name": "JargonListOrderRefetchQuery",
     "operationKind": "query",
-    "text": "query JargonListOrderRefetchQuery(\n  $categoryIDs: [Int!]\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {jargon_categories: {category_id: {_in: $categoryIDs}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query JargonListOrderRefetchQuery(\n  $categoryIDs: [Int!]\n  $count: Int = 40\n  $cursor: String\n  $directions: [jargon_order_by!]\n  $searchTerm: String\n) {\n  ...JargonListOrderQuery_1G22uz\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery_1G22uz on query_root {\n  jargon_connection(order_by: $directions, first: $count, after: $cursor, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {_or: [{jargon_categories: {category_id: {_in: $categoryIDs}}}, {_not: {jargon_categories: {_and: []}}}]}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)

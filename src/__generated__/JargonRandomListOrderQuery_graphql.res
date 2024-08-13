@@ -132,21 +132,44 @@ v2 = [
   {
     "fields": [
       {
-        "fields": [
+        "items": [
           {
             "fields": [
               {
-                "kind": "Variable",
-                "name": "_in",
-                "variableName": "categoryIDs"
+                "fields": [
+                  {
+                    "fields": [
+                      {
+                        "kind": "Variable",
+                        "name": "_in",
+                        "variableName": "categoryIDs"
+                      }
+                    ],
+                    "kind": "ObjectValue",
+                    "name": "category_id"
+                  }
+                ],
+                "kind": "ObjectValue",
+                "name": "jargon_categories"
               }
             ],
             "kind": "ObjectValue",
-            "name": "category_id"
+            "name": "_or.0"
+          },
+          {
+            "kind": "Literal",
+            "name": "_or.1",
+            "value": {
+              "_not": {
+                "jargon_categories": {
+                  "_and": ([]/*: any*/)
+                }
+              }
+            }
           }
         ],
-        "kind": "ObjectValue",
-        "name": "jargon_categories"
+        "kind": "ListValue",
+        "name": "_or"
       }
     ],
     "kind": "ObjectValue",
@@ -369,12 +392,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c41d1ac10984122a38dd712f6017a435",
+    "cacheID": "3597adc2ba4ee35e98d62cbfd26b1d20",
     "id": null,
     "metadata": {},
     "name": "JargonRandomListOrderQuery",
     "operationKind": "query",
-    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n  $categoryIDs: [Int!]!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, where: {jargon_categories: {category_id: {_in: $categoryIDs}}}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
+    "text": "query JargonRandomListOrderQuery(\n  $seed: seed_float!\n  $categoryIDs: [Int!]!\n) {\n  list_jargon_random_connection(args: {seed: $seed}, where: {_or: [{jargon_categories: {category_id: {_in: $categoryIDs}}}, {_not: {jargon_categories: {_and: []}}}]}, first: 40) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n      }\n    }\n  }\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n"
   }
 };
 })() `)

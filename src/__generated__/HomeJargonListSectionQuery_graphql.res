@@ -207,21 +207,44 @@ v4 = [
           {
             "fields": [
               {
-                "fields": [
+                "items": [
                   {
                     "fields": [
                       {
-                        "kind": "Variable",
-                        "name": "_in",
-                        "variableName": "categoryIDs"
+                        "fields": [
+                          {
+                            "fields": [
+                              {
+                                "kind": "Variable",
+                                "name": "_in",
+                                "variableName": "categoryIDs"
+                              }
+                            ],
+                            "kind": "ObjectValue",
+                            "name": "category_id"
+                          }
+                        ],
+                        "kind": "ObjectValue",
+                        "name": "jargon_categories"
                       }
                     ],
                     "kind": "ObjectValue",
-                    "name": "category_id"
+                    "name": "_or.0"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "_or.1",
+                    "value": {
+                      "_not": {
+                        "jargon_categories": {
+                          "_and": ([]/*: any*/)
+                        }
+                      }
+                    }
                   }
                 ],
-                "kind": "ObjectValue",
-                "name": "jargon_categories"
+                "kind": "ListValue",
+                "name": "_or"
               }
             ],
             "kind": "ObjectValue",
@@ -471,12 +494,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d47a5fe25abef6dc014f8ca6c80b68b8",
+    "cacheID": "954907e7167b3666733cf3c9b82188ee",
     "id": null,
     "metadata": {},
     "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $categoryIDs: [Int!]!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {jargon_categories: {category_id: {_in: $categoryIDs}}}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $categoryIDs: [Int!]!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {_or: [{jargon_categories: {category_id: {_in: $categoryIDs}}}, {_not: {jargon_categories: {_and: []}}}]}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })() `)
