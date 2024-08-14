@@ -422,6 +422,19 @@ type enum_RequiredFieldAction_input =
   | THROW
 
 
+@live @unboxed
+type enum_CatchFieldTo = 
+  | NULL
+  | RESULT
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_CatchFieldTo_input = 
+  | NULL
+  | RESULT
+
+
 @live
 type rec input_Boolean_comparison_exp = {
   _eq?: bool,

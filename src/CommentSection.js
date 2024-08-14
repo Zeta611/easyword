@@ -18,12 +18,17 @@ function useOpt(fRef) {
   return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, CommentSection_jargon_graphql.node, convertFragment);
 }
 
+function readResolverFragment(fRef) {
+  return RescriptRelay_Fragment.read(CommentSection_jargon_graphql.node, convertFragment, fRef);
+}
+
 var CommentFragment = {
   Types: undefined,
   Operation: undefined,
   convertFragment: convertFragment,
   use: use,
-  useOpt: useOpt
+  useOpt: useOpt,
+  readResolverFragment: readResolverFragment
 };
 
 function CommentSection(props) {

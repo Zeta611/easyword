@@ -18,12 +18,17 @@ function useOpt(fRef) {
   return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, JargonCard_jargon_graphql.node, convertFragment);
 }
 
+function readResolverFragment(fRef) {
+  return RescriptRelay_Fragment.read(JargonCard_jargon_graphql.node, convertFragment, fRef);
+}
+
 var JargonCardFragment = {
   Types: undefined,
   Operation: undefined,
   convertFragment: convertFragment,
   use: use,
-  useOpt: useOpt
+  useOpt: useOpt,
+  readResolverFragment: readResolverFragment
 };
 
 function badgify(text) {

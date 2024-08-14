@@ -21,6 +21,10 @@ function useOpt(fRef) {
   return RescriptRelay_Fragment.useFragmentOpt(fRef !== undefined ? Caml_option.some(Caml_option.valFromOption(fRef)) : undefined, JargonListOrderQuery_graphql.node, convertFragment);
 }
 
+function readResolverFragment(fRef) {
+  return RescriptRelay_Fragment.read(JargonListOrderQuery_graphql.node, convertFragment, fRef);
+}
+
 var makeRefetchVariables = JargonListOrderRefetchQuery_graphql.Types.makeRefetchVariables;
 
 var convertRefetchVariables = JargonListOrderRefetchQuery_graphql.Internal.convertVariables;
@@ -44,6 +48,7 @@ var JargonListOrderQuery = {
   convertFragment: convertFragment,
   use: use,
   useOpt: useOpt,
+  readResolverFragment: readResolverFragment,
   makeRefetchVariables: makeRefetchVariables,
   convertRefetchVariables: convertRefetchVariables,
   useRefetchable: useRefetchable,
