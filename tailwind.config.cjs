@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{res,js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{res,js,ts,jsx,tsx}"],
   theme: {
     extend: {},
     fontFamily: {
@@ -15,20 +12,24 @@ module.exports = {
         "BlinkMacSystemFont",
         "Helvetica Neue",
         "Arial",
-        "sans-serif"
+        "sans-serif",
       ],
       mono: [
-        "Fira Code",
-        "Nanum Gothic Coding",
+        // "Fira Code",
+        // "Nanum Gothic Coding",
         "SFMono-Regular",
         "Menlo",
         "Segoe UI",
         "Courier",
-        "monospace"
-      ]
+        "monospace",
+      ],
     },
   },
-  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+  ],
   daisyui: {
     themes: [
       "emerald",
@@ -41,4 +42,4 @@ module.exports = {
     ],
     darkTheme: "myForest",
   },
-}
+};
