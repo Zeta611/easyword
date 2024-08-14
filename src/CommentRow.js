@@ -3,14 +3,14 @@
 import * as React from "react";
 import * as Base64 from "./Base64.js";
 import * as $$Comment from "./Comment.js";
-import * as Core__Date from "../node_modules/@rescript/core/src/Core__Date.js";
-import * as Core__List from "../node_modules/@rescript/core/src/Core__List.js";
+import * as Core__Date from "@rescript/core/src/Core__Date.js";
+import * as Core__List from "@rescript/core/src/Core__List.js";
 import * as DateFormat from "./DateFormat.js";
-import * as Caml_module from "../node_modules/rescript/lib/es6/caml_module.js";
+import * as Caml_module from "rescript/lib/es6/caml_module.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as BetterReactMathjax from "better-react-mathjax";
-import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
+import * as RescriptRelay_Mutation from "rescript-relay/src/RescriptRelay_Mutation.js";
 import * as CommentRowMutation_graphql from "./__generated__/CommentRowMutation_graphql.js";
 import * as Outline from "@heroicons/react/24/outline";
 

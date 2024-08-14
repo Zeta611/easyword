@@ -2,10 +2,10 @@
 
 import * as Exc from "./Exc.js";
 import * as React from "react";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
-import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as Core__Option from "@rescript/core/src/Core__Option.js";
 import * as TokenContext from "./TokenContext.js";
-import * as RescriptRelay from "../node_modules/rescript-relay/src/RescriptRelay.js";
+import * as RescriptRelay from "rescript-relay/src/RescriptRelay.js";
 import * as RelayRuntime from "relay-runtime";
 import * as JsxRuntime from "react/jsx-runtime";
 

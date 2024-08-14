@@ -6,9 +6,9 @@ import * as React from "react";
 import * as Base64 from "./Base64.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
-import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
-import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptRelay_Query from "rescript-relay/src/RescriptRelay_Query.js";
+import * as RescriptRelay_Mutation from "rescript-relay/src/RescriptRelay_Mutation.js";
 import * as NewTranslationMutation_graphql from "./__generated__/NewTranslationMutation_graphql.js";
 import * as NewTranslationJargonQuery_graphql from "./__generated__/NewTranslationJargonQuery_graphql.js";
 

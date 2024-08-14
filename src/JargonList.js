@@ -2,9 +2,9 @@
 
 import * as Loader from "./Loader.js";
 import * as JargonCard from "./JargonCard.js";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptRelay_Fragment from "../node_modules/rescript-relay/src/RescriptRelay_Fragment.js";
+import * as RescriptRelay_Fragment from "rescript-relay/src/RescriptRelay_Fragment.js";
 import * as JargonListOrderQuery_graphql from "./__generated__/JargonListOrderQuery_graphql.js";
 import ReactInfiniteScrollComponent from "react-infinite-scroll-component";
 import * as JargonListOrderRefetchQuery_graphql from "./__generated__/JargonListOrderRefetchQuery_graphql.js";

@@ -2,14 +2,14 @@
 
 import * as React from "react";
 import * as Reactfire from "reactfire";
-import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
+import * as Core__Option from "@rescript/core/src/Core__Option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Auth from "firebase/auth";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as Caml_js_exceptions from "../node_modules/rescript/lib/es6/caml_js_exceptions.js";
+import * as Caml_js_exceptions from "rescript/lib/es6/caml_js_exceptions.js";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
-import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptRelay_Mutation from "rescript-relay/src/RescriptRelay_Mutation.js";
 import * as ProfileDisplayNameMutation_graphql from "./__generated__/ProfileDisplayNameMutation_graphql.js";
 
 var convertVariables = ProfileDisplayNameMutation_graphql.Internal.convertVariables;

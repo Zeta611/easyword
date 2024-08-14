@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
 
 function SignOut(props) {
   var auth = Reactfire.useAuth();

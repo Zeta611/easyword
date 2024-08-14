@@ -2,11 +2,11 @@
   "name": "eko",
   "version": "0.0.1",
   "sources": {
-    "dir" : "src",
-    "subdirs" : true
+    "dir": "src",
+    "subdirs": true
   },
   "package-specs": {
-    "module": "es6-global",
+    "module": "esmodule",
     "in-source": true
   },
   "suffix": ".js",
@@ -19,13 +19,8 @@
     "@glennsl/rescript-fetch"
   ],
   "warnings": {
-    "error" : "+101"
+    "error": "+101"
   },
   "bsc-flags": ["-open RescriptCore"],
-  "ppx-flags": [
-    [
-      "rescript-relay/ppx",
-      "-uncurried"
-    ]
-  ]
+  "ppx-flags": [["rescript-relay/ppx", "-uncurried"]]
 }

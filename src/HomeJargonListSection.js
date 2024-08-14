@@ -3,10 +3,10 @@
 import * as React from "react";
 import * as Loader from "./Loader.js";
 import * as JargonList from "./JargonList.js";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as JargonRandomList from "./JargonRandomList.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
+import * as RescriptRelay_Query from "rescript-relay/src/RescriptRelay_Query.js";
 import * as HomeJargonListSectionQuery_graphql from "./__generated__/HomeJargonListSectionQuery_graphql.js";
 
 var convertVariables = HomeJargonListSectionQuery_graphql.Internal.convertVariables;

@@ -4,7 +4,7 @@ import * as React from "react";
 import * as Base64 from "./Base64.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptRelay_Mutation from "../node_modules/rescript-relay/src/RescriptRelay_Mutation.js";
+import * as RescriptRelay_Mutation from "rescript-relay/src/RescriptRelay_Mutation.js";
 import * as CommentInputMutation_graphql from "./__generated__/CommentInputMutation_graphql.js";
 
 var convertVariables = CommentInputMutation_graphql.Internal.convertVariables;

@@ -2,7 +2,7 @@
 
 import * as JargonCard from "./JargonCard.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
+import * as RescriptRelay_Query from "rescript-relay/src/RescriptRelay_Query.js";
 import * as JargonRandomListOrderQuery_graphql from "./__generated__/JargonRandomListOrderQuery_graphql.js";
 
 var convertVariables = JargonRandomListOrderQuery_graphql.Internal.convertVariables;

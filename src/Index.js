@@ -3,7 +3,7 @@
 import * as App from "./App.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
-import * as PervasivesU from "../node_modules/rescript/lib/es6/pervasivesU.js";
+import * as PervasivesU from "rescript/lib/es6/pervasivesU.js";
 import * as Client from "react-dom/client";
 import * as JsxRuntime from "react/jsx-runtime";
 

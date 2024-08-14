@@ -7,7 +7,7 @@ import * as Loader from "./Loader.js";
 import * as Firebase from "./Firebase.js";
 import * as Reactfire from "reactfire";
 import * as Translator from "./Translator.js";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as RelayWrapper from "./RelayWrapper.js";
 import * as SignInWrapper from "./SignInWrapper.js";
 import * as Auth from "firebase/auth";
@@ -17,7 +17,7 @@ import * as NavbarContainer from "./NavbarContainer.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as AppCheck from "firebase/app-check";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
 import * as BetterReactMathjax from "better-react-mathjax";
 import * as ReactErrorBoundary from "react-error-boundary";
 

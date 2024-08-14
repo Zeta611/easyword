@@ -2,10 +2,10 @@
 
 import * as $$Comment from "./Comment.js";
 import * as CommentRow from "./CommentRow.js";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
-import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as Core__Option from "@rescript/core/src/Core__Option.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptRelay_Fragment from "../node_modules/rescript-relay/src/RescriptRelay_Fragment.js";
+import * as RescriptRelay_Fragment from "rescript-relay/src/RescriptRelay_Fragment.js";
 import * as CommentSection_jargon_graphql from "./__generated__/CommentSection_jargon_graphql.js";
 
 var convertFragment = CommentSection_jargon_graphql.Internal.convertFragment;

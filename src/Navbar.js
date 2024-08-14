@@ -3,13 +3,13 @@
 import * as Exc from "./Exc.js";
 import * as Hooks from "./Hooks.js";
 import * as React from "react";
-import * as Core__JSON from "../node_modules/@rescript/core/src/Core__JSON.js";
-import * as Caml_option from "../node_modules/rescript/lib/es6/caml_option.js";
-import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
+import * as Core__JSON from "@rescript/core/src/Core__JSON.js";
+import * as Caml_option from "rescript/lib/es6/caml_option.js";
+import * as Core__Option from "@rescript/core/src/Core__Option.js";
 import * as SignInContext from "./SignInContext.js";
 import * as Fa from "react-icons/fa";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Outline from "@heroicons/react/24/outline";
 

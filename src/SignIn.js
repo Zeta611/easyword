@@ -7,7 +7,7 @@ import * as Reactfire from "reactfire";
 import * as Auth from "firebase/auth";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as Firestore from "firebase/firestore";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
 import * as ReactSocialLoginButtons from "react-social-login-buttons";
 
 var uiConfig = {

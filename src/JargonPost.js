@@ -3,11 +3,11 @@
 import * as Exc from "./Exc.js";
 import * as Translation from "./Translation.js";
 import * as CommentInput from "./CommentInput.js";
-import * as Core__Option from "../node_modules/@rescript/core/src/Core__Option.js";
+import * as Core__Option from "@rescript/core/src/Core__Option.js";
 import * as CommentSection from "./CommentSection.js";
 import * as JsxRuntime from "react/jsx-runtime";
-import * as RescriptReactRouter from "../node_modules/@rescript/react/src/RescriptReactRouter.js";
-import * as RescriptRelay_Query from "../node_modules/rescript-relay/src/RescriptRelay_Query.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.js";
+import * as RescriptRelay_Query from "rescript-relay/src/RescriptRelay_Query.js";
 import * as JargonPostQuery_graphql from "./__generated__/JargonPostQuery_graphql.js";
 import * as Outline from "@heroicons/react/24/outline";
 
