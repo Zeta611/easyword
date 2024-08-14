@@ -38,70 +38,68 @@ let make = () => {
     switch firestore {
     | None => React.null
     | Some(firestore) =>
-      <MathJaxContext config=mathJaxConfig>
-        <AppCheckProvider sdk=appCheck>
-          <AuthProvider sdk=auth>
-            <FirestoreProvider sdk=firestore>
-              <SignInWrapper>
-                <RelayWrapper>
-                  <React.Suspense
-                    fallback={<div className="h-screen grid justify-center content-center">
-                      <Loader />
-                    </div>}>
-                    {
-                      open LazyComponents
-                      switch url.path {
-                      | list{"login"} => <SignIn />
-                      | list{"logout"} => <SignOut />
+      <AppCheckProvider sdk=appCheck>
+        <AuthProvider sdk=auth>
+          <FirestoreProvider sdk=firestore>
+            <SignInWrapper>
+              <RelayWrapper>
+                <React.Suspense
+                  fallback={<div className="h-screen grid justify-center content-center">
+                    <Loader />
+                  </div>}>
+                  {
+                    open LazyComponents
+                    switch url.path {
+                    | list{"login"} => <SignIn />
+                    | list{"logout"} => <SignOut />
 
-                      | path =>
-                        <NavbarContainer>
-                          {switch path {
-                          | list{} =>
-                            <ErrorBoundary
-                              fallbackRender={({error}) => {
-                                Console.error(error)
-                                React.null
-                              }}>
-                              <React.Suspense
-                                fallback={<div
-                                  className="h-screen grid justify-center content-center">
-                                  <Loader />
-                                </div>}>
-                                <Home />
-                              </React.Suspense>
-                            </ErrorBoundary>
-                          | list{"profile"} => <Profile />
-                          | list{"new-jargon"} => <NewJargon />
-                          | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                          | list{"edit-categories", jargonID} => <EditCategories jargonID />
-                          | list{"jargon", jargonID} =>
-                            <ErrorBoundary
-                              fallbackRender={_ => {
-                                <div className="text-3xl px-5 py-5">
-                                  {"앗! 404"->React.string}
-                                </div>
-                              }}>
+                    | path =>
+                      <NavbarContainer>
+                        {switch path {
+                        | list{} =>
+                          <ErrorBoundary
+                            fallbackRender={({error}) => {
+                              Console.error(error)
+                              React.null
+                            }}>
+                            <React.Suspense
+                              fallback={<div
+                                className="h-screen grid justify-center content-center">
+                                <Loader />
+                              </div>}>
+                              <Home />
+                            </React.Suspense>
+                          </ErrorBoundary>
+                        | list{"profile"} => <Profile />
+                        | list{"new-jargon"} => <NewJargon />
+                        | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                        | list{"edit-categories", jargonID} => <EditCategories jargonID />
+                        | list{"jargon", jargonID} =>
+                          <ErrorBoundary
+                            fallbackRender={_ => {
+                              <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
+                            }}>
+                            <MathJaxContext config=mathJaxConfig>
                               <JargonPost jargonID />
-                            </ErrorBoundary>
+                            </MathJaxContext>
+                          </ErrorBoundary>
 
-                          | list{"trans"} => <Translator />
-                          | list{"tips"} => <Tips />
-                          | list{"why"} => <Why />
-                          | list{"colophon"} => <Colophon />
+                        | list{"trans"} => <Translator />
+                        | list{"tips"} => <Tips />
+                        | list{"why"} => <Why />
+                        | list{"colophon"} => <Colophon />
 
-                          | _ => React.string("404")
-                          }}
-                        </NavbarContainer>
-                      }
+                        | _ => React.string("404")
+                        }}
+                      </NavbarContainer>
                     }
-                  </React.Suspense>
-                </RelayWrapper>
-              </SignInWrapper>
-            </FirestoreProvider>
-          </AuthProvider>
-        </AppCheckProvider>
-      </MathJaxContext>
+                  }
+                </React.Suspense>
+              </RelayWrapper>
+            </SignInWrapper>
+          </FirestoreProvider>
+        </AuthProvider>
+      </AppCheckProvider>
     }
   }
 }

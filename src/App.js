@@ -113,8 +113,11 @@ function App(props) {
         case "jargon" :
             var match$2 = path.tl;
             tmp$1 = match$2 && !match$2.tl ? JsxRuntime.jsx(ReactErrorBoundary.ErrorBoundary, {
-                    children: JsxRuntime.jsx(LazyComponents.JargonPost.make, {
-                          jargonID: match$2.hd
+                    children: JsxRuntime.jsx(BetterReactMathjax.MathJaxContext, {
+                          config: mathJaxConfig,
+                          children: JsxRuntime.jsx(LazyComponents.JargonPost.make, {
+                                jargonID: match$2.hd
+                              })
                         }),
                     fallbackRender: (function (param) {
                         return JsxRuntime.jsx("div", {
@@ -167,23 +170,20 @@ function App(props) {
           children: tmp$1
         });
   }
-  return JsxRuntime.jsx(BetterReactMathjax.MathJaxContext, {
-              config: mathJaxConfig,
-              children: JsxRuntime.jsx(Reactfire.AppCheckProvider, {
-                    sdk: appCheck,
-                    children: JsxRuntime.jsx(Reactfire.AuthProvider, {
-                          sdk: auth,
-                          children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
-                                sdk: Caml_option.valFromOption(firestore),
-                                children: JsxRuntime.jsx(SignInWrapper.make, {
-                                      children: JsxRuntime.jsx(RelayWrapper.make, {
-                                            children: JsxRuntime.jsx(React.Suspense, {
-                                                  children: Caml_option.some(tmp),
-                                                  fallback: Caml_option.some(JsxRuntime.jsx("div", {
-                                                            children: JsxRuntime.jsx(Loader.make, {}),
-                                                            className: "h-screen grid justify-center content-center"
-                                                          }))
-                                                })
+  return JsxRuntime.jsx(Reactfire.AppCheckProvider, {
+              sdk: appCheck,
+              children: JsxRuntime.jsx(Reactfire.AuthProvider, {
+                    sdk: auth,
+                    children: JsxRuntime.jsx(Reactfire.FirestoreProvider, {
+                          sdk: Caml_option.valFromOption(firestore),
+                          children: JsxRuntime.jsx(SignInWrapper.make, {
+                                children: JsxRuntime.jsx(RelayWrapper.make, {
+                                      children: JsxRuntime.jsx(React.Suspense, {
+                                            children: Caml_option.some(tmp),
+                                            fallback: Caml_option.some(JsxRuntime.jsx("div", {
+                                                      children: JsxRuntime.jsx(Loader.make, {}),
+                                                      className: "h-screen grid justify-center content-center"
+                                                    }))
                                           })
                                     })
                               })
