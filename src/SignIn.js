@@ -60,7 +60,7 @@ function SignIn(props) {
                         children: [
                           JsxRuntime.jsx("div", {
                                 children: "로그인",
-                                className: "text-3xl font-medium text-center"
+                                className: "text-3xl font-normal text-center"
                               }),
                           JsxRuntime.jsx(ReactSocialLoginButtons.GoogleLoginButton, {
                                 onClick: (function () {
