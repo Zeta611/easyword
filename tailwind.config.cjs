@@ -6,7 +6,7 @@ module.exports = {
     fontFamily: {
       sans: [
         "Inter",
-        "Spoqa Han Sans Neo",
+        "Noto Sans KR",
         "SF Pro Text",
         "-apple-system",
         "BlinkMacSystemFont",
@@ -14,15 +14,7 @@ module.exports = {
         "Arial",
         "sans-serif",
       ],
-      mono: [
-        // "Fira Code",
-        // "Nanum Gothic Coding",
-        "SFMono-Regular",
-        "Menlo",
-        "Segoe UI",
-        "Courier",
-        "monospace",
-      ],
+      mono: ["SFMono-Regular", "Menlo", "Segoe UI", "Courier", "monospace"],
     },
   },
   plugins: [
