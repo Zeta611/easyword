@@ -62,6 +62,8 @@ let make = () => {
     setCategoryIDs(_ => options->Array.map(({value}) => value))
   }
 
+  let (onlyWithoutTranslation, setOnlyWithoutTranslation) = React.useState(() => false)
+
   open Heroicons
   <div className="grid p-5 text-sm">
     <HideUs>
@@ -89,7 +91,7 @@ let make = () => {
           closeDropdown()
         }}>
         <div className="indicator">
-          {if categoryIDs->Array.length != categoryCnt {
+          {if categoryIDs->Array.length != categoryCnt || onlyWithoutTranslation {
             <span className="indicator-item badge badge-accent badge-xs" />
           } else {
             React.null
@@ -194,6 +196,16 @@ let make = () => {
           )
           ->React.array}
         </ul>
+        <div className="divider" />
+        <h3 className="font-bold text-lg flex gap-4 items-center">
+          {"번역 없는 용어만 보기"->React.string}
+          <input
+            type_="checkbox"
+            className="checkbox checkbox-primary checkbox-md"
+            checked={onlyWithoutTranslation}
+            onChange={_ => setOnlyWithoutTranslation(v => !v)}
+          />
+        </h3>
         <div className="modal-action">
           <form method="dialog">
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -212,7 +224,9 @@ let make = () => {
         setResetErrorBoundary(_ => Some(resetErrorBoundary))
         React.null
       }}>
-      <HomeJargonListSection searchTerm=debouncedSearchTerm categoryIDs axis direction />
+      <HomeJargonListSection
+        searchTerm=debouncedSearchTerm categoryIDs onlyWithoutTranslation axis direction
+      />
     </ErrorBoundary>
   </div>
 }

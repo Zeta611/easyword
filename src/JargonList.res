@@ -23,6 +23,7 @@ module JargonListOrderQuery = %relay(`
               { _not: { jargon_categories: { _and: [] } } }
             ]
           }
+          { _and: $onlyWithoutTranslationFilter }
         ]
       }
     ) @connection(key: "JargonListOrderQuery_jargon_connection") {

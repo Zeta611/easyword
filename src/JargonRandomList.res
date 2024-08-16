@@ -1,11 +1,20 @@
 module JargonRandomListOrderQuery = %relay(`
-  query JargonRandomListOrderQuery($seed: seed_float!, $categoryIDs: [Int!]!) {
+  query JargonRandomListOrderQuery(
+    $seed: seed_float!
+    $categoryIDs: [Int!]!
+    $onlyWithoutTranslationFilter: [jargon_bool_exp!]!
+  ) {
     list_jargon_random_connection(
       args: { seed: $seed }
       where: {
-        _or: [
-          { jargon_categories: { category_id: { _in: $categoryIDs } } }
-          { _not: { jargon_categories: { _and: [] } } }
+        _and: [
+          {
+            _or: [
+              { jargon_categories: { category_id: { _in: $categoryIDs } } }
+              { _not: { jargon_categories: { _and: [] } } }
+            ]
+          }
+          { _and: $onlyWithoutTranslationFilter }
         ]
       }
       first: 40
@@ -21,9 +30,21 @@ module JargonRandomListOrderQuery = %relay(`
 `)
 
 @react.component
-let make = (~seed, ~categoryIDs) => {
+let make = (~seed, ~categoryIDs, ~onlyWithoutTranslation) => {
   let {list_jargon_random_connection: {edges}} = JargonRandomListOrderQuery.use(
-    ~variables={seed: seed->Float.toString, categoryIDs},
+    ~variables={
+      seed: seed->Float.toString,
+      categoryIDs,
+      onlyWithoutTranslationFilter: if onlyWithoutTranslation {
+        [
+          {
+            _not: {translations: {}},
+          },
+        ]
+      } else {
+        []
+      },
+    },
   )
   let rows = edges->Array.map(({node}) => (node.id, node.fragmentRefs))
 

@@ -31,13 +31,49 @@ var fetchPromised = RescriptRelay_Query.fetchPromised(HomeJargonListSectionQuery
 
 var retain = RescriptRelay_Query.retain(HomeJargonListSectionQuery_graphql.node, convertVariables);
 
+var HomeJargonListSectionQuery_comment_select_column_decode = HomeJargonListSectionQuery_graphql.Utils.comment_select_column_decode;
+
+var HomeJargonListSectionQuery_comment_select_column_fromString = HomeJargonListSectionQuery_graphql.Utils.comment_select_column_fromString;
+
+var HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode = HomeJargonListSectionQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode;
+
+var HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString = HomeJargonListSectionQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString;
+
+var HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode = HomeJargonListSectionQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode;
+
+var HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString = HomeJargonListSectionQuery_graphql.Utils.comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString;
+
+var HomeJargonListSectionQuery_jargon_category_select_column_decode = HomeJargonListSectionQuery_graphql.Utils.jargon_category_select_column_decode;
+
+var HomeJargonListSectionQuery_jargon_category_select_column_fromString = HomeJargonListSectionQuery_graphql.Utils.jargon_category_select_column_fromString;
+
+var HomeJargonListSectionQuery_jargon_select_column_decode = HomeJargonListSectionQuery_graphql.Utils.jargon_select_column_decode;
+
+var HomeJargonListSectionQuery_jargon_select_column_fromString = HomeJargonListSectionQuery_graphql.Utils.jargon_select_column_fromString;
+
 var HomeJargonListSectionQuery_order_by_decode = HomeJargonListSectionQuery_graphql.Utils.order_by_decode;
 
 var HomeJargonListSectionQuery_order_by_fromString = HomeJargonListSectionQuery_graphql.Utils.order_by_fromString;
 
+var HomeJargonListSectionQuery_translation_select_column_decode = HomeJargonListSectionQuery_graphql.Utils.translation_select_column_decode;
+
+var HomeJargonListSectionQuery_translation_select_column_fromString = HomeJargonListSectionQuery_graphql.Utils.translation_select_column_fromString;
+
 var HomeJargonListSectionQuery = {
+  comment_select_column_decode: HomeJargonListSectionQuery_comment_select_column_decode,
+  comment_select_column_fromString: HomeJargonListSectionQuery_comment_select_column_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode: HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString: HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode: HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString: HomeJargonListSectionQuery_comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString,
+  jargon_category_select_column_decode: HomeJargonListSectionQuery_jargon_category_select_column_decode,
+  jargon_category_select_column_fromString: HomeJargonListSectionQuery_jargon_category_select_column_fromString,
+  jargon_select_column_decode: HomeJargonListSectionQuery_jargon_select_column_decode,
+  jargon_select_column_fromString: HomeJargonListSectionQuery_jargon_select_column_fromString,
   order_by_decode: HomeJargonListSectionQuery_order_by_decode,
   order_by_fromString: HomeJargonListSectionQuery_order_by_fromString,
+  translation_select_column_decode: HomeJargonListSectionQuery_translation_select_column_decode,
+  translation_select_column_fromString: HomeJargonListSectionQuery_translation_select_column_fromString,
   Operation: undefined,
   Types: undefined,
   convertVariables: convertVariables,
@@ -53,6 +89,7 @@ var HomeJargonListSectionQuery = {
 
 function HomeJargonListSection(props) {
   var axis = props.axis;
+  var onlyWithoutTranslation = props.onlyWithoutTranslation;
   var categoryIDs = props.categoryIDs;
   var searchTerm = props.searchTerm.replace(/\s+/g, "");
   var tmp;
@@ -76,6 +113,11 @@ function HomeJargonListSection(props) {
   var match = use({
         categoryIDs: categoryIDs,
         directions: tmp,
+        onlyWithoutTranslationFilter: onlyWithoutTranslation ? [{
+              _not: {
+                translations: {}
+              }
+            }] : [],
         searchTerm: searchTerm
       }, undefined, undefined, undefined);
   var query = match.fragmentRefs;
@@ -84,7 +126,8 @@ function HomeJargonListSection(props) {
           query: query
         }) : JsxRuntime.jsx(JargonRandomList.make, {
           seed: axis._0,
-          categoryIDs: categoryIDs
+          categoryIDs: categoryIDs,
+          onlyWithoutTranslation: onlyWithoutTranslation
         });
   return JsxRuntime.jsx(React.Suspense, {
               children: Caml_option.some(tmp$1),

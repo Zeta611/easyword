@@ -127,6 +127,11 @@ function Home(props) {
                     });
         });
   }
+  var match$7 = React.useState(function () {
+        return false;
+      });
+  var setOnlyWithoutTranslation = match$7[1];
+  var onlyWithoutTranslation = match$7[0];
   var tmp;
   tmp = typeof axis !== "object" ? (
       axis === "English" ? (
@@ -168,7 +173,7 @@ function Home(props) {
                         JsxRuntime.jsx("button", {
                               children: JsxRuntime.jsxs("div", {
                                     children: [
-                                      categoryIDs.length !== categoryCnt ? JsxRuntime.jsx("span", {
+                                      categoryIDs.length !== categoryCnt || onlyWithoutTranslation ? JsxRuntime.jsx("span", {
                                               className: "indicator-item badge badge-accent badge-xs"
                                             }) : null,
                                       JsxRuntime.jsx(Outline.FunnelIcon, {
@@ -342,6 +347,25 @@ function Home(props) {
                                       className: "py-2 flex flex-wrap"
                                     }),
                                 JsxRuntime.jsx("div", {
+                                      className: "divider"
+                                    }),
+                                JsxRuntime.jsxs("h3", {
+                                      children: [
+                                        "번역 없는 용어만 보기",
+                                        JsxRuntime.jsx("input", {
+                                              className: "checkbox checkbox-primary checkbox-md",
+                                              checked: onlyWithoutTranslation,
+                                              type: "checkbox",
+                                              onChange: (function (param) {
+                                                  setOnlyWithoutTranslation(function (v) {
+                                                        return !v;
+                                                      });
+                                                })
+                                            })
+                                      ],
+                                      className: "font-bold text-lg flex gap-4 items-center"
+                                    }),
+                                JsxRuntime.jsx("div", {
                                       children: JsxRuntime.jsx("form", {
                                             children: JsxRuntime.jsx("button", {
                                                   children: "✕",
@@ -369,6 +393,7 @@ function Home(props) {
                       children: JsxRuntime.jsx(HomeJargonListSection.make, {
                             searchTerm: debouncedSearchTerm,
                             categoryIDs: categoryIDs,
+                            onlyWithoutTranslation: onlyWithoutTranslation,
                             axis: axis,
                             direction: direction
                           }),

@@ -5,10 +5,11 @@ import * as Caml_option from "rescript/lib/es6/caml_option.js";
 import * as ReactRelay from "react-relay";
 import * as RescriptRelay from "rescript-relay/src/RescriptRelay.js";
 
-function makeRefetchVariables(categoryIDs, directions, searchTerm) {
+function makeRefetchVariables(categoryIDs, directions, onlyWithoutTranslationFilter, searchTerm) {
   return {
           categoryIDs: categoryIDs,
           directions: directions,
+          onlyWithoutTranslationFilter: onlyWithoutTranslationFilter,
           searchTerm: searchTerm
         };
 }
@@ -17,7 +18,7 @@ var Types = {
   makeRefetchVariables: makeRefetchVariables
 };
 
-var variablesConverter = {"jargon_category_aggregate_order_by":{"variance":{"r":"jargon_category_variance_order_by"},"var_samp":{"r":"jargon_category_var_samp_order_by"},"var_pop":{"r":"jargon_category_var_pop_order_by"},"sum":{"r":"jargon_category_sum_order_by"},"stddev_samp":{"r":"jargon_category_stddev_samp_order_by"},"stddev_pop":{"r":"jargon_category_stddev_pop_order_by"},"stddev":{"r":"jargon_category_stddev_order_by"},"min":{"r":"jargon_category_min_order_by"},"max":{"r":"jargon_category_max_order_by"},"avg":{"r":"jargon_category_avg_order_by"}},"jargon_category_variance_order_by":{},"translation_max_order_by":{},"comment_aggregate_order_by":{"min":{"r":"comment_min_order_by"},"max":{"r":"comment_max_order_by"}},"translation_min_order_by":{},"jargon_category_stddev_samp_order_by":{},"jargon_category_var_pop_order_by":{},"jargon_max_order_by":{},"translation_aggregate_order_by":{"min":{"r":"translation_min_order_by"},"max":{"r":"translation_max_order_by"}},"jargon_category_sum_order_by":{},"user_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargons_aggregate":{"r":"jargon_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"}},"comment_max_order_by":{},"jargon_category_min_order_by":{},"jargon_category_stddev_order_by":{},"jargon_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"},"author":{"r":"user_order_by"}},"jargon_aggregate_order_by":{"min":{"r":"jargon_min_order_by"},"max":{"r":"jargon_max_order_by"}},"jargon_category_var_samp_order_by":{},"jargon_category_avg_order_by":{},"comment_min_order_by":{},"jargon_category_max_order_by":{},"jargon_category_stddev_pop_order_by":{},"jargon_min_order_by":{},"__root":{"directions":{"r":"jargon_order_by"}}};
+var variablesConverter = {"jargon_min_order_by":{},"jargon_category_aggregate_order_by":{"variance":{"r":"jargon_category_variance_order_by"},"var_samp":{"r":"jargon_category_var_samp_order_by"},"var_pop":{"r":"jargon_category_var_pop_order_by"},"sum":{"r":"jargon_category_sum_order_by"},"stddev_samp":{"r":"jargon_category_stddev_samp_order_by"},"stddev_pop":{"r":"jargon_category_stddev_pop_order_by"},"stddev":{"r":"jargon_category_stddev_order_by"},"min":{"r":"jargon_category_min_order_by"},"max":{"r":"jargon_category_max_order_by"},"avg":{"r":"jargon_category_avg_order_by"}},"jargon_category_variance_order_by":{},"jargon_category_var_pop_order_by":{},"comment_aggregate_bool_exp_bool_or":{"predicate":{"r":"boolean_comparison_exp"},"filter":{"r":"comment_bool_exp"}},"category_bool_exp":{"name":{"r":"string_comparison_exp"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_bool_exp"},"jargon_categories":{"r":"jargon_category_bool_exp"},"id":{"r":"int_comparison_exp"},"acronym":{"r":"string_comparison_exp"},"_or":{"r":"category_bool_exp"},"_not":{"r":"category_bool_exp"},"_and":{"r":"category_bool_exp"}},"timestamptz_comparison_exp":{"_nin":{"b":"a"},"_neq":{"b":""},"_lte":{"b":""},"_lt":{"b":""},"_in":{"b":"a"},"_gte":{"b":""},"_gt":{"b":""},"_eq":{"b":""}},"jargon_category_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"jargon_category_bool_exp"}},"user_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargons_aggregate":{"r":"jargon_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"}},"jargon_category_aggregate_bool_exp":{"count":{"r":"jargon_category_aggregate_bool_exp_count"}},"comment_max_order_by":{},"jargon_category_stddev_order_by":{},"jargon_order_by":{"translations_aggregate":{"r":"translation_aggregate_order_by"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_order_by"},"comments_aggregate":{"r":"comment_aggregate_order_by"},"author":{"r":"user_order_by"}},"uuid_comparison_exp":{"_nin":{"b":"a"},"_neq":{"b":""},"_lte":{"b":""},"_lt":{"b":""},"_in":{"b":"a"},"_gte":{"b":""},"_gt":{"b":""},"_eq":{"b":""}},"comment_bool_exp":{"updated_at":{"r":"timestamptz_comparison_exp"},"translation_id":{"r":"uuid_comparison_exp"},"translation":{"r":"translation_bool_exp"},"removed":{"r":"boolean_comparison_exp"},"parent_id":{"r":"uuid_comparison_exp"},"parent":{"r":"comment_bool_exp"},"jargon_id":{"r":"uuid_comparison_exp"},"jargon":{"r":"jargon_bool_exp"},"id":{"r":"uuid_comparison_exp"},"created_at":{"r":"timestamptz_comparison_exp"},"content":{"r":"string_comparison_exp"},"children_aggregate":{"r":"comment_aggregate_bool_exp"},"children":{"r":"comment_bool_exp"},"author_id":{"r":"string_comparison_exp"},"author":{"r":"user_bool_exp"},"_or":{"r":"comment_bool_exp"},"_not":{"r":"comment_bool_exp"},"_and":{"r":"comment_bool_exp"}},"jargon_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"jargon_bool_exp"}},"jargon_category_var_samp_order_by":{},"comment_min_order_by":{},"string_comparison_exp":{},"int_comparison_exp":{},"comment_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"comment_bool_exp"}},"comment_aggregate_order_by":{"min":{"r":"comment_min_order_by"},"max":{"r":"comment_max_order_by"}},"translation_max_order_by":{},"translation_min_order_by":{},"jargon_category_stddev_samp_order_by":{},"jargon_category_bool_exp":{"jargon_id":{"r":"uuid_comparison_exp"},"jargon":{"r":"jargon_bool_exp"},"category_id":{"r":"int_comparison_exp"},"category":{"r":"category_bool_exp"},"_or":{"r":"jargon_category_bool_exp"},"_not":{"r":"jargon_category_bool_exp"},"_and":{"r":"jargon_category_bool_exp"}},"translation_aggregate_order_by":{"min":{"r":"translation_min_order_by"},"max":{"r":"translation_max_order_by"}},"jargon_max_order_by":{},"comment_aggregate_bool_exp":{"count":{"r":"comment_aggregate_bool_exp_count"},"bool_or":{"r":"comment_aggregate_bool_exp_bool_or"},"bool_and":{"r":"comment_aggregate_bool_exp_bool_and"}},"jargon_category_sum_order_by":{},"translation_bool_exp":{"updated_at":{"r":"timestamptz_comparison_exp"},"name_lower_no_spaces":{"r":"string_comparison_exp"},"name":{"r":"string_comparison_exp"},"jargon_id":{"r":"uuid_comparison_exp"},"jargon":{"r":"jargon_bool_exp"},"id":{"r":"uuid_comparison_exp"},"created_at":{"r":"timestamptz_comparison_exp"},"comment_id":{"r":"uuid_comparison_exp"},"comment":{"r":"comment_bool_exp"},"author_id":{"r":"string_comparison_exp"},"author":{"r":"user_bool_exp"},"_or":{"r":"translation_bool_exp"},"_not":{"r":"translation_bool_exp"},"_and":{"r":"translation_bool_exp"}},"translation_aggregate_bool_exp_count":{"predicate":{"r":"int_comparison_exp"},"filter":{"r":"translation_bool_exp"}},"jargon_category_min_order_by":{},"user_bool_exp":{"translations_aggregate":{"r":"translation_aggregate_bool_exp"},"translations":{"r":"translation_bool_exp"},"photo_url":{"r":"string_comparison_exp"},"last_seen":{"r":"timestamptz_comparison_exp"},"jargons_aggregate":{"r":"jargon_aggregate_bool_exp"},"jargons":{"r":"jargon_bool_exp"},"id":{"r":"string_comparison_exp"},"email":{"r":"string_comparison_exp"},"display_name":{"r":"string_comparison_exp"},"comments_aggregate":{"r":"comment_aggregate_bool_exp"},"comments":{"r":"comment_bool_exp"},"_or":{"r":"user_bool_exp"},"_not":{"r":"user_bool_exp"},"_and":{"r":"user_bool_exp"}},"boolean_comparison_exp":{},"translation_aggregate_bool_exp":{"count":{"r":"translation_aggregate_bool_exp_count"}},"jargon_aggregate_bool_exp":{"count":{"r":"jargon_aggregate_bool_exp_count"}},"jargon_aggregate_order_by":{"min":{"r":"jargon_min_order_by"},"max":{"r":"jargon_max_order_by"}},"jargon_category_avg_order_by":{},"jargon_category_stddev_pop_order_by":{},"jargon_bool_exp":{"updated_at":{"r":"timestamptz_comparison_exp"},"translations_aggregate":{"r":"translation_aggregate_bool_exp"},"translations":{"r":"translation_bool_exp"},"name_lower_no_spaces":{"r":"string_comparison_exp"},"name_lower":{"r":"string_comparison_exp"},"name":{"r":"string_comparison_exp"},"jargon_categories_aggregate":{"r":"jargon_category_aggregate_bool_exp"},"jargon_categories":{"r":"jargon_category_bool_exp"},"id":{"r":"uuid_comparison_exp"},"created_at":{"r":"timestamptz_comparison_exp"},"comments_aggregate":{"r":"comment_aggregate_bool_exp"},"comments":{"r":"comment_bool_exp"},"author_id":{"r":"string_comparison_exp"},"author":{"r":"user_bool_exp"},"_or":{"r":"jargon_bool_exp"},"_not":{"r":"jargon_bool_exp"},"_and":{"r":"jargon_bool_exp"}},"jargon_category_max_order_by":{},"comment_aggregate_bool_exp_bool_and":{"predicate":{"r":"boolean_comparison_exp"},"filter":{"r":"comment_bool_exp"}},"__root":{"onlyWithoutTranslationFilter":{"r":"jargon_bool_exp"},"directions":{"r":"jargon_order_by"}}};
 
 function convertVariables(v) {
   return RescriptRelay.convertObj(v, variablesConverter, undefined, undefined);
@@ -49,6 +50,61 @@ var Internal = {
   convertRawResponse: convertResponse
 };
 
+function comment_select_column_decode($$enum) {
+  if ($$enum === "translation_id" || $$enum === "removed" || $$enum === "parent_id" || $$enum === "jargon_id" || $$enum === "id" || $$enum === "created_at" || $$enum === "content" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function comment_select_column_fromString(str) {
+  return comment_select_column_decode(str);
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode($$enum) {
+  if ($$enum === "removed") {
+    return $$enum;
+  }
+  
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString(str) {
+  return comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode(str);
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode($$enum) {
+  if ($$enum === "removed") {
+    return $$enum;
+  }
+  
+}
+
+function comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString(str) {
+  return comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode(str);
+}
+
+function jargon_category_select_column_decode($$enum) {
+  if ($$enum === "category_id" || $$enum === "jargon_id") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_category_select_column_fromString(str) {
+  return jargon_category_select_column_decode(str);
+}
+
+function jargon_select_column_decode($$enum) {
+  if ($$enum === "name" || $$enum === "id" || $$enum === "created_at" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function jargon_select_column_fromString(str) {
+  return jargon_select_column_decode(str);
+}
+
 function order_by_decode($$enum) {
   if ($$enum === "desc_nulls_first" || $$enum === "desc" || $$enum === "asc_nulls_last" || $$enum === "asc_nulls_first" || $$enum === "asc" || $$enum === "desc_nulls_last") {
     return $$enum;
@@ -60,9 +116,32 @@ function order_by_fromString(str) {
   return order_by_decode(str);
 }
 
+function translation_select_column_decode($$enum) {
+  if ($$enum === "name" || $$enum === "jargon_id" || $$enum === "id" || $$enum === "created_at" || $$enum === "comment_id" || $$enum === "author_id" || $$enum === "updated_at") {
+    return $$enum;
+  }
+  
+}
+
+function translation_select_column_fromString(str) {
+  return translation_select_column_decode(str);
+}
+
 var Utils = {
+  comment_select_column_decode: comment_select_column_decode,
+  comment_select_column_fromString: comment_select_column_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode: comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString: comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns_fromString,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode: comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_decode,
+  comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString: comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns_fromString,
+  jargon_category_select_column_decode: jargon_category_select_column_decode,
+  jargon_category_select_column_fromString: jargon_category_select_column_fromString,
+  jargon_select_column_decode: jargon_select_column_decode,
+  jargon_select_column_fromString: jargon_select_column_fromString,
   order_by_decode: order_by_decode,
-  order_by_fromString: order_by_fromString
+  order_by_fromString: order_by_fromString,
+  translation_select_column_decode: translation_select_column_decode,
+  translation_select_column_fromString: translation_select_column_fromString
 };
 
 var node = ((function(){
@@ -79,9 +158,14 @@ v1 = {
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
+  "name": "onlyWithoutTranslationFilter"
+},
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
   "name": "searchTerm"
 },
-v3 = [
+v4 = [
   {
     "fields": [
       {
@@ -94,7 +178,7 @@ v3 = [
     "name": "name_lower_no_spaces"
   }
 ],
-v4 = [
+v5 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -114,14 +198,14 @@ v4 = [
               {
                 "items": [
                   {
-                    "fields": (v3/*: any*/),
+                    "fields": (v4/*: any*/),
                     "kind": "ObjectValue",
                     "name": "_or.0"
                   },
                   {
                     "fields": [
                       {
-                        "fields": (v3/*: any*/),
+                        "fields": (v4/*: any*/),
                         "kind": "ObjectValue",
                         "name": "translations"
                       }
@@ -182,6 +266,17 @@ v4 = [
             ],
             "kind": "ObjectValue",
             "name": "_and.1"
+          },
+          {
+            "fields": [
+              {
+                "kind": "Variable",
+                "name": "_and",
+                "variableName": "onlyWithoutTranslationFilter"
+              }
+            ],
+            "kind": "ObjectValue",
+            "name": "_and.2"
           }
         ],
         "kind": "ListValue",
@@ -192,21 +287,21 @@ v4 = [
     "name": "where"
   }
 ],
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "name": "asc"
 };
 return {
@@ -214,7 +309,8 @@ return {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/)
+      (v2/*: any*/),
+      (v3/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -232,8 +328,9 @@ return {
   "kind": "Request",
   "operation": {
     "argumentDefinitions": [
-      (v2/*: any*/),
+      (v3/*: any*/),
       (v0/*: any*/),
+      (v2/*: any*/),
       (v1/*: any*/)
     ],
     "kind": "Operation",
@@ -241,7 +338,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v5/*: any*/),
         "concreteType": "jargonConnection",
         "kind": "LinkedField",
         "name": "jargon_connection",
@@ -263,8 +360,8 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/),
                   (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -279,7 +376,7 @@ return {
                         "kind": "Literal",
                         "name": "order_by",
                         "value": {
-                          "category": (v7/*: any*/)
+                          "category": (v8/*: any*/)
                         }
                       }
                     ],
@@ -303,11 +400,11 @@ return {
                             "name": "acronym",
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v5/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
                   },
@@ -322,7 +419,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "order_by",
-                        "value": (v7/*: any*/)
+                        "value": (v8/*: any*/)
                       }
                     ],
                     "concreteType": "translation",
@@ -330,8 +427,8 @@ return {
                     "name": "translations",
                     "plural": true,
                     "selections": [
-                      (v5/*: any*/),
-                      (v6/*: any*/)
+                      (v6/*: any*/),
+                      (v7/*: any*/)
                     ],
                     "storageKey": "translations(limit:20,order_by:{\"name\":\"asc\"})"
                   },
@@ -414,7 +511,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v5/*: any*/),
         "filters": [
           "order_by",
           "where"
@@ -427,12 +524,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "954907e7167b3666733cf3c9b82188ee",
+    "cacheID": "3d1b6e436e572f8f033efebbf301895d",
     "id": null,
     "metadata": {},
     "name": "HomeJargonListSectionQuery",
     "operationKind": "query",
-    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $categoryIDs: [Int!]!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {_or: [{jargon_categories: {category_id: {_in: $categoryIDs}}}, {_not: {jargon_categories: {_and: []}}}]}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query HomeJargonListSectionQuery(\n  $searchTerm: String!\n  $categoryIDs: [Int!]!\n  $onlyWithoutTranslationFilter: [jargon_bool_exp!]!\n  $directions: [jargon_order_by!]!\n) {\n  ...JargonListOrderQuery\n}\n\nfragment JargonCard_jargon on jargon {\n  id\n  name\n  updated_at\n  jargon_categories(order_by: {category: {name: asc}}) {\n    category {\n      acronym\n      id\n    }\n    id\n  }\n  translations(order_by: {name: asc}, limit: 20) {\n    id\n    name\n  }\n  comments_aggregate {\n    aggregate {\n      count\n    }\n  }\n}\n\nfragment JargonListOrderQuery on query_root {\n  jargon_connection(order_by: $directions, first: 40, where: {_and: [{_or: [{name_lower_no_spaces: {_iregex: $searchTerm}}, {translations: {name_lower_no_spaces: {_iregex: $searchTerm}}}]}, {_or: [{jargon_categories: {category_id: {_in: $categoryIDs}}}, {_not: {jargon_categories: {_and: []}}}]}, {_and: $onlyWithoutTranslationFilter}]}) {\n    edges {\n      node {\n        id\n        ...JargonCard_jargon\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })());
