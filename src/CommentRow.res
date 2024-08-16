@@ -109,7 +109,9 @@ module rec CommentNode: {
         </div>
         // comment
         <div className="pl-3 text-base-content">
-          <MathJax> {comment.content->React.string} </MathJax>
+          <MathJax>
+            <NewlineText text={comment.content} />
+          </MathJax>
         </div>
         // footer
         <button

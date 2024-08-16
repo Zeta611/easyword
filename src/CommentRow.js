@@ -7,6 +7,7 @@ import * as Core__Date from "@rescript/core/src/Core__Date.js";
 import * as Core__List from "@rescript/core/src/Core__List.js";
 import * as DateFormat from "./DateFormat.js";
 import * as Caml_module from "rescript/lib/es6/caml_module.js";
+import * as NewlineText from "./NewlineText.js";
 import * as SignInContext from "./SignInContext.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as BetterReactMathjax from "better-react-mathjax";
@@ -48,7 +49,7 @@ var CommentNode = Caml_module.init_mod([
 
 var CommentSiblings = Caml_module.init_mod([
       "CommentRow.res",
-      173,
+      175,
       4
     ], {
       TAG: "Module",
@@ -153,7 +154,9 @@ function CommentRow$CommentNode(props) {
                             }),
                         JsxRuntime.jsx("div", {
                               children: JsxRuntime.jsx(BetterReactMathjax.MathJax, {
-                                    children: comment.content
+                                    children: JsxRuntime.jsx(NewlineText.make, {
+                                          text: comment.content
+                                        })
                                   }),
                               className: "pl-3 text-base-content"
                             }),
