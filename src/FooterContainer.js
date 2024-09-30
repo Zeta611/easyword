@@ -12,7 +12,7 @@ function FooterContainer(props) {
                               children: JsxRuntime.jsx("img", {
                                     className: "object-contain h-10",
                                     alt: "KIISE",
-                                    src: "/assets/kiise.png"
+                                    src: "./assets/kiise.png"
                                   }),
                               href: "https://kiise.or.kr",
                               rel: "noreferrer noopener",
