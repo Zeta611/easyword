@@ -99,7 +99,7 @@ let make = () => {
                 closeMenu()
               }}>
               <Heroicons.Outline.LanguageIcon className="h-4 w-4" />
-              {"번역기"->React.string}
+              {"자동번역"->React.string}
             </button>
           </li>
           <li>
@@ -165,7 +165,7 @@ let make = () => {
             }}>
             <div className="grid justify-items-center">
               <Heroicons.Outline.LanguageIcon className="h-5 w-5" />
-              {"번역기"->React.string}
+              {"자동번역"->React.string}
             </div>
           </button>
         </li>

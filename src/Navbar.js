@@ -115,7 +115,7 @@ function Navbar(props) {
                                                       JsxRuntime.jsx(Outline.LanguageIcon, {
                                                             className: "h-4 w-4"
                                                           }),
-                                                      "번역기"
+                                                      "자동번역"
                                                     ],
                                                     onClick: (function (param) {
                                                         RescriptReactRouter.push("/trans");
@@ -236,7 +236,7 @@ function Navbar(props) {
                                                   JsxRuntime.jsx(Outline.LanguageIcon, {
                                                         className: "h-5 w-5"
                                                       }),
-                                                  "번역기"
+                                                  "자동번역"
                                                 ],
                                                 className: "grid justify-items-center"
                                               }),
