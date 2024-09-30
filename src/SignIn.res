@@ -65,7 +65,7 @@ let make = () => {
     | None | Some({signedIn: true}) => React.null
     | Some({signedIn: false}) =>
       <div
-        className="h-screen bg-cover bg-center bg-[url('/assets/layered-waves.svg')] justify-self-stretch grid justify-center content-center">
+        className="h-screen bg-cover bg-center bg-[url('/layered-waves.svg')] justify-self-stretch grid justify-center content-center">
         <div
           className="h-96 w-96 place-content-center bg-zinc-50 bg-opacity-30 backdrop-blur-lg drop-shadow-lg rounded-xl grid content-center gap-3 text-zinc-800 dark:text-zinc-50">
           <div className="text-3xl font-normal text-center"> {React.string(`로그인`)} </div>
