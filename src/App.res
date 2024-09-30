@@ -55,42 +55,46 @@ let make = () => {
 
                     | path =>
                       <NavbarContainer>
-                        {switch path {
-                        | list{} =>
-                          <ErrorBoundary
-                            fallbackRender={({error}) => {
-                              Console.error(error)
-                              React.null
-                            }}>
-                            <React.Suspense
-                              fallback={<div
-                                className="h-screen grid justify-center content-center">
-                                <Loader />
-                              </div>}>
-                              <Home />
-                            </React.Suspense>
-                          </ErrorBoundary>
-                        | list{"profile"} => <Profile />
-                        | list{"new-jargon"} => <NewJargon />
-                        | list{"new-translation", jargonID} => <NewTranslation jargonID />
-                        | list{"edit-categories", jargonID} => <EditCategories jargonID />
-                        | list{"jargon", jargonID} =>
-                          <ErrorBoundary
-                            fallbackRender={_ => {
-                              <div className="text-3xl px-5 py-5"> {"앗! 404"->React.string} </div>
-                            }}>
-                            <MathJaxContext config=mathJaxConfig>
-                              <JargonPost jargonID />
-                            </MathJaxContext>
-                          </ErrorBoundary>
+                        <FooterContainer>
+                          {switch path {
+                          | list{} =>
+                            <ErrorBoundary
+                              fallbackRender={({error}) => {
+                                Console.error(error)
+                                React.null
+                              }}>
+                              <React.Suspense
+                                fallback={<div
+                                  className="h-screen grid justify-center content-center">
+                                  <Loader />
+                                </div>}>
+                                <Home />
+                              </React.Suspense>
+                            </ErrorBoundary>
+                          | list{"profile"} => <Profile />
+                          | list{"new-jargon"} => <NewJargon />
+                          | list{"new-translation", jargonID} => <NewTranslation jargonID />
+                          | list{"edit-categories", jargonID} => <EditCategories jargonID />
+                          | list{"jargon", jargonID} =>
+                            <ErrorBoundary
+                              fallbackRender={_ => {
+                                <div className="text-3xl px-5 py-5">
+                                  {"앗! 404"->React.string}
+                                </div>
+                              }}>
+                              <MathJaxContext config=mathJaxConfig>
+                                <JargonPost jargonID />
+                              </MathJaxContext>
+                            </ErrorBoundary>
 
-                        | list{"trans"} => <Translator />
-                        | list{"tips"} => <Tips />
-                        | list{"why"} => <Why />
-                        | list{"colophon"} => <Colophon />
+                          | list{"trans"} => <Translator />
+                          | list{"tips"} => <Tips />
+                          | list{"why"} => <Why />
+                          | list{"colophon"} => <Colophon />
 
-                        | _ => React.string("404")
-                        }}
+                          | _ => React.string("404")
+                          }}
+                        </FooterContainer>
                       </NavbarContainer>
                     }
                   }

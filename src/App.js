@@ -13,6 +13,7 @@ import * as SignInWrapper from "./SignInWrapper.js";
 import * as Auth from "firebase/auth";
 import * as EditCategories from "./EditCategories.js";
 import * as LazyComponents from "./LazyComponents.js";
+import * as FooterContainer from "./FooterContainer.js";
 import * as NavbarContainer from "./NavbarContainer.js";
 import * as JsxRuntime from "react/jsx-runtime";
 import * as AppCheck from "firebase/app-check";
@@ -167,7 +168,9 @@ function App(props) {
           });
     }
     tmp = JsxRuntime.jsx(NavbarContainer.make, {
-          children: tmp$1
+          children: JsxRuntime.jsx(FooterContainer.make, {
+                children: tmp$1
+              })
         });
   }
   return JsxRuntime.jsx(Reactfire.AppCheckProvider, {
