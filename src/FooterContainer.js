@@ -22,7 +22,7 @@ function FooterContainer(props) {
                               target: "_blank"
                             }),
                         JsxRuntime.jsx("p", {
-                              children: "정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다.",
+                              children: "한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다.",
                               className: "align-middle"
                             })
                       ],

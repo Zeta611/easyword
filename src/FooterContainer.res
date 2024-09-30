@@ -7,7 +7,7 @@ let make = (~children: React.element) => {
         <img className="object-contain h-10" src="/kiise.png" alt="KIISE" />
       </a>
       <p className="align-middle">
-        {"정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다."->React.string}
+        {"한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다."->React.string}
       </p>
     </footer>
   </div>
