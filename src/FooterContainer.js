@@ -5,7 +5,10 @@ import * as JsxRuntime from "react/jsx-runtime";
 function FooterContainer(props) {
   return JsxRuntime.jsxs("div", {
               children: [
-                props.children,
+                JsxRuntime.jsx("div", {
+                      children: props.children,
+                      className: "flex-grow"
+                    }),
                 JsxRuntime.jsxs("footer", {
                       children: [
                         JsxRuntime.jsx("a", {
@@ -25,7 +28,8 @@ function FooterContainer(props) {
                       ],
                       className: "footer bg-base-300 text-base-content p-4 gap-1 items-center"
                     })
-              ]
+              ],
+              className: "flex flex-col min-h-screen"
             });
 }
 
