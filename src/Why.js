@@ -52,16 +52,19 @@ function Why(props) {
                   JsxRuntime.jsx("h1", {
                         children: "쉬운 전문용어"
                       }),
-                  JsxRuntime.jsxs("div", {
-                        children: [
-                          JsxRuntime.jsx("span", {
-                                children: "한국정보과학회 쉬운전문용어 제정위원회 위원장"
-                              }),
-                          JsxRuntime.jsx("a", {
-                                children: "서울대학교 컴퓨터공학부 이광근",
-                                href: "http://kwangkeunyi.snu.ac.kr"
-                              })
-                        ],
+                  JsxRuntime.jsx("div", {
+                        children: JsxRuntime.jsxs("a", {
+                              children: [
+                                JsxRuntime.jsx("span", {
+                                      children: "한국정보과학회 쉬운전문용어 제정위원회"
+                                    }),
+                                JsxRuntime.jsx("br", {}),
+                                JsxRuntime.jsx("span", {
+                                      children: "서울대학교 컴퓨터공학부 이광근"
+                                    })
+                              ],
+                              href: "http://kwangkeunyi.snu.ac.kr"
+                            }),
                         className: "flex flex-col text-right text-sm"
                       }),
                   JsxRuntime.jsx("div", {
