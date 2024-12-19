@@ -22,5 +22,5 @@
     "error": "+101"
   },
   "bsc-flags": ["-open RescriptCore"],
-  "ppx-flags": [["rescript-relay/ppx", "-uncurried"]]
+  "ppx-flags": ["rescript-relay/ppx"]
 }

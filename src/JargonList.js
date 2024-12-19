@@ -13,6 +13,10 @@ var getConnectionNodes = JargonListOrderQuery_graphql.Utils.getConnectionNodes;
 
 var convertFragment = JargonListOrderQuery_graphql.Internal.convertFragment;
 
+function waitForFragmentData(environment, fRef) {
+  return RescriptRelay_Fragment.waitForFragmentData(environment, JargonListOrderQuery_graphql.node, convertFragment, fRef);
+}
+
 function use(fRef) {
   return RescriptRelay_Fragment.useFragment(JargonListOrderQuery_graphql.node, convertFragment, fRef);
 }
@@ -46,6 +50,7 @@ var JargonListOrderQuery = {
   Types: undefined,
   Operation: undefined,
   convertFragment: convertFragment,
+  waitForFragmentData: waitForFragmentData,
   use: use,
   useOpt: useOpt,
   readResolverFragment: readResolverFragment,

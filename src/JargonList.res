@@ -57,7 +57,7 @@ let make = (~query) => {
   <InfiniteScroll
     className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-2 pb-10"
     dataLength={rows->Array.length}
-    next={() => loadNext(~count=40)->ignore}
+    next={() => loadNext(~count=40)->RescriptRelay.Disposable.ignore}
     hasMore
     loader={<div className="grid justify-center content-center">
       <Loader />

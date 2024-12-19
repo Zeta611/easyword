@@ -10,6 +10,10 @@ import * as CommentSection_jargon_graphql from "./__generated__/CommentSection_j
 
 var convertFragment = CommentSection_jargon_graphql.Internal.convertFragment;
 
+function waitForFragmentData(environment, fRef) {
+  return RescriptRelay_Fragment.waitForFragmentData(environment, CommentSection_jargon_graphql.node, convertFragment, fRef);
+}
+
 function use(fRef) {
   return RescriptRelay_Fragment.useFragment(CommentSection_jargon_graphql.node, convertFragment, fRef);
 }
@@ -26,6 +30,7 @@ var CommentFragment = {
   Types: undefined,
   Operation: undefined,
   convertFragment: convertFragment,
+  waitForFragmentData: waitForFragmentData,
   use: use,
   useOpt: useOpt,
   readResolverFragment: readResolverFragment

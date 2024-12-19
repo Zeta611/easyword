@@ -8,6 +8,10 @@ import * as Translation_jargon_graphql from "./__generated__/Translation_jargon_
 
 var convertFragment = Translation_jargon_graphql.Internal.convertFragment;
 
+function waitForFragmentData(environment, fRef) {
+  return RescriptRelay_Fragment.waitForFragmentData(environment, Translation_jargon_graphql.node, convertFragment, fRef);
+}
+
 function use(fRef) {
   return RescriptRelay_Fragment.useFragment(Translation_jargon_graphql.node, convertFragment, fRef);
 }
@@ -24,6 +28,7 @@ var TranslationFragment = {
   Types: undefined,
   Operation: undefined,
   convertFragment: convertFragment,
+  waitForFragmentData: waitForFragmentData,
   use: use,
   useOpt: useOpt,
   readResolverFragment: readResolverFragment
