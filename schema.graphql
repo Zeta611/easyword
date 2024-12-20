@@ -1032,6 +1032,59 @@ type jargon implements Node {
   name_lower_no_spaces: String
 
   """An array relationship"""
+  related_jargons(
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): [related_jargon!]!
+
+  """An aggregate relationship"""
+  related_jargons_aggregate(
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): related_jargon_aggregate!
+
+  """An array relationship connection"""
+  related_jargons_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): related_jargonConnection!
+
+  """An array relationship"""
   translations(
     """distinct select on columns"""
     distinct_on: [translation_select_column!]
@@ -1164,6 +1217,8 @@ input jargon_bool_exp {
   name: String_comparison_exp
   name_lower: String_comparison_exp
   name_lower_no_spaces: String_comparison_exp
+  related_jargons: related_jargon_bool_exp
+  related_jargons_aggregate: related_jargon_aggregate_bool_exp
   translations: translation_bool_exp
   translations_aggregate: translation_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
@@ -1529,6 +1584,7 @@ input jargon_insert_input {
   id: uuid
   jargon_categories: jargon_category_arr_rel_insert_input
   name: String
+  related_jargons: related_jargon_arr_rel_insert_input
   translations: translation_arr_rel_insert_input
   updated_at: timestamptz
 }
@@ -1634,6 +1690,7 @@ input jargon_order_by {
   name: order_by
   name_lower: order_by
   name_lower_no_spaces: order_by
+  related_jargons_aggregate: related_jargon_aggregate_order_by
   translations_aggregate: translation_aggregate_order_by
   updated_at: order_by
 }
@@ -1774,6 +1831,19 @@ type mutation_root {
   delete_jargon_category_by_pk(category_id: Int!, jargon_id: uuid!): jargon_category
 
   """
+  delete data from the table: "related_jargon"
+  """
+  delete_related_jargon(
+    """filter the rows which have to be deleted"""
+    where: related_jargon_bool_exp!
+  ): related_jargon_mutation_response
+
+  """
+  delete single row from the table: "related_jargon"
+  """
+  delete_related_jargon_by_pk(jargon1: uuid!, jargon2: uuid!): related_jargon
+
+  """
   delete data from the table: "translation"
   """
   delete_translation(
@@ -1908,6 +1978,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: jargon_on_conflict
   ): jargon
+
+  """
+  insert data into the table: "related_jargon"
+  """
+  insert_related_jargon(
+    """the rows to be inserted"""
+    objects: [related_jargon_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: related_jargon_on_conflict
+  ): related_jargon_mutation_response
+
+  """
+  insert a single row into the table: "related_jargon"
+  """
+  insert_related_jargon_one(
+    """the row to be inserted"""
+    object: related_jargon_insert_input!
+
+    """upsert condition"""
+    on_conflict: related_jargon_on_conflict
+  ): related_jargon
 
   """
   insert data into the table: "translation"
@@ -2112,6 +2204,34 @@ type mutation_root {
   ): [jargon_mutation_response]
 
   """
+  update data of the table: "related_jargon"
+  """
+  update_related_jargon(
+    """sets the columns of the filtered rows to the given values"""
+    _set: related_jargon_set_input
+
+    """filter the rows which have to be updated"""
+    where: related_jargon_bool_exp!
+  ): related_jargon_mutation_response
+
+  """
+  update single row of the table: "related_jargon"
+  """
+  update_related_jargon_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: related_jargon_set_input
+    pk_columns: related_jargon_pk_columns_input!
+  ): related_jargon
+
+  """
+  update multiples rows of table: "related_jargon"
+  """
+  update_related_jargon_many(
+    """updates to execute, in order"""
+    updates: [related_jargon_updates!]!
+  ): [related_jargon_mutation_response]
+
+  """
   update data of the table: "translation"
   """
   update_translation(
@@ -2314,6 +2434,25 @@ type query_root {
   ): Node
 
   """
+  fetch data from the table: "related_jargon"
+  """
+  related_jargon_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): related_jargonConnection!
+
+  """
   fetch data from the table: "translation"
   """
   translation_connection(
@@ -2350,6 +2489,208 @@ type query_root {
     """filter the rows returned"""
     where: user_bool_exp
   ): userConnection!
+}
+
+"""
+columns and relationships of "related_jargon"
+"""
+type related_jargon implements Node {
+  id: ID!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon1: uuid!
+  jargon2: uuid!
+}
+
+"""
+A Relay connection object on "related_jargon"
+"""
+type related_jargonConnection {
+  edges: [related_jargonEdge!]!
+  pageInfo: PageInfo!
+}
+
+type related_jargonEdge {
+  cursor: String!
+  node: related_jargon!
+}
+
+"""
+aggregated selection of "related_jargon"
+"""
+type related_jargon_aggregate {
+  aggregate: related_jargon_aggregate_fields
+  nodes: [related_jargon!]!
+}
+
+input related_jargon_aggregate_bool_exp {
+  count: related_jargon_aggregate_bool_exp_count
+}
+
+input related_jargon_aggregate_bool_exp_count {
+  arguments: [related_jargon_select_column!]
+  distinct: Boolean
+  filter: related_jargon_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "related_jargon"
+"""
+type related_jargon_aggregate_fields {
+  count(columns: [related_jargon_select_column!], distinct: Boolean): Int!
+  max: related_jargon_max_fields
+  min: related_jargon_min_fields
+}
+
+"""
+order by aggregate values of table "related_jargon"
+"""
+input related_jargon_aggregate_order_by {
+  count: order_by
+  max: related_jargon_max_order_by
+  min: related_jargon_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "related_jargon"
+"""
+input related_jargon_arr_rel_insert_input {
+  data: [related_jargon_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: related_jargon_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "related_jargon". All fields are combined with a logical 'AND'.
+"""
+input related_jargon_bool_exp {
+  _and: [related_jargon_bool_exp!]
+  _not: related_jargon_bool_exp
+  _or: [related_jargon_bool_exp!]
+  jargon: jargon_bool_exp
+  jargon1: uuid_comparison_exp
+  jargon2: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "related_jargon"
+"""
+enum related_jargon_constraint {
+  """
+  unique or primary key constraint on columns "jargon2", "jargon1"
+  """
+  related_jargon_pkey
+}
+
+"""
+input type for inserting data into table "related_jargon"
+"""
+input related_jargon_insert_input {
+  jargon: jargon_obj_rel_insert_input
+  jargon1: uuid
+  jargon2: uuid
+}
+
+"""aggregate max on columns"""
+type related_jargon_max_fields {
+  jargon1: uuid
+  jargon2: uuid
+}
+
+"""
+order by max() on columns of table "related_jargon"
+"""
+input related_jargon_max_order_by {
+  jargon1: order_by
+  jargon2: order_by
+}
+
+"""aggregate min on columns"""
+type related_jargon_min_fields {
+  jargon1: uuid
+  jargon2: uuid
+}
+
+"""
+order by min() on columns of table "related_jargon"
+"""
+input related_jargon_min_order_by {
+  jargon1: order_by
+  jargon2: order_by
+}
+
+"""
+response of any mutation on the table "related_jargon"
+"""
+type related_jargon_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [related_jargon!]!
+}
+
+"""
+on_conflict condition type for table "related_jargon"
+"""
+input related_jargon_on_conflict {
+  constraint: related_jargon_constraint!
+  update_columns: [related_jargon_update_column!]! = []
+  where: related_jargon_bool_exp
+}
+
+"""Ordering options when selecting data from "related_jargon"."""
+input related_jargon_order_by {
+  jargon: jargon_order_by
+  jargon1: order_by
+  jargon2: order_by
+}
+
+"""primary key columns input for table: related_jargon"""
+input related_jargon_pk_columns_input {
+  jargon1: uuid!
+  jargon2: uuid!
+}
+
+"""
+select columns of table "related_jargon"
+"""
+enum related_jargon_select_column {
+  """column name"""
+  jargon1
+
+  """column name"""
+  jargon2
+}
+
+"""
+input type for updating data in table "related_jargon"
+"""
+input related_jargon_set_input {
+  jargon1: uuid
+  jargon2: uuid
+}
+
+"""
+update columns of table "related_jargon"
+"""
+enum related_jargon_update_column {
+  """column name"""
+  jargon1
+
+  """column name"""
+  jargon2
+}
+
+input related_jargon_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: related_jargon_set_input
+
+  """filter the rows which have to be updated"""
+  where: related_jargon_bool_exp!
 }
 
 scalar seed_float
@@ -2477,6 +2818,25 @@ type subscription_root {
     """A globally unique id"""
     id: ID!
   ): Node
+
+  """
+  fetch data from the table: "related_jargon"
+  """
+  related_jargon_connection(
+    after: String
+    before: String
+
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+    first: Int
+    last: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): related_jargonConnection!
 
   """
   fetch data from the table: "translation"

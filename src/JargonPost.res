@@ -13,15 +13,13 @@ module JargonPostQuery = %relay(`
             acronym
           }
         }
+        ...RelatedJargons_jargon
         ...Translation_jargon
         ...CommentSection_jargon
       }
     }
   }
 `)
-
-let badgify = text =>
-  <div key={text} className="badge badge-md font-semibold"> {text->React.string} </div>
 
 @react.component
 let make = (~jargonID) => {
@@ -37,12 +35,12 @@ let make = (~jargonID) => {
           // Jargon
           <div className="flex flex-col gap-2">
             <div className="flex gap-1">
-              {jargon.jargon_categories->Array.map(r => r.category.acronym->badgify)->React.array}
-              <button
-                className="badge badge-md font-semibold"
-                onClick={_ => RescriptReactRouter.replace(`/edit-categories/${jargonID}`)}>
-                {"+"->React.string}
-              </button>
+              {jargon.jargon_categories
+              ->Array.map(r => r.category.acronym->Util.badgify)
+              ->React.array}
+              {"+"->Util.badgify(~onClick=_ =>
+                RescriptReactRouter.replace(`/edit-categories/${jargonID}`)
+              )}
             </div>
             <div className="text-2xl font-bold"> {jargon.name->React.string} </div>
           </div>
@@ -54,6 +52,8 @@ let make = (~jargonID) => {
             onClick={_ => RescriptReactRouter.replace(`/new-translation/${jargonID}`)}>
             {"새 번역 제안하기"->React.string}
           </button>
+          // Related Jargons
+          <RelatedJargons relatedJargonsRef={jargon.fragmentRefs} />
           <div className="divider -mb-2" />
           <div className="flex gap-1 text-teal-600">
             <Heroicons.Outline.ChatBubbleLeftRightIcon className="w-6 h-6" />

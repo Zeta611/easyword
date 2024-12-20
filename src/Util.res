@@ -19,6 +19,11 @@ let eulLeul = korean => {
 
 let sanitize = word => word->String.replaceRegExp(%re(`/\s+/g`), " ")->String.trim
 
+let badgify = (~onClick=_ => (), text) =>
+  <button key={text} onClick className="badge badge-md font-semibold">
+    {text->React.string}
+  </button>
+
 @val external htmlDialogElement: 'a = "HTMLDialogElement"
 let asHtmlDialogElement: Webapi.Dom.Element.t => option<'htmlDialogElement> = %raw(`
     function(element) {

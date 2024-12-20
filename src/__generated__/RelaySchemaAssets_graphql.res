@@ -294,6 +294,43 @@ type enum_order_by_input =
 
 
 @live @unboxed
+type enum_related_jargon_constraint = 
+  | @as("related_jargon_pkey") Related_jargon_pkey
+  | FutureAddedValue(string)
+
+
+@live
+type enum_related_jargon_constraint_input = 
+  | @as("related_jargon_pkey") Related_jargon_pkey
+
+
+@live @unboxed
+type enum_related_jargon_select_column = 
+  | @as("jargon1") Jargon1
+  | @as("jargon2") Jargon2
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_related_jargon_select_column_input = 
+  | @as("jargon1") Jargon1
+  | @as("jargon2") Jargon2
+
+
+@live @unboxed
+type enum_related_jargon_update_column = 
+  | @as("jargon1") Jargon1
+  | @as("jargon2") Jargon2
+  | FutureAddedValue(string)
+
+
+@live @unboxed
+type enum_related_jargon_update_column_input = 
+  | @as("jargon1") Jargon1
+  | @as("jargon2") Jargon2
+
+
+@live @unboxed
 type enum_translation_constraint = 
   | @as("translation_comment_id_new_key") Translation_comment_id_new_key
   | @as("translation_id_key") Translation_id_key
@@ -1175,6 +1212,8 @@ and input_jargon_bool_exp = {
   name?: input_String_comparison_exp,
   name_lower?: input_String_comparison_exp,
   name_lower_no_spaces?: input_String_comparison_exp,
+  related_jargons?: input_related_jargon_bool_exp,
+  related_jargons_aggregate?: input_related_jargon_aggregate_bool_exp,
   translations?: input_translation_bool_exp,
   translations_aggregate?: input_translation_aggregate_bool_exp,
   updated_at?: input_timestamptz_comparison_exp,
@@ -1196,6 +1235,8 @@ and input_jargon_bool_exp_nullable = {
   name?: Js.Null.t<input_String_comparison_exp_nullable>,
   name_lower?: Js.Null.t<input_String_comparison_exp_nullable>,
   name_lower_no_spaces?: Js.Null.t<input_String_comparison_exp_nullable>,
+  related_jargons?: Js.Null.t<input_related_jargon_bool_exp_nullable>,
+  related_jargons_aggregate?: Js.Null.t<input_related_jargon_aggregate_bool_exp_nullable>,
   translations?: Js.Null.t<input_translation_bool_exp_nullable>,
   translations_aggregate?: Js.Null.t<input_translation_aggregate_bool_exp_nullable>,
   updated_at?: Js.Null.t<input_timestamptz_comparison_exp_nullable>,
@@ -1498,6 +1539,7 @@ and input_jargon_insert_input = {
   id?: string,
   jargon_categories?: input_jargon_category_arr_rel_insert_input,
   name?: string,
+  related_jargons?: input_related_jargon_arr_rel_insert_input,
   translations?: input_translation_arr_rel_insert_input,
   updated_at?: string,
 }
@@ -1511,6 +1553,7 @@ and input_jargon_insert_input_nullable = {
   id?: Js.Null.t<string>,
   jargon_categories?: Js.Null.t<input_jargon_category_arr_rel_insert_input_nullable>,
   name?: Js.Null.t<string>,
+  related_jargons?: Js.Null.t<input_related_jargon_arr_rel_insert_input_nullable>,
   translations?: Js.Null.t<input_translation_arr_rel_insert_input_nullable>,
   updated_at?: Js.Null.t<string>,
 }
@@ -1588,6 +1631,7 @@ and input_jargon_order_by = {
   name?: enum_order_by_input,
   name_lower?: enum_order_by_input,
   name_lower_no_spaces?: enum_order_by_input,
+  related_jargons_aggregate?: input_related_jargon_aggregate_order_by,
   translations_aggregate?: input_translation_aggregate_order_by,
   updated_at?: enum_order_by_input,
 }
@@ -1603,6 +1647,7 @@ and input_jargon_order_by_nullable = {
   name?: Js.Null.t<enum_order_by_input>,
   name_lower?: Js.Null.t<enum_order_by_input>,
   name_lower_no_spaces?: Js.Null.t<enum_order_by_input>,
+  related_jargons_aggregate?: Js.Null.t<input_related_jargon_aggregate_order_by_nullable>,
   translations_aggregate?: Js.Null.t<input_translation_aggregate_order_by_nullable>,
   updated_at?: Js.Null.t<enum_order_by_input>,
 }
@@ -1655,6 +1700,180 @@ and input_list_jargon_random_args = {
 @live
 and input_list_jargon_random_args_nullable = {
   seed?: Js.Null.t<string>,
+}
+
+@live
+and input_related_jargon_aggregate_bool_exp = {
+  count?: input_related_jargon_aggregate_bool_exp_count,
+}
+
+@live
+and input_related_jargon_aggregate_bool_exp_nullable = {
+  count?: Js.Null.t<input_related_jargon_aggregate_bool_exp_count_nullable>,
+}
+
+@live
+and input_related_jargon_aggregate_bool_exp_count = {
+  arguments?: array<enum_related_jargon_select_column_input>,
+  distinct?: bool,
+  filter?: input_related_jargon_bool_exp,
+  predicate: input_Int_comparison_exp,
+}
+
+@live
+and input_related_jargon_aggregate_bool_exp_count_nullable = {
+  arguments?: Js.Null.t<array<enum_related_jargon_select_column_input>>,
+  distinct?: Js.Null.t<bool>,
+  filter?: Js.Null.t<input_related_jargon_bool_exp_nullable>,
+  predicate: input_Int_comparison_exp_nullable,
+}
+
+@live
+and input_related_jargon_aggregate_order_by = {
+  count?: enum_order_by_input,
+  max?: input_related_jargon_max_order_by,
+  min?: input_related_jargon_min_order_by,
+}
+
+@live
+and input_related_jargon_aggregate_order_by_nullable = {
+  count?: Js.Null.t<enum_order_by_input>,
+  max?: Js.Null.t<input_related_jargon_max_order_by_nullable>,
+  min?: Js.Null.t<input_related_jargon_min_order_by_nullable>,
+}
+
+@live
+and input_related_jargon_arr_rel_insert_input = {
+  data: array<input_related_jargon_insert_input>,
+  on_conflict?: input_related_jargon_on_conflict,
+}
+
+@live
+and input_related_jargon_arr_rel_insert_input_nullable = {
+  data: array<input_related_jargon_insert_input_nullable>,
+  on_conflict?: Js.Null.t<input_related_jargon_on_conflict_nullable>,
+}
+
+@live
+and input_related_jargon_bool_exp = {
+  _and?: array<input_related_jargon_bool_exp>,
+  _not?: input_related_jargon_bool_exp,
+  _or?: array<input_related_jargon_bool_exp>,
+  jargon?: input_jargon_bool_exp,
+  jargon1?: input_uuid_comparison_exp,
+  jargon2?: input_uuid_comparison_exp,
+}
+
+@live
+and input_related_jargon_bool_exp_nullable = {
+  _and?: Js.Null.t<array<input_related_jargon_bool_exp_nullable>>,
+  _not?: Js.Null.t<input_related_jargon_bool_exp_nullable>,
+  _or?: Js.Null.t<array<input_related_jargon_bool_exp_nullable>>,
+  jargon?: Js.Null.t<input_jargon_bool_exp_nullable>,
+  jargon1?: Js.Null.t<input_uuid_comparison_exp_nullable>,
+  jargon2?: Js.Null.t<input_uuid_comparison_exp_nullable>,
+}
+
+@live
+and input_related_jargon_insert_input = {
+  jargon?: input_jargon_obj_rel_insert_input,
+  jargon1?: string,
+  jargon2?: string,
+}
+
+@live
+and input_related_jargon_insert_input_nullable = {
+  jargon?: Js.Null.t<input_jargon_obj_rel_insert_input_nullable>,
+  jargon1?: Js.Null.t<string>,
+  jargon2?: Js.Null.t<string>,
+}
+
+@live
+and input_related_jargon_max_order_by = {
+  jargon1?: enum_order_by_input,
+  jargon2?: enum_order_by_input,
+}
+
+@live
+and input_related_jargon_max_order_by_nullable = {
+  jargon1?: Js.Null.t<enum_order_by_input>,
+  jargon2?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_related_jargon_min_order_by = {
+  jargon1?: enum_order_by_input,
+  jargon2?: enum_order_by_input,
+}
+
+@live
+and input_related_jargon_min_order_by_nullable = {
+  jargon1?: Js.Null.t<enum_order_by_input>,
+  jargon2?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_related_jargon_on_conflict = {
+  @as("constraint") constraint_: enum_related_jargon_constraint_input,
+  update_columns: array<enum_related_jargon_update_column_input>,
+  where?: input_related_jargon_bool_exp,
+}
+
+@live
+and input_related_jargon_on_conflict_nullable = {
+  @as("constraint") constraint_: enum_related_jargon_constraint_input,
+  update_columns: array<enum_related_jargon_update_column_input>,
+  where?: Js.Null.t<input_related_jargon_bool_exp_nullable>,
+}
+
+@live
+and input_related_jargon_order_by = {
+  jargon?: input_jargon_order_by,
+  jargon1?: enum_order_by_input,
+  jargon2?: enum_order_by_input,
+}
+
+@live
+and input_related_jargon_order_by_nullable = {
+  jargon?: Js.Null.t<input_jargon_order_by_nullable>,
+  jargon1?: Js.Null.t<enum_order_by_input>,
+  jargon2?: Js.Null.t<enum_order_by_input>,
+}
+
+@live
+and input_related_jargon_pk_columns_input = {
+  jargon1: string,
+  jargon2: string,
+}
+
+@live
+and input_related_jargon_pk_columns_input_nullable = {
+  jargon1: string,
+  jargon2: string,
+}
+
+@live
+and input_related_jargon_set_input = {
+  jargon1?: string,
+  jargon2?: string,
+}
+
+@live
+and input_related_jargon_set_input_nullable = {
+  jargon1?: Js.Null.t<string>,
+  jargon2?: Js.Null.t<string>,
+}
+
+@live
+and input_related_jargon_updates = {
+  _set?: input_related_jargon_set_input,
+  where: input_related_jargon_bool_exp,
+}
+
+@live
+and input_related_jargon_updates_nullable = {
+  _set?: Js.Null.t<input_related_jargon_set_input_nullable>,
+  where: input_related_jargon_bool_exp_nullable,
 }
 
 @live

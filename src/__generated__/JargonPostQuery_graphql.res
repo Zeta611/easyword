@@ -23,7 +23,7 @@ module Types = {
         comments_aggregate: response_node_jargon_comments_aggregate,
         jargon_categories: array<response_node_jargon_jargon_categories>,
         name: string,
-        fragmentRefs: RescriptRelay.fragmentRefs<[ | #CommentSection_jargon | #Translation_jargon]>,
+        fragmentRefs: RescriptRelay.fragmentRefs<[ | #CommentSection_jargon | #RelatedJargons_jargon | #Translation_jargon]>,
       }
     )
     | @live @as("__unselected") UnselectedUnionMember(string)
@@ -204,6 +204,10 @@ v8 = {
   "storageKey": null
 },
 v9 = [
+  (v8/*: any*/),
+  (v3/*: any*/)
+],
+v10 = [
   (v8/*: any*/)
 ];
 return {
@@ -249,6 +253,11 @@ return {
                   }
                 ],
                 "storageKey": "jargon_categories(order_by:{\"category\":{\"name\":\"asc\"}})"
+              },
+              {
+                "args": null,
+                "kind": "FragmentSpread",
+                "name": "RelatedJargons_jargon"
               },
               {
                 "args": null,
@@ -318,6 +327,28 @@ return {
               },
               {
                 "alias": null,
+                "args": null,
+                "concreteType": "related_jargon",
+                "kind": "LinkedField",
+                "name": "related_jargons",
+                "plural": true,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "jargon",
+                    "kind": "LinkedField",
+                    "name": "jargon",
+                    "plural": false,
+                    "selections": (v9/*: any*/),
+                    "storageKey": null
+                  },
+                  (v8/*: any*/)
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
                 "args": [
                   {
                     "kind": "Literal",
@@ -339,7 +370,7 @@ return {
                     "kind": "LinkedField",
                     "name": "comment",
                     "plural": false,
-                    "selections": (v9/*: any*/),
+                    "selections": (v10/*: any*/),
                     "storageKey": null
                   }
                 ],
@@ -391,7 +422,7 @@ return {
                             "kind": "LinkedField",
                             "name": "parent",
                             "plural": false,
-                            "selections": (v9/*: any*/),
+                            "selections": (v10/*: any*/),
                             "storageKey": null
                           },
                           {
@@ -427,10 +458,7 @@ return {
                             "kind": "LinkedField",
                             "name": "translation",
                             "plural": false,
-                            "selections": [
-                              (v8/*: any*/),
-                              (v3/*: any*/)
-                            ],
+                            "selections": (v9/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -465,12 +493,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "48cfe7294454cf4024c5a38dcf762e7d",
+    "cacheID": "5a7cd4121c317571463232d5e1bdb369",
     "id": null,
     "metadata": {},
     "name": "JargonPostQuery",
     "operationKind": "query",
-    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      jargon_categories(order_by: {category: {name: asc}}) {\n        category {\n          acronym\n          id\n        }\n        id\n      }\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations(order_by: {name: asc}) {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
+    "text": "query JargonPostQuery(\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ... on jargon {\n      name\n      comments_aggregate {\n        aggregate {\n          count\n        }\n      }\n      jargon_categories(order_by: {category: {name: asc}}) {\n        category {\n          acronym\n          id\n        }\n        id\n      }\n      ...RelatedJargons_jargon\n      ...Translation_jargon\n      ...CommentSection_jargon\n    }\n    id\n  }\n}\n\nfragment CommentSection_jargon on jargon {\n  comments_connection {\n    edges {\n      node {\n        id\n        content\n        created_at\n        parent {\n          id\n        }\n        author {\n          photo_url\n          display_name\n          id\n        }\n        translation {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n\nfragment RelatedJargons_jargon on jargon {\n  related_jargons {\n    jargon {\n      id\n      name\n    }\n    id\n  }\n}\n\nfragment Translation_jargon on jargon {\n  translations(order_by: {name: asc}) {\n    id\n    name\n    comment {\n      id\n    }\n  }\n}\n"
   }
 };
 })() `)
