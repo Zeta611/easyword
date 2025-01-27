@@ -89,14 +89,14 @@ module rec CommentNode: {
           </span>
           <span
             id={comment.id}
-            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold">
+            className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold line-clamp-1 max-w-64">
             {comment.userDisplayName->React.string}
           </span>
           {switch comment.translation {
           | Some(translation) =>
             <>
               {"·"->React.string}
-              <span className="text-teal-600 dark:target:text-teal-300 text-base-content">
+              <span className="text-teal-600 dark:target:text-teal-300">
                 {translation->React.string}
               </span>
             </>

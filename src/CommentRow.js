@@ -132,7 +132,7 @@ function CommentRow$CommentNode(props) {
                                     }),
                                 JsxRuntime.jsx("span", {
                                       children: comment.userDisplayName,
-                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold",
+                                      className: "target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold line-clamp-1 max-w-64",
                                       id: comment.id
                                     }),
                                 translation !== undefined ? JsxRuntime.jsxs(JsxRuntime.Fragment, {
@@ -140,7 +140,7 @@ function CommentRow$CommentNode(props) {
                                           "·",
                                           JsxRuntime.jsx("span", {
                                                 children: translation,
-                                                className: "text-teal-600 dark:target:text-teal-300 text-base-content"
+                                                className: "text-teal-600 dark:target:text-teal-300"
                                               })
                                         ]
                                       }) : null,
