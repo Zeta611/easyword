@@ -29,7 +29,7 @@ let constructForest = comments => {
     let node = {comment, parent: None, children: list{}}
     commentNodeTable->Map.set(comment.id, node)
     if comment.parent->Option.isNone {
-      roots.contents = roots.contents->List.add(node)
+      roots := roots.contents->List.add(node)
     }
   })
 
