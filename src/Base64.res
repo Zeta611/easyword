@@ -4,7 +4,7 @@
 let retrieveOriginalID = id => {
   try {
     switch id->decode->JSON.parseExn->JSON.Decode.array {
-    | Some(decoded) => decoded->Array.get(3)
+    | Some(decoded) => decoded[3]
     | None => None
     }
   } catch {

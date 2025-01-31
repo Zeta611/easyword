@@ -208,7 +208,7 @@ let make = () => {
           </summary>
         | Some(photoURL) =>
           <summary className="flex">
-            <img className="mask mask-squircle h-8 w-8 m-2 cursor-pointer" src={photoURL} />
+            <img className="mask mask-squircle h-8 w-8 m-2 cursor-pointer" src=photoURL />
           </summary>
         }}
         <ul

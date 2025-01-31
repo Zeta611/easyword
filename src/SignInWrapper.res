@@ -69,7 +69,7 @@ let make = (~children: React.element) => {
     </div>
   | #success =>
     <SignInContext.Provider value={signInData->Option.getExn}>
-      <TokenContext.Provider value={token}> children </TokenContext.Provider>
+      <TokenContext.Provider value=token> children </TokenContext.Provider>
     </SignInContext.Provider>
   }
 }

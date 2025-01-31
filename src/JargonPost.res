@@ -45,7 +45,7 @@ let make = (~jargonID) => {
             <div className="text-2xl font-bold"> {jargon.name->React.string} </div>
           </div>
           // Translation
-          <Translation translationRefs={jargon.fragmentRefs} />
+          <Translation translationRefs=jargon.fragmentRefs />
           // New translation
           <button
             className="btn btn-primary"
@@ -53,7 +53,7 @@ let make = (~jargonID) => {
             {"새 번역 제안하기"->React.string}
           </button>
           // Related Jargons
-          <RelatedJargons relatedJargonsRef={jargon.fragmentRefs} />
+          <RelatedJargons relatedJargonsRef=jargon.fragmentRefs />
           <div className="divider -mb-2" />
           <div className="flex gap-1 text-teal-600">
             <Heroicons.Outline.ChatBubbleLeftRightIcon className="w-6 h-6" />
@@ -66,7 +66,7 @@ let make = (~jargonID) => {
           // New comment
           <CommentInput jargonID />
           // Comments
-          <CommentSection jargonID commentRefs={jargon.fragmentRefs} />
+          <CommentSection jargonID commentRefs=jargon.fragmentRefs />
         </main>
       </div>
 

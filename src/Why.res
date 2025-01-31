@@ -13,7 +13,7 @@ module WhyQuery = %relay(`
 @react.component
 let make = () => {
   let {html_connection: {edges: htmlEdges}} = WhyQuery.use(~variables=())
-  let data = htmlEdges->Array.get(0)->Option.map(edge => edge.node.data)
+  let data = htmlEdges[0]->Option.map(edge => edge.node.data)
   switch data {
   | Some(data) =>
     <article className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">

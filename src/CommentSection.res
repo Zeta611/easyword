@@ -40,5 +40,5 @@ let make = (~jargonID, ~commentRefs) => {
     }),
   )
 
-  <CommentRow jargonID siblings={roots.contents} />
+  <CommentRow jargonID siblings=roots.contents />
 }

@@ -202,7 +202,7 @@ let make = () => {
           <input
             type_="checkbox"
             className="checkbox checkbox-primary checkbox-md"
-            checked={onlyWithoutTranslation}
+            checked=onlyWithoutTranslation
             onChange={_ => setOnlyWithoutTranslation(v => !v)}
           />
         </h3>

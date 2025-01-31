@@ -150,7 +150,7 @@ let make = (~jargonID: string) => {
     if signedIn {
       <div className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">
         <h2> {`${english}의 분야 수정하기`->React.string} </h2>
-        <form className="mt-8 max-w-md" onSubmit={handleSubmit}>
+        <form className="mt-8 max-w-md" onSubmit=handleSubmit>
           <div className="grid grid-cols-1 gap-6">
             <label className="block">
               <label className="label">
@@ -190,7 +190,7 @@ let make = (~jargonID: string) => {
             <input
               type_="submit"
               value="수정하기"
-              disabled={isNewTranslationMutating}
+              disabled=isNewTranslationMutating
               className="btn btn-primary"
             />
           </div>

@@ -63,21 +63,21 @@ let make = (~jargonID) => {
     }
   }
 
-  <form onSubmit={handleSubmit}>
+  <form onSubmit=handleSubmit>
     <div
       className="rounded-lg border-2 border-zinc-300 focus-within:border-zinc-400 bg-white gap-1 grid grid-cols-1 place-items-start">
       <textarea
         name="comment"
         id="comment"
-        value={content}
-        onChange={handleInputChange}
+        value=content
+        onChange=handleInputChange
         placeholder="여러분의 생각은 어떠신가요?"
         className="textarea textarea-ghost textarea-sm focus:outline-0 focus:border-transparent place-self-stretch"
       />
       <input
         type_="submit"
         value="댓글"
-        disabled={isMutating}
+        disabled=isMutating
         className="btn btn-neutral btn-sm ml-1 mb-1 disabled:loading"
       />
     </div>

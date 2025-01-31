@@ -218,7 +218,7 @@ let make = () => {
   if signedIn {
     <div className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">
       <h1> {"쉬운 전문용어 제안하기"->React.string} </h1>
-      <form className="mt-8 max-w-md" onSubmit={handleSubmit}>
+      <form className="mt-8 max-w-md" onSubmit=handleSubmit>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">
             <label className="label">
@@ -226,8 +226,8 @@ let make = () => {
             </label>
             <input
               type_="text"
-              value={english}
-              onChange={handleJargonChange}
+              value=english
+              onChange=handleJargonChange
               placeholder="separated sum"
               className="input input-bordered w-full"
             />
@@ -241,7 +241,7 @@ let make = () => {
                   <input
                     type_="checkbox"
                     className="checkbox checkbox-secondary"
-                    checked={withoutKorean}
+                    checked=withoutKorean
                     onChange={_ => setWithoutKorean(v => !v)}
                   />
                   {"번역 없이 제안하기"->React.string}
@@ -251,9 +251,9 @@ let make = () => {
             </label>
             <input
               type_="text"
-              value={korean}
-              disabled={withoutKorean}
-              onChange={handleTranslationChange}
+              value=korean
+              disabled=withoutKorean
+              onChange=handleTranslationChange
               placeholder="출신을 기억하는 합"
               className="input input-bordered w-full"
             />
@@ -307,8 +307,8 @@ let make = () => {
               <span className="label-text"> {"의견"->React.string} </span>
             </label>
             <textarea
-              value={comment}
-              onChange={handleCommentChange}
+              value=comment
+              onChange=handleCommentChange
               placeholder="첫 댓글로 달려요"
               className="textarea textarea-bordered w-full"
             />

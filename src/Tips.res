@@ -13,7 +13,7 @@ module TipsQuery = %relay(`
 @react.component
 let make = () => {
   let {html_connection: {edges: htmlEdges}} = TipsQuery.use(~variables=())
-  let data = htmlEdges->Array.get(0)->Option.map(edge => edge.node.data)
+  let data = htmlEdges[0]->Option.map(edge => edge.node.data)
   switch data {
   | Some(data) =>
     <article

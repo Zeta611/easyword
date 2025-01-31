@@ -46,7 +46,7 @@ let make = (~translationRefs) => {
           {translations
           ->Array.map(({id, name, comment}) =>
             <TranslationRow
-              key={id} name commentID={comment->Option.map(x => x.id)->Option.getOr("")}
+              key=id name commentID={comment->Option.map(x => x.id)->Option.getOr("")}
             />
           )
           ->React.array}

@@ -17,9 +17,7 @@ module SignedInProfile = {
 
     let (mutate, _isMutating) = DisplayNameMutation.use()
 
-    let (displayName, setDisplayName) = React.useState(() =>
-      user.displayName->Option.getOr("")
-    )
+    let (displayName, setDisplayName) = React.useState(() => user.displayName->Option.getOr(""))
     let handleDisplayNameChange = event => {
       let value = ReactEvent.Form.currentTarget(event)["value"]
       setDisplayName(_ => value)
@@ -68,7 +66,7 @@ module SignedInProfile = {
 
     <div className="px-6 py-12 max-w-xl mx-auto md:max-w-4xl prose">
       <h1> {"내 정보"->React.string} </h1>
-      <form className="mt-8 max-w-md" onSubmit={handleSubmit}>
+      <form className="mt-8 max-w-md" onSubmit=handleSubmit>
         <div className="grid grid-cols-1 gap-6">
           <label className="block">
             <label className="label">
@@ -76,8 +74,8 @@ module SignedInProfile = {
             </label>
             <input
               type_="text"
-              value={displayName}
-              onChange={handleDisplayNameChange}
+              value=displayName
+              onChange=handleDisplayNameChange
               className="input input-bordered w-full"
             />
           </label>
@@ -88,7 +86,7 @@ module SignedInProfile = {
             <input
               type_="email"
               value={user.email->Option.getOr("")}
-              readOnly={true}
+              readOnly=true
               className="input input-bordered input-disabled w-full"
             />
           </label>

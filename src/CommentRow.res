@@ -88,7 +88,7 @@ module rec CommentNode: {
             }}
           </span>
           <span
-            id={comment.id}
+            id=comment.id
             className="target:text-teal-600 dark:target:text-teal-300 target:underline decoration-2 text-base-content font-semibold line-clamp-1 max-w-64">
             {comment.userDisplayName->React.string}
           </span>
@@ -110,7 +110,7 @@ module rec CommentNode: {
         // comment
         <div className="pl-3 text-base-content">
           <MathJax>
-            <NewlineText text={comment.content} />
+            <NewlineText text=comment.content />
           </MathJax>
         </div>
         // footer
@@ -136,7 +136,7 @@ module rec CommentNode: {
             <input
               type_="submit"
               value="답글"
-              disabled={isMutating}
+              disabled=isMutating
               className="btn btn-neutral btn-sm ml-1 mb-1 disabled:loading"
             />
           </div>
@@ -179,7 +179,7 @@ and CommentSiblings: {
     ->List.toArray
     ->Array.toSorted((a, b) => Date.compare(b.comment.timestamp, a.comment.timestamp))
     ->Array.map(commentNode =>
-      <div key={commentNode.comment.id} className="flex flex-col gap-y-2">
+      <div key=commentNode.comment.id className="flex flex-col gap-y-2">
         <CommentNode jargonID commentNode />
       </div>
     )
