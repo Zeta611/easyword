@@ -4,7 +4,13 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 const config = {
 	preprocess: [vitePreprocess(), mdsvex()],
-	kit: { adapter: adapter() },
+	kit: {
+		adapter: adapter(),
+
+		alias: {
+			$houdini: '.houdini/'
+		}
+	},
 	extensions: ['.svelte', '.svx']
 };
 

@@ -38,6 +38,9 @@
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
 		"vite": "^6.0.0",
-		"vitest": "^3.0.9"
+		"vitest": "^3.0.9",
+		"graphql": "^16.10.0",
+		"houdini": "^1.5.4",
+		"houdini-svelte": "^2.1.8"
 	}
 }

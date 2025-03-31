@@ -1,0 +1,2087 @@
+schema {
+  query: query_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+
+  """measured in seconds"""
+  ttl: Int! = 60
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+columns and relationships of "category"
+"""
+type category {
+  acronym: String!
+  id: Int!
+
+  """An array relationship"""
+  jargon_categories(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+  name: String!
+}
+
+"""
+Boolean expression to filter rows from the table "category". All fields are combined with a logical 'AND'.
+"""
+input category_bool_exp {
+  _and: [category_bool_exp!]
+  _not: category_bool_exp
+  _or: [category_bool_exp!]
+  acronym: String_comparison_exp
+  id: Int_comparison_exp
+  jargon_categories: jargon_category_bool_exp
+  name: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "category"."""
+input category_order_by {
+  acronym: order_by
+  id: order_by
+  jargon_categories_aggregate: jargon_category_aggregate_order_by
+  name: order_by
+}
+
+"""
+select columns of table "category"
+"""
+enum category_select_column {
+  """column name"""
+  acronym
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+Streaming cursor of the table "category"
+"""
+input category_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: category_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input category_stream_cursor_value_input {
+  acronym: String
+  id: Int
+  name: String
+}
+
+"""
+columns and relationships of "comment"
+"""
+type comment {
+  """An object relationship"""
+  author: user!
+  author_id: String!
+
+  """An array relationship"""
+  children(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """An aggregate relationship"""
+  children_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+  content: String!
+  created_at: timestamptz!
+  id: uuid!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon_id: uuid!
+
+  """An object relationship"""
+  parent: comment
+  parent_id: uuid
+  removed: Boolean!
+
+  """An object relationship"""
+  translation: translation
+  translation_id: uuid
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "comment"
+"""
+type comment_aggregate {
+  aggregate: comment_aggregate_fields
+  nodes: [comment!]!
+}
+
+input comment_aggregate_bool_exp {
+  bool_and: comment_aggregate_bool_exp_bool_and
+  bool_or: comment_aggregate_bool_exp_bool_or
+  count: comment_aggregate_bool_exp_count
+}
+
+input comment_aggregate_bool_exp_bool_and {
+  arguments: comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: comment_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input comment_aggregate_bool_exp_bool_or {
+  arguments: comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: comment_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input comment_aggregate_bool_exp_count {
+  arguments: [comment_select_column!]
+  distinct: Boolean
+  filter: comment_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "comment"
+"""
+type comment_aggregate_fields {
+  count(columns: [comment_select_column!], distinct: Boolean): Int!
+  max: comment_max_fields
+  min: comment_min_fields
+}
+
+"""
+order by aggregate values of table "comment"
+"""
+input comment_aggregate_order_by {
+  count: order_by
+  max: comment_max_order_by
+  min: comment_min_order_by
+}
+
+"""
+Boolean expression to filter rows from the table "comment". All fields are combined with a logical 'AND'.
+"""
+input comment_bool_exp {
+  _and: [comment_bool_exp!]
+  _not: comment_bool_exp
+  _or: [comment_bool_exp!]
+  author: user_bool_exp
+  author_id: String_comparison_exp
+  children: comment_bool_exp
+  children_aggregate: comment_aggregate_bool_exp
+  content: String_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  jargon: jargon_bool_exp
+  jargon_id: uuid_comparison_exp
+  parent: comment_bool_exp
+  parent_id: uuid_comparison_exp
+  removed: Boolean_comparison_exp
+  translation: translation_bool_exp
+  translation_id: uuid_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""aggregate max on columns"""
+type comment_max_fields {
+  author_id: String
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "comment"
+"""
+input comment_max_order_by {
+  author_id: order_by
+  content: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  parent_id: order_by
+  translation_id: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type comment_min_fields {
+  author_id: String
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "comment"
+"""
+input comment_min_order_by {
+  author_id: order_by
+  content: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  parent_id: order_by
+  translation_id: order_by
+  updated_at: order_by
+}
+
+"""Ordering options when selecting data from "comment"."""
+input comment_order_by {
+  author: user_order_by
+  author_id: order_by
+  children_aggregate: comment_aggregate_order_by
+  content: order_by
+  created_at: order_by
+  id: order_by
+  jargon: jargon_order_by
+  jargon_id: order_by
+  parent: comment_order_by
+  parent_id: order_by
+  removed: order_by
+  translation: translation_order_by
+  translation_id: order_by
+  updated_at: order_by
+}
+
+"""
+select columns of table "comment"
+"""
+enum comment_select_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  content
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  jargon_id
+
+  """column name"""
+  parent_id
+
+  """column name"""
+  removed
+
+  """column name"""
+  translation_id
+
+  """column name"""
+  updated_at
+}
+
+"""
+select "comment_aggregate_bool_exp_bool_and_arguments_columns" columns of table "comment"
+"""
+enum comment_select_column_comment_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  removed
+}
+
+"""
+select "comment_aggregate_bool_exp_bool_or_arguments_columns" columns of table "comment"
+"""
+enum comment_select_column_comment_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  removed
+}
+
+"""
+Streaming cursor of the table "comment"
+"""
+input comment_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: comment_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input comment_stream_cursor_value_input {
+  author_id: String
+  content: String
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  parent_id: uuid
+  removed: Boolean
+  translation_id: uuid
+  updated_at: timestamptz
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+"""
+columns and relationships of "html"
+"""
+type html {
+  created_at: timestamptz!
+  data: String!
+  id: Int!
+  updated_at: timestamptz!
+}
+
+"""
+Boolean expression to filter rows from the table "html". All fields are combined with a logical 'AND'.
+"""
+input html_bool_exp {
+  _and: [html_bool_exp!]
+  _not: html_bool_exp
+  _or: [html_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  data: String_comparison_exp
+  id: Int_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""Ordering options when selecting data from "html"."""
+input html_order_by {
+  created_at: order_by
+  data: order_by
+  id: order_by
+  updated_at: order_by
+}
+
+"""
+select columns of table "html"
+"""
+enum html_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  data
+
+  """column name"""
+  id
+
+  """column name"""
+  updated_at
+}
+
+"""
+Streaming cursor of the table "html"
+"""
+input html_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: html_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input html_stream_cursor_value_input {
+  created_at: timestamptz
+  data: String
+  id: Int
+  updated_at: timestamptz
+}
+
+"""
+columns and relationships of "jargon"
+"""
+type jargon {
+  """An object relationship"""
+  author: user!
+  author_id: String!
+
+  """An array relationship"""
+  comments(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """An aggregate relationship"""
+  comments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+  created_at: timestamptz!
+  id: uuid!
+
+  """An array relationship"""
+  jargon_categories(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+  name: String!
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces"
+  """
+  name_lower_no_spaces: String
+
+  """An array relationship"""
+  related_jargons(
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): [related_jargon!]!
+
+  """An array relationship"""
+  translations(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "jargon"
+"""
+type jargon_aggregate {
+  aggregate: jargon_aggregate_fields
+  nodes: [jargon!]!
+}
+
+input jargon_aggregate_bool_exp {
+  count: jargon_aggregate_bool_exp_count
+}
+
+input jargon_aggregate_bool_exp_count {
+  arguments: [jargon_select_column!]
+  distinct: Boolean
+  filter: jargon_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "jargon"
+"""
+type jargon_aggregate_fields {
+  count(columns: [jargon_select_column!], distinct: Boolean): Int!
+  max: jargon_max_fields
+  min: jargon_min_fields
+}
+
+"""
+order by aggregate values of table "jargon"
+"""
+input jargon_aggregate_order_by {
+  count: order_by
+  max: jargon_max_order_by
+  min: jargon_min_order_by
+}
+
+"""
+Boolean expression to filter rows from the table "jargon". All fields are combined with a logical 'AND'.
+"""
+input jargon_bool_exp {
+  _and: [jargon_bool_exp!]
+  _not: jargon_bool_exp
+  _or: [jargon_bool_exp!]
+  author: user_bool_exp
+  author_id: String_comparison_exp
+  comments: comment_bool_exp
+  comments_aggregate: comment_aggregate_bool_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  jargon_categories: jargon_category_bool_exp
+  name: String_comparison_exp
+  name_lower: String_comparison_exp
+  name_lower_no_spaces: String_comparison_exp
+  related_jargons: related_jargon_bool_exp
+  translations: translation_bool_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+columns and relationships of "jargon_category"
+"""
+type jargon_category {
+  """An object relationship"""
+  category: category!
+  category_id: Int!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon_id: uuid!
+}
+
+"""
+order by aggregate values of table "jargon_category"
+"""
+input jargon_category_aggregate_order_by {
+  avg: jargon_category_avg_order_by
+  count: order_by
+  max: jargon_category_max_order_by
+  min: jargon_category_min_order_by
+  stddev: jargon_category_stddev_order_by
+  stddev_pop: jargon_category_stddev_pop_order_by
+  stddev_samp: jargon_category_stddev_samp_order_by
+  sum: jargon_category_sum_order_by
+  var_pop: jargon_category_var_pop_order_by
+  var_samp: jargon_category_var_samp_order_by
+  variance: jargon_category_variance_order_by
+}
+
+"""
+order by avg() on columns of table "jargon_category"
+"""
+input jargon_category_avg_order_by {
+  category_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "jargon_category". All fields are combined with a logical 'AND'.
+"""
+input jargon_category_bool_exp {
+  _and: [jargon_category_bool_exp!]
+  _not: jargon_category_bool_exp
+  _or: [jargon_category_bool_exp!]
+  category: category_bool_exp
+  category_id: Int_comparison_exp
+  jargon: jargon_bool_exp
+  jargon_id: uuid_comparison_exp
+}
+
+"""
+order by max() on columns of table "jargon_category"
+"""
+input jargon_category_max_order_by {
+  category_id: order_by
+  jargon_id: order_by
+}
+
+"""
+order by min() on columns of table "jargon_category"
+"""
+input jargon_category_min_order_by {
+  category_id: order_by
+  jargon_id: order_by
+}
+
+"""Ordering options when selecting data from "jargon_category"."""
+input jargon_category_order_by {
+  category: category_order_by
+  category_id: order_by
+  jargon: jargon_order_by
+  jargon_id: order_by
+}
+
+"""
+select columns of table "jargon_category"
+"""
+enum jargon_category_select_column {
+  """column name"""
+  category_id
+
+  """column name"""
+  jargon_id
+}
+
+"""
+order by stddev() on columns of table "jargon_category"
+"""
+input jargon_category_stddev_order_by {
+  category_id: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "jargon_category"
+"""
+input jargon_category_stddev_pop_order_by {
+  category_id: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "jargon_category"
+"""
+input jargon_category_stddev_samp_order_by {
+  category_id: order_by
+}
+
+"""
+Streaming cursor of the table "jargon_category"
+"""
+input jargon_category_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: jargon_category_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input jargon_category_stream_cursor_value_input {
+  category_id: Int
+  jargon_id: uuid
+}
+
+"""
+order by sum() on columns of table "jargon_category"
+"""
+input jargon_category_sum_order_by {
+  category_id: order_by
+}
+
+"""
+order by var_pop() on columns of table "jargon_category"
+"""
+input jargon_category_var_pop_order_by {
+  category_id: order_by
+}
+
+"""
+order by var_samp() on columns of table "jargon_category"
+"""
+input jargon_category_var_samp_order_by {
+  category_id: order_by
+}
+
+"""
+order by variance() on columns of table "jargon_category"
+"""
+input jargon_category_variance_order_by {
+  category_id: order_by
+}
+
+"""aggregate max on columns"""
+type jargon_max_fields {
+  author_id: String
+  created_at: timestamptz
+  id: uuid
+  name: String
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces"
+  """
+  name_lower_no_spaces: String
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "jargon"
+"""
+input jargon_max_order_by {
+  author_id: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type jargon_min_fields {
+  author_id: String
+  created_at: timestamptz
+  id: uuid
+  name: String
+
+  """
+  A computed field, executes function "to_lowercase"
+  """
+  name_lower: String
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces"
+  """
+  name_lower_no_spaces: String
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "jargon"
+"""
+input jargon_min_order_by {
+  author_id: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""Ordering options when selecting data from "jargon"."""
+input jargon_order_by {
+  author: user_order_by
+  author_id: order_by
+  comments_aggregate: comment_aggregate_order_by
+  created_at: order_by
+  id: order_by
+  jargon_categories_aggregate: jargon_category_aggregate_order_by
+  name: order_by
+  name_lower: order_by
+  name_lower_no_spaces: order_by
+  related_jargons_aggregate: related_jargon_aggregate_order_by
+  translations_aggregate: translation_aggregate_order_by
+  updated_at: order_by
+}
+
+"""
+select columns of table "jargon"
+"""
+enum jargon_select_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+Streaming cursor of the table "jargon"
+"""
+input jargon_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: jargon_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input jargon_stream_cursor_value_input {
+  author_id: String
+  created_at: timestamptz
+  id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+input list_jargon_random_args {
+  seed: seed_float
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """
+  fetch data from the table: "category"
+  """
+  category(
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): [category!]!
+
+  """fetch data from the table: "category" using primary key columns"""
+  category_by_pk(id: Int!): category
+
+  """
+  fetch data from the table: "comment"
+  """
+  comment(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """
+  fetch aggregated fields from the table: "comment"
+  """
+  comment_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+
+  """fetch data from the table: "comment" using primary key columns"""
+  comment_by_pk(id: uuid!): comment
+
+  """
+  fetch data from the table: "html"
+  """
+  html(
+    """distinct select on columns"""
+    distinct_on: [html_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [html_order_by!]
+
+    """filter the rows returned"""
+    where: html_bool_exp
+  ): [html!]!
+
+  """fetch data from the table: "html" using primary key columns"""
+  html_by_pk(id: Int!): html
+
+  """
+  fetch data from the table: "jargon"
+  """
+  jargon(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """
+  fetch aggregated fields from the table: "jargon"
+  """
+  jargon_aggregate(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargon_aggregate!
+
+  """fetch data from the table: "jargon" using primary key columns"""
+  jargon_by_pk(id: uuid!): jargon
+
+  """
+  fetch data from the table: "jargon_category"
+  """
+  jargon_category(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+
+  """fetch data from the table: "jargon_category" using primary key columns"""
+  jargon_category_by_pk(category_id: Int!, jargon_id: uuid!): jargon_category
+
+  """
+  execute function "list_jargon_random" which returns "jargon"
+  """
+  list_jargon_random(
+    """
+    input parameters for function "list_jargon_random"
+    """
+    args: list_jargon_random_args
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """
+  execute function "list_jargon_random" and query aggregates on result of table type "jargon"
+  """
+  list_jargon_random_aggregate(
+    """
+    input parameters for function "list_jargon_random_aggregate"
+    """
+    args: list_jargon_random_args
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargon_aggregate!
+
+  """
+  fetch data from the table: "related_jargon"
+  """
+  related_jargon(
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): [related_jargon!]!
+
+  """fetch data from the table: "related_jargon" using primary key columns"""
+  related_jargon_by_pk(jargon1: uuid!, jargon2: uuid!): related_jargon
+
+  """
+  fetch data from the table: "translation"
+  """
+  translation(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+
+  """fetch data from the table: "translation" using primary key columns"""
+  translation_by_pk(id: uuid!): translation
+
+  """
+  fetch data from the table: "user"
+  """
+  user(
+    """distinct select on columns"""
+    distinct_on: [user_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_order_by!]
+
+    """filter the rows returned"""
+    where: user_bool_exp
+  ): [user!]!
+
+  """fetch data from the table: "user" using primary key columns"""
+  user_by_pk(id: String!): user
+}
+
+"""
+columns and relationships of "related_jargon"
+"""
+type related_jargon {
+  """An object relationship"""
+  jargon: jargon!
+  jargon1: uuid!
+  jargon2: uuid!
+}
+
+"""
+order by aggregate values of table "related_jargon"
+"""
+input related_jargon_aggregate_order_by {
+  count: order_by
+  max: related_jargon_max_order_by
+  min: related_jargon_min_order_by
+}
+
+"""
+Boolean expression to filter rows from the table "related_jargon". All fields are combined with a logical 'AND'.
+"""
+input related_jargon_bool_exp {
+  _and: [related_jargon_bool_exp!]
+  _not: related_jargon_bool_exp
+  _or: [related_jargon_bool_exp!]
+  jargon: jargon_bool_exp
+  jargon1: uuid_comparison_exp
+  jargon2: uuid_comparison_exp
+}
+
+"""
+order by max() on columns of table "related_jargon"
+"""
+input related_jargon_max_order_by {
+  jargon1: order_by
+  jargon2: order_by
+}
+
+"""
+order by min() on columns of table "related_jargon"
+"""
+input related_jargon_min_order_by {
+  jargon1: order_by
+  jargon2: order_by
+}
+
+"""Ordering options when selecting data from "related_jargon"."""
+input related_jargon_order_by {
+  jargon: jargon_order_by
+  jargon1: order_by
+  jargon2: order_by
+}
+
+"""
+select columns of table "related_jargon"
+"""
+enum related_jargon_select_column {
+  """column name"""
+  jargon1
+
+  """column name"""
+  jargon2
+}
+
+"""
+Streaming cursor of the table "related_jargon"
+"""
+input related_jargon_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: related_jargon_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input related_jargon_stream_cursor_value_input {
+  jargon1: uuid
+  jargon2: uuid
+}
+
+scalar seed_float
+
+type subscription_root {
+  """
+  fetch data from the table: "category"
+  """
+  category(
+    """distinct select on columns"""
+    distinct_on: [category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [category_order_by!]
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): [category!]!
+
+  """fetch data from the table: "category" using primary key columns"""
+  category_by_pk(id: Int!): category
+
+  """
+  fetch data from the table in a streaming manner: "category"
+  """
+  category_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [category_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: category_bool_exp
+  ): [category!]!
+
+  """
+  fetch data from the table: "comment"
+  """
+  comment(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """
+  fetch aggregated fields from the table: "comment"
+  """
+  comment_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+
+  """fetch data from the table: "comment" using primary key columns"""
+  comment_by_pk(id: uuid!): comment
+
+  """
+  fetch data from the table in a streaming manner: "comment"
+  """
+  comment_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [comment_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """
+  fetch data from the table: "html"
+  """
+  html(
+    """distinct select on columns"""
+    distinct_on: [html_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [html_order_by!]
+
+    """filter the rows returned"""
+    where: html_bool_exp
+  ): [html!]!
+
+  """fetch data from the table: "html" using primary key columns"""
+  html_by_pk(id: Int!): html
+
+  """
+  fetch data from the table in a streaming manner: "html"
+  """
+  html_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [html_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: html_bool_exp
+  ): [html!]!
+
+  """
+  fetch data from the table: "jargon"
+  """
+  jargon(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """
+  fetch aggregated fields from the table: "jargon"
+  """
+  jargon_aggregate(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargon_aggregate!
+
+  """fetch data from the table: "jargon" using primary key columns"""
+  jargon_by_pk(id: uuid!): jargon
+
+  """
+  fetch data from the table: "jargon_category"
+  """
+  jargon_category(
+    """distinct select on columns"""
+    distinct_on: [jargon_category_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_category_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+
+  """fetch data from the table: "jargon_category" using primary key columns"""
+  jargon_category_by_pk(category_id: Int!, jargon_id: uuid!): jargon_category
+
+  """
+  fetch data from the table in a streaming manner: "jargon_category"
+  """
+  jargon_category_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [jargon_category_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: jargon_category_bool_exp
+  ): [jargon_category!]!
+
+  """
+  fetch data from the table in a streaming manner: "jargon"
+  """
+  jargon_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [jargon_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """
+  execute function "list_jargon_random" which returns "jargon"
+  """
+  list_jargon_random(
+    """
+    input parameters for function "list_jargon_random"
+    """
+    args: list_jargon_random_args
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """
+  execute function "list_jargon_random" and query aggregates on result of table type "jargon"
+  """
+  list_jargon_random_aggregate(
+    """
+    input parameters for function "list_jargon_random_aggregate"
+    """
+    args: list_jargon_random_args
+
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargon_aggregate!
+
+  """
+  fetch data from the table: "related_jargon"
+  """
+  related_jargon(
+    """distinct select on columns"""
+    distinct_on: [related_jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [related_jargon_order_by!]
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): [related_jargon!]!
+
+  """fetch data from the table: "related_jargon" using primary key columns"""
+  related_jargon_by_pk(jargon1: uuid!, jargon2: uuid!): related_jargon
+
+  """
+  fetch data from the table in a streaming manner: "related_jargon"
+  """
+  related_jargon_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [related_jargon_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: related_jargon_bool_exp
+  ): [related_jargon!]!
+
+  """
+  fetch data from the table: "translation"
+  """
+  translation(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+
+  """fetch data from the table: "translation" using primary key columns"""
+  translation_by_pk(id: uuid!): translation
+
+  """
+  fetch data from the table in a streaming manner: "translation"
+  """
+  translation_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [translation_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+
+  """
+  fetch data from the table: "user"
+  """
+  user(
+    """distinct select on columns"""
+    distinct_on: [user_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_order_by!]
+
+    """filter the rows returned"""
+    where: user_bool_exp
+  ): [user!]!
+
+  """fetch data from the table: "user" using primary key columns"""
+  user_by_pk(id: String!): user
+
+  """
+  fetch data from the table in a streaming manner: "user"
+  """
+  user_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [user_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: user_bool_exp
+  ): [user!]!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+columns and relationships of "translation"
+"""
+type translation {
+  """An object relationship"""
+  author: user!
+  author_id: String!
+
+  """An object relationship"""
+  comment: comment
+  comment_id: uuid!
+  created_at: timestamptz!
+  id: uuid!
+
+  """An object relationship"""
+  jargon: jargon!
+  jargon_id: uuid!
+  name: String!
+
+  """
+  A computed field, executes function "to_lowercase_no_spaces_translation"
+  """
+  name_lower_no_spaces: String
+  updated_at: timestamptz!
+}
+
+"""
+order by aggregate values of table "translation"
+"""
+input translation_aggregate_order_by {
+  count: order_by
+  max: translation_max_order_by
+  min: translation_min_order_by
+}
+
+"""
+Boolean expression to filter rows from the table "translation". All fields are combined with a logical 'AND'.
+"""
+input translation_bool_exp {
+  _and: [translation_bool_exp!]
+  _not: translation_bool_exp
+  _or: [translation_bool_exp!]
+  author: user_bool_exp
+  author_id: String_comparison_exp
+  comment: comment_bool_exp
+  comment_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  jargon: jargon_bool_exp
+  jargon_id: uuid_comparison_exp
+  name: String_comparison_exp
+  name_lower_no_spaces: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+order by max() on columns of table "translation"
+"""
+input translation_max_order_by {
+  author_id: order_by
+  comment_id: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""
+order by min() on columns of table "translation"
+"""
+input translation_min_order_by {
+  author_id: order_by
+  comment_id: order_by
+  created_at: order_by
+  id: order_by
+  jargon_id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""Ordering options when selecting data from "translation"."""
+input translation_order_by {
+  author: user_order_by
+  author_id: order_by
+  comment: comment_order_by
+  comment_id: order_by
+  created_at: order_by
+  id: order_by
+  jargon: jargon_order_by
+  jargon_id: order_by
+  name: order_by
+  name_lower_no_spaces: order_by
+  updated_at: order_by
+}
+
+"""
+select columns of table "translation"
+"""
+enum translation_select_column {
+  """column name"""
+  author_id
+
+  """column name"""
+  comment_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  jargon_id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+Streaming cursor of the table "translation"
+"""
+input translation_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: translation_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input translation_stream_cursor_value_input {
+  author_id: String
+  comment_id: uuid
+  created_at: timestamptz
+  id: uuid
+  jargon_id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+columns and relationships of "user"
+"""
+type user {
+  """An array relationship"""
+  comments(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): [comment!]!
+
+  """An aggregate relationship"""
+  comments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [comment_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [comment_order_by!]
+
+    """filter the rows returned"""
+    where: comment_bool_exp
+  ): comment_aggregate!
+  display_name: String!
+  id: String!
+
+  """An array relationship"""
+  jargons(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): [jargon!]!
+
+  """An aggregate relationship"""
+  jargons_aggregate(
+    """distinct select on columns"""
+    distinct_on: [jargon_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [jargon_order_by!]
+
+    """filter the rows returned"""
+    where: jargon_bool_exp
+  ): jargon_aggregate!
+  last_seen: timestamptz
+  photo_url: String
+
+  """An array relationship"""
+  translations(
+    """distinct select on columns"""
+    distinct_on: [translation_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [translation_order_by!]
+
+    """filter the rows returned"""
+    where: translation_bool_exp
+  ): [translation!]!
+}
+
+"""
+Boolean expression to filter rows from the table "user". All fields are combined with a logical 'AND'.
+"""
+input user_bool_exp {
+  _and: [user_bool_exp!]
+  _not: user_bool_exp
+  _or: [user_bool_exp!]
+  comments: comment_bool_exp
+  comments_aggregate: comment_aggregate_bool_exp
+  display_name: String_comparison_exp
+  id: String_comparison_exp
+  jargons: jargon_bool_exp
+  jargons_aggregate: jargon_aggregate_bool_exp
+  last_seen: timestamptz_comparison_exp
+  photo_url: String_comparison_exp
+  translations: translation_bool_exp
+}
+
+"""Ordering options when selecting data from "user"."""
+input user_order_by {
+  comments_aggregate: comment_aggregate_order_by
+  display_name: order_by
+  id: order_by
+  jargons_aggregate: jargon_aggregate_order_by
+  last_seen: order_by
+  photo_url: order_by
+  translations_aggregate: translation_aggregate_order_by
+}
+
+"""
+select columns of table "user"
+"""
+enum user_select_column {
+  """column name"""
+  display_name
+
+  """column name"""
+  id
+
+  """column name"""
+  last_seen
+
+  """column name"""
+  photo_url
+}
+
+"""
+Streaming cursor of the table "user"
+"""
+input user_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: user_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input user_stream_cursor_value_input {
+  display_name: String
+  id: String
+  last_seen: timestamptz
+  photo_url: String
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}

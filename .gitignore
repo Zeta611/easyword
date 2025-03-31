@@ -62,3 +62,5 @@ package
 #!! ERROR: typescript is undefined. Use list command to see defined gitignore types !!#
 
 # End of https://www.toptal.com/developers/gitignore/api/typescript,svelte,deno,nix,direnv,neovim,macos
+
+.houdini
