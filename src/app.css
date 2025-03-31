@@ -1,2 +1,14 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+@layer components {
+	.article {
+		@apply prose mx-auto max-w-xl px-6 py-12 md:max-w-4xl;
+	}
+}
+
+@layer base {
+	article {
+		@apply prose mx-auto max-w-xl px-6 py-12 md:max-w-4xl;
+	}
+}
