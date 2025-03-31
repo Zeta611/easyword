@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { type PageData } from './$houdini';
-	export let data: PageData;
-
-	$: ({ CategoryQuery } = data);
+	let { data }: { data: PageData } = $props();
+	let { CategoryQuery } = $derived(data);
 </script>
 
 <h1>쉬운 전문용어</h1>
