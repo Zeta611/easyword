@@ -1,21 +1,38 @@
-# easyword.kr
+# sv
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a2dde827-b91c-4c09-a42b-30e55db69cad/deploy-status)](https://app.netlify.com/sites/easykoreanjargon/deploys)
+Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## Installation
+## Creating a project
 
-```sh
-bun install
+If you're seeing this, you've probably already done this step. Congrats!
+
+```bash
+# create a new project in the current directory
+npx sv create
+
+# create a new project in my-app
+npx sv create my-app
 ```
 
-## Build
+## Developing
 
-- Build: `bun build:deps`
-- Clean: `bun clean`
-- Build & watch: `bun build:watch`
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
-## Run
+```bash
+npm run dev
 
-```sh
-bun start
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
+
+## Building
+
+To create a production version of your app:
+
+```bash
+npm run build
+```
+
+You can preview the production build with `npm run preview`.
+
+> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
