@@ -1,7 +1,13 @@
 <script lang="ts">
 	import '../app.css';
+	import { dev } from '$app/environment';
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
 	import { NavigationMenu } from 'bits-ui';
 	import { cn } from '$lib/utils';
+
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
+	injectSpeedInsights();
 
 	let { children } = $props();
 
