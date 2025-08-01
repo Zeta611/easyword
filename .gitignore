@@ -1,3 +1,5 @@
+.envrc
+.direnv
 .graphql_ppx_cache
 .env.local
 .bsb.lock
