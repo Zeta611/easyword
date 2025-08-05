@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Source_Code_Pro, Hahmlet } from "next/font/google";
 import Image from "next/image";
 import "./globals.css";
-import Nav from "@/components/Nav";
+import NavBar from "@/components/NavBar";
 
 const hahmlet = Hahmlet({
   variable: "--font-serif",
@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background h-screen w-screen px-4 font-serif antialiased sm:px-6 lg:px-8`}
       >
-        <Nav />
+        <NavBar />
         <main className="my-3 overflow-auto">{children}</main>
         <footer className="flex items-center justify-center gap-1 py-2">
           <a

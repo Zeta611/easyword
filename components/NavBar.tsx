@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "lucide-react";
 import { useState, useEffect } from "react";
+import NavBarAvatar from "./NavBarAvatar";
 import { cn } from "@/lib/utils";
 
-export default function Nav() {
+export default function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -50,11 +50,7 @@ export default function Nav() {
         </Link>
         <div className="flex items-center gap-2"></div>
         <div className="flex items-center gap-2">
-          <Link href="/sign-in">
-            <div className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl">
-              <User />
-            </div>
-          </Link>
+          <NavBarAvatar />
         </div>
       </div>
     </nav>
