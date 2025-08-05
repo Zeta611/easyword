@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
+import { Source_Code_Pro, Hahmlet } from "next/font/google";
 import Image from "next/image";
 import "./globals.css";
 import Nav from "@/components/Nav";
 
-const notoSans = Noto_Sans_KR({
-  variable: "--font-noto-sans",
+const hahmlet = Hahmlet({
+  variable: "--font-serif",
+  subsets: ["latin-ext"],
+});
+
+const sourceCodePro = Source_Code_Pro({
+  variable: "--font-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -21,10 +27,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${notoSans.variable} !bg-background h-screen w-screen px-4 font-sans antialiased sm:px-6 lg:px-8`}
+        className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background h-screen w-screen px-4 font-serif antialiased sm:px-6 lg:px-8`}
       >
         <Nav />
-        <main className="overflow-auto">{children}</main>
+        <main className="my-3 overflow-auto">{children}</main>
         <footer className="flex items-center justify-center gap-1 py-2">
           <a
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"

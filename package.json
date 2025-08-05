@@ -10,6 +10,9 @@
     "format": "next lint --fix"
   },
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.53.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.536.0",

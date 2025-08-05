@@ -1,13 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { User } from "lucide-react";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 export default function Nav() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
+  // Hide "컴퓨터과학/컴퓨터공학" when scrolling down
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -33,15 +35,28 @@ export default function Nav() {
       <div className="flex h-24 items-center justify-between">
         <Link href="/">
           <div className="flex flex-col items-center gap-1">
-            <span className="rounded-sm bg-black px-3 py-2 text-xl font-medium text-white transition-all ease-in-out hover:rounded-3xl hover:text-lg">
+            <span className="rounded-sm bg-black px-3 py-2 text-xl font-black text-white transition-all ease-in-out hover:rounded-3xl hover:text-lg">
               쉬운 전문용어
             </span>
-            <span className={cn("text-xs font-bold duration-300 transition-colors", isVisible ? "text-gray-900" : "text-transparent")}>
+            <span
+              className={cn(
+                "text-sm font-bold transition-colors duration-300",
+                isVisible ? "text-gray-900" : "text-transparent",
+              )}
+            >
               컴퓨터과학/컴퓨터공학
             </span>
           </div>
         </Link>
-      </div >
-    </nav >
+        <div className="flex items-center gap-2"></div>
+        <div className="flex items-center gap-2">
+          <Link href="/sign-in">
+            <div className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl">
+              <User />
+            </div>
+          </Link>
+        </div>
+      </div>
+    </nav>
   );
 }
