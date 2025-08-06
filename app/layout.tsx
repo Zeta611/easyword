@@ -27,27 +27,29 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background flex min-h-screen w-screen flex-col px-4 font-serif antialiased sm:px-6 lg:px-8`}
+        className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background font-serif antialiased`}
       >
-        <NavBar />
-        <main className="flex-1">{children}</main>
-        <footer className="mt-4 flex h-12 items-center justify-center gap-1">
-          <a
-            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href="https://kiise.or.kr"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              aria-hidden
-              src="/kiise.png"
-              alt="KIISE logo"
-              width={122}
-              height={25}
-            />
-            한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다.
-          </a>
-        </footer>
+        <div className="flex min-h-screen w-screen flex-col px-4 sm:px-6 lg:px-8">
+          <NavBar />
+          <main className="flex-1">{children}</main>
+          <footer className="mt-4 flex h-12 items-center justify-center gap-1">
+            <a
+              className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+              href="https://kiise.or.kr"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                aria-hidden
+                src="/kiise.png"
+                alt="KIISE logo"
+                width={122}
+                height={25}
+              />
+              한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다.
+            </a>
+          </footer>
+        </div>
       </body>
     </html>
   );
