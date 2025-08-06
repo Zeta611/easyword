@@ -9,15 +9,15 @@ export default async function Home() {
     .select(
       "id, name, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
     )
-    // .limit(40)
+    .limit(10)
     .order("created_at", { ascending: false });
 
-  console.debug("Fetched jargons:", jargons);
+  // console.debug("Fetched jargons:", jargons);
 
   if (error) throw error;
 
   return (
-    <div className="mx-auto min-h-screen max-w-7xl">
+    <div className="mx-auto max-w-7xl">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {jargons.map((jargon) => (
           <JargonCard

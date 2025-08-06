@@ -17,7 +17,7 @@ export default async function Profile() {
   }
 
   return (
-    <div className="flex h-svh w-full items-center justify-center gap-2">
+    <div className="flex w-full items-center justify-center gap-2">
       <p>
         안녕하세요 <span>{data.session.user.user_metadata.full_name}님!</span>
         <br />

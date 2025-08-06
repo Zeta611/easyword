@@ -27,11 +27,11 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background min-h-screen w-screen px-4 font-serif antialiased sm:px-6 lg:px-8`}
+        className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background flex min-h-screen w-screen flex-col px-4 font-serif antialiased sm:px-6 lg:px-8`}
       >
         <NavBar />
-        <main>{children}</main>
-        <footer className="my-2 flex items-center justify-center gap-1">
+        <main className="flex-1">{children}</main>
+        <footer className="mt-4 flex h-12 items-center justify-center gap-1">
           <a
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"
             href="https://kiise.or.kr"
