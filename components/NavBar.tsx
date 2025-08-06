@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import {
+  ChevronRight,
+  CornerDownLeft,
+  FileSearch,
+  Loader2,
+} from "lucide-react";
+import { matchSorter } from "match-sorter";
 import NavBarAvatar from "./NavBarAvatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +22,7 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { useSearch } from "@/hooks/useSearch";
+import Kbd from "@/components/Kbd";
 
 export default function NavBar() {
   // Hide "컴퓨터과학/컴퓨터공학" when scrolling down
@@ -59,7 +66,7 @@ export default function NavBar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const { query, setQuery, results, isLoading, error } = useSearch();
+  const { query, setQuery, results, isLoading, error } = useSearch(8);
   // Clear search when dialog closes
   useEffect(() => {
     if (!open) {
@@ -99,17 +106,21 @@ export default function NavBar() {
             onClick={() => setOpen(true)}
           >
             쉬운 전문용어 검색
-            <kbd className="bg-muted pointer-events-none hidden h-5.5 items-center gap-1 rounded border px-1 font-mono text-xs sm:flex">
-              <span className="mb-[-2.5]">⌘</span>K
-            </kbd>
+            <Kbd>/</Kbd>
           </Button>
-          <CommandDialog open={open} onOpenChange={setOpen}>
+          <CommandDialog
+            title="검색창"
+            description="쉬운 전문용어를 검색하세요"
+            shouldFilter={false}
+            open={open}
+            onOpenChange={setOpen}
+          >
             <CommandInput
               placeholder="쉬운 전문용어를 검색하세요..."
               value={query}
               onValueChange={setQuery}
             />
-            <CommandList className="py-1">
+            <CommandList className="max-h-[calc(100dvh-130px)] py-1">
               {isLoading && (
                 <div className="my-6 flex items-center justify-center gap-2">
                   <Loader2 className="size-4 animate-spin" />
@@ -129,15 +140,37 @@ export default function NavBar() {
                 <>
                   <CommandEmpty>검색 결과가 없어요</CommandEmpty>
 
+                  {(results.original.length > 0 ||
+                    results.translation.length > 0) && (
+                    <CommandGroup>
+                      <CommandItem
+                        onSelect={() => {
+                          setOpen(false);
+                          // router.push("/jargon");
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          <FileSearch className="!size-4" />
+                          더보기
+                        </div>
+                      </CommandItem>
+                    </CommandGroup>
+                  )}
+
                   {results.original.length > 0 && (
                     <CommandGroup heading="원어">
-                      {results.original.map((result) => (
+                      {matchSorter(results.original, query, {
+                        keys: ["name"],
+                      }).map((result) => (
                         <CommandItem
                           key={result.id}
                           value={result.name}
                           onSelect={() => handleSelectResult(result.jargonId)}
                         >
-                          {result.name}
+                          <div className="flex flex-1 items-center justify-between">
+                            {result.name}
+                            <ChevronRight />
+                          </div>
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -145,13 +178,18 @@ export default function NavBar() {
 
                   {results.translation.length > 0 && (
                     <CommandGroup heading="번역어">
-                      {results.translation.map((result) => (
+                      {matchSorter(results.translation, query, {
+                        keys: ["name"],
+                      }).map((result) => (
                         <CommandItem
                           key={result.id}
                           value={result.name}
                           onSelect={() => handleSelectResult(result.jargonId)}
                         >
-                          {result.name}
+                          <div className="flex flex-1 items-center justify-between">
+                            {result.name}
+                            <ChevronRight />
+                          </div>
                         </CommandItem>
                       ))}
                     </CommandGroup>
@@ -159,6 +197,12 @@ export default function NavBar() {
                 </>
               )}
             </CommandList>
+            <div className="text-muted-foreground bg-accent flex h-10 items-center gap-1.5 border-t px-4 text-xs font-medium">
+              바로가기
+              <Kbd>
+                <CornerDownLeft className="size-2.5" />
+              </Kbd>
+            </div>
           </CommandDialog>
           <NavBarAvatar />
         </div>

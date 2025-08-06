@@ -15,7 +15,7 @@ export interface GroupedSearchResults {
   translation: SearchResult[];
 }
 
-export function useSearch() {
+export function useSearch(limit = 10) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GroupedSearchResults>({
     original: [],
@@ -42,7 +42,7 @@ export function useSearch() {
           .from("jargon")
           .select("id, name")
           .ilike("name", `%${searchQuery}%`)
-          .limit(10);
+          .limit(limit);
 
         if (jargonError) throw jargonError;
 
@@ -59,7 +59,7 @@ export function useSearch() {
         `,
             )
             .ilike("name", `%${searchQuery}%`)
-            .limit(10);
+            .limit(limit);
 
         if (translationError) throw translationError;
 
