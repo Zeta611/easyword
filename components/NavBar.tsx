@@ -32,7 +32,7 @@ export default function NavBar() {
 
   return (
     <nav className="sticky top-0 z-50">
-      <div className="flex h-24 items-center justify-between">
+      <div className="mb-4 flex items-start justify-between pt-4">
         <Link href="/">
           <div className="flex flex-col items-center gap-1">
             <span className="rounded-sm bg-black px-3 py-2 text-xl font-black text-white transition-all ease-in-out hover:rounded-3xl hover:text-lg">
