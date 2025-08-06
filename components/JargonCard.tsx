@@ -1,12 +1,21 @@
 "use client";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko";
+import { MessageCircle } from "lucide-react";
 import Link from "next/link";
+
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
 
 export interface JargonData {
   id: string;
   name: string;
   translations: string[];
   categories: string[];
+  commentCount: number;
+  updatedAt: string;
 }
 
 interface JargonCardProps {
@@ -40,6 +49,15 @@ export default function JargonCard({ jargon }: JargonCardProps) {
             ? jargon.translations.join(", ")
             : "No translations available"}
         </p>
+
+        {/* comment count · last updated */}
+        <div className="mt-auto flex gap-1 self-end text-sm text-gray-600">
+          <span className="flex items-center gap-0.5">
+            <MessageCircle className="mb-[-1.5] inline size-3.5" />
+            {jargon.commentCount}
+          </span>
+          ·<span className="">{dayjs(jargon.updatedAt).fromNow()}</span>
+        </div>
       </div>
     </Link>
   );

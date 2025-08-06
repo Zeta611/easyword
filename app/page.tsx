@@ -7,10 +7,19 @@ export default async function Home() {
   const { data: jargons, error } = await supabase
     .from("jargon")
     .select(
-      "id, name, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
+      `
+      id,
+      name,
+      updated_at,
+      translations:translation(name),
+      categories:jargon_category(
+        category:category(acronym)
+      ),
+      comments:comment(count)
+      `,
     )
-    .limit(10)
-    .order("created_at", { ascending: false });
+    .order("updated_at", { ascending: false })
+    .limit(10);
 
   // console.debug("Fetched jargons:", jargons);
 
@@ -26,6 +35,8 @@ export default async function Home() {
               ...jargon,
               translations: jargon.translations.map((t) => t.name),
               categories: jargon.categories.map((c) => c.category.acronym),
+              commentCount: jargon.comments[0]?.count || 0,
+              updatedAt: jargon.updated_at,
             }}
           />
         ))}
