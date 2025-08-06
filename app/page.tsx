@@ -4,7 +4,11 @@ import JargonCard from "@/components/JargonCard";
 export default async function Home() {
   const supabase = await createClient();
 
-  const { data: jargons, error } = await supabase
+  const {
+    data: jargons,
+    error,
+    count,
+  } = await supabase
     .from("jargon")
     .select(
       `
@@ -17,6 +21,7 @@ export default async function Home() {
       ),
       comments:comment(count)
       `,
+      { count: "exact" },
     )
     .order("updated_at", { ascending: false })
     .limit(10);
@@ -26,7 +31,12 @@ export default async function Home() {
   if (error) throw error;
 
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="mx-auto flex max-w-7xl flex-col gap-3">
+      <div className="flex items-center justify-between">
+        <span className="text-lg font-bold text-gray-900">
+          쉬운 전문용어 {count}개
+        </span>
+      </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {jargons.map((jargon) => (
           <JargonCard
