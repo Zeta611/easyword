@@ -8,6 +8,7 @@ export interface SearchResult {
   name: string;
   type: "jargons" | "translations";
   jargonId: string;
+  jargonSlug: string;
 }
 
 export interface GroupedSearchResults {
@@ -40,7 +41,7 @@ export function useSearch(limit = 10) {
         const [jargonResults, translationResults] = await Promise.all([
           supabase
             .from("jargon")
-            .select("id, name")
+            .select("id, name, slug")
             .ilike("name", `%${searchQuery}%`)
             .limit(limit),
 
@@ -51,7 +52,7 @@ export function useSearch(limit = 10) {
               id,
               name,
               jargon_id,
-              jargon:jargon_id(id, name)
+              jargon:jargon_id(id, name, slug)
             `,
             )
             .ilike("name", `%${searchQuery}%`)
@@ -68,6 +69,7 @@ export function useSearch(limit = 10) {
           name: jargon.name,
           type: "jargons",
           jargonId: jargon.id,
+          jargonSlug: jargon.slug,
         }));
 
         const translationResultsMapped: SearchResult[] = (
@@ -77,6 +79,7 @@ export function useSearch(limit = 10) {
           name: translation.name,
           type: "translations",
           jargonId: translation.jargon_id,
+          jargonSlug: translation.jargon.slug,
         }));
 
         setResults({

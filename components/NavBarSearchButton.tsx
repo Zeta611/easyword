@@ -55,9 +55,9 @@ export default function NavBarSearchButton() {
 
   const router = useRouter();
 
-  const handleSelectResult = (jargonId: string) => {
+  const handleSelectResult = (jargonSlug: string) => {
     setOpen(false);
-    router.push(`/jargon/${jargonId}`);
+    router.push(`/jargon/${jargonSlug}`);
   };
 
   return (
@@ -136,7 +136,7 @@ export default function NavBarSearchButton() {
                     <CommandItem
                       key={result.id}
                       value={result.name}
-                      onSelect={() => handleSelectResult(result.jargonId)}
+                      onSelect={() => handleSelectResult(result.jargonSlug)}
                     >
                       <div className="flex flex-1 items-center justify-between">
                         {result.name}
@@ -155,7 +155,7 @@ export default function NavBarSearchButton() {
                     <CommandItem
                       key={result.id}
                       value={result.name}
-                      onSelect={() => handleSelectResult(result.jargonId)}
+                      onSelect={() => handleSelectResult(result.jargonSlug)}
                     >
                       <div className="flex flex-1 items-center justify-between">
                         {result.name}

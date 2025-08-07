@@ -2,19 +2,19 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
 interface JargonPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function JargonDetailPage({ params }: JargonPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: jargon, error } = await supabase
     .from("jargon")
     .select(
-      "id, name, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
+      "id, name, slug, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
     )
-    .eq("id", id)
+    .eq("slug", slug)
     .limit(1)
     .single();
 

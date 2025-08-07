@@ -38,6 +38,7 @@ export default async function Home({ searchParams }: HomeProps) {
     initialData = jargonResults.data.map((item) => ({
       id: item.id,
       name: item.name,
+      slug: item.slug,
       updated_at: item.updated_at,
       // @ts-expect-error JSON handling
       translations: item.translations.map((t) => t.name),
@@ -68,6 +69,7 @@ export default async function Home({ searchParams }: HomeProps) {
     initialData = jargonResults.data.map((item) => ({
       id: item.id,
       name: item.name,
+      slug: item.slug,
       updated_at: item.updated_at,
       // @ts-expect-error JSON handling
       translations: item.translations.map((t) => t.name),

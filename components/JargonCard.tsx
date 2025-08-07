@@ -12,6 +12,7 @@ dayjs.locale("ko");
 export interface JargonData {
   id: string;
   name: string;
+  slug: string;
   translations: string[];
   categories: string[];
   commentCount: number;
@@ -24,7 +25,7 @@ interface JargonCardProps {
 
 export default function JargonCard({ jargon }: JargonCardProps) {
   return (
-    <Link href={`/jargon/${jargon.id}`}>
+    <Link href={`/jargon/${jargon.slug}`}>
       <div className="hover:bg-accent flex h-full cursor-pointer flex-col gap-1 rounded-md bg-white p-3 transition-all duration-200">
         {/* categories */}
         {jargon.categories.length > 0 ? (
