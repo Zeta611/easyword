@@ -54,9 +54,14 @@ function useJargonInfiniteQuery(
     async (offset = data.length, isInitialLoad = false) => {
       if (
         isFetching ||
-        (totalCount && data.length >= totalCount) /* no more data to fetch */
-      )
+        (!isInitialLoad &&
+          totalCount &&
+          data.length >= totalCount) /* no more data to fetch */
+      ) {
         return;
+      }
+
+      console.debug("Fetching next page with offset:", offset);
 
       setIsFetching(true);
       if (isInitialLoad) {
@@ -83,7 +88,7 @@ function useJargonInfiniteQuery(
               search_query: searchQuery || "",
             },
           );
-          console.info("Total count fetched:", totalCount);
+          console.debug("Total count fetched:", totalCount);
 
           if (!countError && totalCount !== undefined) {
             setTotalCount(totalCount);
@@ -132,16 +137,22 @@ function useJargonInfiniteQuery(
 
   // NOTE: Initial fetch for each query happens here!
   useEffect(() => {
+    console.debug("Running useEffect for searchQuery:", searchQuery);
     if (!initialData && !hasInitialized) {
       // No initial data and haven't initialized yet
+      console.debug("No initial data, fetching first page");
       fetchNext(0, true);
     } else if (prevSearchQuery.current !== searchQuery) {
       // New search query
+      console.debug("New search query");
       prevSearchQuery.current = searchQuery;
       setData([]);
       setTotalCount(undefined);
       setHasInitialized(false); // will be set to true in fetchNext after load
+      // if (searchQuery && searchQuery.trim()) {
       fetchNext(0, true);
+      // } else {
+      // }
     }
   }, [searchQuery, initialData, hasInitialized, fetchNext]);
 
@@ -173,8 +184,6 @@ export default function JargonInfiniteList({
       </div>
     );
   }
-
-  console.debug(searchQuery);
 
   return (
     <div className="flex flex-col gap-3">
