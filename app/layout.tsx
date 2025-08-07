@@ -41,12 +41,15 @@ export default function RootLayout({
             >
               <Image
                 aria-hidden
+                className="w-11 sm:w-auto"
                 src="/kiise.png"
                 alt="KIISE logo"
                 width={122}
                 height={25}
               />
-              한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다.
+              <p className="text-[10px] text-gray-500 sm:text-sm">
+                한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다
+              </p>
             </a>
           </footer>
         </div>

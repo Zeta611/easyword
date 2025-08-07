@@ -75,11 +75,13 @@ export default function NavBarSearchButton() {
       {/* Mobile search button - fixed at bottom center */}
       <Button
         variant="outline"
-        className="bg-accent fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-3 shadow-lg hover:cursor-pointer sm:hidden"
+        className="bg-accent fixed bottom-6 left-1/2 z-50 h-9 w-16 -translate-x-1/2 rounded-full p-3 shadow-lg hover:cursor-pointer sm:hidden"
         onClick={() => setOpen(true)}
       >
-        <Search className="size-5" />
+        <Search className="size-5.5" />
       </Button>
+
+      {/* Search palette */}
       <CommandDialog
         title="검색창"
         description="쉬운 전문용어를 검색하세요"
