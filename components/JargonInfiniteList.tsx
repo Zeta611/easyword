@@ -48,7 +48,7 @@ function useJargonInfiniteQuery(
   const prevSearchQuery = useRef(searchQuery);
 
   const supabase = createClient();
-  const pageSize = 20;
+  const pageSize = 32;
 
   const fetchNext = useCallback(
     async (offset = data.length, isInitialLoad = false) => {

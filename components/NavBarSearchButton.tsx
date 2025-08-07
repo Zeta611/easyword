@@ -61,14 +61,8 @@ export default function NavBarSearchButton() {
   };
 
   return (
-    <div>
-      <Button
-        variant="outline"
-        className="bg-accent hover:cursor-pointer sm:hidden"
-        onClick={() => setOpen(true)}
-      >
-        <Search className="size-4" />
-      </Button>
+    <>
+      {/* Desktop search button */}
       <Button
         variant="outline"
         className="bg-accent hidden w-64 justify-between sm:flex"
@@ -76,6 +70,15 @@ export default function NavBarSearchButton() {
       >
         쉬운 전문용어 검색
         <Kbd>/</Kbd>
+      </Button>
+
+      {/* Mobile search button - fixed at bottom center */}
+      <Button
+        variant="outline"
+        className="bg-accent fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform rounded-full p-3 shadow-lg hover:cursor-pointer sm:hidden"
+        onClick={() => setOpen(true)}
+      >
+        <Search className="size-5" />
       </Button>
       <CommandDialog
         title="검색창"
@@ -170,6 +173,6 @@ export default function NavBarSearchButton() {
           </Kbd>
         </div>
       </CommandDialog>
-    </div>
+    </>
   );
 }
