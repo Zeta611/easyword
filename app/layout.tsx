@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background font-serif antialiased`}
       >
-        <div className="flex min-h-screen w-screen flex-col px-4 sm:px-6 lg:px-8">
+        <div className="flex min-h-screen w-full flex-col px-4 sm:px-6 lg:px-8">
           <NavBar />
           <main className="flex-1">{children}</main>
           <footer className="mt-4 flex h-12 items-center justify-center gap-1">
