@@ -1,10 +1,7 @@
-import Link from "next/link";
-import { X } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import JargonInfiniteList, {
   JargonData,
 } from "@/components/JargonInfiniteList";
-import { Button } from "@/components/ui/button";
 
 interface HomeProps {
   searchParams: Promise<{ q?: string }>;
@@ -18,46 +15,43 @@ export default async function Home({ searchParams }: HomeProps) {
 
   // Fetch initial data for SSR
   let initialData: JargonData[] = [];
-  let totalCount = 0;
+  let initialTotalCount: number;
 
-  try {
-    if (searchQuery?.trim()) {
-      // Use RPC for search with initial load
-      const { data, error } = await supabase.rpc(
-        "search_jargons_with_translations",
-        {
-          search_query: searchQuery,
-          limit_count: INITIAL_LOAD_SIZE,
-          offset_count: 0,
-        },
-      );
-
-      if (!error && data) {
-        initialData = data.map((item) => ({
-          id: item.id,
-          name: item.name,
-          updated_at: item.updated_at,
-          // @ts-expect-error JSON handling
-          translations: item.translations.map((t) => t.name),
-          // @ts-expect-error JSON handling
-          categories: item.categories.map((c) => c.acronym),
-          // @ts-expect-error JSON handling
-          comment_count: item.comment_count,
-        }));
-      }
-
-      // Get total count
-      const { data: countData } = await supabase.rpc("count_search_jargons", {
+  if (searchQuery?.trim()) {
+    // Use RPC for search with initial load
+    const [jargonResults, countResult] = await Promise.all([
+      supabase.rpc("search_jargons_with_translations", {
         search_query: searchQuery,
-      });
+        limit_count: INITIAL_LOAD_SIZE,
+        offset_count: 0,
+      }),
 
-      totalCount = countData || 0;
-    } else {
-      // Fetch latest jargons for initial SSR
-      const result = await supabase
-        .from("jargon")
-        .select(
-          `
+      supabase.rpc("count_search_jargons", {
+        search_query: searchQuery,
+      }),
+    ]);
+
+    if (jargonResults.error) throw jargonResults.error;
+    if (countResult.error) throw countResult.error;
+
+    initialData = jargonResults.data.map((item) => ({
+      id: item.id,
+      name: item.name,
+      updated_at: item.updated_at,
+      // @ts-expect-error JSON handling
+      translations: item.translations.map((t) => t.name),
+      // @ts-expect-error JSON handling
+      categories: item.categories.map((c) => c.acronym),
+      // @ts-expect-error JSON handling
+      comment_count: item.comment_count,
+    }));
+    initialTotalCount = countResult.data;
+  } else {
+    // Fetch latest jargons for initial SSR
+    const result = await supabase
+      .from("jargon")
+      .select(
+        `
           id,
           name,
           updated_at,
@@ -67,47 +61,30 @@ export default async function Home({ searchParams }: HomeProps) {
           ),
           comments:comment(count)
           `,
-          { count: "exact" },
-        )
-        .order("updated_at", { ascending: false })
-        .limit(INITIAL_LOAD_SIZE);
+        { count: "exact" },
+      )
+      .order("updated_at", { ascending: false })
+      .limit(INITIAL_LOAD_SIZE);
 
-      if (!result.error && result.data) {
-        initialData = result.data.map((jargon) => ({
-          id: jargon.id,
-          name: jargon.name,
-          updated_at: jargon.updated_at,
-          translations: jargon.translations.map((t) => t.name),
-          categories: jargon.categories.map((c) => c.category.acronym),
-          comment_count: jargon.comments[0]?.count || 0,
-        }));
-        totalCount = result.count || 0;
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching initial data:", error);
+    if (result.error) throw result.error;
+
+    initialData = result.data.map((jargon) => ({
+      id: jargon.id,
+      name: jargon.name,
+      updated_at: jargon.updated_at,
+      translations: jargon.translations.map((t) => t.name),
+      categories: jargon.categories.map((c) => c.category.acronym),
+      comment_count: jargon.comments[0]?.count || 0,
+    }));
+    initialTotalCount = result.count || 0;
   }
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-3">
-      {searchQuery && (
-        <div className="flex items-center gap-3">
-          <div className="bg-accent flex items-center gap-1 rounded-md py-1 pr-1 pl-2.5">
-            <span className="text-sm font-medium">{searchQuery}</span>
-            <Button asChild variant="ghost" size="sm" className="size-3">
-              <Link href="/">
-                <X className="size-3" />
-                <span className="sr-only">검색 지우기</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      )}
-
       <JargonInfiniteList
         searchQuery={searchQuery}
         initialData={initialData}
-        initialCount={totalCount}
+        initialTotalCount={initialTotalCount}
       />
     </div>
   );

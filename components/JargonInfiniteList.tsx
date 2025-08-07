@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import JargonCard from "@/components/JargonCard";
@@ -17,29 +19,44 @@ export interface JargonData {
 interface JargonInfiniteListProps {
   searchQuery?: string;
   initialData?: JargonData[];
-  initialCount?: number;
+  initialTotalCount?: number;
 }
 
 // Custom hook for infinite query with RPC
 function useJargonInfiniteQuery(
   searchQuery?: string,
   initialData?: JargonData[],
-  initialCount?: number,
+  initialTotalCount?: number,
 ) {
   const [data, setData] = useState<JargonData[]>(initialData || []);
-  const [count, setCount] = useState(initialCount || 0);
+  const [totalCount, setTotalCount] = useState<number | undefined>(
+    initialTotalCount,
+  );
+  if (totalCount !== undefined && data.length > totalCount) {
+    console.error(
+      `Data length ${data.length} exceeds total count ${totalCount}`,
+    );
+  }
+
+  // isLoading indicates an initial load w/o data to show
   const [isLoading, setIsLoading] = useState(false);
+  // isFetching indicates ongoing fetch for initial/more data
   const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
   const [hasInitialized, setHasInitialized] = useState(!!initialData);
+
+  const [error, setError] = useState<Error | null>(null);
   const prevSearchQuery = useRef(searchQuery);
 
   const supabase = createClient();
   const pageSize = 20;
 
-  const fetchPage = useCallback(
-    async (offset: number, isInitialLoad = false) => {
-      if (isFetching) return;
+  const fetchNext = useCallback(
+    async (offset = data.length, isInitialLoad = false) => {
+      if (
+        isFetching ||
+        (totalCount && data.length >= totalCount) /* no more data to fetch */
+      )
+        return;
 
       setIsFetching(true);
       if (isInitialLoad) {
@@ -59,16 +76,17 @@ function useJargonInfiniteQuery(
         if (error) throw error;
 
         // Fetch total count separately for initial load
-        if (offset === 0) {
-          const { data: countData, error: countError } = await supabase.rpc(
+        if (offset === 0 || totalCount === undefined) {
+          const { data: totalCount, error: countError } = await supabase.rpc(
             "count_search_jargons",
             {
               search_query: searchQuery || "",
             },
           );
+          console.info("Total count fetched:", totalCount);
 
-          if (!countError && countData !== null) {
-            setCount(countData);
+          if (!countError && totalCount !== undefined) {
+            setTotalCount(totalCount);
           }
         }
 
@@ -109,49 +127,43 @@ function useJargonInfiniteQuery(
         setHasInitialized(true);
       }
     },
-    [searchQuery, supabase, isFetching],
+    [data.length, totalCount, searchQuery, supabase, isFetching],
   );
 
-  const fetchNextPage = useCallback(() => {
-    if (!isFetching && count > data.length) {
-      fetchPage(data.length);
-    }
-  }, [data.length, count, isFetching, fetchPage]);
-
-  // Handle search query changes and initial load
+  // NOTE: Initial fetch for each query happens here!
   useEffect(() => {
-    // New search query
-    if (prevSearchQuery.current !== searchQuery) {
+    if (!initialData && !hasInitialized) {
+      // No initial data and haven't initialized yet
+      fetchNext(0, true);
+    } else if (prevSearchQuery.current !== searchQuery) {
+      // New search query
       prevSearchQuery.current = searchQuery;
       setData([]);
-      setCount(0);
-      setHasInitialized(false);
-      fetchPage(0, true);
+      setTotalCount(undefined);
+      setHasInitialized(false); // will be set to true in fetchNext after load
+      fetchNext(0, true);
     }
-    // If no initial data and haven't initialized yet, fetch
-    else if (!initialData && !hasInitialized) {
-      fetchPage(0, true);
-    }
-  }, [searchQuery, initialData, hasInitialized, fetchPage]);
+  }, [searchQuery, initialData, hasInitialized, fetchNext]);
 
   return {
     data,
-    count,
+    totalCount,
     isLoading,
     isFetching,
     error,
-    hasMore: count > data.length,
-    fetchNextPage,
+    hasMore:
+      totalCount === undefined || (totalCount && totalCount > data.length),
+    fetchNext,
   };
 }
 
 export default function JargonInfiniteList({
   searchQuery,
   initialData,
-  initialCount,
+  initialTotalCount,
 }: JargonInfiniteListProps) {
-  const { data, count, isLoading, isFetching, hasMore, fetchNextPage, error } =
-    useJargonInfiniteQuery(searchQuery, initialData, initialCount);
+  const { data, totalCount, isLoading, isFetching, hasMore, fetchNext, error } =
+    useJargonInfiniteQuery(searchQuery, initialData, initialTotalCount);
 
   if (error) {
     return (
@@ -162,13 +174,34 @@ export default function JargonInfiniteList({
     );
   }
 
+  console.debug(searchQuery);
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <span className="text-lg font-bold text-gray-900">
-          {searchQuery
-            ? `검색 결과 ${count || 0}개`
-            : `쉬운 전문용어 ${count || initialCount || 0}개`}
+        <span className="flex items-center gap-2.5">
+          <span className="text-lg font-bold text-gray-900">
+            {totalCount !== undefined
+              ? searchQuery
+                ? totalCount > 0
+                  ? `검색 결과 ${totalCount}개`
+                  : "검색 결과 없음"
+                : `쉬운 전문용어 ${totalCount}개`
+              : " "}
+          </span>
+          {searchQuery && (
+            <div className="flex items-center gap-3">
+              <div className="bg-accent flex items-center gap-1 rounded-md py-1 pr-1 pl-2.5">
+                <span className="text-sm font-medium">{searchQuery}</span>
+                <Button asChild variant="ghost" size="sm" className="size-3">
+                  <Link href="/">
+                    <X className="size-3" />
+                    <span className="sr-only">검색 지우기</span>
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          )}
         </span>
       </div>
 
@@ -195,12 +228,12 @@ export default function JargonInfiniteList({
           {hasMore && (
             <div className="flex justify-center py-6">
               <Button
-                onClick={fetchNextPage}
+                onClick={() => fetchNext()}
                 disabled={isFetching}
                 variant="outline"
                 size="lg"
               >
-                {isFetching ? "쉬운 전문용어 불러오는 중..." : "더보기"}
+                {isFetching ? "불러오는 중..." : "더보기"}
               </Button>
             </div>
           )}
@@ -220,7 +253,7 @@ export default function JargonInfiniteList({
         </div>
       ) : (
         <div className="flex justify-center py-8">
-          <span className="text-gray-500">표시할 결과가 없어요</span>
+          <span className="text-gray-500">검색 결과가 없어요</span>
         </div>
       )}
     </div>
