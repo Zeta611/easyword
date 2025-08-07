@@ -6,20 +6,20 @@ import { createClient } from "@/lib/supabase/client";
 export interface SearchResult {
   id: string;
   name: string;
-  type: "original" | "translation";
+  type: "jargons" | "translations";
   jargonId: string;
 }
 
 export interface GroupedSearchResults {
-  original: SearchResult[];
-  translation: SearchResult[];
+  jargons: SearchResult[];
+  translations: SearchResult[];
 }
 
 export function useSearch(limit = 10) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GroupedSearchResults>({
-    original: [],
-    translation: [],
+    jargons: [],
+    translations: [],
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export function useSearch(limit = 10) {
   const searchJargons = useCallback(
     async (searchQuery: string) => {
       if (!searchQuery.trim()) {
-        setResults({ original: [], translation: [] });
+        setResults({ jargons: [], translations: [] });
         return;
       }
 
@@ -37,43 +37,41 @@ export function useSearch(limit = 10) {
       setError(null);
 
       try {
-        // Search in original jargon names
-        const { data: jargonResults, error: jargonError } = await supabase
-          .from("jargon")
-          .select("id, name")
-          .ilike("name", `%${searchQuery}%`)
-          .limit(limit);
+        const [jargonResults, translationResults] = await Promise.all([
+          supabase
+            .from("jargon")
+            .select("id, name")
+            .ilike("name", `%${searchQuery}%`)
+            .limit(limit),
 
-        if (jargonError) throw jargonError;
-
-        // Search in translations
-        const { data: translationResults, error: translationError } =
-          await supabase
+          supabase
             .from("translation")
             .select(
               `
-          id,
-          name,
-          jargon_id,
-          jargon:jargon_id(id, name)
-        `,
+              id,
+              name,
+              jargon_id,
+              jargon:jargon_id(id, name)
+            `,
             )
             .ilike("name", `%${searchQuery}%`)
-            .limit(limit);
+            .limit(limit),
+        ]);
 
-        if (translationError) throw translationError;
+        if (jargonResults.error) throw jargonResults.error;
+        if (translationResults.error) throw translationResults.error;
 
-        const originalResults: SearchResult[] = (jargonResults || []).map(
-          (jargon) => ({
-            id: jargon.id,
-            name: jargon.name,
-            type: "original" as const,
-            jargonId: jargon.id,
-          }),
-        );
+        const jargonResultsMapped: SearchResult[] = (
+          jargonResults.data || []
+        ).map((jargon) => ({
+          id: jargon.id,
+          name: jargon.name,
+          type: "jargons",
+          jargonId: jargon.id,
+        }));
 
         const translationResultsMapped: SearchResult[] = (
-          translationResults || []
+          translationResults.data || []
         ).map((translation) => ({
           id: translation.id,
           name: translation.name,
@@ -82,18 +80,18 @@ export function useSearch(limit = 10) {
         }));
 
         setResults({
-          original: originalResults,
-          translation: translationResultsMapped,
+          jargons: jargonResultsMapped,
+          translations: translationResultsMapped,
         });
       } catch (err) {
         console.error("Search error:", err);
         setError("검색 중 오류가 발생했어요");
-        setResults({ original: [], translation: [] });
+        setResults({ jargons: [], translations: [] });
       } finally {
         setIsLoading(false);
       }
     },
-    [supabase],
+    [supabase, limit],
   );
 
   // Debounced search effect

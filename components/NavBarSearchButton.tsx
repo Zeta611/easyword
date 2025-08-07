@@ -106,13 +106,13 @@ export default function NavBarSearchButton() {
             <>
               <CommandEmpty>검색 결과가 없어요</CommandEmpty>
 
-              {(results.original.length > 0 ||
-                results.translation.length > 0) && (
+              {(results.jargons.length > 0 ||
+                results.translations.length > 0) && (
                 <CommandGroup>
                   <CommandItem
                     onSelect={() => {
                       setOpen(false);
-                      // router.push("/jargon");
+                      router.push(`/?q=${encodeURIComponent(query)}`);
                     }}
                   >
                     <div className="flex items-center gap-2">
@@ -123,9 +123,9 @@ export default function NavBarSearchButton() {
                 </CommandGroup>
               )}
 
-              {results.original.length > 0 && (
+              {results.jargons.length > 0 && (
                 <CommandGroup heading="원어">
-                  {matchSorter(results.original, query, {
+                  {matchSorter(results.jargons, query, {
                     keys: ["name"],
                   }).map((result) => (
                     <CommandItem
@@ -142,9 +142,9 @@ export default function NavBarSearchButton() {
                 </CommandGroup>
               )}
 
-              {results.translation.length > 0 && (
+              {results.translations.length > 0 && (
                 <CommandGroup heading="번역어">
-                  {matchSorter(results.translation, query, {
+                  {matchSorter(results.translations, query, {
                     keys: ["name"],
                   }).map((result) => (
                     <CommandItem
