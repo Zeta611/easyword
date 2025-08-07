@@ -30,15 +30,26 @@ The app uses these main tables:
 - `user`: User profiles (id, display_name, email, photo_url)
 - `related_jargon`: Links between related terms
 
+### PostgreSQL RPC Functions
+
+- `search_jargons_with_translations`: Handles dual-table search with deduplication and pagination
+- `count_search_jargons`: Returns total count for search results to enable proper pagination
+
+## Development Notes
+
+- When writing Supabase SQL functions, you need to explicitly tell me the exact SQL function to write, as I need to type them in the Supabase SQL prompt
+
 ## Key Features
 
 - **Browse & Discovery**: Computer science terms with Korean translations in responsive grid layout
 - **Search Functionality**: Real-time search with keyboard shortcuts (`⌘K` or `/`) across both original terms and translations
+- **Infinite Scrolling**: Load more functionality with "더보기" button for progressive data loading
 - **Categorization**: Terms organized by categories with acronym tags
 - **User Experience**:
   - Comment counts and relative timestamps ("하루 전", "이틀 전") on term cards
-  - Responsive design with mobile-optimized search button
-  - Loading states and error handling
+  - Mobile-first design with floating search button positioned for thumb access
+  - Loading states, error handling, and smooth transitions
+  - Hybrid SSR + client-side pagination for optimal performance
 - **Authentication**: Social login with Supabase Auth and protected user profiles
 - **Navigation**: Avatar-based navigation with modular component structure
 
@@ -65,21 +76,22 @@ app/
 └── layout.tsx      # Root layout with nav and footer
 
 components/
-├── CurrentUserAvatar.tsx  # User avatar component
-├── JargonCard.tsx         # Term display component with comments & timestamps
-├── Kbd.tsx                # Keyboard shortcut component
-├── LoginForm.tsx          # Login form component
-├── LogoutButton.tsx       # Logout functionality
-├── NavBar.tsx             # Modular navigation bar (refactored)
-├── NavBarAvatar.tsx       # Navigation avatar component
-├── NavBarSearchButton.tsx # Search button with command dialog
-├── NavBarTitle.tsx        # Navigation title component
-└── ui/                    # shadcn/ui components
+├── CurrentUserAvatar.tsx     # User avatar component
+├── JargonCard.tsx            # Term display component with comments & timestamps
+├── JargonInfiniteList.tsx    # Infinite scrolling list with "더보기" button
+├── Kbd.tsx                   # Keyboard shortcut component
+├── LoginForm.tsx             # Login form component
+├── LogoutButton.tsx          # Logout functionality
+├── NavBar.tsx                # Modular navigation bar (refactored)
+├── NavBarAvatar.tsx          # Navigation avatar component
+├── NavBarSearchButton.tsx    # Search button with command dialog & floating mobile button
+├── NavBarTitle.tsx           # Navigation title component
+└── ui/                       # shadcn/ui components
     ├── avatar.tsx
     ├── button.tsx
     ├── card.tsx
-    ├── command.tsx        # Command palette with custom shouldFilter
-    └── dialog.tsx         # Dialog with custom close button support
+    ├── command.tsx           # Command palette with custom shouldFilter
+    └── dialog.tsx            # Dialog with custom close button support
 
 hooks/
 ├── useCurrentUserNameAndImage.ts  # User data hook
@@ -151,11 +163,22 @@ Requires Supabase configuration:
 
 - **Modular navigation**: NavBar broken into reusable components
 - **Command palette**: Custom implementation with shouldFilter=false
-- **Responsive design**: Mobile search icon, desktop search button
+- **Mobile-first design**: 
+  - Floating search button fixed at bottom center for thumb accessibility
+  - Rounded button design with shadow for visual prominence
+  - Hidden on desktop, visible only on mobile devices
+- **Infinite scrolling**: "더보기" button-based pagination instead of automatic scroll loading
 - **Keyboard shortcuts**: Visual kbd component for accessibility
 - **Relative timestamps**: Korean localized time display ("하루 전", "이틀 전")
 
+## Performance Optimizations
+
+- **Hybrid SSR + Client-side**: Initial page load via server-side rendering, subsequent pagination via client-side fetching
+- **PostgreSQL RPC Functions**: Complex search logic moved to database level for better performance
+- **Debounced search**: 300ms debounce prevents excessive API calls
+- **Data deduplication**: Client-side deduplication prevents duplicate entries in infinite scroll
+- **Concurrent queries**: Promise.all used for parallel database operations
+
 ## Current Branch Status
 
-Working on `nextjs` branch with comprehensive search functionality, modular component architecture, and enhanced user experience features.
-
+Working on `nextjs` branch with comprehensive infinite scrolling, optimized search functionality, mobile-first design patterns, and enhanced user experience features including PostgreSQL RPC integration.

@@ -1,11 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { X } from "lucide-react";
+import { SlidersHorizontal, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import JargonCard from "@/components/JargonCard";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export interface JargonData {
   id: string;
@@ -25,6 +34,7 @@ interface JargonInfiniteListProps {
 // Custom hook for infinite query with RPC
 function useJargonInfiniteQuery(
   searchQuery?: string,
+  sortOption: SortOption = "recent",
   initialData?: JargonData[],
   initialTotalCount?: number,
 ) {
@@ -46,6 +56,7 @@ function useJargonInfiniteQuery(
 
   const [error, setError] = useState<Error | null>(null);
   const prevSearchQuery = useRef(searchQuery);
+  const prevSortOption = useRef(sortOption);
 
   const supabase = createClient();
   const pageSize = 32;
@@ -75,6 +86,7 @@ function useJargonInfiniteQuery(
             search_query: searchQuery || "",
             limit_count: pageSize,
             offset_count: offset,
+            sort_option: sortOption,
           },
         );
 
@@ -95,7 +107,7 @@ function useJargonInfiniteQuery(
           }
         }
 
-        // @ts-nocheck
+        // Transform data
         const transformedData = (newData || []).map((item) => ({
           id: item.id,
           name: item.name,
@@ -105,7 +117,7 @@ function useJargonInfiniteQuery(
           // @ts-expect-error JSON handling
           categories: item.categories.map((c) => c.acronym),
           // @ts-expect-error JSON handling
-          comment_count: item.comments.length,
+          comment_count: item.comments[0].count,
         }));
 
         if (offset === 0) {
@@ -132,29 +144,35 @@ function useJargonInfiniteQuery(
         setHasInitialized(true);
       }
     },
-    [data.length, totalCount, searchQuery, supabase, isFetching],
+    [data.length, totalCount, searchQuery, sortOption, supabase, isFetching],
   );
 
   // NOTE: Initial fetch for each query happens here!
   useEffect(() => {
-    console.debug("Running useEffect for searchQuery:", searchQuery);
+    console.debug(
+      "Running useEffect for searchQuery:",
+      searchQuery,
+      "sortOption:",
+      sortOption,
+    );
     if (!initialData && !hasInitialized) {
       // No initial data and haven't initialized yet
       console.debug("No initial data, fetching first page");
       fetchNext(0, true);
-    } else if (prevSearchQuery.current !== searchQuery) {
-      // New search query
-      console.debug("New search query");
+    } else if (
+      prevSearchQuery.current !== searchQuery ||
+      prevSortOption.current !== sortOption
+    ) {
+      // Search query or sort option changed
+      console.debug("Query or sort changed");
       prevSearchQuery.current = searchQuery;
+      prevSortOption.current = sortOption;
       setData([]);
       setTotalCount(undefined);
       setHasInitialized(false); // will be set to true in fetchNext after load
-      // if (searchQuery && searchQuery.trim()) {
       fetchNext(0, true);
-      // } else {
-      // }
     }
-  }, [searchQuery, initialData, hasInitialized, fetchNext]);
+  }, [searchQuery, sortOption, initialData, hasInitialized, fetchNext]);
 
   return {
     data,
@@ -168,13 +186,17 @@ function useJargonInfiniteQuery(
   };
 }
 
+type SortOption = "recent" | "popular" | "abc" | "zyx";
+
 export default function JargonInfiniteList({
   searchQuery,
   initialData,
   initialTotalCount,
 }: JargonInfiniteListProps) {
+  const [sort, setSort] = useState<SortOption>("recent");
+
   const { data, totalCount, isLoading, isFetching, hasMore, fetchNext, error } =
-    useJargonInfiniteQuery(searchQuery, initialData, initialTotalCount);
+    useJargonInfiniteQuery(searchQuery, sort, initialData, initialTotalCount);
 
   if (error) {
     return (
@@ -212,6 +234,35 @@ export default function JargonInfiniteList({
             </div>
           )}
         </span>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl">
+              <SlidersHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-40" align="end">
+            <DropdownMenuLabel>정렬 기준</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuRadioGroup
+              value={sort}
+              onValueChange={(value) => setSort(value as SortOption)}
+            >
+              <DropdownMenuRadioItem value="recent">
+                최근 활동순
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="popular">
+                댓글 많은순
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="abc">
+                알파벳 오름차순
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="zyx">
+                알파벳 내림차순
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Jargon cards grid */}
