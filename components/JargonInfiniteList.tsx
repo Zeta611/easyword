@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -29,6 +30,7 @@ interface JargonInfiniteListProps {
   searchQuery?: string;
   initialData?: JargonData[];
   initialTotalCount?: number;
+  initialSort?: string;
 }
 
 // Custom hook for infinite query with RPC
@@ -192,11 +194,35 @@ export default function JargonInfiniteList({
   searchQuery,
   initialData,
   initialTotalCount,
+  initialSort,
 }: JargonInfiniteListProps) {
-  const [sort, setSort] = useState<SortOption>("recent");
+  const router = useRouter();
+  const [sort, setSort] = useState<SortOption>(
+    (initialSort as SortOption) || "recent",
+  );
 
   const { data, totalCount, isLoading, isFetching, hasMore, fetchNext, error } =
     useJargonInfiniteQuery(searchQuery, sort, initialData, initialTotalCount);
+
+  // Update URL when sort changes
+  const handleSortChange = useCallback(
+    (newSort: SortOption) => {
+      setSort(newSort);
+
+      // Build new URL with sort parameter
+      const params = new URLSearchParams();
+      if (searchQuery) {
+        params.set("q", searchQuery);
+      }
+      if (newSort !== "recent") {
+        params.set("sort", newSort);
+      }
+
+      const newUrl = params.toString() ? `/?${params.toString()}` : "/";
+      router.replace(newUrl);
+    },
+    [searchQuery, router],
+  );
 
   if (error) {
     return (
@@ -246,7 +272,7 @@ export default function JargonInfiniteList({
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup
               value={sort}
-              onValueChange={(value) => setSort(value as SortOption)}
+              onValueChange={(value) => handleSortChange(value as SortOption)}
             >
               <DropdownMenuRadioItem value="recent">
                 최근 활동순

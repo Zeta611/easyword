@@ -4,13 +4,13 @@ import JargonInfiniteList, {
 } from "@/components/JargonInfiniteList";
 
 interface HomeProps {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; sort?: string }>;
 }
 
 const INITIAL_LOAD_SIZE = 32;
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { q: searchQuery } = await searchParams;
+  const { q: searchQuery, sort: sortParam } = await searchParams;
   const supabase = await createClient();
 
   // Fetch initial data for SSR
@@ -24,6 +24,7 @@ export default async function Home({ searchParams }: HomeProps) {
         search_query: searchQuery,
         limit_count: INITIAL_LOAD_SIZE,
         offset_count: 0,
+        sort_option: sortParam || "recent",
       }),
 
       supabase.rpc("count_search_jargons", {
@@ -47,36 +48,35 @@ export default async function Home({ searchParams }: HomeProps) {
     }));
     initialTotalCount = countResult.data;
   } else {
-    // Fetch latest jargons for initial SSR
-    const result = await supabase
-      .from("jargon")
-      .select(
-        `
-          id,
-          name,
-          updated_at,
-          translations:translation(name),
-          categories:jargon_category(
-            category:category(acronym)
-          ),
-          comments:comment(count)
-          `,
-        { count: "exact" },
-      )
-      .order("updated_at", { ascending: false })
-      .limit(INITIAL_LOAD_SIZE);
+    // Fetch all jargons for initial SSR using RPC for consistent sorting
+    const [jargonResults, countResult] = await Promise.all([
+      supabase.rpc("search_jargons_with_translations", {
+        search_query: "",
+        limit_count: INITIAL_LOAD_SIZE,
+        offset_count: 0,
+        sort_option: sortParam || "recent",
+      }),
 
-    if (result.error) throw result.error;
+      supabase.rpc("count_search_jargons", {
+        search_query: "",
+      }),
+    ]);
 
-    initialData = result.data.map((jargon) => ({
-      id: jargon.id,
-      name: jargon.name,
-      updated_at: jargon.updated_at,
-      translations: jargon.translations.map((t) => t.name),
-      categories: jargon.categories.map((c) => c.category.acronym),
-      comment_count: jargon.comments[0]?.count || 0,
+    if (jargonResults.error) throw jargonResults.error;
+    if (countResult.error) throw countResult.error;
+
+    initialData = jargonResults.data.map((item) => ({
+      id: item.id,
+      name: item.name,
+      updated_at: item.updated_at,
+      // @ts-expect-error JSON handling
+      translations: item.translations.map((t) => t.name),
+      // @ts-expect-error JSON handling
+      categories: item.categories.map((c) => c.acronym),
+      // @ts-expect-error JSON handling
+      comment_count: item.comment_count,
     }));
-    initialTotalCount = result.count || 0;
+    initialTotalCount = countResult.data;
   }
 
   return (
@@ -85,6 +85,7 @@ export default async function Home({ searchParams }: HomeProps) {
         searchQuery={searchQuery}
         initialData={initialData}
         initialTotalCount={initialTotalCount}
+        initialSort={sortParam}
       />
     </div>
   );
