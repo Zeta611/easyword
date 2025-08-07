@@ -75,7 +75,7 @@ export function useSearch(limit = 10) {
         ).map((translation) => ({
           id: translation.id,
           name: translation.name,
-          type: "translation" as const,
+          type: "translations",
           jargonId: translation.jargon_id,
         }));
 
