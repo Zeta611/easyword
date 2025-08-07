@@ -82,6 +82,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "comment_parent_id_new_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments_with_authors"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comment_translation_id_new_fkey"
             columns: ["translation_id"]
             isOneToOne: true
@@ -117,6 +124,7 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          slug: string | null
           updated_at: string
         }
         Insert: {
@@ -124,6 +132,7 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          slug?: string | null
           updated_at?: string
         }
         Update: {
@@ -131,6 +140,7 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          slug?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -259,7 +269,52 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      comments_with_authors: {
+        Row: {
+          author_id: string | null
+          content: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string | null
+          jargon_id: string | null
+          parent_id: string | null
+          photo_url: string | null
+          removed: boolean | null
+          translation_id: string | null
+          updated_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_jargon_id_new_fkey"
+            columns: ["jargon_id"]
+            isOneToOne: false
+            referencedRelation: "jargon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_parent_id_new_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_parent_id_new_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments_with_authors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_translation_id_new_fkey"
+            columns: ["translation_id"]
+            isOneToOne: true
+            referencedRelation: "translation"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       armor: {
@@ -286,6 +341,10 @@ export type Database = {
         Args: { "": string }
         Returns: string
       }
+      generate_slug: {
+        Args: { input_text: string }
+        Returns: string
+      }
       list_jargon_random: {
         Args: { seed?: unknown }
         Returns: {
@@ -293,6 +352,7 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          slug: string | null
           updated_at: string
         }[]
       }
@@ -305,21 +365,16 @@ export type Database = {
         Returns: string
       }
       search_jargons_with_translations: {
-        Args:
-          | {
-              search_query?: string
-              limit_count?: number
-              offset_count?: number
-            }
-          | {
-              search_query?: string
-              limit_count?: number
-              offset_count?: number
-              sort_option?: string
-            }
+        Args: {
+          search_query?: string
+          limit_count?: number
+          offset_count?: number
+          sort_option?: string
+        }
         Returns: {
           id: string
           name: string
+          slug: string
           updated_at: string
           translations: Json
           categories: Json
