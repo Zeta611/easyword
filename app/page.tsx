@@ -44,7 +44,7 @@ export default async function Home({ searchParams }: HomeProps) {
       // @ts-expect-error JSON handling
       categories: item.categories.map((c) => c.acronym),
       // @ts-expect-error JSON handling
-      comment_count: item.comment_count,
+      comment_count: item.comments[0].count,
     }));
     initialTotalCount = countResult.data;
   } else {
@@ -74,7 +74,7 @@ export default async function Home({ searchParams }: HomeProps) {
       // @ts-expect-error JSON handling
       categories: item.categories.map((c) => c.acronym),
       // @ts-expect-error JSON handling
-      comment_count: item.comment_count,
+      comment_count: item.comments[0].count,
     }));
     initialTotalCount = countResult.data;
   }

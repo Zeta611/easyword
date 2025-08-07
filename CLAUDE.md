@@ -163,7 +163,7 @@ Requires Supabase configuration:
 
 - **Modular navigation**: NavBar broken into reusable components
 - **Command palette**: Custom implementation with shouldFilter=false
-- **Mobile-first design**: 
+- **Mobile-first design**:
   - Floating search button fixed at bottom center for thumb accessibility
   - Rounded button design with shadow for visual prominence
   - Hidden on desktop, visible only on mobile devices
@@ -179,6 +179,12 @@ Requires Supabase configuration:
 - **Data deduplication**: Client-side deduplication prevents duplicate entries in infinite scroll
 - **Concurrent queries**: Promise.all used for parallel database operations
 
+## Development Decisions
+
+- **Caching Strategy**:
+  - Plan to cache results using SWR or React Query in a near future
+
 ## Current Branch Status
 
 Working on `nextjs` branch with comprehensive infinite scrolling, optimized search functionality, mobile-first design patterns, and enhanced user experience features including PostgreSQL RPC integration.
+
