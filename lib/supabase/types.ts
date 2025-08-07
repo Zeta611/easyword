@@ -93,13 +93,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "comment_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "comment_jargon_id_new_fkey"
             columns: ["jargon_id"]
             isOneToOne: false
@@ -165,15 +158,7 @@ export type Database = {
           name?: string
           updated_at?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "jargon_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       jargon_category: {
         Row: {
@@ -204,6 +189,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      legacy_fb_user: {
+        Row: {
+          display_name: string
+          email: string
+          id: string
+          last_seen: string | null
+          photo_url: string | null
+        }
+        Insert: {
+          display_name: string
+          email: string
+          id: string
+          last_seen?: string | null
+          photo_url?: string | null
+        }
+        Update: {
+          display_name?: string
+          email?: string
+          id?: string
+          last_seen?: string | null
+          photo_url?: string | null
+        }
+        Relationships: []
       }
       related_jargon: {
         Row: {
@@ -265,13 +274,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "translation_author_id_fkey"
-            columns: ["author_id"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "translation_jargon_id_new_fkey"
             columns: ["jargon_id"]
             isOneToOne: false
@@ -279,30 +281,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      user: {
-        Row: {
-          display_name: string
-          email: string
-          id: string
-          last_seen: string | null
-          photo_url: string | null
-        }
-        Insert: {
-          display_name: string
-          email: string
-          id: string
-          last_seen?: string | null
-          photo_url?: string | null
-        }
-        Update: {
-          display_name?: string
-          email?: string
-          id?: string
-          last_seen?: string | null
-          photo_url?: string | null
-        }
-        Relationships: []
       }
     }
     Views: {
@@ -312,6 +290,10 @@ export type Database = {
       armor: {
         Args: { "": string }
         Returns: string
+      }
+      count_search_jargons: {
+        Args: { search_query?: string }
+        Returns: number
       }
       dearmor: {
         Args: { "": string }
@@ -346,6 +328,21 @@ export type Database = {
       pgp_key_id: {
         Args: { "": string }
         Returns: string
+      }
+      search_jargons_with_translations: {
+        Args: {
+          search_query?: string
+          limit_count?: number
+          offset_count?: number
+        }
+        Returns: {
+          id: string
+          name: string
+          updated_at: string
+          translations: Json
+          categories: Json
+          comments: Json
+        }[]
       }
       to_lowercase: {
         Args: { jargon: Database["public"]["Tables"]["jargon"]["Row"] }
