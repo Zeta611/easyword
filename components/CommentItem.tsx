@@ -8,6 +8,7 @@ import { MessageCircle, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
 import CommentForm from "@/components/CommentForm";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -25,6 +26,11 @@ export default function CommentItem({
 }: CommentItemProps) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
+  const initials = (comment.full_name || "")
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
 
   const handleReplySuccess = () => {
     setShowReplyForm(false);
@@ -57,9 +63,18 @@ export default function CommentItem({
       <div className="pt-1 pb-2 pl-3">
         {/* Comment header */}
         <div className="mb-1 flex items-center gap-2">
+          <Avatar className="size-5.5">
+            {comment.photo_url ? (
+              <AvatarImage
+                src={comment.photo_url}
+                alt={comment.full_name || ""}
+              />
+            ) : null}
+            <AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
+          </Avatar>
           <div className="flex items-center gap-1 text-sm text-black">
             <span className="line-clamp-1 font-medium">
-              {comment.full_name || "익명"}
+              {comment.full_name || ""}
             </span>
             {comment.translation?.name ? (
               <>
