@@ -49,10 +49,10 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   }
 
   return (
-    <div className="mx-auto my-5 max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto flex max-w-4xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
       {/* Jargon details */}
-      <div className="mb-8 rounded-lg bg-white p-6">
-        <div className="mb-6">
+      <div className="rounded-lg bg-white p-6">
+        <div className="flex flex-col gap-2">
           {/* categories */}
           {jargon.categories.length > 0 ? (
             <div className="flex flex-wrap gap-2">
@@ -66,7 +66,7 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
               ))}
             </div>
           ) : null}
-          <h1 className="mb-2 text-3xl font-bold">{jargon.name}</h1>
+          <h1 className="text-3xl font-bold">{jargon.name}</h1>
           {jargon.translations.length > 0 ? (
             <p className="text-lg text-gray-800">
               <ul className="list-disc pl-5">
