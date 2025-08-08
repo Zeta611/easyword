@@ -62,25 +62,28 @@ export function useSearch(limit = 10) {
         if (jargonResults.error) throw jargonResults.error;
         if (translationResults.error) throw translationResults.error;
 
-        const jargonResultsMapped: SearchResult[] = (
-          jargonResults.data || []
-        ).map((jargon) => ({
-          id: jargon.id,
-          name: jargon.name,
-          type: "jargons",
-          jargonId: jargon.id,
-          jargonSlug: jargon.slug,
-        }));
+        const jargonResultsMapped: SearchResult[] = jargonResults.data.map(
+          (jargon) =>
+            ({
+              id: jargon.id,
+              name: jargon.name,
+              type: "jargons",
+              jargonId: jargon.id,
+              jargonSlug: jargon.slug,
+            }) as SearchResult,
+        );
 
-        const translationResultsMapped: SearchResult[] = (
-          translationResults.data || []
-        ).map((translation) => ({
-          id: translation.id,
-          name: translation.name,
-          type: "translations",
-          jargonId: translation.jargon_id,
-          jargonSlug: translation.jargon.slug,
-        }));
+        const translationResultsMapped: SearchResult[] =
+          translationResults.data.map(
+            (translation) =>
+              ({
+                id: translation.id,
+                name: translation.name,
+                type: "translations",
+                jargonId: translation.jargon_id,
+                jargonSlug: translation.jargon.slug,
+              }) as SearchResult,
+          );
 
         setResults({
           jargons: jargonResultsMapped,
