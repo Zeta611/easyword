@@ -57,7 +57,7 @@ export default function JargonCard({ jargon }: JargonCardProps) {
             <MessageCircle className="mb-[-1.5] inline size-3.5" />
             {jargon.commentCount}
           </span>
-          ·<span className="">{dayjs(jargon.updatedAt).fromNow()}</span>
+          ·<span>{dayjs(jargon.updatedAt).fromNow()}</span>
         </div>
       </div>
     </Link>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import CommentThread from "@/components/CommentThread";
+import { Comment } from "@/types/comment";
 
 interface JargonPageProps {
   params: Promise<{ slug: string }>;
@@ -9,6 +11,7 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   const { slug } = await params;
   const supabase = await createClient();
 
+  // First get the jargon
   const { data: jargon, error } = await supabase
     .from("jargon")
     .select(
@@ -17,6 +20,18 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
     .eq("slug", slug)
     .limit(1)
     .single();
+
+  // Then get comments if jargon exists
+  let comments: Comment[] = [];
+  if (jargon) {
+    const { data: commentsData } = await supabase
+      .from("comments_with_authors")
+      .select("*")
+      .eq("jargon_id", jargon.id)
+      .order("created_at", { ascending: true });
+
+    comments = (commentsData as Comment[]) || [];
+  }
 
   if (!jargon) {
     return (
@@ -34,8 +49,9 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-lg bg-white p-8 shadow-lg">
+    <div className="mx-auto my-5 max-w-4xl px-4 sm:px-6 lg:px-8">
+      {/* Jargon details */}
+      <div className="mb-8 rounded-lg bg-white p-6">
         <div className="mb-6">
           {/* categories */}
           {jargon.categories.length > 0 ? (
@@ -59,6 +75,11 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
             <p className="text-lg text-gray-600">번역이 없습니다</p>
           )}
         </div>
+      </div>
+
+      {/* Comments section */}
+      <div className="rounded-lg bg-white p-6">
+        <CommentThread jargonId={jargon.id} initialComments={comments} />
       </div>
     </div>
   );
