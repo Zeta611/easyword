@@ -26,7 +26,7 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   if (jargon) {
     const { data: commentsData } = await supabase
       .from("comments_with_authors")
-      .select("*")
+      .select("*, translation(name)")
       .eq("jargon_id", jargon.id)
       .order("created_at", { ascending: true });
 
@@ -69,7 +69,13 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
           <h1 className="mb-2 text-3xl font-bold">{jargon.name}</h1>
           {jargon.translations.length > 0 ? (
             <p className="text-lg text-gray-800">
-              {jargon.translations.map((tran) => tran.name).join(", ")}
+              <ul className="list-disc pl-5">
+                {jargon.translations.map((tran) => (
+                  <li key={tran.name} className="text-lg text-gray-800">
+                    {tran.name}
+                  </li>
+                ))}
+              </ul>
             </p>
           ) : (
             <p className="text-lg text-gray-600">번역이 없습니다</p>

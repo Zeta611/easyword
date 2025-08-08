@@ -78,7 +78,7 @@ export default function CommentThread({
     try {
       const { data, error } = await supabase
         .from("comments_with_authors")
-        .select("*")
+        .select("*, translation(name)")
         .eq("jargon_id", jargonId)
         .order("created_at", { ascending: true });
 

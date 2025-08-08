@@ -61,6 +61,14 @@ export default function CommentItem({
             <span className="line-clamp-1 font-medium">
               {comment.full_name || "익명"}
             </span>
+            {comment.translation?.name ? (
+              <>
+                <span className="text-gray-400">·</span>
+                <span className="shrink-0 font-medium text-orange-800">
+                  {comment.translation.name}
+                </span>
+              </>
+            ) : null}
             ·
             <span className="shrink-0 text-gray-600">
               {dayjs(comment.created_at).fromNow()}

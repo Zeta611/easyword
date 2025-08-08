@@ -7,6 +7,9 @@ export interface Comment {
   removed: boolean;
   jargon_id: string;
   translation_id?: string;
+  translation?: {
+    name: string;
+  };
   parent_id?: string;
   // Joined data from view
   full_name?: string;
