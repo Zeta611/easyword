@@ -68,6 +68,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "comment_author_id_profile_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comment_jargon_id_new_fkey"
             columns: ["jargon_id"]
             isOneToOne: false
@@ -143,7 +150,15 @@ export type Database = {
           slug?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "jargon_author_id_profile_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       jargon_category: {
         Row: {
@@ -195,6 +210,27 @@ export type Database = {
           email?: string
           id?: string
           last_seen?: string | null
+          photo_url?: string | null
+        }
+        Relationships: []
+      }
+      profile: {
+        Row: {
+          created_at: string | null
+          display_name: string | null
+          id: string
+          photo_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_name?: string | null
+          id: string
+          photo_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_name?: string | null
+          id?: string
           photo_url?: string | null
         }
         Relationships: []
@@ -259,6 +295,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "translation_author_id_profile_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "translation_jargon_id_new_fkey"
             columns: ["jargon_id"]
             isOneToOne: false
@@ -284,6 +327,13 @@ export type Database = {
           updated_at: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "comment_author_id_profile_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "comment_jargon_id_new_fkey"
             columns: ["jargon_id"]

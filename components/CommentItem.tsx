@@ -31,7 +31,7 @@ export default function CommentItem({
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
-  const initials = (comment.full_name || "")
+  const initials = (comment.profile.display_name || "")
     .split(" ")
     .map((w) => w[0])
     .join("")
@@ -69,17 +69,17 @@ export default function CommentItem({
         {/* Comment header */}
         <div className="mb-1 flex items-center gap-2">
           <Avatar className="size-5.5">
-            {comment.photo_url ? (
+            {comment.profile.photo_url ? (
               <AvatarImage
-                src={comment.photo_url}
-                alt={comment.full_name || ""}
+                src={comment.profile.photo_url}
+                alt={comment.profile.display_name || ""}
               />
             ) : null}
             <AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
           </Avatar>
           <div className="flex items-center gap-1 text-sm text-black">
             <span className="line-clamp-1 font-medium">
-              {comment.full_name || ""}
+              {comment.profile.display_name || ""}
             </span>
             {comment.translation?.name ? (
               <>

@@ -9,6 +9,15 @@ import {
   useState,
 } from "react";
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
@@ -20,15 +29,6 @@ import {
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { LoginButtons } from "@/components/LoginButtons";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/dialog";
 
 type LoginDialogContextValue = {
   openLogin: (next?: string) => void;

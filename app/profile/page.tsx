@@ -12,10 +12,16 @@ export default async function Profile() {
   } = await supabase.auth.getUser();
   if (error || !user) redirect("/auth/login");
 
+  const { data: profile } = await supabase
+    .from("profile")
+    .select("display_name")
+    .eq("id", user.id)
+    .maybeSingle();
+
   return (
     <div className="flex w-full items-center justify-center gap-2">
       <p>
-        안녕하세요 <span>{user.user_metadata.full_name}님!</span>
+        안녕하세요 <span>{profile?.display_name ?? ""}님!</span>
         <br />
         이메일: <span>{user.email}</span>
       </p>

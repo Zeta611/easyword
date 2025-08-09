@@ -25,8 +25,17 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   let comments: Comment[] = [];
   if (jargon) {
     const { data: commentsData } = await supabase
-      .from("comments_with_authors")
-      .select("*, translation(name)")
+      .from("comment")
+      .select(
+        `
+      *,
+      profile:author_id (
+        display_name,
+        photo_url
+      ),
+      translation(name)
+    `,
+      )
       .eq("jargon_id", jargon.id)
       .order("created_at", { ascending: true });
 

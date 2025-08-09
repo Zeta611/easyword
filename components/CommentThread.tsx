@@ -84,8 +84,17 @@ export default function CommentThread({
     setIsLoading(true);
     try {
       const { data, error } = await supabase
-        .from("comments_with_authors")
-        .select("*, translation(name)")
+        .from("comment")
+        .select(
+          `
+          *,
+          profile:author_id (
+            display_name,
+            photo_url
+          ),
+          translation(name)
+        `,
+        )
         .eq("jargon_id", jargonId)
         .order("created_at", { ascending: true });
 

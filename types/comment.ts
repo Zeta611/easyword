@@ -11,9 +11,10 @@ export interface Comment {
     name: string;
   };
   parent_id?: string;
-  // Joined data from view
-  full_name?: string;
-  photo_url?: string;
+  profile: {
+    display_name?: string;
+    photo_url?: string;
+  };
   // For nested structure
   replies?: Comment[];
   depth?: number;
