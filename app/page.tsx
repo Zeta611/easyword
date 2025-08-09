@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
-import JargonInfiniteList, {
-  JargonData,
-} from "@/components/JargonInfiniteList";
+import type { JargonData } from "@/components/JargonInfiniteList";
+import { SortOption } from "@/components/FloatingActionButtons";
+import HomePageClient from "@/components/home/HomePageClient";
 
 interface HomeProps {
   searchParams: Promise<{ q?: string; sort?: string }>;
@@ -83,11 +83,11 @@ export default async function Home({ searchParams }: HomeProps) {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-3">
-      <JargonInfiniteList
+      <HomePageClient
         searchQuery={searchQuery}
         initialData={initialData}
         initialTotalCount={initialTotalCount}
-        initialSort={sortParam}
+        initialSort={sortParam as SortOption}
       />
     </div>
   );

@@ -31,7 +31,8 @@ interface JargonInfiniteListProps {
   searchQuery?: string;
   initialData?: JargonData[];
   initialTotalCount?: number;
-  initialSort?: string;
+  sort: SortOption;
+  onChangeSort: (value: SortOption) => void;
 }
 
 // Custom hook for infinite query with RPC
@@ -196,12 +197,10 @@ export default function JargonInfiniteList({
   searchQuery,
   initialData,
   initialTotalCount,
-  initialSort,
+  sort,
+  onChangeSort,
 }: JargonInfiniteListProps) {
   const router = useRouter();
-  const [sort, setSort] = useState<SortOption>(
-    (initialSort as SortOption) || "recent",
-  );
 
   const { data, totalCount, isLoading, isFetching, hasMore, fetchNext, error } =
     useJargonInfiniteQuery(searchQuery, sort, initialData, initialTotalCount);
@@ -209,7 +208,7 @@ export default function JargonInfiniteList({
   // Update URL when sort changes
   const handleSortChange = useCallback(
     (newSort: SortOption) => {
-      setSort(newSort);
+      onChangeSort(newSort);
 
       // Build new URL with sort parameter
       const params = new URLSearchParams();
@@ -223,7 +222,7 @@ export default function JargonInfiniteList({
       const newUrl = params.toString() ? `/?${params.toString()}` : "/";
       router.replace(newUrl);
     },
-    [searchQuery, router],
+    [searchQuery, router, onChangeSort],
   );
 
   if (error) {
@@ -263,9 +262,10 @@ export default function JargonInfiniteList({
           )}
         </span>
 
+        {/* Mobile FABs are rendered globally */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl">
+            <Button className="hidden transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl sm:inline-flex">
               <SlidersHorizontal />
             </Button>
           </DropdownMenuTrigger>
