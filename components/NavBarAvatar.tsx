@@ -4,11 +4,11 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { CurrentUserAvatar } from "@/components/CurrentUserAvatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
-import { useLoginPrompt } from "@/components/LoginPromptProvider";
+import { useLoginDialog } from "@/components/LoginDialogProvider";
 
 export default function NavBarAvatar() {
   const { data: user, isLoading } = useUserQuery();
-  const { openLogin } = useLoginPrompt();
+  const { openLogin } = useLoginDialog();
 
   switch (isLoading ? null : !!user) {
     case null:

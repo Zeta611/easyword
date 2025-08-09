@@ -18,25 +18,34 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useUserQuery } from "@/hooks/useUserQuery";
-import { LoginForm } from "@/components/LoginForm";
+import { LoginButtons } from "@/components/LoginButtons";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
-type LoginPromptContextValue = {
+type LoginDialogContextValue = {
   openLogin: (next?: string) => void;
   closeLogin: () => void;
   requireAuth: (onAuthed: () => void, next?: string) => void;
 };
 
-const LoginPromptContext = createContext<LoginPromptContextValue | null>(null);
+const LoginDialogContext = createContext<LoginDialogContextValue | null>(null);
 
-export function useLoginPrompt(): LoginPromptContextValue {
-  const ctx = useContext(LoginPromptContext);
+export function useLoginDialog(): LoginDialogContextValue {
+  const ctx = useContext(LoginDialogContext);
   if (!ctx)
-    throw new Error("useLoginPrompt must be used within LoginPromptProvider");
+    throw new Error("useLoginDialog must be used within LoginDialogProvider");
   return ctx;
 }
 
-export function LoginPromptProvider({
+export function LoginDialogProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -72,32 +81,24 @@ export function LoginPromptProvider({
     [openLogin, user],
   );
 
-  const value = useMemo<LoginPromptContextValue>(
+  const value = useMemo<LoginDialogContextValue>(
     () => ({ openLogin, closeLogin, requireAuth }),
     [openLogin, closeLogin, requireAuth],
   );
 
   return (
-    <LoginPromptContext value={value}>
+    <LoginDialogContext value={value}>
       {children}
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent className="-translate-y-[calc(33dvh)]">
-          <AlertDialogHeader>
-            <AlertDialogTitle>로그인이 필요해요</AlertDialogTitle>
-            <AlertDialogDescription>
-              계속하려면 로그인해 주세요
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="-translate-y-[calc(33dvh)]">
+          <DialogHeader>
+            <DialogTitle>로그인이 필요해요</DialogTitle>
+            <DialogDescription>계속하려면 로그인해 주세요</DialogDescription>
+          </DialogHeader>
 
-          <LoginForm next={nextPath} />
-
-          <Separator />
-
-          <AlertDialogFooter>
-            <AlertDialogCancel>닫기</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </LoginPromptContext>
+          <LoginButtons next={nextPath} />
+        </DialogContent>
+      </Dialog>
+    </LoginDialogContext>
   );
 }

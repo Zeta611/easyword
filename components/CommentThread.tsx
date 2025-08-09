@@ -8,7 +8,7 @@ import CommentForm from "@/components/CommentForm";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLoginPrompt } from "@/components/LoginPromptProvider";
+import { useLoginDialog } from "@/components/LoginDialogProvider";
 
 interface CommentThreadProps {
   jargonId: string;
@@ -67,7 +67,7 @@ export default function CommentThread({
   initialComments = [],
 }: CommentThreadProps) {
   const { data: user, isLoading: isUserLoading } = useUserQuery();
-  const { openLogin } = useLoginPrompt();
+  const { openLogin } = useLoginDialog();
 
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [commentTree, setCommentTree] = useState<CommentTree[]>([]);

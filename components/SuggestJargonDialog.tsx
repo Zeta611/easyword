@@ -21,7 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { eulLeul } from "@/lib/utils";
-import { useLoginPrompt } from "@/components/LoginPromptProvider";
+import { useLoginDialog } from "@/components/LoginDialogProvider";
 
 type CategoryOption = {
   id: number;
@@ -32,7 +32,7 @@ type CategoryOption = {
 export default function SuggestJargonDialog() {
   const router = useRouter();
   const supabase = getClient();
-  const { openLogin } = useLoginPrompt();
+  const { openLogin } = useLoginDialog();
 
   const [open, setOpen] = useState(false);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);

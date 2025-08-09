@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
-export function LoginForm({
+export function LoginButtons({
   className,
   next,
   ...props

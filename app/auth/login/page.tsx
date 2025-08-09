@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/LoginForm";
+import { LoginButtons } from "@/components/LoginButtons";
 import {
   Card,
   CardContent,
@@ -17,7 +17,7 @@ export default function Page() {
             <CardDescription>로그인하시면 이용하실 수 있어요</CardDescription>
           </CardHeader>
           <CardContent>
-            <LoginForm />
+            <LoginButtons />
           </CardContent>
         </Card>
       </div>

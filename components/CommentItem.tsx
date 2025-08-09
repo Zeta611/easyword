@@ -10,7 +10,7 @@ import { Comment } from "@/types/comment";
 import CommentForm from "@/components/CommentForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
-import { useLoginPrompt } from "@/components/LoginPromptProvider";
+import { useLoginDialog } from "@/components/LoginDialogProvider";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -27,7 +27,7 @@ export default function CommentItem({
   onReplySuccess,
 }: CommentItemProps) {
   const { data: user } = useUserQuery();
-  const { openLogin } = useLoginPrompt();
+  const { openLogin } = useLoginDialog();
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);

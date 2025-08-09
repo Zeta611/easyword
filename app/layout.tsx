@@ -4,7 +4,7 @@ import Image from "next/image";
 import NavBar from "@/components/NavBar";
 import { SearchDialogProvider } from "@/components/SearchDialogProvider";
 import QueryProvider from "@/app/providers";
-import { LoginPromptProvider } from "@/components/LoginPromptProvider";
+import { LoginDialogProvider } from "@/components/LoginDialogProvider";
 import "@/app/globals.css";
 
 const hahmlet = Hahmlet({
@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         <QueryProvider>
           <SearchDialogProvider>
-            <LoginPromptProvider>
+            <LoginDialogProvider>
               <div className="flex min-h-screen w-full flex-col px-4 sm:px-6 lg:px-8">
                 <NavBar />
                 <main className="flex-1">{children}</main>
@@ -59,7 +59,7 @@ export default function RootLayout({
                   </a>
                 </footer>
               </div>
-            </LoginPromptProvider>
+            </LoginDialogProvider>
           </SearchDialogProvider>
         </QueryProvider>
       </body>
