@@ -243,8 +243,8 @@ export default function JargonInfiniteList({
             {totalCount !== undefined
               ? searchQuery
                 ? totalCount > 0
-                  ? `검색 결과 ${totalCount}개`
-                  : "검색 결과 없음"
+                  ? `찾은 전문용어 ${totalCount}개`
+                  : "찾은 전문용어 없음"
                 : `쉬운 전문용어 ${totalCount}개`
               : " "}
           </span>

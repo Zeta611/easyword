@@ -60,7 +60,7 @@ export default function CommentItem({
         className="absolute inset-y-0 left-0 w-1 cursor-pointer"
       />
       {/* Comment content */}
-      <div className="pt-1 pb-2 pl-3">
+      <div className="pt-1 pb-2 pl-2.5">
         {/* Comment header */}
         <div className="mb-1 flex items-center gap-2">
           <Avatar className="size-5.5">

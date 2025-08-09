@@ -12,7 +12,7 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   const supabase = await createClient();
 
   // First get the jargon
-  const { data: jargon, error } = await supabase
+  const { data: jargon } = await supabase
     .from("jargon")
     .select(
       "id, name, slug, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
@@ -49,9 +49,9 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
   }
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto flex max-w-4xl flex-col gap-5">
       {/* Jargon details */}
-      <div className="rounded-lg bg-white p-6">
+      <div className="rounded-lg bg-white p-3">
         <div className="flex flex-col gap-2">
           {/* categories */}
           {jargon.categories.length > 0 ? (
@@ -66,17 +66,17 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
               ))}
             </div>
           ) : null}
-          <h1 className="text-3xl font-bold">{jargon.name}</h1>
+          <h1 className="text-2xl font-bold">{jargon.name}</h1>
           {jargon.translations.length > 0 ? (
-            <p className="text-lg text-gray-800">
+            <div className="text-base text-gray-800">
               <ul className="list-disc pl-5">
                 {jargon.translations.map((tran) => (
-                  <li key={tran.name} className="text-lg text-gray-800">
+                  <li key={tran.name} className="text-gray-800">
                     {tran.name}
                   </li>
                 ))}
               </ul>
-            </p>
+            </div>
           ) : (
             <p className="text-lg text-gray-600">번역이 없습니다</p>
           )}
@@ -84,7 +84,7 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
       </div>
 
       {/* Comments section */}
-      <div className="rounded-lg bg-white p-6">
+      <div className="rounded-lg bg-white p-3">
         <CommentThread jargonId={jargon.id} initialComments={comments} />
       </div>
     </div>

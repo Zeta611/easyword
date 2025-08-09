@@ -274,7 +274,6 @@ export type Database = {
           author_id: string | null
           content: string | null
           created_at: string | null
-          email: string | null
           full_name: string | null
           id: string | null
           jargon_id: string | null
@@ -379,6 +378,20 @@ export type Database = {
           translations: Json
           categories: Json
           comments: Json
+        }[]
+      }
+      suggest_jargon: {
+        Args: {
+          p_name: string
+          p_translation: string
+          p_comment: string
+          p_category_ids: number[]
+        }
+        Returns: {
+          jargon_id: string
+          jargon_slug: string
+          comment_id: string
+          translation_id: string
         }[]
       }
       to_lowercase: {

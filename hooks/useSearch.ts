@@ -91,7 +91,7 @@ export function useSearch(limit = 10) {
         });
       } catch (err) {
         console.error("Search error:", err);
-        setError("검색 중 오류가 발생했어요");
+        setError("찾는 중 오류가 발생했어요");
         setResults({ jargons: [], translations: [] });
       } finally {
         setIsLoading(false);

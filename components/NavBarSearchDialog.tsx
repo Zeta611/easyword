@@ -22,7 +22,7 @@ import {
 import { useSearch } from "@/hooks/useSearch";
 import Kbd from "@/components/Kbd";
 
-export default function NavBarSearchButton() {
+export default function NavBarSearchDialog() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function NavBarSearchButton() {
         className="bg-accent hidden w-64 justify-between sm:flex"
         onClick={() => setOpen(true)}
       >
-        쉬운 전문용어 검색
+        쉬운 전문용어 찾기
         <Kbd>/</Kbd>
       </Button>
 
@@ -84,14 +84,14 @@ export default function NavBarSearchButton() {
       {/* Search palette */}
       <CommandDialog
         title="검색창"
-        description="쉬운 전문용어를 검색하세요"
+        description="쉬운 전문용어를 찾아보세요"
         shouldFilter={false}
         open={open}
         onOpenChange={setOpen}
         className="-translate-y-[calc(33dvh)]"
       >
         <CommandInput
-          placeholder="쉬운 전문용어를 검색하세요..."
+          placeholder="쉬운 전문용어를 찾아보세요..."
           value={query}
           onValueChange={setQuery}
         />
@@ -99,7 +99,7 @@ export default function NavBarSearchButton() {
           {isLoading && (
             <div className="my-6 flex items-center justify-center gap-2">
               <Loader2 className="size-4 animate-spin" />
-              <span className="text-muted-foreground text-sm">검색 중...</span>
+              <span className="text-muted-foreground text-sm">찾는 중...</span>
             </div>
           )}
 
@@ -109,7 +109,7 @@ export default function NavBarSearchButton() {
 
           {!isLoading && !error && (
             <>
-              <CommandEmpty>검색 결과가 없어요</CommandEmpty>
+              <CommandEmpty>찾는 결과가 없어요</CommandEmpty>
 
               {(results.jargons.length > 0 ||
                 results.translations.length > 0) && (

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CommentFormProps {
   jargonId: string;
@@ -78,20 +79,19 @@ export default function CommentForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-1.5">
       <div>
-        <textarea
+        <Textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder={placeholder}
           rows={parentId ? 3 : 4}
-          className="w-full resize-none rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
           disabled={isSubmitting}
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
       </div>
 
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end gap-1.5">
         {onCancel && (
           <Button
             type="button"

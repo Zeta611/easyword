@@ -105,29 +105,33 @@ export default function CommentThread({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-1">
       {/* New comment form */}
       <div className="flex flex-col gap-2">
-        <span className="text-lg font-semibold">댓글 {comments.length}개</span>
+        <span className="text-base font-semibold">
+          댓글 {comments.length}개
+        </span>
         <CommentForm jargonId={jargonId} onSuccess={handleCommentSuccess} />
       </div>
 
       {/* Comment list */}
       {isLoading ? (
-        <div className="py-8 text-center text-gray-500">
+        <div className="py-4 text-center text-gray-500">
           댓글 불러오는 중...
         </div>
       ) : commentTree.length > 0 ? (
-        commentTree.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            onReplySuccess={handleCommentSuccess}
-          />
-        ))
+        <div className="-ml-2 flex flex-col gap-2">
+          {commentTree.map((comment) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              onReplySuccess={handleCommentSuccess}
+            />
+          ))}
+        </div>
       ) : (
-        <div className="py-8 text-center text-gray-500">
-          첫 번째 댓글을 작성해보세요!
+        <div className="py-4 text-center text-gray-500">
+          첫 댓글을 작성해보세요
         </div>
       )}
     </div>

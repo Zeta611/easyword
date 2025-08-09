@@ -1,6 +1,7 @@
 import NavBarAvatar from "@/components/NavBarAvatar";
-import NavBarSearchButton from "@/components/NavBarSearchButton";
+import NavBarSearchDialog from "@/components/NavBarSearchDialog";
 import NavBarTitle from "@/components/NavBarTitle";
+import SuggestJargonDialog from "@/components/SuggestJargonDialog";
 
 export default function NavBar() {
   return (
@@ -8,7 +9,8 @@ export default function NavBar() {
       <div className="mb-4 flex items-start justify-between pt-4">
         <NavBarTitle />
         <div className="flex items-center gap-4.5">
-          <NavBarSearchButton />
+          <NavBarSearchDialog />
+          <SuggestJargonDialog />
           <NavBarAvatar />
         </div>
       </div>

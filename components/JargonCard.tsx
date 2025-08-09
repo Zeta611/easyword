@@ -48,7 +48,7 @@ export default function JargonCard({ jargon }: JargonCardProps) {
         <p className="text-base font-normal text-gray-800">
           {jargon.translations.length > 0
             ? jargon.translations.join(", ")
-            : "No translations available"}
+            : "번역이 없어요"}
         </p>
 
         {/* comment count · last updated */}
