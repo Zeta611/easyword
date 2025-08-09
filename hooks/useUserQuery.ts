@@ -8,9 +8,10 @@ export const useUserQuery = () => {
   return useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const { data, error } = await supabase.auth.getUser();
+      // NOTE: getUser will error if the user is not logged in. This will then cause TanStack Query to retry and show a loading state.
+      const { data, error } = await supabase.auth.getSession();
       if (error) throw error;
-      return data.user;
+      return data.session?.user ?? null;
     },
   });
 };

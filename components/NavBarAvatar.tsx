@@ -4,9 +4,11 @@ import Link from "next/link";
 import { User } from "lucide-react";
 import { CurrentUserAvatar } from "@/components/CurrentUserAvatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
+import { useLoginPrompt } from "@/components/LoginPromptProvider";
 
 export default function NavBarAvatar() {
   const { data: user, isLoading } = useUserQuery();
+  const { openLogin } = useLoginPrompt();
 
   switch (isLoading ? null : !!user) {
     case null:
@@ -15,13 +17,16 @@ export default function NavBarAvatar() {
           <User />
         </div>
       );
+
     case false:
       return (
-        <Link href="/auth/login">
-          <div className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl">
-            <User />
-          </div>
-        </Link>
+        <button
+          type="button"
+          onClick={() => openLogin()}
+          className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl"
+        >
+          <User />
+        </button>
       );
 
     case true:

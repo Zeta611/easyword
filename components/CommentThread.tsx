@@ -7,8 +7,8 @@ import CommentItem from "@/components/CommentItem";
 import CommentForm from "@/components/CommentForm";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLoginPrompt } from "@/components/LoginPromptProvider";
 
 interface CommentThreadProps {
   jargonId: string;
@@ -67,7 +67,7 @@ export default function CommentThread({
   initialComments = [],
 }: CommentThreadProps) {
   const { data: user, isLoading: isUserLoading } = useUserQuery();
-  const router = useRouter();
+  const { openLogin } = useLoginPrompt();
 
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [commentTree, setCommentTree] = useState<CommentTree[]>([]);
@@ -118,14 +118,14 @@ export default function CommentThread({
         <span className="text-base font-semibold">
           댓글 {comments.length}개
         </span>
-        {user ? (
+        {isUserLoading ? (
+          <Skeleton className="my-2 h-10 w-full" />
+        ) : user ? (
           <CommentForm jargonId={jargonId} onSuccess={handleCommentSuccess} />
-        ) : isUserLoading ? (
-          <Skeleton className="my-2 h-30 w-full" />
         ) : (
           <Button
             variant="outline"
-            onClick={() => router.push("/auth/login")}
+            onClick={() => openLogin()}
             className="my-2 text-sm text-gray-500"
           >
             로그인 후 댓글 달기

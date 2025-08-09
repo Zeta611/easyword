@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { useQueryClient } from "@tanstack/react-query";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export function LogoutButton() {
     await supabase.auth.signOut();
     queryClient.setQueryData(["user"], null);
     queryClient.invalidateQueries({ queryKey: ["user"] });
-    router.push("/auth/login");
+    router.replace("/");
   };
 
   return (

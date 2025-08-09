@@ -10,7 +10,7 @@ import { Comment } from "@/types/comment";
 import CommentForm from "@/components/CommentForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
-import { useRouter } from "next/navigation";
+import { useLoginPrompt } from "@/components/LoginPromptProvider";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -27,7 +27,7 @@ export default function CommentItem({
   onReplySuccess,
 }: CommentItemProps) {
   const { data: user } = useUserQuery();
-  const router = useRouter();
+  const { openLogin } = useLoginPrompt();
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
@@ -119,7 +119,7 @@ export default function CommentItem({
             variant="ghost"
             onClick={() => {
               if (!user) {
-                router.push("/auth/login");
+                openLogin();
               } else {
                 setShowReplyForm(!showReplyForm);
               }

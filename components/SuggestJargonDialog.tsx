@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { eulLeul } from "@/lib/utils";
+import { useLoginPrompt } from "@/components/LoginPromptProvider";
 
 type CategoryOption = {
   id: number;
@@ -31,6 +32,7 @@ type CategoryOption = {
 export default function SuggestJargonDialog() {
   const router = useRouter();
   const supabase = getClient();
+  const { openLogin } = useLoginPrompt();
 
   const [open, setOpen] = useState(false);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
@@ -52,13 +54,13 @@ export default function SuggestJargonDialog() {
           data: { user },
         } = await supabase.auth.getUser();
         if (!user) {
-          router.push("/auth/login");
+          openLogin();
           return;
         }
       }
       setOpen(nextOpen);
     },
-    [router, supabase],
+    [openLogin, supabase],
   );
 
   useEffect(() => {
