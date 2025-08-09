@@ -5,6 +5,10 @@ import { getClient } from "@/lib/supabase/client";
 import { Comment, CommentTree } from "@/types/comment";
 import CommentItem from "@/components/CommentItem";
 import CommentForm from "@/components/CommentForm";
+import { useUserQuery } from "@/hooks/useUserQuery";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface CommentThreadProps {
   jargonId: string;
@@ -62,6 +66,9 @@ export default function CommentThread({
   jargonId,
   initialComments = [],
 }: CommentThreadProps) {
+  const { data: user, isLoading: isUserLoading } = useUserQuery();
+  const router = useRouter();
+
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [commentTree, setCommentTree] = useState<CommentTree[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -111,14 +118,24 @@ export default function CommentThread({
         <span className="text-base font-semibold">
           댓글 {comments.length}개
         </span>
-        <CommentForm jargonId={jargonId} onSuccess={handleCommentSuccess} />
+        {user ? (
+          <CommentForm jargonId={jargonId} onSuccess={handleCommentSuccess} />
+        ) : isUserLoading ? (
+          <Skeleton className="my-2 h-30 w-full" />
+        ) : (
+          <Button
+            variant="outline"
+            onClick={() => router.push("/auth/login")}
+            className="my-2 text-sm text-gray-500"
+          >
+            로그인 후 댓글 달기
+          </Button>
+        )}
       </div>
 
       {/* Comment list */}
       {isLoading ? (
-        <div className="py-4 text-center text-gray-500">
-          댓글 불러오는 중...
-        </div>
+        <Skeleton className="my-2 h-30 w-full" />
       ) : commentTree.length > 0 ? (
         <div className="-ml-2 flex flex-col gap-2">
           {commentTree.map((comment) => (

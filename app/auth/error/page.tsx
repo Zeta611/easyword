@@ -12,21 +12,15 @@ export default async function Page({
       <div className="w-full max-w-sm">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">
-              죄송합니다, 문제가 발생했어요
-            </CardTitle>
+            <CardTitle className="text-xl">로그인에 문제가 있었어요</CardTitle>
           </CardHeader>
-          <CardContent>
-            {params?.error ? (
+          {params.error && (
+            <CardContent>
               <p className="text-muted-foreground text-sm">
                 에러 코드: {params.error}
               </p>
-            ) : (
-              <p className="text-muted-foreground text-sm">
-                알 수 없는 에러가 발생했어요
-              </p>
-            )}
-          </CardContent>
+            </CardContent>
+          )}
         </Card>
       </div>
     </div>

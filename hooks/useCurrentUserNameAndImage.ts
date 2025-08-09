@@ -1,23 +1,17 @@
-import { useEffect, useState } from "react";
-import { getClient } from "@/lib/supabase/client";
+"use client";
+
+import { useMemo } from "react";
+import { useUserQuery } from "@/hooks/useUserQuery";
 
 export const useCurrentUserNameAndImage = () => {
-  const [name, setName] = useState<string | null>(null);
-  const [image, setImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const { data, error } = await getClient().auth.getSession();
-      if (error) {
-        console.error(error);
-      }
-
-      setName(data.session?.user.user_metadata.full_name ?? "");
-      setImage(data.session?.user.user_metadata.avatar_url ?? null);
-    };
-
-    fetchProfile();
-  }, []);
-
-  return [name || "", image];
+  const { data: user } = useUserQuery();
+  const name = useMemo(
+    () => (user?.user_metadata?.full_name as string | undefined) ?? "",
+    [user],
+  );
+  const image = useMemo(
+    () => (user?.user_metadata?.avatar_url as string | undefined) ?? null,
+    [user],
+  );
+  return [name, image] as const;
 };

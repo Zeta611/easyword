@@ -41,13 +41,13 @@ export default function CommentForm({
     setError(null);
 
     try {
-      // Check if user is authenticated
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
       if (!user) {
         setError("로그인 후 댓글을 달 수 있어요");
+        console.error("Unexpected error: user is not authenticated");
         return;
       }
 
@@ -60,10 +60,8 @@ export default function CommentForm({
 
       if (insertError) throw insertError;
 
-      // Reset form
       setContent("");
 
-      // Call success callback
       if (onSuccess) {
         onSuccess();
       } else {

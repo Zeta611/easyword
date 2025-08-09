@@ -6,17 +6,18 @@ import { createClient } from "@/lib/supabase/server";
 export default async function Profile() {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getSession();
-  if (error || !data?.session?.user) {
-    redirect("/auth/login");
-  }
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error || !user) redirect("/auth/login");
 
   return (
     <div className="flex w-full items-center justify-center gap-2">
       <p>
-        안녕하세요 <span>{data.session.user.user_metadata.full_name}님!</span>
+        안녕하세요 <span>{user.user_metadata.full_name}님!</span>
         <br />
-        이메일: <span>{data.session.user.email}</span>
+        이메일: <span>{user.email}</span>
       </p>
       <LogoutButton />
     </div>

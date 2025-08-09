@@ -1,28 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { User } from "lucide-react";
 import { CurrentUserAvatar } from "@/components/CurrentUserAvatar";
-import { getClient } from "@/lib/supabase/client";
+import { useUserQuery } from "@/hooks/useUserQuery";
 
 export default function NavBarAvatar() {
-  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  const { data: user, isLoading } = useUserQuery();
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const { data, error } = await getClient().auth.getSession();
-      if (error) {
-        console.error(error);
-      }
-
-      setSignedIn(!!data.session?.user);
-    };
-
-    fetchSession();
-  }, []);
-
-  switch (signedIn) {
+  switch (isLoading ? null : !!user) {
     case null:
       return (
         <div className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl">

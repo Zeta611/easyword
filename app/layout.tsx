@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Source_Code_Pro, Hahmlet } from "next/font/google";
 import Image from "next/image";
-import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { SearchDialogProvider } from "@/components/SearchDialogProvider";
+import QueryProvider from "@/app/providers";
+import "@/app/globals.css";
 
 const hahmlet = Hahmlet({
   variable: "--font-serif",
@@ -30,32 +31,34 @@ export default function RootLayout({
       <body
         className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background font-serif antialiased`}
       >
-        <SearchDialogProvider>
-          <div className="flex min-h-screen w-full flex-col px-4 sm:px-6 lg:px-8">
-            <NavBar />
-            <main className="flex-1">{children}</main>
-            <footer className="mt-4 flex h-12 items-center justify-center gap-1">
-              <a
-                className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-                href="https://kiise.or.kr"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image
-                  aria-hidden
-                  className="w-11 sm:w-auto"
-                  src="/kiise.png"
-                  alt="KIISE logo"
-                  width={122}
-                  height={25}
-                />
-                <p className="text-[10px] text-gray-500 sm:text-sm">
-                  한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다
-                </p>
-              </a>
-            </footer>
-          </div>
-        </SearchDialogProvider>
+        <QueryProvider>
+          <SearchDialogProvider>
+            <div className="flex min-h-screen w-full flex-col px-4 sm:px-6 lg:px-8">
+              <NavBar />
+              <main className="flex-1">{children}</main>
+              <footer className="mt-4 flex h-12 items-center justify-center gap-1">
+                <a
+                  className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+                  href="https://kiise.or.kr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image
+                    aria-hidden
+                    className="w-11 sm:w-auto"
+                    src="/kiise.png"
+                    alt="KIISE logo"
+                    width={122}
+                    height={25}
+                  />
+                  <p className="text-[10px] text-gray-500 sm:text-sm">
+                    한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다
+                  </p>
+                </a>
+              </footer>
+            </div>
+          </SearchDialogProvider>
+        </QueryProvider>
       </body>
     </html>
   );

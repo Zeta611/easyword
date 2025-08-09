@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
 import CommentForm from "@/components/CommentForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUserQuery } from "@/hooks/useUserQuery";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -24,6 +26,9 @@ export default function CommentItem({
   depth = 0,
   onReplySuccess,
 }: CommentItemProps) {
+  const { data: user } = useUserQuery();
+  const router = useRouter();
+
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
   const initials = (comment.full_name || "")
@@ -112,7 +117,13 @@ export default function CommentItem({
           )}
           <Button
             variant="ghost"
-            onClick={() => setShowReplyForm(!showReplyForm)}
+            onClick={() => {
+              if (!user) {
+                router.push("/auth/login");
+              } else {
+                setShowReplyForm(!showReplyForm);
+              }
+            }}
             className="flex h-6 w-15 items-center gap-1 text-xs transition-colors hover:text-gray-800"
           >
             <MessageCircle className="size-3" />
