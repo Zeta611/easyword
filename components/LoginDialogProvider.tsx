@@ -10,25 +10,13 @@ import {
 } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { LoginButtons } from "@/components/LoginButtons";
-import { Separator } from "@/components/ui/separator";
 
 type LoginDialogContextValue = {
   openLogin: (next?: string) => void;
