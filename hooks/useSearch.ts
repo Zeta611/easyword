@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 
 export interface SearchResult {
   id: string;
@@ -25,7 +25,7 @@ export function useSearch(limit = 10) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const supabase = createClient();
+  const supabase = getClient();
 
   const searchJargons = useCallback(
     async (searchQuery: string) => {

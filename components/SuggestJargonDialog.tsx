@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
 import { PostgrestError } from "@supabase/postgrest-js";
 import { Textarea } from "./ui/textarea";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,7 +30,7 @@ type CategoryOption = {
 
 export default function SuggestJargonDialog() {
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = getClient();
 
   const [open, setOpen] = useState(false);
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);

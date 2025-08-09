@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { User } from "lucide-react";
 import { CurrentUserAvatar } from "@/components/CurrentUserAvatar";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 
 export default function NavBarAvatar() {
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
     const fetchSession = async () => {
-      const { data, error } = await createClient().auth.getSession();
+      const { data, error } = await getClient().auth.getSession();
       if (error) {
         console.error(error);
       }

@@ -6,11 +6,6 @@ import { createClient } from "@/lib/supabase/server";
 export default async function Profile() {
   const supabase = await createClient();
 
-  // const { data, error } = await supabase.auth.getClaims();
-  // if (error || !data?.claims) {
-  //   redirect("/auth/login");
-  // }
-
   const { data, error } = await supabase.auth.getSession();
   if (error || !data?.session?.user) {
     redirect("/auth/login");

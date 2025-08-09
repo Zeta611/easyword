@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,7 +20,7 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSocialLogin = async (provider: "github" | "google") => {
-    const supabase = createClient();
+    const supabase = getClient();
     setIsLoading(true);
     setError(null);
 

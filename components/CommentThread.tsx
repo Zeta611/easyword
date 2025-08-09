@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 import { Comment, CommentTree } from "@/types/comment";
 import CommentItem from "@/components/CommentItem";
 import CommentForm from "@/components/CommentForm";
@@ -65,7 +65,7 @@ export default function CommentThread({
   const [comments, setComments] = useState<Comment[]>(initialComments);
   const [commentTree, setCommentTree] = useState<CommentTree[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const supabase = createClient();
+  const supabase = getClient();
 
   // Build comment tree whenever comments change
   useEffect(() => {

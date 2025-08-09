@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 
 export const useCurrentUserNameAndImage = () => {
   const [name, setName] = useState<string | null>(null);
@@ -7,7 +7,7 @@ export const useCurrentUserNameAndImage = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const { data, error } = await createClient().auth.getSession();
+      const { data, error } = await getClient().auth.getSession();
       if (error) {
         console.error(error);
       }

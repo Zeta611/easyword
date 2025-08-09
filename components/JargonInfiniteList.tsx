@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { getClient } from "@/lib/supabase/client";
 import JargonCard from "@/components/JargonCard";
 import { Button } from "@/components/ui/button";
 import {
@@ -62,7 +62,7 @@ function useJargonInfiniteQuery(
   const prevSearchQuery = useRef(searchQuery);
   const prevSortOption = useRef(sortOption);
 
-  const supabase = createClient();
+  const supabase = getClient();
   const pageSize = 32;
 
   const fetchNext = useCallback(
