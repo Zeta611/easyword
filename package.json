@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "next lint --fix"
+    "format": "next lint --fix",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run format && bun run lint && bun run typecheck"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.10",
