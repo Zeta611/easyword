@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import { Comment, CommentTree } from "@/types/comment";
 import CommentItem from "@/components/CommentItem";
@@ -68,57 +69,29 @@ export default function CommentThread({
 }: CommentThreadProps) {
   const { data: user, isLoading: isUserLoading } = useUserQuery();
   const { openLogin } = useLoginDialog();
-
-  const [comments, setComments] = useState<Comment[]>(initialComments);
-  const [commentTree, setCommentTree] = useState<CommentTree[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const supabase = getClient();
 
-  // Build comment tree whenever comments change
-  useEffect(() => {
-    setCommentTree(buildCommentTree(comments));
-  }, [comments]);
-
-  // Fetch comments
-  const fetchComments = useCallback(async () => {
-    setIsLoading(true);
-    try {
+  const { data: comments, isLoading } = useQuery({
+    queryKey: ["comments", jargonId],
+    queryFn: async () => {
       const { data, error } = await supabase
         .from("comment")
         .select(
           `
           *,
-          profile:author_id (
-            display_name,
-            photo_url
-          ),
+          profile:author_id(display_name, photo_url),
           translation(name)
         `,
         )
         .eq("jargon_id", jargonId)
         .order("created_at", { ascending: true });
-
       if (error) throw error;
-      setComments(data as Comment[]);
-    } catch (err) {
-      console.error("Error fetching comments:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [jargonId, supabase]);
+      return data as Comment[];
+    },
+    initialData: initialComments,
+  });
 
-  // Fetch comments on mount if no initial data
-  useEffect(() => {
-    console.debug("Fetching comments in useEffect");
-    if (initialComments.length === 0) {
-      fetchComments();
-    }
-  }, [jargonId, initialComments, fetchComments]);
-
-  const handleCommentSuccess = () => {
-    // Refetch comments when a new comment is added
-    fetchComments();
-  };
+  const commentTree = useMemo(() => buildCommentTree(comments), [comments]);
 
   return (
     <div className="flex flex-col gap-1">
@@ -130,7 +103,7 @@ export default function CommentThread({
         {isUserLoading ? (
           <Skeleton className="my-2 h-10 w-full" />
         ) : user ? (
-          <CommentForm jargonId={jargonId} onSuccess={handleCommentSuccess} />
+          <CommentForm jargonId={jargonId} />
         ) : (
           <Button
             variant="outline"
@@ -148,11 +121,7 @@ export default function CommentThread({
       ) : commentTree.length > 0 ? (
         <div className="-ml-2 flex flex-col gap-2">
           {commentTree.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              onReplySuccess={handleCommentSuccess}
-            />
+            <CommentItem key={comment.id} comment={comment} />
           ))}
         </div>
       ) : (

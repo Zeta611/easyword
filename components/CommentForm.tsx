@@ -1,114 +1,73 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { getClient } from "@/lib/supabase/client";
+import { useFormStatus } from "react-dom";
+import { useActionState, useEffect } from "react";
+import Form from "next/form";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  createComment,
+  CreateCommentAction,
+} from "@/app/actions/createComment";
 
 interface CommentFormProps {
   jargonId: string;
   parentId?: string;
-  onCancel?: () => void;
-  onSuccess?: () => void;
+  close?: () => void;
   placeholder?: string;
   submitLabel?: string;
+}
+
+function Submit({ label }: { label: string }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? "다는 중..." : label}
+    </Button>
+  );
 }
 
 export default function CommentForm({
   jargonId,
   parentId,
-  onCancel,
-  onSuccess,
+  close,
   placeholder = "여러분의 생각은 어떤가요?",
   submitLabel = "댓글 달기",
 }: CommentFormProps) {
-  const [content, setContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-  const supabase = getClient();
+  const queryClient = useQueryClient();
+  const [result, createCommentAction] = useActionState(
+    createComment.bind(null, jargonId, parentId ?? null) as CreateCommentAction,
+    { ok: false, error: "" },
+  );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!content.trim()) {
-      setError("내용을 입력해주세요");
-      return;
+  useEffect(() => {
+    if (result?.ok) {
+      queryClient.invalidateQueries({ queryKey: ["comments", jargonId] });
+      close?.();
     }
-
-    setIsSubmitting(true);
-    setError(null);
-
-    try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setError("로그인 후 댓글을 달 수 있어요");
-        console.error("Unexpected error: user is not authenticated");
-        return;
-      }
-
-      const { error: insertError } = await supabase.from("comment").insert({
-        content: content.trim(),
-        author_id: user.id,
-        jargon_id: jargonId,
-        parent_id: parentId || null,
-      });
-
-      if (insertError) throw insertError;
-
-      setContent("");
-
-      if (onSuccess) {
-        onSuccess();
-      } else {
-        // Refresh page to show new comment
-        router.refresh();
-      }
-    } catch (err) {
-      console.error("Error submitting comment:", err);
-      setError("댓글 다는 중 문제가 생겼어요");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  }, [result?.ok, queryClient, jargonId, close]);
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-1.5">
+    <Form action={createCommentAction} className="flex flex-col gap-1.5">
       <div>
         <Textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          name="content"
           placeholder={placeholder}
           rows={parentId ? 3 : 4}
-          disabled={isSubmitting}
         />
-        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        {result?.error && (
+          <p className="mt-1 text-sm text-red-600">{result.error}</p>
+        )}
       </div>
 
       <div className="flex justify-end gap-1.5">
-        {onCancel && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={onCancel}
-            disabled={isSubmitting}
-          >
+        {close && (
+          <Button type="button" variant="outline" size="sm" onClick={close}>
             닫기
           </Button>
         )}
-        <Button
-          type="submit"
-          size="sm"
-          disabled={isSubmitting || !content.trim()}
-        >
-          {isSubmitting ? "다는 중..." : submitLabel}
-        </Button>
+        <Submit label={submitLabel} />
       </div>
-    </form>
+    </Form>
   );
 }

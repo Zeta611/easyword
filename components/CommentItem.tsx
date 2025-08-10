@@ -18,14 +18,9 @@ dayjs.locale("ko");
 interface CommentItemProps {
   comment: Comment;
   depth?: number;
-  onReplySuccess?: () => void;
 }
 
-export default function CommentItem({
-  comment,
-  depth = 0,
-  onReplySuccess,
-}: CommentItemProps) {
+export default function CommentItem({ comment, depth = 0 }: CommentItemProps) {
   const { data: user } = useUserQuery();
   const { openLogin } = useLoginDialog();
 
@@ -36,13 +31,6 @@ export default function CommentItem({
     .map((w) => w[0])
     .join("")
     .toUpperCase();
-
-  const handleReplySuccess = () => {
-    setShowReplyForm(false);
-    if (onReplySuccess) {
-      onReplySuccess();
-    }
-  };
 
   if (comment.removed) {
     return (
@@ -137,8 +125,7 @@ export default function CommentItem({
             <CommentForm
               jargonId={comment.jargon_id}
               parentId={comment.id}
-              onCancel={() => setShowReplyForm(false)}
-              onSuccess={handleReplySuccess}
+              close={() => setShowReplyForm(false)}
               placeholder="여러분의 생각은 어떤가요?"
               submitLabel="답글 달기"
             />
@@ -150,12 +137,7 @@ export default function CommentItem({
       {showReplies && comment.replies && comment.replies.length > 0 && (
         <div>
           {comment.replies.map((reply) => (
-            <CommentItem
-              key={reply.id}
-              comment={reply}
-              depth={depth + 1}
-              onReplySuccess={onReplySuccess}
-            />
+            <CommentItem key={reply.id} comment={reply} depth={depth + 1} />
           ))}
         </div>
       )}
