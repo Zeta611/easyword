@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useState,
+  Suspense,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { matchSorter } from "match-sorter";
@@ -36,6 +37,39 @@ export function useSearchDialog() {
   if (!ctx)
     throw new Error("useSearchDialog must be used within SearchDialogProvider");
   return ctx;
+}
+
+function SearchMoreItem({
+  query,
+  setOpen,
+}: {
+  query: string;
+  setOpen: (open: boolean) => void;
+}) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleSelectMore = () => {
+    setOpen(false);
+    const params = new URLSearchParams(searchParams.toString());
+    if (query.trim()) {
+      params.set("q", query.trim());
+    } else {
+      console.error("query is empty on search");
+      params.delete("q");
+    }
+    const url = params.toString() ? `/?${params.toString()}` : "/";
+    router.push(url);
+  };
+
+  return (
+    <CommandItem onSelect={() => handleSelectMore}>
+      <div className="flex items-center gap-2">
+        <FileSearch className="!size-4" />
+        <span>더보기</span>
+      </div>
+    </CommandItem>
+  );
 }
 
 const SEARCH_LIMIT = 8;
@@ -80,24 +114,10 @@ export function SearchDialogProvider({
   }, [open, setQuery]);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleSelectResult = (jargonSlug: string) => {
     setOpen(false);
     router.push(`/jargon/${jargonSlug}`);
-  };
-
-  const handleSelectMore = () => {
-    setOpen(false);
-    const params = new URLSearchParams(searchParams.toString());
-    if (query.trim()) {
-      params.set("q", query.trim());
-    } else {
-      console.error("query is empty on search");
-      params.delete("q");
-    }
-    const url = params.toString() ? `/?${params.toString()}` : "/";
-    router.push(url);
   };
 
   return (
@@ -135,12 +155,9 @@ export function SearchDialogProvider({
               {(results.jargons.length > 0 ||
                 results.translations.length > 0) && (
                 <CommandGroup>
-                  <CommandItem onSelect={handleSelectMore}>
-                    <div className="flex items-center gap-2">
-                      <FileSearch className="!size-4" />
-                      더보기
-                    </div>
-                  </CommandItem>
+                  <Suspense fallback={<Skeleton className="h-10 w-full" />}>
+                    <SearchMoreItem query={query} setOpen={setOpen} />
+                  </Suspense>
                 </CommandGroup>
               )}
 
