@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Source_Code_Pro, Hahmlet } from "next/font/google";
 import Image from "next/image";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import NavBar from "@/components/NavBar";
 import { SearchDialogProvider } from "@/components/SearchDialogProvider";
 import QueryProvider from "@/app/providers";
@@ -62,6 +64,8 @@ export default function RootLayout({
             </LoginDialogProvider>
           </SearchDialogProvider>
         </QueryProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
