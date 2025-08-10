@@ -890,7 +890,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
               )}
             >
               <CommandEmpty>
-                {emptyIndicator || "No results found."}
+                {emptyIndicator || "검색된 분야 없음"}
               </CommandEmpty>{" "}
               {!hideSelectAll && !searchValue && (
                 <CommandGroup>
@@ -911,7 +911,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       <CheckIcon className="h-4 w-4" />
                     </div>
                     <span>
-                      (Select All
+                      (모두 선택
                       {getAllOptions().length > 20
                         ? ` - ${getAllOptions().length} options`
                         : ""}

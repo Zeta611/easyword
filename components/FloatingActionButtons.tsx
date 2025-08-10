@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,27 +13,35 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSearchDialog } from "@/components/SearchDialogProvider";
 
-export type SortOption = "recent" | "popular" | "abc" | "zyx";
+type SortOption = "recent" | "popular" | "abc" | "zyx";
+
+interface FloatingActionButtonsProps {
+  sortCategories: { sort: SortOption; categories: string[] | null };
+  onChangeSortCategories: (value: {
+    sort?: SortOption;
+    categories?: string[] | null;
+  }) => void;
+  openFilterDialog: () => void;
+}
 
 export default function FloatingActionButtons({
-  sort,
-  onChangeSort,
-}: {
-  sort: SortOption;
-  onChangeSort: (value: SortOption) => void;
-}) {
-  const { openDialog } = useSearchDialog();
+  sortCategories,
+  onChangeSortCategories,
+  openFilterDialog,
+}: FloatingActionButtonsProps) {
+  const { openDialog: openSearch } = useSearchDialog();
 
   return (
     <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 sm:hidden">
       <div className="flex items-center gap-3">
-        {/* Left dummy button (placeholder) */}
+        {/* Filter (left column) */}
         <Button
           variant="outline"
-          aria-hidden
-          className="bg-accent pointer-events-none h-9 w-16 cursor-default rounded-full p-3 opacity-40"
+          className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg hover:cursor-pointer"
+          onClick={openFilterDialog}
         >
-          <span className="sr-only">placeholder</span>
+          <Filter className="size-5.5" />
+          <span className="sr-only">필터</span>
         </Button>
 
         {/* Sort - centered (middle column) */}
@@ -51,8 +59,10 @@ export default function FloatingActionButtons({
             <DropdownMenuLabel>정렬 기준</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup
-              value={sort}
-              onValueChange={(value) => onChangeSort(value as SortOption)}
+              value={sortCategories.sort}
+              onValueChange={(value) =>
+                onChangeSortCategories({ sort: value as SortOption })
+              }
             >
               <DropdownMenuRadioItem value="recent">
                 최근 활동순
@@ -74,7 +84,7 @@ export default function FloatingActionButtons({
         <Button
           variant="outline"
           className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg hover:cursor-pointer"
-          onClick={openDialog}
+          onClick={openSearch}
         >
           <Search className="size-5.5" />
           <span className="sr-only">검색</span>

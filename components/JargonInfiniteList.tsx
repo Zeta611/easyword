@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { SlidersHorizontal, X } from "lucide-react";
-import { useCallback, useMemo, useRef } from "react";
+import { SlidersHorizontal, X, Filter } from "lucide-react";
+import { useMemo, useRef } from "react";
 import equal from "fast-deep-equal";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
@@ -34,8 +33,12 @@ interface JargonInfiniteListProps {
   searchQuery: string;
   initialData: JargonData[];
   initialTotalCount: number;
-  sort: SortOption;
-  onChangeSort: (value: SortOption) => void;
+  sortCategories: { sort: SortOption; categories: string[] | null };
+  onChangeSortCategories: (value: {
+    sort?: SortOption;
+    categories?: string[] | null;
+  }) => void;
+  openFilterDialog: () => void;
 }
 
 type SortOption = "recent" | "popular" | "abc" | "zyx";
@@ -46,14 +49,26 @@ export default function JargonInfiniteList({
   searchQuery,
   initialData,
   initialTotalCount,
-  sort,
-  onChangeSort,
+  sortCategories,
+  onChangeSortCategories,
+  openFilterDialog,
 }: JargonInfiniteListProps) {
-  const router = useRouter();
   const supabase = getClient();
 
-  const initialQueryKeyRef = useRef(["jargons", { q: searchQuery, sort }]);
-  const queryKey = ["jargons", { q: searchQuery, sort }];
+  const initialQueryKeyRef = useRef([
+    "jargons",
+    {
+      q: searchQuery,
+      ...sortCategories,
+    },
+  ]);
+  const queryKey = [
+    "jargons",
+    {
+      q: searchQuery,
+      ...sortCategories,
+    },
+  ];
 
   const {
     data: jargons,
@@ -66,15 +81,13 @@ export default function JargonInfiniteList({
     queryKey,
     initialPageParam: 0,
     queryFn: async ({ pageParam }) => {
-      const { data, error } = await supabase.rpc(
-        "search_jargons_with_translations",
-        {
-          search_query: searchQuery,
-          limit_count: PAGE_SIZE,
-          offset_count: pageParam,
-          sort_option: sort,
-        },
-      );
+      const { data, error } = await supabase.rpc("search_jargons", {
+        search_query: searchQuery,
+        limit_count: PAGE_SIZE,
+        offset_count: pageParam,
+        sort_option: sortCategories.sort,
+        category_acronyms: sortCategories.categories ?? undefined,
+      });
       if (error) throw error;
       return data.map((it) => ({
         id: it.id,
@@ -116,26 +129,6 @@ export default function JargonInfiniteList({
     },
     initialData: initialTotalCount,
   });
-
-  // Update URL when sort changes
-  const handleSortChange = useCallback(
-    (newSort: SortOption) => {
-      onChangeSort(newSort);
-
-      // Build new URL with sort parameter
-      const params = new URLSearchParams();
-      if (searchQuery) {
-        params.set("q", searchQuery);
-      }
-      if (newSort !== "recent") {
-        params.set("sort", newSort);
-      }
-
-      const newUrl = params.toString() ? `/?${params.toString()}` : "/";
-      router.replace(newUrl);
-    },
-    [searchQuery, router, onChangeSort],
-  );
 
   if (error) {
     return (
@@ -182,35 +175,50 @@ export default function JargonInfiniteList({
           )}
         </span>
 
-        {/* Mobile FABs are rendered globally */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="hidden transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl sm:inline-flex">
-              <SlidersHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-40" align="end">
-            <DropdownMenuLabel>정렬 기준</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup
-              value={sort}
-              onValueChange={(value) => handleSortChange(value as SortOption)}
-            >
-              <DropdownMenuRadioItem value="recent">
-                최근 활동순
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="popular">
-                댓글 많은순
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="abc">
-                알파벳 오름차순
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="zyx">
-                알파벳 내림차순
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Controls on the right */}
+        <span className="flex items-center gap-2">
+          {/* Filter button */}
+          <Button
+            variant="outline"
+            size="sm"
+            className="hidden transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl sm:inline-flex"
+            onClick={openFilterDialog}
+          >
+            <Filter className="size-4" />
+          </Button>
+
+          {/* Mobile FABs are rendered globally */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="hidden transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl sm:inline-flex">
+                <SlidersHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-40" align="end">
+              <DropdownMenuLabel>정렬 기준</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioGroup
+                value={sortCategories.sort}
+                onValueChange={(value) =>
+                  onChangeSortCategories({ sort: value as SortOption })
+                }
+              >
+                <DropdownMenuRadioItem value="recent">
+                  최근 활동순
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="popular">
+                  댓글 많은순
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="abc">
+                  알파벳 오름차순
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="zyx">
+                  알파벳 내림차순
+                </DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </span>
       </div>
 
       {/* Jargon cards grid */}

@@ -63,7 +63,7 @@ function SearchMoreItem({
   };
 
   return (
-    <CommandItem onSelect={() => handleSelectMore}>
+    <CommandItem onSelect={handleSelectMore}>
       <div className="flex items-center gap-2">
         <FileSearch className="!size-4" />
         <span>더보기</span>

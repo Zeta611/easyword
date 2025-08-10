@@ -1,20 +1,24 @@
 import { createClient } from "@/lib/supabase/server";
 import type { JargonData } from "@/components/JargonInfiniteList";
-import { SortOption } from "@/components/FloatingActionButtons";
-import HomePageClient from "@/components/home/HomePageClient";
+import HomePageClient, { SortOption } from "@/components/home/HomePageClient";
 
 interface HomeProps {
-  searchParams: Promise<{ q?: string; sort?: string }>;
+  searchParams: Promise<{ q?: string; sort?: string; categories?: string }>;
 }
 
 const INITIAL_LOAD_SIZE = 32;
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { q: searchQueryParam, sort: sortParam } = await searchParams;
+  const {
+    q: searchQueryParam,
+    sort: sortParam,
+    categories: categoriesParam,
+  } = await searchParams;
   const searchQuery = searchQueryParam?.trim() ?? "";
-  const sort = (sortParam ?? "recent") as SortOption;
-  const supabase = await createClient();
+  const sort = sortParam ?? "recent";
+  const categories = categoriesParam?.split(",") ?? null;
 
+  const supabase = await createClient();
   // Fetch initial data for SSR
   let initialData: JargonData[] = [];
   let initialTotalCount: number;
@@ -22,11 +26,12 @@ export default async function Home({ searchParams }: HomeProps) {
   if (searchQuery?.trim()) {
     // Use RPC for search with initial load
     const [jargonResults, countResult] = await Promise.all([
-      supabase.rpc("search_jargons_with_translations", {
+      supabase.rpc("search_jargons", {
         search_query: searchQuery,
         limit_count: INITIAL_LOAD_SIZE,
         offset_count: 0,
         sort_option: sort,
+        category_acronyms: categories ?? undefined,
       }),
 
       supabase.rpc("count_search_jargons", {
@@ -53,7 +58,7 @@ export default async function Home({ searchParams }: HomeProps) {
   } else {
     // Fetch all jargons for initial SSR using RPC for consistent sorting
     const [jargonResults, countResult] = await Promise.all([
-      supabase.rpc("search_jargons_with_translations", {
+      supabase.rpc("search_jargons", {
         search_query: "",
         limit_count: INITIAL_LOAD_SIZE,
         offset_count: 0,
@@ -88,7 +93,10 @@ export default async function Home({ searchParams }: HomeProps) {
         searchQuery={searchQuery}
         initialData={initialData}
         initialTotalCount={initialTotalCount}
-        initialSort={sort}
+        initialSortCategories={{
+          sort: sort as SortOption,
+          categories,
+        }}
       />
     </div>
   );

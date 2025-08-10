@@ -355,6 +355,24 @@ export type Database = {
         Args: { "": string }
         Returns: string
       }
+      search_jargons: {
+        Args: {
+          search_query?: string
+          sort_option?: string
+          limit_count?: number
+          offset_count?: number
+          category_acronyms?: string[]
+        }
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+          translations: Json
+          categories: Json
+          comments: Json
+        }[]
+      }
       search_jargons_with_translations: {
         Args: {
           search_query?: string
