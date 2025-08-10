@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { matchSorter } from "match-sorter";
 import { ChevronRight, CornerDownLeft, FileSearch } from "lucide-react";
 import {
@@ -72,14 +72,32 @@ export function SearchDialogProvider({
 
   const { query, setQuery, results, isLoading, error } =
     useSearch(SEARCH_LIMIT);
+
   useEffect(() => {
-    if (!open) setQuery("");
+    if (!open) {
+      setQuery("");
+    }
   }, [open, setQuery]);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const handleSelectResult = (jargonSlug: string) => {
     setOpen(false);
     router.push(`/jargon/${jargonSlug}`);
+  };
+
+  const handleSelectMore = () => {
+    setOpen(false);
+    const params = new URLSearchParams(searchParams.toString());
+    if (query.trim()) {
+      params.set("q", query.trim());
+    } else {
+      console.error("query is empty on search");
+      params.delete("q");
+    }
+    const url = params.toString() ? `/?${params.toString()}` : "/";
+    router.push(url);
   };
 
   return (
@@ -117,12 +135,7 @@ export function SearchDialogProvider({
               {(results.jargons.length > 0 ||
                 results.translations.length > 0) && (
                 <CommandGroup>
-                  <CommandItem
-                    onSelect={() => {
-                      setOpen(false);
-                      router.push(`/?q=${encodeURIComponent(query)}`);
-                    }}
-                  >
+                  <CommandItem onSelect={handleSelectMore}>
                     <div className="flex items-center gap-2">
                       <FileSearch className="!size-4" />
                       더보기
