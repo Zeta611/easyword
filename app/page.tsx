@@ -10,7 +10,9 @@ interface HomeProps {
 const INITIAL_LOAD_SIZE = 32;
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { q: searchQuery, sort: sortParam } = await searchParams;
+  const { q: searchQueryParam, sort: sortParam } = await searchParams;
+  const searchQuery = searchQueryParam?.trim() ?? "";
+  const sort = (sortParam ?? "recent") as SortOption;
   const supabase = await createClient();
 
   // Fetch initial data for SSR
@@ -24,7 +26,7 @@ export default async function Home({ searchParams }: HomeProps) {
         search_query: searchQuery,
         limit_count: INITIAL_LOAD_SIZE,
         offset_count: 0,
-        sort_option: sortParam || "recent",
+        sort_option: sort,
       }),
 
       supabase.rpc("count_search_jargons", {
@@ -55,9 +57,8 @@ export default async function Home({ searchParams }: HomeProps) {
         search_query: "",
         limit_count: INITIAL_LOAD_SIZE,
         offset_count: 0,
-        sort_option: sortParam || "recent",
+        sort_option: sort,
       }),
-
       supabase.rpc("count_search_jargons", {
         search_query: "",
       }),
@@ -87,7 +88,7 @@ export default async function Home({ searchParams }: HomeProps) {
         searchQuery={searchQuery}
         initialData={initialData}
         initialTotalCount={initialTotalCount}
-        initialSort={sortParam as SortOption}
+        initialSort={sort}
       />
     </div>
   );

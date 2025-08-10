@@ -3,6 +3,7 @@ import { Source_Code_Pro, Hahmlet } from "next/font/google";
 import Image from "next/image";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import NavBar from "@/components/NavBar";
 import { SearchDialogProvider } from "@/components/SearchDialogProvider";
 import QueryProvider from "@/app/providers";
@@ -63,6 +64,7 @@ export default function RootLayout({
               </div>
             </LoginDialogProvider>
           </SearchDialogProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryProvider>
         <SpeedInsights />
         <Analytics />

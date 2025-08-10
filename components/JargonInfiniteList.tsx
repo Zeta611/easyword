@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SlidersHorizontal, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
+import equal from "fast-deep-equal";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import JargonCard from "@/components/JargonCard";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface JargonData {
   id: string;
@@ -28,170 +31,16 @@ export interface JargonData {
 }
 
 interface JargonInfiniteListProps {
-  searchQuery?: string;
-  initialData?: JargonData[];
-  initialTotalCount?: number;
+  searchQuery: string;
+  initialData: JargonData[];
+  initialTotalCount: number;
   sort: SortOption;
   onChangeSort: (value: SortOption) => void;
 }
 
-// Custom hook for infinite query with RPC
-function useJargonInfiniteQuery(
-  searchQuery?: string,
-  sortOption: SortOption = "recent",
-  initialData?: JargonData[],
-  initialTotalCount?: number,
-) {
-  const [data, setData] = useState<JargonData[]>(initialData || []);
-  const [totalCount, setTotalCount] = useState<number | undefined>(
-    initialTotalCount,
-  );
-  if (totalCount !== undefined && data.length > totalCount) {
-    console.error(
-      `Data length ${data.length} exceeds total count ${totalCount}`,
-    );
-  }
-
-  // isLoading indicates an initial load w/o data to show
-  const [isLoading, setIsLoading] = useState(false);
-  // isFetching indicates ongoing fetch for initial/more data
-  const [isFetching, setIsFetching] = useState(false);
-  const [hasInitialized, setHasInitialized] = useState(!!initialData);
-
-  const [error, setError] = useState<Error | null>(null);
-  const prevSearchQuery = useRef(searchQuery);
-  const prevSortOption = useRef(sortOption);
-
-  const supabase = getClient();
-  const pageSize = 32;
-
-  const fetchNext = useCallback(
-    async (offset = data.length, isInitialLoad = false) => {
-      if (
-        isFetching ||
-        (!isInitialLoad &&
-          totalCount &&
-          data.length >= totalCount) /* no more data to fetch */
-      ) {
-        return;
-      }
-
-      console.debug("Fetching next page with offset:", offset);
-
-      setIsFetching(true);
-      if (isInitialLoad) {
-        setIsLoading(true);
-      }
-
-      try {
-        const { data: newData, error } = await supabase.rpc(
-          "search_jargons_with_translations",
-          {
-            search_query: searchQuery || "",
-            limit_count: pageSize,
-            offset_count: offset,
-            sort_option: sortOption,
-          },
-        );
-
-        if (error) throw error;
-
-        // Fetch total count separately for initial load
-        if (offset === 0 || totalCount === undefined) {
-          const { data: totalCount, error: countError } = await supabase.rpc(
-            "count_search_jargons",
-            {
-              search_query: searchQuery || "",
-            },
-          );
-          console.debug("Total count fetched:", totalCount);
-
-          if (!countError && totalCount !== undefined) {
-            setTotalCount(totalCount);
-          }
-        }
-
-        // Transform data
-        const transformedData = (newData || []).map((item) => ({
-          id: item.id,
-          name: item.name,
-          slug: item.slug,
-          updated_at: item.updated_at,
-          // @ts-expect-error JSON handling
-          translations: item.translations.map((t) => t.name),
-          // @ts-expect-error JSON handling
-          categories: item.categories.map((c) => c.acronym),
-          // @ts-expect-error JSON handling
-          comment_count: item.comments[0].count,
-        }));
-
-        if (offset === 0) {
-          // Initial load
-          setData(transformedData);
-        } else {
-          // Append and deduplicate for pagination
-          setData((prev) => {
-            const existingIds = new Set(prev.map((d) => d.id));
-            const uniqueNewData = transformedData.filter(
-              (item: JargonData) => !existingIds.has(item.id),
-            );
-            return [...prev, ...uniqueNewData];
-          });
-        }
-
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching jargons:", err);
-        setError(err as Error);
-      } finally {
-        setIsFetching(false);
-        setIsLoading(false);
-        setHasInitialized(true);
-      }
-    },
-    [data.length, totalCount, searchQuery, sortOption, supabase, isFetching],
-  );
-
-  // NOTE: Initial fetch for each query happens here!
-  useEffect(() => {
-    console.debug(
-      "Running useEffect for searchQuery:",
-      searchQuery,
-      "sortOption:",
-      sortOption,
-    );
-    if (!initialData && !hasInitialized) {
-      // No initial data and haven't initialized yet
-      console.debug("No initial data, fetching first page");
-      fetchNext(0, true);
-    } else if (
-      prevSearchQuery.current !== searchQuery ||
-      prevSortOption.current !== sortOption
-    ) {
-      // Search query or sort option changed
-      console.debug("Query or sort changed");
-      prevSearchQuery.current = searchQuery;
-      prevSortOption.current = sortOption;
-      setData([]);
-      setTotalCount(undefined);
-      setHasInitialized(false); // will be set to true in fetchNext after load
-      fetchNext(0, true);
-    }
-  }, [searchQuery, sortOption, initialData, hasInitialized, fetchNext]);
-
-  return {
-    data,
-    totalCount,
-    isLoading,
-    isFetching,
-    error,
-    hasMore:
-      totalCount === undefined || (totalCount && totalCount > data.length),
-    fetchNext,
-  };
-}
-
 type SortOption = "recent" | "popular" | "abc" | "zyx";
+
+const PAGE_SIZE = 32;
 
 export default function JargonInfiniteList({
   searchQuery,
@@ -201,9 +50,72 @@ export default function JargonInfiniteList({
   onChangeSort,
 }: JargonInfiniteListProps) {
   const router = useRouter();
+  const supabase = getClient();
 
-  const { data, totalCount, isLoading, isFetching, hasMore, fetchNext, error } =
-    useJargonInfiniteQuery(searchQuery, sort, initialData, initialTotalCount);
+  const initialQueryKeyRef = useRef(["jargons", { q: searchQuery, sort }]);
+  const queryKey = ["jargons", { q: searchQuery, sort }];
+
+  const {
+    data: jargons,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+    error,
+  } = useInfiniteQuery({
+    queryKey,
+    initialPageParam: 0,
+    queryFn: async ({ pageParam }) => {
+      const { data, error } = await supabase.rpc(
+        "search_jargons_with_translations",
+        {
+          search_query: searchQuery,
+          limit_count: PAGE_SIZE,
+          offset_count: pageParam,
+          sort_option: sort,
+        },
+      );
+      if (error) throw error;
+      return data.map((it) => ({
+        id: it.id,
+        name: it.name,
+        slug: it.slug,
+        updated_at: it.updated_at,
+        // @ts-expect-error JSON handling
+        translations: it.translations.map((t) => t.name),
+        // @ts-expect-error JSON handling
+        categories: it.categories.map((c) => c.acronym),
+        // @ts-expect-error JSON handling
+        comment_count: it.comments[0].count,
+      }));
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage || lastPage.length < PAGE_SIZE) return null;
+      return allPages.reduce((acc, p) => acc + p.length, 0);
+    },
+    initialData:
+      // NOTE: Initial data should not be used when the query changes
+      initialData && equal(queryKey, initialQueryKeyRef.current)
+        ? {
+            pages: [initialData],
+            pageParams: [0],
+          }
+        : undefined,
+  });
+
+  const flatData = useMemo(() => jargons?.pages.flat() ?? [], [jargons?.pages]);
+
+  const { data: totalCount } = useQuery({
+    queryKey: ["jargons-count", { q: searchQuery }],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("count_search_jargons", {
+        search_query: searchQuery,
+      });
+      if (error) throw error;
+      return data;
+    },
+    initialData: initialTotalCount,
+  });
 
   // Update URL when sort changes
   const handleSortChange = useCallback(
@@ -229,7 +141,17 @@ export default function JargonInfiniteList({
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <p className="text-red-600">오류가 발생했습니다</p>
-        <p className="text-sm text-gray-600">{error.message}</p>
+        <p className="text-sm text-gray-600">{(error as Error).message}</p>
+      </div>
+    );
+  }
+
+  if (isLoading && !jargons) {
+    return (
+      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {[...Array(PAGE_SIZE)].map((_, index) => (
+          <Skeleton key={index} className="h-35 w-full rounded-md" />
+        ))}
       </div>
     );
   }
@@ -239,13 +161,11 @@ export default function JargonInfiniteList({
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2.5">
           <span className="text-lg font-bold text-gray-900">
-            {totalCount !== undefined
-              ? searchQuery
-                ? totalCount > 0
-                  ? `찾은 전문용어 ${totalCount}개`
-                  : "찾은 전문용어 없음"
-                : `쉬운 전문용어 ${totalCount}개`
-              : " "}
+            {searchQuery
+              ? totalCount > 0
+                ? `찾은 전문용어 ${totalCount}개`
+                : "찾은 전문용어 없음"
+              : `쉬운 전문용어 ${totalCount}개`}
           </span>
           {searchQuery && (
             <div className="flex items-center gap-3">
@@ -294,10 +214,10 @@ export default function JargonInfiniteList({
       </div>
 
       {/* Jargon cards grid */}
-      {data.length > 0 ? (
+      {flatData.length > 0 ? (
         <>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {data.map((item) => (
+            {flatData.map((item) => (
               <JargonCard
                 key={item.id}
                 jargon={{
@@ -314,21 +234,21 @@ export default function JargonInfiniteList({
           </div>
 
           {/* Load more button */}
-          {hasMore && (
+          {hasNextPage && (
             <div className="flex justify-center py-6">
               <Button
-                onClick={() => fetchNext()}
-                disabled={isFetching}
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
                 variant="outline"
                 size="lg"
               >
-                {isFetching ? "불러오는 중..." : "더보기"}
+                {isFetchingNextPage ? "불러오는 중..." : "더보기"}
               </Button>
             </div>
           )}
 
           {/* End message */}
-          {!hasMore && data.length > 0 && (
+          {!hasNextPage && flatData.length > 0 && (
             <div className="flex justify-center py-4">
               <span className="text-sm text-gray-500">
                 모든 결과를 불러왔어요

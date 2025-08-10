@@ -15,13 +15,13 @@ export default function HomePageClient({
   initialTotalCount,
   initialSort,
 }: {
-  searchQuery?: string;
-  initialData?: JargonData[];
-  initialTotalCount?: number;
-  initialSort?: SortOption;
+  searchQuery: string;
+  initialData: JargonData[];
+  initialTotalCount: number;
+  initialSort: SortOption;
 }) {
   const router = useRouter();
-  const [sort, setSort] = useState<SortOption>(initialSort || "recent");
+  const [sort, setSort] = useState(initialSort);
 
   const handleSortChange = useCallback(
     (newSort: SortOption) => {
@@ -30,10 +30,10 @@ export default function HomePageClient({
       const params = new URLSearchParams();
       if (searchQuery) params.set("q", searchQuery);
       if (newSort !== "recent") params.set("sort", newSort);
-      const newUrl = params.toString() ? `/?${params.toString()}` : "/";
+      const newUrl = params.toString() ? `/?${params.toString()}` : "";
       router.replace(newUrl);
     },
-    [router, searchQuery],
+    [router, searchQuery, setSort],
   );
 
   return (
