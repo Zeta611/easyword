@@ -149,8 +149,8 @@ export default function JargonInfiniteList({
   if (isLoading && !jargons) {
     return (
       <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {[...Array(PAGE_SIZE)].map((_, index) => (
-          <Skeleton key={index} className="h-35 w-full rounded-md" />
+        {[...Array(PAGE_SIZE)].map((_, i) => (
+          <Skeleton key={i} className="h-35 w-full" />
         ))}
       </div>
     );

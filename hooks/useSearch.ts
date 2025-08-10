@@ -1,119 +1,81 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
-
-export interface SearchResult {
-  id: string;
-  name: string;
-  type: "jargons" | "translations";
-  jargonId: string;
-  jargonSlug: string;
-}
-
-export interface GroupedSearchResults {
-  jargons: SearchResult[];
-  translations: SearchResult[];
-}
+import useDebounce from "@/hooks/useDebounce";
 
 export function useSearch(limit = 10) {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<GroupedSearchResults>({
-    jargons: [],
-    translations: [],
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const supabase = getClient();
 
-  const searchJargons = useCallback(
-    async (searchQuery: string) => {
-      if (!searchQuery.trim()) {
-        setResults({ jargons: [], translations: [] });
-        return;
+  const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 300);
+
+  const { data, isPending, error } = useQuery({
+    queryKey: ["search", { q: debouncedQuery, limit }],
+    enabled: !!debouncedQuery.trim(),
+    queryFn: async ({ signal }) => {
+      let jargonQuery = supabase
+        .from("jargon")
+        .select("id, name, slug")
+        .ilike("name", `%${debouncedQuery}%`)
+        .limit(limit);
+      let translationQuery = supabase
+        .from("translation")
+        .select(
+          `
+          id,
+          name,
+          jargon_id,
+          jargon:jargon_id(id, name, slug)
+        `,
+        )
+        .ilike("name", `%${debouncedQuery}%`)
+        .limit(limit);
+
+      if (signal) {
+        jargonQuery = jargonQuery.abortSignal(signal);
+        translationQuery = translationQuery.abortSignal(signal);
       }
 
-      setIsLoading(true);
-      setError(null);
+      const [jargonResults, translationResults] = await Promise.all([
+        jargonQuery,
+        translationQuery,
+      ]);
 
-      try {
-        const [jargonResults, translationResults] = await Promise.all([
-          supabase
-            .from("jargon")
-            .select("id, name, slug")
-            .ilike("name", `%${searchQuery}%`)
-            .limit(limit),
+      if (jargonResults.error) throw jargonResults.error;
+      if (translationResults.error) throw translationResults.error;
 
-          supabase
-            .from("translation")
-            .select(
-              `
-              id,
-              name,
-              jargon_id,
-              jargon:jargon_id(id, name, slug)
-            `,
-            )
-            .ilike("name", `%${searchQuery}%`)
-            .limit(limit),
-        ]);
-
-        if (jargonResults.error) throw jargonResults.error;
-        if (translationResults.error) throw translationResults.error;
-
-        const jargonResultsMapped: SearchResult[] = jargonResults.data.map(
-          (jargon) =>
-            ({
-              id: jargon.id,
-              name: jargon.name,
-              type: "jargons",
-              jargonId: jargon.id,
-              jargonSlug: jargon.slug,
-            }) as SearchResult,
-        );
-
-        const translationResultsMapped: SearchResult[] =
-          translationResults.data.map(
-            (translation) =>
-              ({
-                id: translation.id,
-                name: translation.name,
-                type: "translations",
-                jargonId: translation.jargon_id,
-                jargonSlug: translation.jargon.slug,
-              }) as SearchResult,
-          );
-
-        setResults({
-          jargons: jargonResultsMapped,
-          translations: translationResultsMapped,
-        });
-      } catch (err) {
-        console.error("Search error:", err);
-        setError("찾는 중 오류가 발생했어요");
-        setResults({ jargons: [], translations: [] });
-      } finally {
-        setIsLoading(false);
-      }
+      const jargons = jargonResults.data.map((it) => ({
+        id: it.id,
+        name: it.name,
+        type: "jargons",
+        jargonId: it.id,
+        jargonSlug: it.slug,
+      }));
+      const translations = translationResults.data.map((it) => ({
+        id: it.id,
+        name: it.name,
+        type: "translations",
+        jargonId: it.jargon_id,
+        jargonSlug: it.jargon.slug,
+      }));
+      return { jargons, translations };
     },
-    [supabase, limit],
-  );
+  });
 
-  // Debounced search effect
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      searchJargons(query);
-    }, 300);
-
-    return () => clearTimeout(timeoutId);
-  }, [query, searchJargons]);
+  const results = useMemo(() => {
+    if (!debouncedQuery.trim()) {
+      return { jargons: [], translations: [] };
+    }
+    return data ?? { jargons: [], translations: [] };
+  }, [debouncedQuery, data]);
 
   return {
     query,
     setQuery,
     results,
-    isLoading,
-    error,
+    isLoading: debouncedQuery.trim() ? isPending : false,
+    error: debouncedQuery.trim() ? error?.message : null,
   };
 }

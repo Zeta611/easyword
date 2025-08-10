@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/command";
 import { useSearch } from "@/hooks/useSearch";
 import Kbd from "@/components/Kbd";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface SearchDialogContextValue {
   openDialog: () => void;
@@ -100,8 +101,10 @@ export function SearchDialogProvider({
         />
         <CommandList className="max-h-[calc(67dvh-130px)] py-1">
           {isLoading && (
-            <div className="text-muted-foreground my-6 text-center text-sm">
-              찾는 중...
+            <div className="flex flex-col gap-2 px-2 py-1.5">
+              {[...Array(SEARCH_LIMIT)].map((_, i) => (
+                <Skeleton key={i} className="h-10 w-full" />
+              ))}
             </div>
           )}
           {error && (
