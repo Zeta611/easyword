@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import NavBar from "@/components/NavBar";
 import { SearchDialogProvider } from "@/components/SearchDialogProvider";
-import QueryProvider from "@/app/providers";
+import QueryProvider from "@/components/QueryProvider";
 import { LoginDialogProvider } from "@/components/LoginDialogProvider";
 import "@/app/globals.css";
 

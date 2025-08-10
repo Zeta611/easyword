@@ -1,9 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
-import { PostgrestError } from "@supabase/postgrest-js";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Form from "next/form";
+import { useFormStatus } from "react-dom";
 import { Textarea } from "./ui/textarea";
 import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -20,32 +28,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { eulLeul } from "@/lib/utils";
 import { useLoginDialog } from "@/components/LoginDialogProvider";
+import {
+  suggestJargon,
+  type SuggestJargonState,
+} from "@/app/actions/suggestJargon";
 
-type CategoryOption = {
-  id: number;
-  name: string;
-  acronym: string;
-};
+function Submit({ label }: { label: string }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? "등록 중..." : label}
+    </Button>
+  );
+}
 
 export default function SuggestJargonDialog() {
   const router = useRouter();
   const supabase = getClient();
   const { openLogin } = useLoginDialog();
+  const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
-  const [isLoadingCategories, setIsLoadingCategories] = useState(false);
-  const [categories, setCategories] = useState<CategoryOption[]>([]);
 
-  const [jargon, setJargon] = useState("");
-  const [translation, setTranslation] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [noTranslation, setNoTranslation] = useState(false);
   const [categoryIds, setCategoryIds] = useState<string[]>([]);
-  const [comment, setComment] = useState("");
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [result, suggestJargonAction] = useActionState(suggestJargon, {
+    ok: false,
+    error: "",
+  } satisfies SuggestJargonState);
 
   const handleOpenChange = useCallback(
     async (nextOpen: boolean) => {
@@ -63,130 +77,36 @@ export default function SuggestJargonDialog() {
     [openLogin, supabase],
   );
 
-  useEffect(() => {
-    if (!open) return;
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    const loadCategories = async () => {
-      setIsLoadingCategories(true);
-      try {
-        const { data, error } = await supabase
-          .from("category")
-          .select("id, name, acronym")
-          .order("acronym", { ascending: true })
-          .abortSignal(controller.signal);
-
-        if (error) throw error;
-        if (!signal.aborted) setCategories(data);
-      } catch (err) {
-        if ((err as Error)?.name === "AbortError") return;
-        console.error("Failed to load categories", err);
-      } finally {
-        if (!signal.aborted) setIsLoadingCategories(false);
-      }
-    };
-    loadCategories();
-
-    return () => controller.abort();
-  }, [open, supabase]);
+  const { data: categories, isLoading: isLoadingCategories } = useQuery({
+    queryKey: ["categories"],
+    enabled: open,
+    queryFn: async ({ signal }) => {
+      const query = supabase
+        .from("category")
+        .select("id, name, acronym")
+        .order("acronym", { ascending: true });
+      if (signal) query.abortSignal(signal);
+      const { data, error } = await query;
+      if (error) throw error;
+      return data;
+    },
+  });
 
   const resetForm = () => {
-    setJargon("");
-    setTranslation("");
     setNoTranslation(false);
     setCategoryIds([]);
-    setComment("");
-    setError(null);
+    formRef.current?.reset();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    const trimmedJargon = jargon.trim();
-    const trimmedTranslation = translation.trim();
-    const trimmedComment =
-      comment.trim() ||
-      (noTranslation
-        ? `${trimmedJargon}의 번역이 필요해요.`
-        : `${eulLeul(trimmedTranslation)} 제안해요.`);
-
-    // Only jargon and comment are required; translation/categories optional
-    if (!trimmedJargon) {
-      setError("용어를 입력해 주세요");
-      return;
-    }
-    if (!trimmedComment) {
-      setError("댓글을 입력해 주세요");
-      return;
-    }
-    if (!noTranslation && !trimmedTranslation) {
-      setError("번역을 입력하거나 '번역 없이 제안하기'를 선택해 주세요");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      // Optional UX guard; DB function also checks auth (28000)
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-      if (userError) throw userError;
-      if (!user) {
-        setError("로그인해 주세요");
-        return;
-      }
-
-      const numericCategoryIds = categoryIds.map((cid) => Number(cid));
-
-      const { data, error: rpcError } = await supabase
-        .rpc("suggest_jargon", {
-          p_name: trimmedJargon,
-          p_translation: noTranslation ? "" : trimmedTranslation,
-          p_comment: trimmedComment,
-          p_category_ids: numericCategoryIds, // [] is fine
-        })
-        .single();
-
-      if (rpcError) throw rpcError;
-
+  useEffect(() => {
+    if (result && result.ok && "jargonSlug" in result) {
+      queryClient.invalidateQueries({ queryKey: ["jargons"] });
+      queryClient.invalidateQueries({ queryKey: ["jargons-count"] });
       setOpen(false);
       resetForm();
-      router.push(`/jargon/${data.jargon_slug}`);
-    } catch (err) {
-      console.error("Error in handleSubmit", err);
-      if (!(err instanceof PostgrestError)) return;
-
-      switch (err.code) {
-        case "23505":
-          if (
-            err.details.includes("jargon_name_key") ||
-            err.details.includes("jargon_slug_key")
-          ) {
-            setError("이미 존재하는 용어예요");
-          } else {
-            setError("이미 존재하는 값이 있어요");
-          }
-          break;
-        case "23503":
-          setError("존재하지 않는 분야가 포함되어 있어요");
-          break;
-        case "28000":
-          setError("로그인이 필요해요");
-          break;
-        case "22023":
-          setError(err.message);
-          break;
-        default:
-          setError(err.message);
-          break;
-      }
-    } finally {
-      setIsSubmitting(false);
+      router.push(`/jargon/${result.jargonSlug}`);
     }
-  };
+  }, [result, router, queryClient]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -208,7 +128,11 @@ export default function SuggestJargonDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <Form
+          ref={formRef}
+          action={suggestJargonAction}
+          className="flex flex-col gap-3"
+        >
           <div className="flex flex-col gap-1">
             <Label htmlFor="jargon" className="text-sm font-medium">
               원어
@@ -216,10 +140,8 @@ export default function SuggestJargonDialog() {
             <Input
               id="jargon"
               type="text"
-              value={jargon}
-              onChange={(e) => setJargon(e.target.value)}
+              name="jargon"
               placeholder="Coverage"
-              disabled={isSubmitting}
               required
             />
           </div>
@@ -233,14 +155,9 @@ export default function SuggestJargonDialog() {
                 <Checkbox
                   id="no-translation"
                   checked={noTranslation}
-                  disabled={isSubmitting}
-                  onCheckedChange={(checked) => {
-                    const isChecked = checked === true;
-                    setNoTranslation(isChecked);
-                    if (isChecked) {
-                      setTranslation("");
-                    }
-                  }}
+                  onCheckedChange={(checked) =>
+                    setNoTranslation(checked === true)
+                  }
                 />
                 <Label
                   htmlFor="no-translation"
@@ -250,13 +167,17 @@ export default function SuggestJargonDialog() {
                 </Label>
               </span>
             </div>
+            <input
+              type="hidden"
+              name="noTranslation"
+              value={noTranslation ? "true" : "false"}
+            />
             <Input
               id="translation"
               type="text"
-              value={translation}
-              onChange={(e) => setTranslation(e.target.value)}
+              name="translation"
               placeholder="덮이"
-              disabled={isSubmitting || noTranslation}
+              disabled={noTranslation}
             />
           </div>
 
@@ -264,7 +185,7 @@ export default function SuggestJargonDialog() {
             <Label className="text-sm font-medium">분야</Label>
             <MultiSelect
               variant="outline"
-              options={categories.map((c) => ({
+              options={(categories ?? []).map((c) => ({
                 value: String(c.id),
                 label: `${c.acronym} (${c.name})`,
                 shortLabel: c.acronym,
@@ -274,9 +195,12 @@ export default function SuggestJargonDialog() {
               closeOnSelect={true}
               hideSelectAll={true}
               placeholder={isLoadingCategories ? "불러오는 중..." : "분야 선택"}
-              disabled={isLoadingCategories || isSubmitting}
+              disabled={isLoadingCategories}
               popoverClassName="w-full"
             />
+            {categoryIds.map((cid) => (
+              <input key={cid} type="hidden" name="categoryIds" value={cid} />
+            ))}
           </div>
 
           <div className="flex flex-col gap-1">
@@ -285,15 +209,15 @@ export default function SuggestJargonDialog() {
             </Label>
             <Textarea
               id="comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
+              name="comment"
               placeholder="왜 이 용어/번역이 좋은지 설명해주세요!"
               rows={4}
-              disabled={isSubmitting}
             />
           </div>
 
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {result && !("jargonSlug" in result) && !result.ok ? (
+            <p className="text-sm text-red-600">{result.error}</p>
+          ) : null}
 
           <DialogFooter>
             <Button
@@ -303,15 +227,13 @@ export default function SuggestJargonDialog() {
                 setOpen(false);
                 resetForm();
               }}
-              disabled={isSubmitting}
             >
               닫기
             </Button>
-            <Button type="submit" disabled={isSubmitting || !jargon.trim()}>
-              {isSubmitting ? "등록 중..." : "제안하기"}
-            </Button>
+            {/* TODO: Perform client-side validation and disable if not ok */}
+            <Submit label="제안하기" />
           </DialogFooter>
-        </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
