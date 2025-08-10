@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import CommentThread from "@/components/CommentThread";
 import { Comment } from "@/types/comment";
+import SuggestTranslationDialog from "@/components/SuggestTranslationDialog";
 
 interface JargonPageProps {
   params: Promise<{ slug: string }>;
@@ -89,6 +90,9 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
           ) : (
             <p className="text-lg text-gray-600">번역이 없습니다</p>
           )}
+
+          {/* Suggest translation */}
+          <SuggestTranslationDialog jargonId={jargon.id} />
         </div>
       </div>
 

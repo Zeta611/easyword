@@ -141,9 +141,13 @@ export default function SuggestJargonDialog() {
               id="jargon"
               type="text"
               name="jargon"
-              placeholder="Coverage"
+              placeholder="coverage"
               required
             />
+            <p className="text-muted-foreground text-xs">
+              대문자가 고유명사의 일부로 사용되는 경우 외에는 소문자를
+              사용해주세요
+            </p>
           </div>
 
           <div className="flex flex-col gap-1">

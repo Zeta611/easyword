@@ -386,6 +386,13 @@ export type Database = {
           translation_id: string
         }[]
       }
+      suggest_translation: {
+        Args: { p_jargon_id: string; p_translation: string; p_comment: string }
+        Returns: {
+          translation_id: string
+          comment_id: string
+        }[]
+      }
       to_lowercase: {
         Args: { jargon: Database["public"]["Tables"]["jargon"]["Row"] }
         Returns: string
