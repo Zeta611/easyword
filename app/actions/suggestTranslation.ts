@@ -21,11 +21,6 @@ export async function suggestTranslation(
   if (!jargonId) return { ok: false, error: "잘못된 요청이에요" };
 
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) return { ok: false, error: "로그인이 필요해요" };
 
   const { data, error } = await supabase
     .rpc("suggest_translation", {

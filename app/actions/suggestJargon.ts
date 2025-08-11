@@ -47,11 +47,6 @@ export async function suggestJargon(
     .filter((n) => !Number.isNaN(n));
 
   const supabase = await createClient();
-  const {
-    data: { user },
-    error: userErr,
-  } = await supabase.auth.getUser();
-  if (userErr || !user) return { ok: false, error: "로그인이 필요해요" };
 
   const { data, error } = await supabase
     .rpc("suggest_jargon", {

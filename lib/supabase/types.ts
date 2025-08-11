@@ -316,6 +316,10 @@ export type Database = {
         Args: { search_query?: string }
         Returns: number
       }
+      create_comment: {
+        Args: { p_jargon_id: string; p_content: string; p_parent_id?: string }
+        Returns: string
+      }
       dearmor: {
         Args: { "": string }
         Returns: string
@@ -373,23 +377,6 @@ export type Database = {
           comments: Json
         }[]
       }
-      search_jargons_with_translations: {
-        Args: {
-          search_query?: string
-          limit_count?: number
-          offset_count?: number
-          sort_option?: string
-        }
-        Returns: {
-          id: string
-          name: string
-          slug: string
-          updated_at: string
-          translations: Json
-          categories: Json
-          comments: Json
-        }[]
-      }
       suggest_jargon: {
         Args: {
           p_name: string
@@ -404,8 +391,35 @@ export type Database = {
           translation_id: string
         }[]
       }
+      suggest_jargon_as_admin: {
+        Args: {
+          p_author_id: string
+          p_name: string
+          p_translation: string
+          p_comment: string
+          p_category_ids: number[]
+        }
+        Returns: {
+          jargon_id: string
+          jargon_slug: string
+          comment_id: string
+          translation_id: string
+        }[]
+      }
       suggest_translation: {
         Args: { p_jargon_id: string; p_translation: string; p_comment: string }
+        Returns: {
+          translation_id: string
+          comment_id: string
+        }[]
+      }
+      suggest_translation_as_admin: {
+        Args: {
+          p_author_id: string
+          p_jargon_id: string
+          p_translation: string
+          p_comment: string
+        }
         Returns: {
           translation_id: string
           comment_id: string

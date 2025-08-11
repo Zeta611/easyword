@@ -33,13 +33,12 @@ export async function createComment(
   } = await supabase.auth.getUser();
   if (userErr || !user) return { ok: false, error: "로그인이 필요해요" };
 
-  const { error: insertError } = await supabase.from("comment").insert({
-    content,
-    author_id: user.id,
-    jargon_id: jargonId,
-    parent_id: parentId,
+  const { error } = await supabase.rpc("create_comment", {
+    p_jargon_id: jargonId,
+    p_parent_id: parentId ?? undefined,
+    p_content: content,
   });
-  if (insertError) return { ok: false, error: "댓글 다는 중 문제가 생겼어요" };
+  if (error) return { ok: false, error: "댓글 다는 중 문제가 생겼어요" };
 
   console.info("createComment", jargonId, parentId, content);
 
