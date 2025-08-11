@@ -119,10 +119,14 @@ export default function JargonInfiniteList({
   const flatData = useMemo(() => jargons?.pages.flat() ?? [], [jargons?.pages]);
 
   const { data: totalCount } = useQuery({
-    queryKey: ["jargons-count", { q: searchQuery }],
+    queryKey: [
+      "jargons-count",
+      { q: searchQuery, categories: sortCategories.categories, sort: sortCategories.sort },
+    ],
     queryFn: async () => {
       const { data, error } = await supabase.rpc("count_search_jargons", {
         search_query: searchQuery,
+        category_acronyms: sortCategories.categories ?? undefined,
       });
       if (error) throw error;
       return data;

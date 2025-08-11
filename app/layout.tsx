@@ -64,7 +64,9 @@ export default function RootLayout({
               </div>
             </LoginDialogProvider>
           </SearchDialogProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {process.env.NODE_ENV === "development" && (
+            <ReactQueryDevtools initialIsOpen={false} />
+          )}
         </QueryProvider>
         <SpeedInsights />
         <Analytics />

@@ -3,7 +3,7 @@ import type { JargonData } from "@/components/jargon/JargonInfiniteList";
 import HomePageClient, { SortOption } from "@/components/home/HomePageClient";
 
 interface HomeProps {
-  searchParams: Promise<{ q?: string; sort?: string; categories?: string }>;
+  searchParams: { q?: string; sort?: string; categories?: string };
 }
 
 const INITIAL_LOAD_SIZE = 32;
@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: HomeProps) {
     q: searchQueryParam,
     sort: sortParam,
     categories: categoriesParam,
-  } = await searchParams;
+  } = searchParams;
   const searchQuery = searchQueryParam?.trim() ?? "";
   const sort = sortParam ?? "recent";
   const categories = categoriesParam?.split(",") ?? null;
@@ -36,6 +36,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
       supabase.rpc("count_search_jargons", {
         search_query: searchQuery,
+        category_acronyms: categories ?? undefined,
       }),
     ]);
 
@@ -63,9 +64,11 @@ export default async function Home({ searchParams }: HomeProps) {
         limit_count: INITIAL_LOAD_SIZE,
         offset_count: 0,
         sort_option: sort,
+        category_acronyms: categories ?? undefined,
       }),
       supabase.rpc("count_search_jargons", {
         search_query: "",
+        category_acronyms: categories ?? undefined,
       }),
     ]);
 
