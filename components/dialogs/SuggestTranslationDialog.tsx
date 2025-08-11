@@ -27,7 +27,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { getClient } from "@/lib/supabase/client";
-import { useLoginDialog } from "@/components/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 import {
   suggestTranslation,
   type SuggestTranslationState,

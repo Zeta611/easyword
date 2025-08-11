@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { JargonData } from "@/components/JargonInfiniteList";
+import type { JargonData } from "@/components/jargon/JargonInfiniteList";
 import HomePageClient, { SortOption } from "@/components/home/HomePageClient";
 
 interface HomeProps {

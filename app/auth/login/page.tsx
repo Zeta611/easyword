@@ -1,4 +1,4 @@
-import { LoginButtons } from "@/components/LoginButtons";
+import { LoginButtons } from "@/components/auth/LoginButtons";
 import {
   Card,
   CardContent,

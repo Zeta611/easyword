@@ -12,7 +12,7 @@ import { SquarePlus } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +28,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useLoginDialog } from "@/components/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 import {
   suggestJargon,
   type SuggestJargonState,

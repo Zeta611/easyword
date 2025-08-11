@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import CommentThread from "@/components/CommentThread";
+import CommentThread from "@/components/comments/CommentThread";
 import { Comment } from "@/types/comment";
-import SuggestTranslationDialog from "@/components/SuggestTranslationDialog";
+import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
 
 interface JargonPageProps {
   params: Promise<{ slug: string }>;

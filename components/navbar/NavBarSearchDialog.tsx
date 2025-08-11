@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Kbd from "@/components/Kbd";
-import { useSearchDialog } from "@/components/SearchDialogProvider";
+import Kbd from "@/components/common/Kbd";
+import { useSearchDialog } from "@/components/dialogs/SearchDialogProvider";
 
 export default function NavBarSearchDialog() {
   const { openDialog } = useSearchDialog();

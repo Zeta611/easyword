@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import JargonInfiniteList, {
   JargonData,
-} from "@/components/JargonInfiniteList";
-import FloatingActionButtons from "@/components/FloatingActionButtons";
+} from "@/components/jargon/JargonInfiniteList";
+import FloatingActionButtons from "@/components/common/FloatingActionButtons";
 import { getClient } from "@/lib/supabase/client";
 import {
   Dialog,

@@ -4,12 +4,12 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import { Comment, CommentTree } from "@/types/comment";
-import CommentItem from "@/components/CommentItem";
-import CommentForm from "@/components/CommentForm";
+import CommentItem from "@/components/comments/CommentItem";
+import CommentForm from "@/components/comments/CommentForm";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLoginDialog } from "@/components/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 
 interface CommentThreadProps {
   jargonId: string;

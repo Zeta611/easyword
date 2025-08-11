@@ -7,10 +7,10 @@ import "dayjs/locale/ko";
 import { MessageCircle, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
-import CommentForm from "@/components/CommentForm";
+import CommentForm from "@/components/comments/CommentForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
-import { useLoginDialog } from "@/components/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");

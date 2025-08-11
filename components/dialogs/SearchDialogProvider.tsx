@@ -20,7 +20,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useSearch } from "@/hooks/useSearch";
-import Kbd from "@/components/Kbd";
+import Kbd from "@/components/common/Kbd";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface SearchDialogContextValue {

@@ -6,7 +6,7 @@ import { useMemo, useRef } from "react";
 import equal from "fast-deep-equal";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
-import JargonCard from "@/components/JargonCard";
+import JargonCard from "@/components/jargon/JargonCard";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

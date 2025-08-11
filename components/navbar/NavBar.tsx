@@ -1,7 +1,7 @@
-import NavBarAvatar from "@/components/NavBarAvatar";
-import NavBarSearchDialog from "@/components/NavBarSearchDialog";
-import NavBarTitle from "@/components/NavBarTitle";
-import SuggestJargonDialog from "@/components/SuggestJargonDialog";
+import NavBarAvatar from "@/components/navbar/NavBarAvatar";
+import NavBarSearchDialog from "@/components/navbar/NavBarSearchDialog";
+import NavBarTitle from "@/components/navbar/NavBarTitle";
+import SuggestJargonDialog from "@/components/dialogs/SuggestJargonDialog";
 
 export default function NavBar() {
   return (
