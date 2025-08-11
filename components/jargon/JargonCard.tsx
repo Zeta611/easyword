@@ -33,7 +33,7 @@ export default function JargonCard({ jargon }: JargonCardProps) {
             {jargon.categories.map((cat) => (
               <span
                 key={cat}
-                className="bg-background border-accent inline-block rounded-full border px-1 py-0.5 font-mono text-sm text-gray-800"
+                className="bg-background border-accent inline-block rounded-full border px-1 py-0.5 font-mono text-sm"
               >
                 {cat}
               </span>
@@ -45,14 +45,14 @@ export default function JargonCard({ jargon }: JargonCardProps) {
         <h3 className="text-base font-bold">{jargon.name}</h3>
 
         {/* translations */}
-        <p className="text-base font-normal text-gray-800">
+        <p className="text-base font-normal">
           {jargon.translations.length > 0
             ? jargon.translations.join(", ")
             : "번역이 없어요"}
         </p>
 
         {/* comment count · last updated */}
-        <div className="mt-auto flex gap-1 self-end text-sm text-gray-600">
+        <div className="text-muted-foreground mt-auto flex gap-1 self-end text-sm">
           <span className="flex items-center gap-0.5">
             <MessageCircle className="mb-[-1.5] inline size-3.5" />
             {jargon.commentCount}

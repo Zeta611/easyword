@@ -27,12 +27,12 @@ export default function NavBarTitle() {
   return (
     <Link href="/">
       <div className="flex flex-col items-center gap-1">
-        <span className="rounded-sm bg-black px-3 py-2 text-xl font-black text-white transition-all ease-in-out hover:rounded-3xl hover:text-lg">
+        <span className="bg-primary text-primary-foreground rounded-sm px-3 py-2 text-xl font-black transition-all ease-in-out hover:rounded-3xl hover:text-lg">
           쉬운 전문용어
         </span>
         <span
           className={`text-sm font-bold transition-colors duration-300 ${
-            isVisible ? "text-gray-900" : "text-transparent"
+            isVisible ? "text-foreground" : "text-transparent"
           }`}
         >
           컴퓨터과학/컴퓨터공학

@@ -44,7 +44,7 @@ export function LoginButtons({
       {error && <p className="text-destructive-500 text-sm">{error}</p>}
       <Button
         onClick={() => handleSocialLogin("github")}
-        className="w-full hover:cursor-pointer"
+        className="w-full"
         disabled={isLoading}
       >
         <svg
@@ -61,7 +61,7 @@ export function LoginButtons({
       <Button
         onClick={() => handleSocialLogin("google")}
         variant="outline"
-        className="w-full hover:cursor-pointer"
+        className="w-full"
         disabled={isLoading}
       >
         <svg

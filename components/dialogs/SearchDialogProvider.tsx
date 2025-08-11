@@ -146,7 +146,7 @@ export function SearchDialogProvider({
             </div>
           )}
           {error && (
-            <div className="my-6 text-center text-sm text-red-500">{error}</div>
+            <div className="my-6 text-center text-sm text-red-600">{error}</div>
           )}
           {!isLoading && !error && (
             <>

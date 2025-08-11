@@ -99,7 +99,7 @@ export default function SuggestTranslationDialog({
         <Button
           variant="outline"
           size="sm"
-          className="flex items-center gap-1 text-xs hover:cursor-pointer"
+          className="flex items-center gap-1 text-xs"
         >
           <SquarePlus className="-mb-0.5 size-3" />
           쉬운 번역 제안

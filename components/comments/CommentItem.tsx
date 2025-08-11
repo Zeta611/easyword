@@ -40,7 +40,9 @@ export default function CommentItem({ comment, depth = 0 }: CommentItemProps) {
           aria-label="Close replies"
           className="absolute inset-y-0 left-0 w-3 cursor-pointer bg-transparent"
         />
-        <div className="py-2 pl-3 text-gray-500 italic">삭제된 댓글이에요</div>
+        <div className="text-muted-foreground py-2 pl-3 italic">
+          삭제된 댓글이에요
+        </div>
       </div>
     );
   }
@@ -71,30 +73,30 @@ export default function CommentItem({ comment, depth = 0 }: CommentItemProps) {
             </span>
             {comment.translation?.name ? (
               <>
-                <span className="text-gray-400">·</span>
+                <span className="text-muted-foreground">·</span>
                 <span className="shrink-0 font-medium text-orange-800">
                   {comment.translation.name}
                 </span>
               </>
             ) : null}
             ·
-            <span className="shrink-0 text-gray-600">
+            <span className="text-muted-foreground shrink-0">
               {dayjs(comment.created_at).fromNow()}
             </span>
           </div>
         </div>
 
         {/* Comment content */}
-        <div className="mb-2 text-sm whitespace-pre-wrap text-gray-900">
+        <div className="mb-2 text-sm whitespace-pre-wrap">
           {comment.content}
         </div>
 
         {/* Comment actions */}
-        <div className="flex items-center gap-3 text-xs text-gray-600">
+        <div className="text-muted-foreground flex items-center gap-3 text-xs">
           {comment.replies && comment.replies.length > 0 && (
             <button
               onClick={() => setShowReplies(!showReplies)}
-              className="-ml-5.5 flex size-5 items-center justify-center rounded-full border-2 border-orange-200 bg-white text-gray-500 transition-colors hover:cursor-pointer"
+              className="text-muted-foreground -ml-5.5 flex size-5 items-center justify-center rounded-full border-2 border-orange-200 bg-white transition-colors hover:cursor-pointer"
             >
               {showReplies ? (
                 <Minus className="size-2.5" />
@@ -112,7 +114,7 @@ export default function CommentItem({ comment, depth = 0 }: CommentItemProps) {
                 setShowReplyForm(!showReplyForm);
               }
             }}
-            className="flex h-6 w-15 items-center gap-1 text-xs transition-colors hover:text-gray-800"
+            className="flex h-6 w-15 items-center gap-1 text-xs"
           >
             <MessageCircle className="size-3" />
             답글

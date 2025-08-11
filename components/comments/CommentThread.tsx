@@ -108,7 +108,7 @@ export default function CommentThread({
           <Button
             variant="outline"
             onClick={() => openLogin()}
-            className="my-2 text-sm text-gray-500"
+            className="my-2 text-xs"
           >
             로그인 후 댓글 달기
           </Button>
@@ -125,7 +125,7 @@ export default function CommentThread({
           ))}
         </div>
       ) : (
-        <div className="py-4 text-center text-gray-500">
+        <div className="text-muted-foreground py-4 text-center">
           첫 댓글을 작성해보세요
         </div>
       )}

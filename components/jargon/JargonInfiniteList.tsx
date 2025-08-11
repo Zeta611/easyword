@@ -134,7 +134,9 @@ export default function JargonInfiniteList({
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <p className="text-red-600">오류가 발생했습니다</p>
-        <p className="text-sm text-gray-600">{(error as Error).message}</p>
+        <p className="text-muted-foreground text-sm">
+          {(error as Error).message}
+        </p>
       </div>
     );
   }
@@ -153,7 +155,7 @@ export default function JargonInfiniteList({
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2.5">
-          <span className="text-lg font-bold text-gray-900">
+          <span className="text-lg font-bold">
             {searchQuery
               ? totalCount > 0
                 ? `찾은 전문용어 ${totalCount}개`
@@ -181,7 +183,7 @@ export default function JargonInfiniteList({
           <Button
             variant="outline"
             size="sm"
-            className="hidden transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl sm:inline-flex"
+            className="hidden transition-all ease-in-out hover:rounded-3xl sm:inline-flex"
             onClick={openFilterDialog}
           >
             <Filter className="size-4" />
@@ -190,7 +192,7 @@ export default function JargonInfiniteList({
           {/* Mobile FABs are rendered globally */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="hidden transition-all ease-in-out hover:cursor-pointer hover:rounded-3xl sm:inline-flex">
+              <Button className="hidden transition-all ease-in-out hover:rounded-3xl sm:inline-flex">
                 <SlidersHorizontal />
               </Button>
             </DropdownMenuTrigger>
@@ -258,7 +260,7 @@ export default function JargonInfiniteList({
           {/* End message */}
           {!hasNextPage && flatData.length > 0 && (
             <div className="flex justify-center py-4">
-              <span className="text-sm text-gray-500">
+              <span className="text-muted-foreground text-sm">
                 모든 결과를 불러왔어요
               </span>
             </div>
@@ -266,11 +268,11 @@ export default function JargonInfiniteList({
         </>
       ) : isLoading ? (
         <div className="flex justify-center py-8">
-          <span className="text-gray-500">불러오는 중...</span>
+          <span className="text-muted-foreground">불러오는 중...</span>
         </div>
       ) : (
         <div className="flex justify-center py-8">
-          <span className="text-gray-500">검색 결과가 없어요</span>
+          <span className="text-muted-foreground">검색 결과가 없어요</span>
         </div>
       )}
     </div>

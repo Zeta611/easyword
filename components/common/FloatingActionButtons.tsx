@@ -37,7 +37,7 @@ export default function FloatingActionButtons({
         {/* Filter (left column) */}
         <Button
           variant="outline"
-          className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg transition hover:cursor-pointer active:scale-95 active:shadow-inner"
+          className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg transition active:scale-95 active:shadow-inner"
           onClick={openFilterDialog}
         >
           <Filter className="size-5.5" />
@@ -49,7 +49,7 @@ export default function FloatingActionButtons({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg transition hover:cursor-pointer active:scale-95 active:shadow-inner data-[state=open]:scale-95 data-[state=open]:shadow-inner"
+              className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg transition active:scale-95 active:shadow-inner data-[state=open]:scale-95 data-[state=open]:shadow-inner"
             >
               <SlidersHorizontal className="size-5.5" />
               <span className="sr-only">필터</span>
@@ -83,7 +83,7 @@ export default function FloatingActionButtons({
         {/* Search - right (right column) */}
         <Button
           variant="outline"
-          className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg transition hover:cursor-pointer active:scale-95 active:shadow-inner"
+          className="bg-accent h-9 w-16 rounded-full p-3 shadow-lg transition active:scale-95 active:shadow-inner"
           onClick={openSearch}
         >
           <Search className="size-5.5" />
