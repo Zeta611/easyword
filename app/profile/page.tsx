@@ -1,10 +1,16 @@
 import { redirect } from "next/navigation";
 
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { createClient } from "@/lib/supabase/server";
 import { QUERIES } from "@/lib/supabase/repository";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import "dayjs/locale/ko";
+
+dayjs.extend(relativeTime);
+dayjs.locale("ko");
 
 export default async function Profile() {
   const supabase = await createClient();
@@ -46,7 +52,8 @@ export default async function Profile() {
         </CardHeader>
         <CardContent>
           <div className="text-muted-foreground text-sm">
-            환영합니다. 프로필 관련 기능은 곧 더 추가될 예정이에요.
+            함께한지{" "}
+            {profile?.created_at ? dayjs(profile.created_at).fromNow() : ""}
           </div>
         </CardContent>
       </Card>

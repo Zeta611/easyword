@@ -115,7 +115,7 @@ export const QUERIES = {
   ) {
     let query = supabase
       .from("profile")
-      .select("display_name, photo_url")
+      .select("display_name, photo_url, created_at")
       .eq("id", userId);
     if (options?.signal) query = query.abortSignal(options.signal);
     return query.maybeSingle();
