@@ -1,0 +1,6 @@
+{
+  "snapshot": "snapshot-20250812-5e1dac1f-aba7-4dff-af24-2d9b37964844",
+  "install": "bun install && cp .env.example .env.local",
+  "start": "bun dev",
+  "terminals": []
+}

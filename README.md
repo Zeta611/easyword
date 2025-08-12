@@ -1,21 +1,14 @@
-# easyword.kr
+# 쉬운 전문용어
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a2dde827-b91c-4c09-a42b-30e55db69cad/deploy-status)](https://app.netlify.com/sites/easykoreanjargon/deploys)
-
-## Installation
-
-```sh
-bun install
-```
-
-## Build
-
-- Build: `bun build:deps`
-- Clean: `bun clean`
-- Build & watch: `bun build:watch`
-
-## Run
-
-```sh
-bun start
-```
+## TODO
+- [ ] 폰트 변경
+- [ ] 용어 분류 필터를 고려한 단어 수 / 서버 렌더링
+- [ ] 댓글 고치기 및 지우기
+- [ ] 취지 / 제작기
+- [ ] 관리자 모드
+- [ ] 프로필
+- [ ] 댓글 고치기 및 지우기
+- [ ] 링크 공유
+- [ ] 관리자 CSV 내보내기
+- [ ] 댓글 명령 (/command), 단어 연결 (#jargon)
+- [ ] 용어 대 용어 (arena)
