@@ -19,13 +19,16 @@ export const DB = {
     });
   },
 
-  countSearchJargons: function (
+  countJargons: function (
     supabase: SupabaseClient<Database>,
     searchQuery: string,
+    options?: { signal?: AbortSignal },
   ) {
-    return supabase.rpc("count_search_jargons", {
+    let query = supabase.rpc("count_search_jargons", {
       search_query: searchQuery,
     });
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query;
   },
 
   suggestJargon: function (
@@ -72,5 +75,108 @@ export const DB = {
       p_parent_id: parentId ?? undefined,
       p_content: content,
     });
+  },
+
+  getJargonBySlug: function (supabase: SupabaseClient<Database>, slug: string) {
+    return supabase
+      .from("jargon")
+      .select(
+        "id, name, slug, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
+      )
+      .eq("slug", slug)
+      .limit(1)
+      .single();
+  },
+
+  listComments: function (
+    supabase: SupabaseClient<Database>,
+    jargonId: string,
+  ) {
+    return supabase
+      .from("comment")
+      .select(
+        `
+          *,
+          profile:author_id(display_name, photo_url),
+          translation(name)
+        `,
+      )
+      .eq("jargon_id", jargonId)
+      .order("created_at", { ascending: true });
+  },
+
+  listCategories: function (
+    supabase: SupabaseClient<Database>,
+    options?: { signal?: AbortSignal },
+  ) {
+    let query = supabase
+      .from("category")
+      .select("id, name, acronym")
+      .order("acronym", { ascending: true });
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query;
+  },
+
+  searchJargonNames: function (
+    supabase: SupabaseClient<Database>,
+    searchQuery: string,
+    limitCount: number,
+    options?: { signal?: AbortSignal },
+  ) {
+    let query = supabase
+      .from("jargon")
+      .select("id, name, slug")
+      .ilike("name", `%${searchQuery}%`)
+      .limit(limitCount);
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query;
+  },
+
+  searchTranslationsByName: function (
+    supabase: SupabaseClient<Database>,
+    searchQuery: string,
+    limitCount: number,
+    options?: { signal?: AbortSignal },
+  ) {
+    let query = supabase
+      .from("translation")
+      .select(
+        `
+          id,
+          name,
+          jargon_id,
+          jargon:jargon_id(id, name, slug)
+        `,
+      )
+      .ilike("name", `%${searchQuery}%`)
+      .limit(limitCount);
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query;
+  },
+
+  getNameAndPhoto: function (
+    supabase: SupabaseClient<Database>,
+    userId: string,
+    options?: { signal?: AbortSignal },
+  ) {
+    let query = supabase
+      .from("profile")
+      .select("display_name, photo_url")
+      .eq("id", userId);
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query.maybeSingle();
+  },
+
+  getName: function (
+    supabase: SupabaseClient<Database>,
+    userId: string,
+    options?: { signal?: AbortSignal },
+  ) {
+    let query = supabase
+      .from("profile")
+      .select("display_name")
+      .eq("id", userId);
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query.maybeSingle();
   },
 };

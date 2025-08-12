@@ -6,18 +6,16 @@ export interface Comment {
   updated_at: string;
   removed: boolean;
   jargon_id: string;
-  translation_id?: string;
+  translation_id: string | null;
   translation?: {
     name: string;
-  };
-  parent_id?: string;
+  } | null;
+  parent_id: string | null;
   profile: {
-    display_name?: string;
-    photo_url?: string;
+    display_name: string | null;
+    photo_url: string | null;
   };
-  // For nested structure
-  replies?: Comment[];
-  depth?: number;
+  replies: Comment[];
 }
 
 export interface CommentTree extends Comment {

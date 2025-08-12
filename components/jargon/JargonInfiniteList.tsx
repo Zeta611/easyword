@@ -122,11 +122,10 @@ export default function JargonInfiniteList({
 
   const { data: totalCount } = useQuery({
     queryKey: ["jargons-count", { q: searchQuery }],
-    queryFn: async () => {
-      const { data, error } = await DB.countSearchJargons(
-        supabase,
-        searchQuery,
-      );
+    queryFn: async ({ signal }) => {
+      const { data, error } = await DB.countJargons(supabase, searchQuery, {
+        signal,
+      });
       if (error) throw error;
       return data;
     },

@@ -15,12 +15,13 @@ import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
-interface CommentItemProps {
+export default function CommentItem({
+  comment,
+  depth = 0,
+}: {
   comment: Comment;
   depth?: number;
-}
-
-export default function CommentItem({ comment, depth = 0 }: CommentItemProps) {
+}) {
   const { data: user } = useUserQuery();
   const { openLogin } = useLoginDialog();
 

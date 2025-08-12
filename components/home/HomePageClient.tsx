@@ -8,6 +8,7 @@ import JargonInfiniteList, {
 } from "@/components/jargon/JargonInfiniteList";
 import FloatingActionButtons from "@/components/home/FloatingActionButtons";
 import { getClient } from "@/lib/supabase/client";
+import { DB } from "@/lib/supabase/repository";
 import {
   Dialog,
   DialogContent,
@@ -42,12 +43,7 @@ export default function HomePageClient({
     queryKey: ["categories"],
     enabled: openFilterDialog,
     queryFn: async ({ signal }) => {
-      const query = supabase
-        .from("category")
-        .select("id, name, acronym")
-        .order("acronym", { ascending: true });
-      if (signal) query.abortSignal(signal as AbortSignal);
-      const { data, error } = await query;
+      const { data, error } = await DB.listCategories(supabase, { signal });
       if (error) throw error;
       return data;
     },

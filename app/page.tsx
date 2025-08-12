@@ -21,7 +21,7 @@ export default async function Home({
   const supabase = await createClient();
 
   const [countResult, jargonResults] = await Promise.all([
-    DB.countSearchJargons(supabase, searchQuery),
+    DB.countJargons(supabase, searchQuery),
     DB.searchJargons(
       supabase,
       searchQuery,

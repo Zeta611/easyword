@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
+import { DB } from "@/lib/supabase/repository";
 import { Comment, CommentTree } from "@/types/comment";
 import CommentItem from "@/components/comment/CommentItem";
 import CommentForm from "@/components/comment/CommentForm";
@@ -11,13 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 
-interface CommentThreadProps {
-  jargonId: string;
-  initialComments?: Comment[];
-}
-
-// Helper function to build comment tree structure
-function buildCommentTree(comments: Comment[]): CommentTree[] {
+function buildCommentTree(comments: Omit<Comment, "replies">[]): CommentTree[] {
   const commentMap = new Map<string, CommentTree>();
   const roots: CommentTree[] = [];
 
@@ -66,7 +61,10 @@ function buildCommentTree(comments: Comment[]): CommentTree[] {
 export default function CommentThread({
   jargonId,
   initialComments = [],
-}: CommentThreadProps) {
+}: {
+  jargonId: string;
+  initialComments?: Omit<Comment, "replies">[];
+}) {
   const { data: user, isLoading: isUserLoading } = useUserQuery();
   const { openLogin } = useLoginDialog();
   const supabase = getClient();
@@ -74,19 +72,9 @@ export default function CommentThread({
   const { data: comments, isLoading } = useQuery({
     queryKey: ["comments", jargonId],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("comment")
-        .select(
-          `
-          *,
-          profile:author_id(display_name, photo_url),
-          translation(name)
-        `,
-        )
-        .eq("jargon_id", jargonId)
-        .order("created_at", { ascending: true });
+      const { data, error } = await DB.listComments(supabase, jargonId);
       if (error) throw error;
-      return data as Comment[];
+      return data;
     },
     initialData: initialComments,
   });

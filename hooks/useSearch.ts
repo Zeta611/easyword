@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
+import { DB } from "@/lib/supabase/repository";
 import useDebounce from "@/hooks/useDebounce";
 
 export function useSearch(limit = 10) {
@@ -15,32 +16,11 @@ export function useSearch(limit = 10) {
     queryKey: ["search", { q: debouncedQuery, limit }],
     enabled: !!debouncedQuery.trim(),
     queryFn: async ({ signal }) => {
-      let jargonQuery = supabase
-        .from("jargon")
-        .select("id, name, slug")
-        .ilike("name", `%${debouncedQuery}%`)
-        .limit(limit);
-      let translationQuery = supabase
-        .from("translation")
-        .select(
-          `
-          id,
-          name,
-          jargon_id,
-          jargon:jargon_id(id, name, slug)
-        `,
-        )
-        .ilike("name", `%${debouncedQuery}%`)
-        .limit(limit);
-
-      if (signal) {
-        jargonQuery = jargonQuery.abortSignal(signal);
-        translationQuery = translationQuery.abortSignal(signal);
-      }
-
       const [jargonResults, translationResults] = await Promise.all([
-        jargonQuery,
-        translationQuery,
+        DB.searchJargonNames(supabase, debouncedQuery, limit, { signal }),
+        DB.searchTranslationsByName(supabase, debouncedQuery, limit, {
+          signal,
+        }),
       ]);
 
       if (jargonResults.error) throw jargonResults.error;

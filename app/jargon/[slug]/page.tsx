@@ -1,47 +1,18 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { DB } from "@/lib/supabase/repository";
 import CommentThread from "@/components/comment/CommentThread";
-import { Comment } from "@/types/comment";
 import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
 
-interface JargonPageProps {
+export default async function JargonDetailPage({
+  params,
+}: {
   params: Promise<{ slug: string }>;
-}
-
-export default async function JargonDetailPage({ params }: JargonPageProps) {
+}) {
   const { slug } = await params;
   const supabase = await createClient();
 
-  // First get the jargon
-  const { data: jargon } = await supabase
-    .from("jargon")
-    .select(
-      "id, name, slug, created_at, translations:translation(name), categories:jargon_category(category:category(acronym))",
-    )
-    .eq("slug", slug)
-    .limit(1)
-    .single();
-
-  // Then get comments if jargon exists
-  let comments: Comment[] = [];
-  if (jargon) {
-    const { data: commentsData } = await supabase
-      .from("comment")
-      .select(
-        `
-      *,
-      profile:author_id (
-        display_name,
-        photo_url
-      ),
-      translation(name)
-    `,
-      )
-      .eq("jargon_id", jargon.id)
-      .order("created_at", { ascending: true });
-
-    comments = (commentsData as Comment[]) || [];
-  }
+  const { data: jargon } = await DB.getJargonBySlug(supabase, slug);
 
   if (!jargon) {
     return (
@@ -55,6 +26,8 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
       </div>
     );
   }
+
+  const { data: comments } = await DB.listComments(supabase, jargon.id);
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-5">
@@ -96,7 +69,7 @@ export default async function JargonDetailPage({ params }: JargonPageProps) {
 
       {/* Comments section */}
       <div className="bg-card rounded-lg p-3">
-        <CommentThread jargonId={jargon.id} initialComments={comments} />
+        <CommentThread jargonId={jargon.id} initialComments={comments ?? []} />
       </div>
     </div>
   );

@@ -320,6 +320,15 @@ export type Database = {
         Args: { p_jargon_id: string; p_content: string; p_parent_id?: string }
         Returns: string
       }
+      create_comment_as_admin: {
+        Args: {
+          p_author_id: string
+          p_jargon_id: string
+          p_content: string
+          p_parent_id?: string
+        }
+        Returns: string
+      }
       dearmor: {
         Args: { "": string }
         Returns: string

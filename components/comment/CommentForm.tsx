@@ -9,14 +9,6 @@ import {
   CreateCommentAction,
 } from "@/app/actions/createComment";
 
-interface CommentFormProps {
-  jargonId: string;
-  parentId?: string;
-  close?: () => void;
-  placeholder?: string;
-  submitLabel?: string;
-}
-
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();
 
@@ -33,7 +25,13 @@ export default function CommentForm({
   close,
   placeholder = "여러분의 생각은 어떤가요?",
   submitLabel = "댓글 달기",
-}: CommentFormProps) {
+}: {
+  jargonId: string;
+  parentId?: string;
+  close?: () => void;
+  placeholder?: string;
+  submitLabel?: string;
+}) {
   const queryClient = useQueryClient();
   const [result, createCommentAction] = useActionState(
     createComment.bind(null, jargonId, parentId ?? null) as CreateCommentAction,

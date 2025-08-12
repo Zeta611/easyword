@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DB } from "@/lib/supabase/repository";
 import {
   Dialog,
   DialogContent,
@@ -81,12 +82,7 @@ export default function SuggestJargonDialog() {
     queryKey: ["categories"],
     enabled: open,
     queryFn: async ({ signal }) => {
-      const query = supabase
-        .from("category")
-        .select("id, name, acronym")
-        .order("acronym", { ascending: true });
-      if (signal) query.abortSignal(signal);
-      const { data, error } = await query;
+      const { data, error } = await DB.listCategories(supabase, { signal });
       if (error) throw error;
       return data;
     },
