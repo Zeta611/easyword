@@ -56,7 +56,7 @@ export default function RootLayout({
                       width={122}
                       height={25}
                     />
-                    <p className="text-muted-foreground text-[10px] sm:text-sm">
+                    <p className="text-muted-foreground line-clamp-1 text-[10px] sm:text-sm">
                       한국정보과학회 쉬운전문용어 제정위원회 지원을 받았습니다
                     </p>
                   </a>
