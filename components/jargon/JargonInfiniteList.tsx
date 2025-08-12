@@ -18,6 +18,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  countSearchJargonsQuery,
+  searchJargonsQuery,
+} from "@/lib/supabase/queries";
 
 export interface JargonData {
   id: string;
@@ -81,13 +85,14 @@ export default function JargonInfiniteList({
     queryKey,
     initialPageParam: 0,
     queryFn: async ({ pageParam }) => {
-      const { data, error } = await supabase.rpc("search_jargons", {
-        search_query: searchQuery,
-        limit_count: PAGE_SIZE,
-        offset_count: pageParam,
-        sort_option: sortCategories.sort,
-        category_acronyms: sortCategories.categories ?? undefined,
-      });
+      const { data, error } = await searchJargonsQuery(
+        supabase,
+        searchQuery,
+        PAGE_SIZE,
+        pageParam,
+        sortCategories.sort,
+        sortCategories.categories,
+      );
       if (error) throw error;
       return data.map((it) => ({
         id: it.id,
@@ -121,9 +126,10 @@ export default function JargonInfiniteList({
   const { data: totalCount } = useQuery({
     queryKey: ["jargons-count", { q: searchQuery }],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("count_search_jargons", {
-        search_query: searchQuery,
-      });
+      const { data, error } = await countSearchJargonsQuery(
+        supabase,
+        searchQuery,
+      );
       if (error) throw error;
       return data;
     },

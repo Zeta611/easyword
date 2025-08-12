@@ -1,4 +1,6 @@
 "use server";
+
+import { suggestJargonQuery } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 import { eulLeul } from "@/lib/utils";
 
@@ -48,14 +50,14 @@ export async function suggestJargon(
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .rpc("suggest_jargon", {
-      p_name: jargon,
-      p_translation: noTranslation ? "" : translation,
-      p_comment: comment,
-      p_category_ids: categoryIds,
-    })
-    .single();
+  const { data, error } = await suggestJargonQuery(
+    supabase,
+    jargon,
+    noTranslation,
+    translation,
+    comment,
+    categoryIds,
+  );
 
   if (error) {
     switch (error.code) {

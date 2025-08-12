@@ -1,5 +1,6 @@
 "use server";
 
+import { createCommentQuery } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 
 export type CreateCommentState =
@@ -33,11 +34,12 @@ export async function createComment(
   } = await supabase.auth.getUser();
   if (userErr || !user) return { ok: false, error: "로그인이 필요해요" };
 
-  const { error } = await supabase.rpc("create_comment", {
-    p_jargon_id: jargonId,
-    p_parent_id: parentId ?? undefined,
-    p_content: content,
-  });
+  const { error } = await createCommentQuery(
+    supabase,
+    jargonId,
+    parentId,
+    content,
+  );
   if (error) return { ok: false, error: "댓글 다는 중 문제가 생겼어요" };
 
   console.info("createComment", jargonId, parentId, content);

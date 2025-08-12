@@ -1,4 +1,6 @@
 "use server";
+
+import { suggestTranslationQuery } from "@/lib/supabase/queries";
 import { createClient } from "@/lib/supabase/server";
 import { eulLeul } from "@/lib/utils";
 
@@ -22,13 +24,12 @@ export async function suggestTranslation(
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .rpc("suggest_translation", {
-      p_jargon_id: jargonId,
-      p_translation: translation,
-      p_comment: comment,
-    })
-    .single();
+  const { data, error } = await suggestTranslationQuery(
+    supabase,
+    jargonId,
+    translation,
+    comment,
+  );
 
   if (error) {
     switch (error.code) {

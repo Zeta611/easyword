@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import CommentThread from "@/components/comments/CommentThread";
+import CommentThread from "@/components/comment/CommentThread";
 import { Comment } from "@/types/comment";
 import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
 

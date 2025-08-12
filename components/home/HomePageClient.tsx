@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import JargonInfiniteList, {
   JargonData,
 } from "@/components/jargon/JargonInfiniteList";
-import FloatingActionButtons from "@/components/common/FloatingActionButtons";
+import FloatingActionButtons from "@/components/home/FloatingActionButtons";
 import { getClient } from "@/lib/supabase/client";
 import {
   Dialog,

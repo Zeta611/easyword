@@ -7,7 +7,7 @@ import "dayjs/locale/ko";
 import { MessageCircle, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
-import CommentForm from "@/components/comments/CommentForm";
+import CommentForm from "@/components/comment/CommentForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { useLoginDialog } from "@/components/auth/LoginDialogProvider";

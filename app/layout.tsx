@@ -4,9 +4,9 @@ import Image from "next/image";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import NavBar from "@/components/navbar/NavBar";
+import NavBar from "@/components/navigation/NavBar";
 import { SearchDialogProvider } from "@/components/dialogs/SearchDialogProvider";
-import QueryProvider from "@/components/providers/QueryProvider";
+import QueryProvider from "@/app/QueryProvider";
 import { LoginDialogProvider } from "@/components/auth/LoginDialogProvider";
 import "@/app/globals.css";
 
