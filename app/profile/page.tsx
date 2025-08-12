@@ -52,8 +52,8 @@ export default async function Profile() {
         </CardHeader>
         <CardContent>
           <div className="text-muted-foreground text-sm">
-            함께한지{" "}
-            {profile?.created_at ? dayjs(profile.created_at).fromNow() : ""}
+            함께한 지{" "}
+            {profile?.created_at ? dayjs(profile.created_at).fromNow(true) : ""}
           </div>
         </CardContent>
       </Card>
