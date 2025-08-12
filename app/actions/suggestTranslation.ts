@@ -1,6 +1,6 @@
 "use server";
 
-import { QUERIES } from "@/lib/supabase/repository";
+import { MUTATIONS } from "@/lib/supabase/repository";
 import { createClient } from "@/lib/supabase/server";
 import { eulLeul } from "@/lib/utils";
 
