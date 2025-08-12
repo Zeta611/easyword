@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - name: Copy .env.example to .env.local
+        run: cp .env.example .env
+      - name: Install dependencies
+        run: bun install
+      - name: Typecheck
+        run: bun typecheck
+      - name: Lint
+        run: bun lint
