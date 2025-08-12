@@ -1,8 +1,14 @@
 import posthog from "posthog-js";
 
-posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-  api_host: "/relay-giDS",
-  defaults: "2025-05-24",
-});
+const posthogPublicKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 
-console.info("Analytics initialized");
+if (posthogPublicKey) {
+  posthog.init(posthogPublicKey, {
+    api_host: "/relay-giDS",
+  });
+  console.info("PostHog initialized");
+} else {
+  console.warn(
+    "PostHog not initialized: NEXT_PUBLIC_POSTHOG_KEY is missing or empty",
+  );
+}
