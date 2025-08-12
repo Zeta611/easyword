@@ -2,7 +2,7 @@
 
 This document is for AI coding agents working on easyword.kr (쉬운 전문용어). It summarizes the architecture, constraints, and repeatable recipes to safely implement changes.
 
-Read this alongside `CLAUDE.md` (project overview and tech notes) and the codebase. Prefer server-driven data access via Supabase SSR and keep UI/UX copy in Korean.
+Read this alongside `README.md` and the codebase. Prefer server-driven data access via Supabase SSR and keep UI/UX copy in Korean.
 
 ### Quick start
 
@@ -10,6 +10,8 @@ Read this alongside `CLAUDE.md` (project overview and tech notes) and the codeba
 - Build: `bun run build`
 - Lint: `bun run lint`
 - Format (lint --fix): `bun run format`
+- Typecheck: `bun run typecheck`
+- Full check (format + lint + typecheck): `bun run check`
 
 Environment variables (set in `.env.local`):
 
@@ -20,36 +22,41 @@ Environment variables (set in `.env.local`):
 
 - Framework: Next.js 15 (App Router), React 19, TypeScript (strict)
 - Styling/UI: Tailwind CSS v4, shadcn/ui (Radix primitives), cmdk palette
-- Data/Auth: Supabase (Postgres, Auth). SSR client for server routes; browser client for client components
-- Notable patterns: Hybrid SSR + client pagination, RPC-based search, Korean locale time with dayjs
+- Data/Auth: Supabase (Postgres, Auth)
+  - Server components/pages: SSR client from `lib/supabase/server` via `createClient()`
+  - Client components/hooks: browser client from `lib/supabase/client` via `getClient()`
+- Notable patterns: Hybrid SSR + client pagination (TanStack Query), RPC-based search (wrapped in `lib/supabase/repository.ts`), Korean locale time with dayjs
 
 Key directories:
 
 - `app/`: App Router pages. Public routes by default; protected paths are checked in middleware
-- `components/`: Presentational/interactive UI. Includes `JargonInfiniteList`, `Comment*`, `NavBar*`, `ui/*`
-- `hooks/`: Client hooks (`useSearch`, `useInfiniteQuery`, `useCurrentUserNameAndImage`)
-- `lib/supabase/`: `client.ts` (browser), `server.ts` (SSR), `middleware.ts` (session), `types.ts` (generated types)
+- `components/`: Presentational/interactive UI. Includes `jargon/JargonInfiniteList`, `comment/*`, `navigation/NavBar*`, `ui/*`
+- `hooks/`: Client hooks (`useSearch`, `useCurrentUserNameAndImage`, `useUserQuery`, `useDebounce`)
+- `lib/supabase/`: `client.ts` (browser), `server.ts` (SSR), `middleware.ts` (session), `types.ts` (generated types), `repository.ts` (DB helpers)
 - `types/`: App-level types (`types/comment.ts`)
 
 ### Supabase usage
 
-- Server components/pages: create SSR client via `createClient` from `lib/supabase/server`
-- Client components/hooks: create browser client via `createClient` from `lib/supabase/client`
-- RPC-first search: `search_jargons_with_translations`, `count_search_jargons`
-- Comments read: `comments_with_authors` view; write to `comment` table
+- Server components/pages: create SSR client via `createClient()` from `lib/supabase/server`
+- Client components/hooks: create browser client via `getClient()` from `lib/supabase/client`
+- Prefer DB helpers in `lib/supabase/repository.ts` when available:
+  - `DB.searchJargons`, `DB.countSearchJargons`
+  - `DB.suggestJargon`, `DB.suggestTranslation`, `DB.createComment`
+- Comments read: query `comment` with joins (profile and translation) rather than a separate view
 - Type-safety: Prefer types from `lib/supabase/types.ts`. Treat this file as generated—do not hand-edit schema definitions here
 
 Auth/session rules (critical):
 
 - Session refresh and route protection live in `lib/supabase/middleware.ts`
 - Do not insert logic between client creation and `supabase.auth.getClaims()` in middleware
-- Middleware currently redirects unauthenticated users from `/profile` and `/add-jargon` to `/auth/login`
+- Middleware currently redirects unauthenticated users from `/profile` to `/auth/login`
+- To protect additional routes, extend the `pathname.startsWith(...)` checks in the middleware
 
 ### UI/UX conventions
 
 - Language: Korean UI copy; keep tone consistent
 - Time: dayjs with `relativeTime` and `ko` locale
-- Command palette: custom filtering (cmdk `shouldFilter=false`); keyboard shortcuts `⌘K` and `/`
+- Command palette: via `components/dialogs/SearchDialogProvider.tsx`, cmdk with `shouldFilter=false`; keyboard shortcuts `⌘K` and `/`
 - Mobile-first: floating search button on mobile, hidden on desktop
 - Pagination: button-driven "더보기" rather than infinite scroll on viewport
 
@@ -65,68 +72,71 @@ Auth/session rules (critical):
 ### Data model (essentials)
 
 - Tables: `jargon`, `translation`, `category`, `jargon_category`, `comment`, `related_jargon`, legacy `legacy_fb_user`
-- View: `comments_with_authors` (joined comment + author metadata)
-- RPCs: `search_jargons_with_translations`, `count_search_jargons`, `list_jargon_random`, and helpers (`generate_slug`, lowercasing helpers)
+- RPCs used: `search_jargons`, `count_search_jargons`, `suggest_jargon`, `suggest_translation`, `create_comment`
 
 If you need new SQL/RPC:
 
-- The maintainer executes SQL manually in Supabase. Provide exact SQL body and name the function explicitly. Reflect the return shape in TS if used on the client
+- The maintainer executes SQL manually in Supabase. Provide exact SQL body and name the function explicitly. Reflect the return shape in TS if used on the client or add a typed wrapper in `repository.ts`
 
 ### Important files to read before changes
 
-- `app/page.tsx`: SSR entry + initial search data via RPC
-- `app/jargon/[slug]/page.tsx`: Jargon details + comment thread
-- `components/CommentThread.tsx`: Client comment fetching + tree building
-- `components/CommentItem.tsx`: Nested replies UI, relative timestamps
-- `components/CommentForm.tsx`: Auth check + insert into `comment`
-- `hooks/useSearch.ts`: Debounced client search (jargon + translation)
-- `hooks/useInfiniteQuery.ts`: Generic, typed, client-side pager
+- `app/page.tsx`: SSR entry + initial search data via RPC (count + first page)
+- `components/home/HomePageClient.tsx`: URL param management for sort/category; opens filter dialog; passes props to list
+- `components/home/FloatingActionButtons.tsx`: Mobile FABs (search, sort, filter)
+- `components/jargon/JargonInfiniteList.tsx`: Client pagination (useInfiniteQuery) + "더보기"
+- `app/jargon/[slug]/page.tsx`: Jargon details + initial comments
+- `components/comment/CommentThread.tsx`: Client comment fetching + tree building
+- `components/comment/CommentItem.tsx`: Nested replies UI, relative timestamps
+- `components/comment/CommentForm.tsx`: Auth gating + insert via RPC
+- `hooks/useSearch.ts`: Debounced search source for cmdk dialog
+- `hooks/useUserQuery.ts`, `hooks/useCurrentUserNameAndImage.ts`: Auth state helpers
+- `components/dialogs/SearchDialogProvider.tsx`: Command palette implementation
 - `middleware.ts` and `lib/supabase/middleware.ts`: Session update and route guard
 
 ### Safe change recipes
 
 Add a new protected page under `app/`:
 
-1) Create server component under `app/your-page/page.tsx`
-2) Fetch data with SSR client from `lib/supabase/server`
-3) Add `request.nextUrl.pathname.startsWith("/your-page")` to the guard list in `lib/supabase/middleware.ts`
+1) Create a server component under `app/your-page/page.tsx`
+2) Fetch data with SSR client from `lib/supabase/server` or via `lib/supabase/repository`
+3) Extend the guard in `lib/supabase/middleware.ts` by adding `request.nextUrl.pathname.startsWith("/your-page")`
 
 Query more columns with type-safety:
 
-1) Use `createClient` appropriate to environment
-2) Prefer `.rpc()` when logic belongs in SQL; otherwise `.from("table").select(...)`
-3) Align selected fields with `lib/supabase/types.ts` shapes; extend app-local types in `types/` if needed
+1) Use `getClient()` in client or `createClient()` on the server
+2) Prefer repository RPCs when logic belongs in SQL; otherwise `.from("table").select(...)`
+3) Align selected fields with `lib/supabase/types.ts`; extend app-local types in `types/` if needed
 
 Extend search sorting or filters:
 
-1) Update RPC `search_jargons_with_translations` to accept a new `sort_option` or filter params
-2) Pass-through from `app/page.tsx` to RPC. Keep initial SSR count via `count_search_jargons`
-3) Mirror any new result fields in `JargonData` in `JargonInfiniteList`
+1) Update the `search_jargons` RPC signature and the `DB.searchJargons` wrapper to accept new `sort_option` or filter params (e.g., categories)
+2) Pass-through from `app/page.tsx` to RPC. Keep initial SSR count via `DB.countSearchJargons`
+3) Mirror any new result fields in `JargonData` in `components/jargon/JargonInfiniteList.tsx` and update URL params handling in `HomePageClient`
 
 Add comment features (e.g., soft-delete, edit):
 
-1) Prefer server-side enforcement in SQL (e.g., RLS policies, views)
-2) For writes, use client `comment` table mutations; for reads, extend `comments_with_authors`
+1) Prefer server-side enforcement in SQL (e.g., RLS policies, RPCs)
+2) For writes, use `DB.createComment` or add new RPCs; for reads, extend the `comment` select joins (profile, translation)
 3) Keep tree-building rules: roots newest-first, replies oldest-first
 
 ### Guardrails for agents
 
 - Do not modify `lib/supabase/types.ts` by hand; it’s generated from DB schema
-- Keep `lib/supabase/middleware.ts` claim-check flow intact; do not insert logic before `getClaims()`
+- Keep `lib/supabase/middleware.ts` claim-check flow intact; do not insert logic before `getClaims()` and always return the mutated `supabaseResponse`
 - Avoid introducing heavy state libraries; reuse existing hooks/components
 - Keep copy in Korean; avoid mixed language unless a proper translation is provided
 - Maintain accessibility: buttons, aria labels, keyboard flows in cmdk
-- Validate any user write operations require an authenticated user (`supabase.auth.getUser()`)
+- Validate any user write operations require an authenticated user (client-side gating via hooks; server-side via RLS/RPC)
 
 ### Testing/build checklist
 
-- `bun lint` passes with no new warnings
-- App builds (`bun build`) and loads primary routes:
-  - `/` with and without `?q=...`
+- `bun run check` passes (format + lint + typecheck)
+- App builds (`bun run build`) and loads primary routes:
+  - `/` with and without `?q=...`, `?sort=...`, `?categories=...`
   - `/jargon/[slug]` with comments
-  - Protected routes redirect when unauthenticated
+  - Protected routes (e.g., `/profile`) redirect when unauthenticated
 
 ### References
 
-- See `CLAUDE.md` for a fuller architecture, feature, and dependency summary
+- See `README.md` for a high-level roadmap and TODOs
 - Supabase SSR patterns are implemented per official guidance in `lib/supabase/*`
