@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Source_Code_Pro, Hahmlet } from "next/font/google";
+import { Source_Code_Pro, IBM_Plex_Sans_KR } from "next/font/google";
 import Image from "next/image";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
@@ -10,9 +10,10 @@ import QueryProvider from "@/app/_providers/QueryProvider";
 import { LoginDialogProvider } from "@/components/auth/LoginDialogProvider";
 import "@/app/globals.css";
 
-const hahmlet = Hahmlet({
-  variable: "--font-serif",
-  subsets: ["latin-ext"],
+const ibmPlexSansKR = IBM_Plex_Sans_KR({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const sourceCodePro = Source_Code_Pro({
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${hahmlet.variable} ${sourceCodePro.variable} !bg-background font-serif antialiased`}
+        className={`${ibmPlexSansKR.className} ${sourceCodePro.variable} !bg-background font-sans antialiased`}
       >
         <QueryProvider>
           <SearchDialogProvider>
