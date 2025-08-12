@@ -23,6 +23,8 @@ export async function removeComment(
   _prevState: RemoveCommentState,
   _formData: FormData,
 ) {
+  void _prevState;
+  void _formData;
   const supabase = await createClient();
   const {
     data: { user },

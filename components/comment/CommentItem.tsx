@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useActionState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import { MessageCircle, Minus, Plus } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
 import CommentForm from "@/components/comment/CommentForm";
@@ -12,8 +13,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
 import { Textarea } from "@/components/ui/textarea";
-import { useActionState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import {
   updateComment,
   UpdateCommentAction,
@@ -61,13 +60,17 @@ export default function CommentItem({
   useEffect(() => {
     if (updateState?.ok) {
       setIsEditing(false);
-      queryClient.invalidateQueries({ queryKey: ["comments", comment.jargon_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["comments", comment.jargon_id],
+      });
     }
   }, [updateState?.ok, queryClient, comment.jargon_id]);
 
   useEffect(() => {
     if (removeState?.ok) {
-      queryClient.invalidateQueries({ queryKey: ["comments", comment.jargon_id] });
+      queryClient.invalidateQueries({
+        queryKey: ["comments", comment.jargon_id],
+      });
     }
   }, [removeState?.ok, queryClient, comment.jargon_id]);
 
@@ -155,7 +158,9 @@ export default function CommentItem({
             </div>
           </form>
         ) : (
-          <div className="mb-2 text-sm whitespace-pre-wrap">{comment.content}</div>
+          <div className="mb-2 text-sm whitespace-pre-wrap">
+            {comment.content}
+          </div>
         )}
 
         {/* Comment actions */}
@@ -197,7 +202,9 @@ export default function CommentItem({
               </Button>
               <form action={removeAction}>
                 {removeState?.error && (
-                  <span className="text-xs text-red-600">{removeState.error}</span>
+                  <span className="text-xs text-red-600">
+                    {removeState.error}
+                  </span>
                 )}
                 <Button
                   type="submit"

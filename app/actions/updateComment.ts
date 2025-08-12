@@ -33,10 +33,11 @@ export async function updateComment(
   } = await supabase.auth.getUser();
   if (userErr || !user) return { ok: false, error: "로그인이 필요해요" };
 
-  const { error } = await MUTATIONS.updateComment(supabase, commentId, content).eq(
-    "author_id",
-    user.id,
-  );
+  const { error } = await MUTATIONS.updateComment(
+    supabase,
+    commentId,
+    content,
+  ).eq("author_id", user.id);
   if (error) return { ok: false, error: "댓글 수정 중 문제가 생겼어요" };
 
   console.info("updateComment", commentId, content);
