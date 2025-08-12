@@ -5,11 +5,11 @@ import { Comment } from "@/types/comment";
 import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
 
 interface JargonPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function JargonDetailPage({ params }: JargonPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const supabase = await createClient();
 
   // First get the jargon

@@ -3,7 +3,7 @@ import type { JargonData } from "@/components/jargon/JargonInfiniteList";
 import HomePageClient, { SortOption } from "@/components/home/HomePageClient";
 
 interface HomeProps {
-  searchParams: { q?: string; sort?: string; categories?: string };
+  searchParams: Promise<{ q?: string; sort?: string; categories?: string }>;
 }
 
 const INITIAL_LOAD_SIZE = 32;
@@ -13,7 +13,7 @@ export default async function Home({ searchParams }: HomeProps) {
     q: searchQueryParam,
     sort: sortParam,
     categories: categoriesParam,
-  } = searchParams;
+  } = await searchParams;
   const searchQuery = searchQueryParam?.trim() ?? "";
   const sort = sortParam ?? "recent";
   const categories = categoriesParam?.split(",") ?? null;
