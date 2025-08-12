@@ -8,7 +8,7 @@ import JargonInfiniteList, {
 } from "@/components/jargon/JargonInfiniteList";
 import FloatingActionButtons from "@/components/home/FloatingActionButtons";
 import { getClient } from "@/lib/supabase/client";
-import { DB } from "@/lib/supabase/repository";
+import { QUERIES } from "@/lib/supabase/repository";
 import {
   Dialog,
   DialogContent,
@@ -43,7 +43,9 @@ export default function HomePageClient({
     queryKey: ["categories"],
     enabled: openFilterDialog,
     queryFn: async ({ signal }) => {
-      const { data, error } = await DB.listCategories(supabase, { signal });
+      const { data, error } = await QUERIES.listCategories(supabase, {
+        signal,
+      });
       if (error) throw error;
       return data;
     },

@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
-import { DB } from "@/lib/supabase/repository";
+import { QUERIES } from "@/lib/supabase/repository";
 import { Comment, CommentTree } from "@/types/comment";
 import CommentItem from "@/components/comment/CommentItem";
 import CommentForm from "@/components/comment/CommentForm";
@@ -72,7 +72,7 @@ export default function CommentThread({
   const { data: comments, isLoading } = useQuery({
     queryKey: ["comments", jargonId],
     queryFn: async () => {
-      const { data, error } = await DB.listComments(supabase, jargonId);
+      const { data, error } = await QUERIES.listComments(supabase, jargonId);
       if (error) throw error;
       return data;
     },

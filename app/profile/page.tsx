@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { createClient } from "@/lib/supabase/server";
-import { DB } from "@/lib/supabase/repository";
+import { QUERIES } from "@/lib/supabase/repository";
 
 export default async function Profile() {
   const supabase = await createClient();
@@ -13,7 +13,7 @@ export default async function Profile() {
   } = await supabase.auth.getUser();
   if (error || !user) redirect("/auth/login");
 
-  const { data: profile } = await DB.getName(supabase, user.id);
+  const { data: profile } = await QUERIES.getName(supabase, user.id);
 
   return (
     <div className="flex w-full items-center justify-center gap-2">

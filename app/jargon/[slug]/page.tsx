@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { DB } from "@/lib/supabase/repository";
+import { QUERIES } from "@/lib/supabase/repository";
 import CommentThread from "@/components/comment/CommentThread";
 import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
 
@@ -12,7 +12,7 @@ export default async function JargonDetailPage({
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: jargon } = await DB.getJargonBySlug(supabase, slug);
+  const { data: jargon } = await QUERIES.getJargonBySlug(supabase, slug);
 
   if (!jargon) {
     return (
@@ -27,7 +27,7 @@ export default async function JargonDetailPage({
     );
   }
 
-  const { data: comments } = await DB.listComments(supabase, jargon.id);
+  const { data: comments } = await QUERIES.listComments(supabase, jargon.id);
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-5">

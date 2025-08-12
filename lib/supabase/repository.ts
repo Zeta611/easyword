@@ -1,7 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/lib/supabase/types";
 
-export const DB = {
+export const QUERIES = {
   searchJargons: function (
     supabase: SupabaseClient<Database>,
     searchQuery: string,
@@ -29,52 +29,6 @@ export const DB = {
     });
     if (options?.signal) query = query.abortSignal(options.signal);
     return query;
-  },
-
-  suggestJargon: function (
-    supabase: SupabaseClient<Database>,
-    jargon: string,
-    noTranslation: boolean,
-    translation: string,
-    comment: string,
-    categoryIds: number[],
-  ) {
-    return supabase
-      .rpc("suggest_jargon", {
-        p_name: jargon,
-        p_translation: noTranslation ? "" : translation,
-        p_comment: comment,
-        p_category_ids: categoryIds,
-      })
-      .single();
-  },
-
-  suggestTranslation: function (
-    supabase: SupabaseClient<Database>,
-    jargonId: string,
-    translation: string,
-    comment: string,
-  ) {
-    return supabase
-      .rpc("suggest_translation", {
-        p_jargon_id: jargonId,
-        p_translation: translation,
-        p_comment: comment,
-      })
-      .single();
-  },
-
-  createComment: function (
-    supabase: SupabaseClient<Database>,
-    jargonId: string,
-    parentId: string | null,
-    content: string,
-  ) {
-    return supabase.rpc("create_comment", {
-      p_jargon_id: jargonId,
-      p_parent_id: parentId ?? undefined,
-      p_content: content,
-    });
   },
 
   getJargonBySlug: function (supabase: SupabaseClient<Database>, slug: string) {
@@ -178,5 +132,53 @@ export const DB = {
       .eq("id", userId);
     if (options?.signal) query = query.abortSignal(options.signal);
     return query.maybeSingle();
+  },
+};
+
+export const MUTATIONS = {
+  suggestJargon: function (
+    supabase: SupabaseClient<Database>,
+    jargon: string,
+    noTranslation: boolean,
+    translation: string,
+    comment: string,
+    categoryIds: number[],
+  ) {
+    return supabase
+      .rpc("suggest_jargon", {
+        p_name: jargon,
+        p_translation: noTranslation ? "" : translation,
+        p_comment: comment,
+        p_category_ids: categoryIds,
+      })
+      .single();
+  },
+
+  suggestTranslation: function (
+    supabase: SupabaseClient<Database>,
+    jargonId: string,
+    translation: string,
+    comment: string,
+  ) {
+    return supabase
+      .rpc("suggest_translation", {
+        p_jargon_id: jargonId,
+        p_translation: translation,
+        p_comment: comment,
+      })
+      .single();
+  },
+
+  createComment: function (
+    supabase: SupabaseClient<Database>,
+    jargonId: string,
+    parentId: string | null,
+    content: string,
+  ) {
+    return supabase.rpc("create_comment", {
+      p_jargon_id: jargonId,
+      p_parent_id: parentId ?? undefined,
+      p_content: content,
+    });
   },
 };

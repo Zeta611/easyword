@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import { useUserQuery } from "@/hooks/useUserQuery";
-import { DB } from "@/lib/supabase/repository";
+import { QUERIES } from "@/lib/supabase/repository";
 
 export const useCurrentUserNameAndImage = () => {
   const supabase = getClient();
@@ -14,7 +14,7 @@ export const useCurrentUserNameAndImage = () => {
     enabled: !!user?.id,
     queryFn: async ({ signal }) => {
       if (!user?.id) return null;
-      const { data, error } = await DB.getNameAndPhoto(supabase, user.id, {
+      const { data, error } = await QUERIES.getNameAndPhoto(supabase, user.id, {
         signal,
       });
       if (error) throw error;

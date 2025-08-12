@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import HomePageClient, { SortOption } from "@/components/home/HomePageClient";
-import { DB } from "@/lib/supabase/repository";
+import { QUERIES } from "@/lib/supabase/repository";
 
 const INITIAL_LOAD_SIZE = 32;
 
@@ -21,8 +21,8 @@ export default async function Home({
   const supabase = await createClient();
 
   const [countResult, jargonResults] = await Promise.all([
-    DB.countJargons(supabase, searchQuery),
-    DB.searchJargons(
+    QUERIES.countJargons(supabase, searchQuery),
+    QUERIES.searchJargons(
       supabase,
       searchQuery,
       INITIAL_LOAD_SIZE,
