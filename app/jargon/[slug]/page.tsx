@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { QUERIES } from "@/lib/supabase/repository";
 import CommentThread from "@/components/comment/CommentThread";
 import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
+import ShareButton from "@/components/ShareButton";
 
 export default async function JargonDetailPage({
   params,
@@ -27,50 +28,55 @@ export default async function JargonDetailPage({
     );
   }
 
-  const { data: comments } = await QUERIES.listComments(supabase, jargon.id);
-
-  return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-5">
-      {/* Jargon details */}
-      <div className="bg-card rounded-lg p-3">
-        <div className="flex flex-col gap-2">
-          {/* categories */}
-          {jargon.categories.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {jargon.categories.map((cat) => (
-                <span
-                  key={cat.category.acronym}
-                  className="bg-background text-foreground border-accent inline-block rounded-full border px-1 py-0.5 font-mono text-sm"
-                >
-                  {cat.category.acronym}
-                </span>
-              ))}
-            </div>
-          ) : null}
-          <h1 className="text-2xl font-bold">{jargon.name}</h1>
-          {jargon.translations.length > 0 ? (
-            <div className="text-foreground text-base">
-              <ul className="list-disc pl-5">
-                {jargon.translations.map((tran) => (
-                  <li key={tran.name} className="text-foreground">
-                    {tran.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="text-muted-foreground text-lg">번역이 없습니다</p>
-          )}
-
-          {/* Suggest translation */}
-          <SuggestTranslationDialog jargonId={jargon.id} />
-        </div>
-      </div>
-
-      {/* Comments section */}
-      <div className="bg-card rounded-lg p-3">
-        <CommentThread jargonId={jargon.id} initialComments={comments ?? []} />
-      </div>
-    </div>
+    const { data: comments } = await QUERIES.listComments(supabase, jargon.id);
+ 
+   return (
+     <div className="mx-auto flex max-w-4xl flex-col gap-5">
+       {/* Jargon details */}
+       <div className="bg-card rounded-lg p-3">
+         <div className="flex flex-col gap-2">
+           {/* categories */}
+           {jargon.categories.length > 0 ? (
+             <div className="flex flex-wrap items-center justify-between gap-2">
+               <div className="flex flex-wrap gap-2">
+                 {jargon.categories.map((cat) => (
+                   <span
+                     key={cat.category.acronym}
+                     className="bg-background text-foreground border-accent inline-block rounded-full border px-1 py-0.5 font-mono text-sm"
+                   >
+                     {cat.category.acronym}
+                   </span>
+                 ))}
+               </div>
+             </div>
+           ) : null}
+           <div className="flex items-center justify-between gap-2">
+             <h1 className="text-2xl font-bold">{jargon.name}</h1>
+             <ShareButton label="공유" />
+           </div>
+           {jargon.translations.length > 0 ? (
+             <div className="text-foreground text-base">
+               <ul className="list-disc pl-5">
+                 {jargon.translations.map((tran) => (
+                   <li key={tran.name} className="text-foreground">
+                     {tran.name}
+                   </li>
+                 ))}
+               </ul>
+             </div>
+           ) : (
+             <p className="text-muted-foreground text-lg">번역이 없습니다</p>
+           )}
+ 
+           {/* Suggest translation */}
+           <SuggestTranslationDialog jargonId={jargon.id} />
+         </div>
+       </div>
+ 
+       {/* Comments section */}
+       <div className="bg-card rounded-lg p-3">
+         <CommentThread jargonId={jargon.id} initialComments={comments ?? []} />
+       </div>
+     </div>
   );
 }

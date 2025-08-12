@@ -181,4 +181,25 @@ export const MUTATIONS = {
       p_content: content,
     });
   },
+
+  updateComment: function (
+    supabase: SupabaseClient<Database>,
+    commentId: string,
+    content: string,
+  ) {
+    return supabase
+      .from("comment")
+      .update({ content, updated_at: new Date().toISOString() })
+      .eq("id", commentId);
+  },
+
+  removeComment: function (
+    supabase: SupabaseClient<Database>,
+    commentId: string,
+  ) {
+    return supabase
+      .from("comment")
+      .update({ removed: true, updated_at: new Date().toISOString() })
+      .eq("id", commentId);
+  },
 };

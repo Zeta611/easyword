@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
@@ -11,6 +11,17 @@ import CommentForm from "@/components/comment/CommentForm";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { Textarea } from "@/components/ui/textarea";
+import { useActionState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  updateComment,
+  UpdateCommentAction,
+} from "@/app/actions/updateComment";
+import {
+  removeComment,
+  RemoveCommentAction,
+} from "@/app/actions/removeComment";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -27,11 +38,38 @@ export default function CommentItem({
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(comment.content);
+  const queryClient = useQueryClient();
+
   const initials = (comment.profile.display_name || "")
     .split(" ")
     .map((w) => w[0])
     .join("")
     .toUpperCase();
+
+  const [updateState, updateAction] = useActionState(
+    updateComment.bind(null, comment.id) as UpdateCommentAction,
+    { ok: false, error: "" },
+  );
+
+  const [removeState, removeAction] = useActionState(
+    removeComment.bind(null, comment.id) as RemoveCommentAction,
+    { ok: false, error: "" },
+  );
+
+  useEffect(() => {
+    if (updateState?.ok) {
+      setIsEditing(false);
+      queryClient.invalidateQueries({ queryKey: ["comments", comment.jargon_id] });
+    }
+  }, [updateState?.ok, queryClient, comment.jargon_id]);
+
+  useEffect(() => {
+    if (removeState?.ok) {
+      queryClient.invalidateQueries({ queryKey: ["comments", comment.jargon_id] });
+    }
+  }, [removeState?.ok, queryClient, comment.jargon_id]);
 
   if (comment.removed) {
     return (
@@ -88,9 +126,37 @@ export default function CommentItem({
         </div>
 
         {/* Comment content */}
-        <div className="mb-2 text-sm whitespace-pre-wrap">
-          {comment.content}
-        </div>
+        {isEditing ? (
+          <form action={updateAction} className="mb-2 flex flex-col gap-1.5">
+            <Textarea
+              name="content"
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              rows={4}
+            />
+            {updateState?.error && (
+              <p className="mt-1 text-sm text-red-600">{updateState.error}</p>
+            )}
+            <div className="flex justify-end gap-1.5">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditContent(comment.content);
+                }}
+              >
+                취소
+              </Button>
+              <Button type="submit" size="sm">
+                저장
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <div className="mb-2 text-sm whitespace-pre-wrap">{comment.content}</div>
+        )}
 
         {/* Comment actions */}
         <div className="text-muted-foreground flex items-center gap-3 text-xs">
@@ -120,6 +186,29 @@ export default function CommentItem({
             <MessageCircle className="size-3" />
             답글
           </Button>
+          {user?.id === comment.author_id && !isEditing && (
+            <>
+              <Button
+                variant="ghost"
+                className="h-6 px-2"
+                onClick={() => setIsEditing(true)}
+              >
+                수정
+              </Button>
+              <form action={removeAction}>
+                {removeState?.error && (
+                  <span className="text-xs text-red-600">{removeState.error}</span>
+                )}
+                <Button
+                  type="submit"
+                  variant="ghost"
+                  className="h-6 px-2 text-red-600 hover:text-red-700"
+                >
+                  삭제
+                </Button>
+              </form>
+            </>
+          )}
         </div>
 
         {/* Reply form */}
