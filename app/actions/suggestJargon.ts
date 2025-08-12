@@ -1,6 +1,6 @@
 "use server";
 
-import { suggestJargonQuery } from "@/lib/supabase/queries";
+import { DB } from "@/lib/supabase/repository";
 import { createClient } from "@/lib/supabase/server";
 import { eulLeul } from "@/lib/utils";
 
@@ -50,7 +50,7 @@ export async function suggestJargon(
 
   const supabase = await createClient();
 
-  const { data, error } = await suggestJargonQuery(
+  const { data, error } = await DB.suggestJargon(
     supabase,
     jargon,
     noTranslation,

@@ -1,6 +1,6 @@
 "use server";
 
-import { suggestTranslationQuery } from "@/lib/supabase/queries";
+import { DB } from "@/lib/supabase/repository";
 import { createClient } from "@/lib/supabase/server";
 import { eulLeul } from "@/lib/utils";
 
@@ -24,7 +24,7 @@ export async function suggestTranslation(
 
   const supabase = await createClient();
 
-  const { data, error } = await suggestTranslationQuery(
+  const { data, error } = await DB.suggestTranslation(
     supabase,
     jargonId,
     translation,

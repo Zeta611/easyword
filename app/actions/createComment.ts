@@ -1,6 +1,6 @@
 "use server";
 
-import { createCommentQuery } from "@/lib/supabase/queries";
+import { DB } from "@/lib/supabase/repository";
 import { createClient } from "@/lib/supabase/server";
 
 export type CreateCommentState =
@@ -34,7 +34,7 @@ export async function createComment(
   } = await supabase.auth.getUser();
   if (userErr || !user) return { ok: false, error: "로그인이 필요해요" };
 
-  const { error } = await createCommentQuery(
+  const { error } = await DB.createComment(
     supabase,
     jargonId,
     parentId,

@@ -18,10 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  countSearchJargonsQuery,
-  searchJargonsQuery,
-} from "@/lib/supabase/queries";
+import { DB } from "@/lib/supabase/repository";
 
 export interface JargonData {
   id: string;
@@ -85,7 +82,7 @@ export default function JargonInfiniteList({
     queryKey,
     initialPageParam: 0,
     queryFn: async ({ pageParam }) => {
-      const { data, error } = await searchJargonsQuery(
+      const { data, error } = await DB.searchJargons(
         supabase,
         searchQuery,
         PAGE_SIZE,
@@ -126,7 +123,7 @@ export default function JargonInfiniteList({
   const { data: totalCount } = useQuery({
     queryKey: ["jargons-count", { q: searchQuery }],
     queryFn: async () => {
-      const { data, error } = await countSearchJargonsQuery(
+      const { data, error } = await DB.countSearchJargons(
         supabase,
         searchQuery,
       );
