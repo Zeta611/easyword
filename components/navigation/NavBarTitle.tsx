@@ -27,7 +27,7 @@ export default function NavBarTitle() {
   return (
     <Link href="/">
       <div className="flex flex-col items-center gap-1">
-        <span className="bg-primary text-primary-foreground rounded-sm px-3 py-2 text-xl font-bold transition-all ease-in-out hover:rounded-3xl hover:text-lg">
+        <span className="bg-primary text-primary-foreground rounded-sm px-3 py-2 text-xl font-bold transition-all ease-in-out hover:rounded-3xl">
           쉬운 전문용어
         </span>
         <span

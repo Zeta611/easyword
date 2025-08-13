@@ -112,7 +112,7 @@ export default function SuggestJargonDialog() {
         <Button
           variant="default"
           size="sm"
-          className="text-sm hover:rounded-3xl hover:text-[10pt]"
+          className="text-sm hover:rounded-3xl"
         >
           <SquarePlus className="-mb-0.5 size-4" />
           용어제안
