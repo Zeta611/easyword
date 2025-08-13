@@ -99,7 +99,7 @@ export default function HomePageClient({
         openFilterDialog={() => setOpenFilterDialog(true)}
       />
       <Dialog open={openFilterDialog} onOpenChange={setOpenFilterDialog}>
-        <DialogContent className="-translate-y-[calc(33dvh)]">
+        <DialogContent className="-translate-y-[calc(15dvh)]">
           <DialogHeader>
             <DialogTitle>분야 필터</DialogTitle>
             <DialogDescription>보여질 분야들을 선택하세요</DialogDescription>
