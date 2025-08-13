@@ -189,7 +189,7 @@ export default function JargonInfiniteList({
           <Button
             variant="outline"
             size="sm"
-            className="hidden transition-all ease-in-out hover:rounded-3xl sm:inline-flex"
+            className="hidden size-8.5 transition-all ease-in-out hover:rounded-3xl sm:inline-flex"
             onClick={openFilterDialog}
           >
             <Filter className="size-4" />
@@ -198,7 +198,7 @@ export default function JargonInfiniteList({
           {/* Mobile FABs are rendered globally */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="hidden transition-all ease-in-out hover:rounded-3xl sm:inline-flex">
+              <Button className="hidden size-8.5 transition-all ease-in-out hover:rounded-3xl sm:inline-flex">
                 <SlidersHorizontal />
               </Button>
             </DropdownMenuTrigger>

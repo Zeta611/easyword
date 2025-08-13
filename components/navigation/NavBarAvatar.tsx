@@ -5,6 +5,7 @@ import { User } from "lucide-react";
 import { CurrentUserAvatar } from "@/components/auth/CurrentUserAvatar";
 import { useUserQuery } from "@/hooks/useUserQuery";
 import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { Button } from "@/components/ui/button";
 
 export default function NavBarAvatar() {
   const { data: user, isLoading } = useUserQuery();
@@ -13,20 +14,19 @@ export default function NavBarAvatar() {
   switch (isLoading ? null : !!user) {
     case null:
       return (
-        <div className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl">
+        <Button className="size-8.5 rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl">
           <User />
-        </div>
+        </Button>
       );
 
     case false:
       return (
-        <button
-          type="button"
+        <Button
           onClick={() => openLogin()}
-          className="rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl"
+          className="size-8.5 rounded-sm bg-black p-2 text-white transition-all ease-in-out hover:rounded-3xl"
         >
           <User />
-        </button>
+        </Button>
       );
 
     case true:
