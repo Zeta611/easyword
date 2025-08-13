@@ -89,6 +89,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "comment_parent_id_new_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comment_safe"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "comment_translation_id_new_fkey"
             columns: ["translation_id"]
             isOneToOne: true
@@ -305,7 +312,78 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      comment_safe: {
+        Row: {
+          author_id: string | null
+          content: string | null
+          created_at: string | null
+          id: string | null
+          jargon_id: string | null
+          parent_id: string | null
+          removed: boolean | null
+          translation_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          content?: never
+          created_at?: string | null
+          id?: string | null
+          jargon_id?: string | null
+          parent_id?: string | null
+          removed?: boolean | null
+          translation_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          content?: never
+          created_at?: string | null
+          id?: string | null
+          jargon_id?: string | null
+          parent_id?: string | null
+          removed?: boolean | null
+          translation_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_author_id_profile_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_jargon_id_new_fkey"
+            columns: ["jargon_id"]
+            isOneToOne: false
+            referencedRelation: "jargon"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_parent_id_new_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_parent_id_new_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comment_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comment_translation_id_new_fkey"
+            columns: ["translation_id"]
+            isOneToOne: true
+            referencedRelation: "translation"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       armor: {
@@ -367,6 +445,10 @@ export type Database = {
       pgp_key_id: {
         Args: { "": string }
         Returns: string
+      }
+      remove_comment: {
+        Args: { p_comment_id: string }
+        Returns: boolean
       }
       search_jargons: {
         Args: {
@@ -447,6 +529,10 @@ export type Database = {
           translation: Database["public"]["Tables"]["translation"]["Row"]
         }
         Returns: string
+      }
+      update_comment: {
+        Args: { p_comment_id: string; p_content: string }
+        Returns: boolean
       }
     }
     Enums: {

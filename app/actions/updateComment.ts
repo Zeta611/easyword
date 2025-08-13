@@ -3,7 +3,7 @@
 import { MUTATIONS } from "@/lib/supabase/repository";
 import { createClient } from "@/lib/supabase/server";
 
-export type CreateCommentState =
+export type UpdateCommentState =
   | {
       ok: false;
       error: string;
@@ -13,27 +13,21 @@ export type CreateCommentState =
       error: null;
     };
 
-export type CreateCommentAction = (
-  prevState: CreateCommentState,
+export type UpdateCommentAction = (
+  prevState: UpdateCommentState,
   formData: FormData,
-) => Promise<CreateCommentState>;
+) => Promise<UpdateCommentState>;
 
-export async function createComment(
-  jargonId: string,
-  parentId: string | null,
-  _prevState: CreateCommentState,
+export async function updateComment(
+  commentId: string,
+  _prevState: UpdateCommentState,
   formData: FormData,
 ) {
   const content = (formData.get("content") as string | null)?.trim();
   if (!content) return { ok: false, error: "내용을 입력해주세요" };
 
   const supabase = await createClient();
-  const { error } = await MUTATIONS.createComment(
-    supabase,
-    jargonId,
-    parentId,
-    content,
-  );
+  const { error } = await MUTATIONS.updateComment(supabase, commentId, content);
 
   if (error) {
     console.error(error);
@@ -43,16 +37,17 @@ export async function createComment(
         return { ok: false, error: "로그인이 필요해요" };
       case "22023":
         return { ok: false, error: "내용을 입력해주세요" };
-      case "PARENT_REMOVED":
-        return { ok: false, error: "지워진 댓글에는 답글을 달 수 없어요" };
-      case "NO_PARENT":
-        return { ok: false, error: "부모 댓글을 찾을 수 없어요" };
+      case "NO_COMMENT":
+        return { ok: false, error: "댓글을 찾을 수 없어요" };
+      case "COMMENT_REMOVED":
+        return { ok: false, error: "지워진 댓글은 고칠 수 없어요" };
+      case "42501":
+        return { ok: false, error: "이 댓글을 고칠 권한이 없어요" };
       default:
-        return { ok: false, error: "댓글을 다는 중 문제가 생겼어요" };
+        return { ok: false, error: "댓글을 고치는 중 문제가 생겼어요" };
     }
   }
-
-  console.info("createComment", jargonId, parentId, content);
+  console.info("updateComment", commentId, content);
 
   return { ok: true, error: null };
 }

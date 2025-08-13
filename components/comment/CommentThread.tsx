@@ -74,7 +74,7 @@ export default function CommentThread({
     queryFn: async () => {
       const { data, error } = await QUERIES.listComments(supabase, jargonId);
       if (error) throw error;
-      return data;
+      return data as Omit<Comment, "replies">[];
     },
     initialData: initialComments,
   });
@@ -86,7 +86,7 @@ export default function CommentThread({
       {/* New comment form */}
       <div className="flex flex-col gap-2">
         <span className="text-base font-semibold">
-          댓글 {comments.length}개
+          댓글 {comments.filter((c) => !c.removed).length}개
         </span>
         {isUserLoading ? (
           <Skeleton className="my-2 h-10 w-full" />

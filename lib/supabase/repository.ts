@@ -47,7 +47,7 @@ export const QUERIES = {
     jargonId: string,
   ) {
     return supabase
-      .from("comment")
+      .from("comment_safe")
       .select(
         `
           *,
@@ -57,6 +57,14 @@ export const QUERIES = {
       )
       .eq("jargon_id", jargonId)
       .order("created_at", { ascending: true });
+  },
+
+  getComment: function (supabase: SupabaseClient<Database>, commentId: string) {
+    return supabase
+      .from("comment_safe")
+      .select("*")
+      .eq("id", commentId)
+      .maybeSingle();
   },
 
   listCategories: function (
@@ -115,7 +123,7 @@ export const QUERIES = {
   ) {
     let query = supabase
       .from("profile")
-      .select("display_name, photo_url")
+      .select("display_name, photo_url, created_at")
       .eq("id", userId);
     if (options?.signal) query = query.abortSignal(options.signal);
     return query.maybeSingle();
@@ -180,5 +188,23 @@ export const MUTATIONS = {
       p_parent_id: parentId ?? undefined,
       p_content: content,
     });
+  },
+
+  updateComment: function (
+    supabase: SupabaseClient<Database>,
+    commentId: string,
+    content: string,
+  ) {
+    return supabase.rpc("update_comment", {
+      p_comment_id: commentId,
+      p_content: content,
+    });
+  },
+
+  removeComment: function (
+    supabase: SupabaseClient<Database>,
+    commentId: string,
+  ) {
+    return supabase.rpc("remove_comment", { p_comment_id: commentId });
   },
 };

@@ -87,6 +87,7 @@ export default function SuggestTranslationDialog({
   useEffect(() => {
     if (result && result.ok) {
       queryClient.invalidateQueries({ queryKey: ["comments", jargonId] });
+      queryClient.invalidateQueries({ queryKey: ["jargons"] }); // To invalidate the jargon list
       setOpen(false);
       resetForm();
       router.refresh();

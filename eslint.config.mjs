@@ -24,6 +24,14 @@ const eslintConfig = [
       "import/no-absolute-path": "error",
       "import/no-relative-packages": "error",
       "import/order": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
     ignores: [
       "**/*.bc.js",

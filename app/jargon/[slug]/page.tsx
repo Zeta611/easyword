@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { QUERIES } from "@/lib/supabase/repository";
 import CommentThread from "@/components/comment/CommentThread";
 import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
+import ShareButton from "@/components/ShareButton";
+import { Comment } from "@/types/comment";
 
 export default async function JargonDetailPage({
   params,
@@ -36,18 +38,23 @@ export default async function JargonDetailPage({
         <div className="flex flex-col gap-2">
           {/* categories */}
           {jargon.categories.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {jargon.categories.map((cat) => (
-                <span
-                  key={cat.category.acronym}
-                  className="bg-background text-foreground border-accent inline-block rounded-full border px-1 py-0.5 font-mono text-sm"
-                >
-                  {cat.category.acronym}
-                </span>
-              ))}
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap gap-2">
+                {jargon.categories.map((cat) => (
+                  <span
+                    key={cat.category.acronym}
+                    className="bg-background text-foreground border-accent inline-block rounded-full border px-1 py-0.5 font-mono text-sm"
+                  >
+                    {cat.category.acronym}
+                  </span>
+                ))}
+              </div>
             </div>
           ) : null}
-          <h1 className="text-2xl font-bold">{jargon.name}</h1>
+          <div className="flex items-center justify-between gap-2">
+            <h1 className="text-2xl font-bold">{jargon.name}</h1>
+            <ShareButton label="공유" />
+          </div>
           {jargon.translations.length > 0 ? (
             <div className="text-foreground text-base">
               <ul className="list-disc pl-5">
@@ -69,7 +76,10 @@ export default async function JargonDetailPage({
 
       {/* Comments section */}
       <div className="bg-card rounded-lg p-3">
-        <CommentThread jargonId={jargon.id} initialComments={comments ?? []} />
+        <CommentThread
+          jargonId={jargon.id}
+          initialComments={comments as Omit<Comment, "replies">[]}
+        />
       </div>
     </div>
   );
