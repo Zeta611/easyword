@@ -29,11 +29,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 import {
   suggestJargon,
   type SuggestJargonState,
-} from "@/app/actions/suggestJargon";
+} from "@/app/actions/suggest-jargon";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();

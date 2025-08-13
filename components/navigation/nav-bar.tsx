@@ -1,9 +1,9 @@
 import Link from "next/link";
-import NavBarAvatar from "@/components/navigation/NavBarAvatar";
-import NavBarSearchDialog from "@/components/navigation/NavBarSearchDialog";
-import NavBarTitle from "@/components/navigation/NavBarTitle";
-import SuggestJargonDialog from "@/components/dialogs/SuggestJargonDialog";
-import GitHub from "@/components/icons/GitHub";
+import NavBarAvatar from "@/components/navigation/nav-bar-avatar";
+import NavBarSearchDialog from "@/components/navigation/nav-bar-search-dialog";
+import NavBarTitle from "@/components/navigation/nav-bar-title";
+import SuggestJargonDialog from "@/components/dialogs/suggest-jargon-dialog";
+import GitHub from "@/components/icons/git-hub";
 import { Separator } from "@/components/ui/separator";
 
 export default function NavBar() {

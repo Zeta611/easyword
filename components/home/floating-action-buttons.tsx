@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSearchDialog } from "@/components/dialogs/SearchDialogProvider";
+import { useSearchDialog } from "@/components/dialogs/search-dialog-provider";
 
 type SortOption = "recent" | "popular" | "abc" | "zyx";
 

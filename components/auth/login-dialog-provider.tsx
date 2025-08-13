@@ -15,8 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useUserQuery } from "@/hooks/useUserQuery";
-import { LoginButtons } from "@/components/auth/LoginButtons";
+import { useUserQuery } from "@/hooks/use-user-query";
+import { LoginButtons } from "@/components/auth/login-buttons";
 
 type LoginDialogContextValue = {
   openLogin: (next?: string) => void;

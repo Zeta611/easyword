@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
-import { useUserQuery } from "@/hooks/useUserQuery";
+import { useUserQuery } from "@/hooks/use-user-query";
 import { QUERIES } from "@/lib/supabase/repository";
 
 export const useCurrentUserNameAndImage = () => {

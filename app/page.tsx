@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import HomePageClient, { SortOption } from "@/components/home/HomePageClient";
+import HomePageClient, { SortOption } from "@/components/home/home-page-client";
 import { QUERIES } from "@/lib/supabase/repository";
 
 const INITIAL_LOAD_SIZE = 32;

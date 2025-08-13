@@ -4,10 +4,10 @@ import Image from "next/image";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import NavBar from "@/components/navigation/NavBar";
-import { SearchDialogProvider } from "@/components/dialogs/SearchDialogProvider";
-import QueryProvider from "@/app/_providers/QueryProvider";
-import { LoginDialogProvider } from "@/components/auth/LoginDialogProvider";
+import NavBar from "@/components/navigation/nav-bar";
+import { SearchDialogProvider } from "@/components/dialogs/search-dialog-provider";
+import QueryProvider from "@/app/_providers/query-provider";
+import { LoginDialogProvider } from "@/components/auth/login-dialog-provider";
 import "@/app/globals.css";
 
 const ibmPlexSansKR = IBM_Plex_Sans_KR({

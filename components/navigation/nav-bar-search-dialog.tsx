@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Kbd from "@/components/ui/kbd";
-import { useSearchDialog } from "@/components/dialogs/SearchDialogProvider";
+import { useSearchDialog } from "@/components/dialogs/search-dialog-provider";
 
 export default function NavBarSearchDialog() {
   const { openDialog } = useSearchDialog();

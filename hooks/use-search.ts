@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import { QUERIES } from "@/lib/supabase/repository";
-import useDebounce from "@/hooks/useDebounce";
+import useDebounce from "@/hooks/use-debounce";
 
 export function useSearch(limit = 10) {
   const supabase = getClient();

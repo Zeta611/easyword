@@ -9,10 +9,10 @@ import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
-import CommentForm from "@/components/comment/CommentForm";
+import CommentForm from "@/components/comment/comment-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUserQuery } from "@/hooks/useUserQuery";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { useUserQuery } from "@/hooks/use-user-query";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 import { Textarea } from "@/components/ui/textarea";
 import {
   AlertDialog,
@@ -28,11 +28,11 @@ import {
 import {
   updateComment,
   UpdateCommentAction,
-} from "@/app/actions/updateComment";
+} from "@/app/actions/update-comment";
 import {
   removeComment,
   RemoveCommentAction,
-} from "@/app/actions/removeComment";
+} from "@/app/actions/remove-comment";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");

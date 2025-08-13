@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { LogoutButton } from "@/components/auth/LogoutButton";
+import { LogoutButton } from "@/components/auth/logout-button";
 import { createClient } from "@/lib/supabase/server";
 import { QUERIES } from "@/lib/supabase/repository";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

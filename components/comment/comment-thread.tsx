@@ -5,12 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
 import { QUERIES } from "@/lib/supabase/repository";
 import { Comment, CommentTree } from "@/types/comment";
-import CommentItem from "@/components/comment/CommentItem";
-import CommentForm from "@/components/comment/CommentForm";
-import { useUserQuery } from "@/hooks/useUserQuery";
+import CommentItem from "@/components/comment/comment-item";
+import CommentForm from "@/components/comment/comment-form";
+import { useUserQuery } from "@/hooks/use-user-query";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 
 function buildCommentTree(comments: Omit<Comment, "replies">[]): CommentTree[] {
   const commentMap = new Map<string, CommentTree>();
