@@ -217,12 +217,8 @@ export default function JargonInfiniteList({
                 <DropdownMenuRadioItem value="popular">
                   댓글 많은순
                 </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="abc">
-                  알파벳 오름차순
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="zyx">
-                  알파벳 내림차순
-                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="abc">ABC순</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="zyx">ZYX순</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
