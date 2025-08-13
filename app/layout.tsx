@@ -36,9 +36,10 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+  const theme = cookieStore.get("theme")?.value;
 
   return (
-    <html lang="ko">
+    <html lang="ko" className={theme === "dark" ? "dark" : undefined}>
       <body
         className={`${ibmPlexSansKR.className} ${sourceCodePro.variable} !bg-background font-sans antialiased`}
       >

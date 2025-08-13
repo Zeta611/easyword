@@ -6,6 +6,7 @@ import SuggestJargonDialog from "@/components/dialogs/SuggestJargonDialog";
 import GitHub from "@/components/icons/GitHub";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import ThemeToggle from "@/components/navigation/ThemeToggle";
 
 export default function NavBar() {
   return (
@@ -30,6 +31,7 @@ export default function NavBar() {
           >
             <GitHub className="text-muted-foreground size-5" />
           </Link>
+          <ThemeToggle />
           <Separator
             orientation="vertical"
             className="data-[orientation=vertical]:!h-5.5"
