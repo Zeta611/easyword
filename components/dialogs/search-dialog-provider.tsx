@@ -19,7 +19,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { useSearch } from "@/hooks/useSearch";
+import { useSearch } from "@/hooks/use-search";
 import Kbd from "@/components/ui/kbd";
 import { Skeleton } from "@/components/ui/skeleton";
 

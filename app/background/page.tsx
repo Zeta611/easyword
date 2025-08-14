@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import YouTube from "@/components/icons/YouTube";
+import YouTube from "@/components/icons/you-tube";
 
 export const metadata = {
   title: "배경 | 쉬운 전문용어",

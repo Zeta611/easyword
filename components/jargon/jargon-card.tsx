@@ -26,7 +26,7 @@ interface JargonCardProps {
 export default function JargonCard({ jargon }: JargonCardProps) {
   return (
     <Link href={`/jargon/${jargon.slug}`}>
-      <div className="hover:bg-accent flex h-full cursor-pointer flex-col gap-1 rounded-md bg-white p-3 transition-all duration-200">
+      <div className="hover:bg-accent bg-card text-card-foreground flex h-full cursor-pointer flex-col gap-1 rounded-md p-3 transition-all duration-200">
         {/* categories */}
         {jargon.categories.length > 0 ? (
           <div className="flex flex-wrap gap-2">

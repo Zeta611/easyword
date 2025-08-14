@@ -27,11 +27,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { getClient } from "@/lib/supabase/client";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 import {
   suggestTranslation,
   type SuggestTranslationState,
-} from "@/app/actions/suggestTranslation";
+} from "@/app/actions/suggest-translation";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();

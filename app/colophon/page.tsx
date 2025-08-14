@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import GitHub from "@/components/icons/GitHub";
+import GitHub from "@/components/icons/git-hub";
 
 export const metadata = {
   title: "제작기 | 쉬운 전문용어",

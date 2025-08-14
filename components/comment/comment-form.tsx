@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   createComment,
   CreateCommentAction,
-} from "@/app/actions/createComment";
+} from "@/app/actions/create-comment";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();

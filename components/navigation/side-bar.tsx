@@ -1,9 +1,10 @@
 import { Home, Lightbulb, RadioTower, Rocket, Swords } from "lucide-react";
 import Link from "next/link";
-
+import GitHub from "@/components/icons/git-hub";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -11,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 
 const features = [
   {
@@ -82,6 +84,26 @@ export function SideBar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link
+                href="https://github.com/Zeta611/easyword"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub Repository"
+              >
+                <GitHub className="size-4" />
+                <span>깃헙 저장소</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <ModeToggle />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

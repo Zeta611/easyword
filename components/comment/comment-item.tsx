@@ -9,10 +9,10 @@ import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Comment } from "@/types/comment";
-import CommentForm from "@/components/comment/CommentForm";
+import CommentForm from "@/components/comment/comment-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUserQuery } from "@/hooks/useUserQuery";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { useUserQuery } from "@/hooks/use-user-query";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 import { Textarea } from "@/components/ui/textarea";
 import {
   AlertDialog,
@@ -28,11 +28,11 @@ import {
 import {
   updateComment,
   UpdateCommentAction,
-} from "@/app/actions/updateComment";
+} from "@/app/actions/update-comment";
 import {
   removeComment,
   RemoveCommentAction,
-} from "@/app/actions/removeComment";
+} from "@/app/actions/remove-comment";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -99,7 +99,7 @@ export default function CommentItem({
   }
 
   return (
-    <div className="border-accent relative ml-3 rounded-b-md border-l-2 transition-colors hover:border-orange-200">
+    <div className="border-border relative ml-3 rounded-b-md border-l-2 transition-colors hover:border-orange-200 dark:hover:border-orange-400/30">
       <button
         onClick={() => setShowReplies((b) => !b)}
         aria-label="Close replies"
@@ -127,7 +127,7 @@ export default function CommentItem({
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center gap-1 text-sm text-black">
+              <div className="text-foreground flex items-center gap-1 text-sm">
                 <span className="line-clamp-1 font-medium">
                   {comment.profile.display_name || ""}
                 </span>
@@ -204,7 +204,7 @@ export default function CommentItem({
                 {comment.replies && comment.replies.length > 0 && (
                   <button
                     onClick={() => setShowReplies(!showReplies)}
-                    className="text-muted-foreground -ml-5.5 flex size-5 items-center justify-center rounded-full border-2 border-orange-200 bg-white transition-colors hover:cursor-pointer"
+                    className="text-muted-foreground border-border bg-card -ml-5.5 flex size-5 items-center justify-center rounded-full border-2 transition-colors hover:cursor-pointer"
                   >
                     {showReplies ? (
                       <Minus className="size-2.5" />

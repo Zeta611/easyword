@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { QUERIES } from "@/lib/supabase/repository";
-import CommentThread from "@/components/comment/CommentThread";
-import SuggestTranslationDialog from "@/components/dialogs/SuggestTranslationDialog";
-import ShareButton from "@/components/ShareButton";
+import CommentThread from "@/components/comment/comment-thread";
+import SuggestTranslationDialog from "@/components/dialogs/suggest-translation-dialog";
+import ShareButton from "@/components/share-button";
 import { Comment } from "@/types/comment";
 
 export default async function JargonDetailPage({

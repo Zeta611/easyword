@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { User } from "lucide-react";
-import { CurrentUserAvatar } from "@/components/auth/CurrentUserAvatar";
-import { useUserQuery } from "@/hooks/useUserQuery";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { CurrentUserAvatar } from "@/components/auth/current-user-avatar";
+import { useUserQuery } from "@/hooks/use-user-query";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 import { Button } from "@/components/ui/button";
 
 export default function NavBarAvatar() {

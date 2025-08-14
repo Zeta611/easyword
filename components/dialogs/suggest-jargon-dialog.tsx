@@ -29,11 +29,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useLoginDialog } from "@/components/auth/LoginDialogProvider";
+import { useLoginDialog } from "@/components/auth/login-dialog-provider";
 import {
   suggestJargon,
   type SuggestJargonState,
-} from "@/app/actions/suggestJargon";
+} from "@/app/actions/suggest-jargon";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();
@@ -114,7 +114,7 @@ export default function SuggestJargonDialog() {
           size="sm"
           className="text-sm hover:rounded-3xl"
         >
-          <SquarePlus className="-mb-0.5 size-4" />
+          <SquarePlus className="xs:block -mb-0.5 hidden size-4" />
           용어제안
         </Button>
       </DialogTrigger>

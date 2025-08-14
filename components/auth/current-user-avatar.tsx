@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentUserNameAndImage } from "@/hooks/useCurrentUserNameAndImage";
+import { useCurrentUserNameAndImage } from "@/hooks/use-current-user-name-and-image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const CurrentUserAvatar = () => {
