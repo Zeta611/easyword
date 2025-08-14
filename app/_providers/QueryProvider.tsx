@@ -6,6 +6,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { useEffect } from "react";
+import posthog from "posthog-js";
 import { getClient } from "@/lib/supabase/client";
 
 function makeQueryClient() {
@@ -50,9 +51,23 @@ function AuthSync({ queryClient }: { queryClient: QueryClient }) {
     const supabase = getClient();
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_OUT") {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      // Keep React Query/posthog in sync with Supabase auth state
+      // See https://supabase.com/docs/reference/javascript/auth-onauthstatechange
+      if (
+        event === "SIGNED_IN" ||
+        event === "TOKEN_REFRESHED" ||
+        event === "INITIAL_SESSION"
+      ) {
+        const user = session?.user;
+        if (user) {
+          posthog.identify(user.id, {
+            email: user.email ?? null,
+          });
+        }
+      } else if (event === "SIGNED_OUT") {
         queryClient.setQueryData(["user"], null);
+        posthog.reset();
       }
       queryClient.invalidateQueries({ queryKey: ["user"] });
     });

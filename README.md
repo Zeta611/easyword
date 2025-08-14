@@ -20,3 +20,7 @@
 - [ ] Show search bar in the jargon detail page
 - [ ] Show more categories in the filter
 - [ ] Center the category filter location in mobile
+
+## 2025-08-14
+
+- [ ] Avoid frequent calls to supabase.auth.getSession() for the same purpose. (https://supabase.com/docs/reference/javascript/auth-onauthstatechange)
