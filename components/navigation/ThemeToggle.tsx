@@ -26,8 +26,11 @@ export default function ThemeToggle() {
   useEffect(() => {
     const cookieTheme = getCookie(THEME_COOKIE_NAME) as ThemeMode | null;
     // Prefer cookie; otherwise fall back to system preference on first load.
-    const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialTheme: ThemeMode = cookieTheme ?? (systemPrefersDark ? "dark" : "light");
+    const systemPrefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialTheme: ThemeMode =
+      cookieTheme ?? (systemPrefersDark ? "dark" : "light");
     document.documentElement.classList.toggle("dark", initialTheme === "dark");
     setTheme(initialTheme);
   }, []);
@@ -50,8 +53,12 @@ export default function ThemeToggle() {
       aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
       className="text-muted-foreground"
       onClick={toggle}
-   >
-      {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+    >
+      {theme === "dark" ? (
+        <Sun className="size-5" />
+      ) : (
+        <Moon className="size-5" />
+      )}
     </Button>
   );
 }
