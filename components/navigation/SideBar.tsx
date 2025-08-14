@@ -1,4 +1,4 @@
-import { Home, Lightbulb, Rocket, Swords, Telescope } from "lucide-react";
+import { Home, Lightbulb, RadioTower, Rocket, Swords } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -29,7 +29,7 @@ const docs = [
   {
     title: "배경 / 원칙",
     url: "/background",
-    icon: Telescope,
+    icon: RadioTower,
   },
   {
     title: "쉬운 번역팁",
