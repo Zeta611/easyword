@@ -4,7 +4,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import GitHub from "@/components/icons/git-hub";
+import GitHub from "@/components/icons/github";
 import Google from "@/components/icons/google";
 
 export function LoginButtons({
