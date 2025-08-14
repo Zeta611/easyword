@@ -127,7 +127,7 @@ export default function CommentItem({
                   {initials}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center gap-1 text-sm text-black">
+              <div className="flex items-center gap-1 text-sm text-foreground">
                 <span className="line-clamp-1 font-medium">
                   {comment.profile.display_name || ""}
                 </span>

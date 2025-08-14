@@ -26,7 +26,7 @@ interface JargonCardProps {
 export default function JargonCard({ jargon }: JargonCardProps) {
   return (
     <Link href={`/jargon/${jargon.slug}`}>
-      <div className="hover:bg-accent flex h-full cursor-pointer flex-col gap-1 rounded-md bg-white p-3 transition-all duration-200">
+      <div className="flex h-full cursor-pointer flex-col gap-1 rounded-md p-3 transition-all duration-200 bg-white hover:bg-accent dark:bg-accent dark:hover:bg-accent/90">
         {/* categories */}
         {jargon.categories.length > 0 ? (
           <div className="flex flex-wrap gap-2">
@@ -42,10 +42,10 @@ export default function JargonCard({ jargon }: JargonCardProps) {
         ) : null}
 
         {/* name */}
-        <h3 className="text-base font-bold">{jargon.name}</h3>
+        <h3 className="text-base font-bold dark:text-primary-foreground">{jargon.name}</h3>
 
         {/* translations */}
-        <p className="text-base font-normal">
+        <p className="text-base font-normal dark:text-primary-foreground/90">
           {jargon.translations.length > 0
             ? jargon.translations.join(", ")
             : "번역이 없어요"}
