@@ -24,3 +24,9 @@
 ## 2025-08-14
 
 - [ ] Avoid frequent calls to supabase.auth.getSession() for the same purpose. (https://supabase.com/docs/reference/javascript/auth-onauthstatechange)
+
+## 2025-08-15
+
+- [ ] Typesafe URL params
+- [ ] DB branching & local dev
+- [ ] Commenting bug?
