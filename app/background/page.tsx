@@ -50,7 +50,7 @@ export default function BackgroundPage() {
       <section className="flex flex-col gap-3">
         <h2 className="text-2xl font-semibold">배경</h2>
         <p className="text-foreground leading-7">
-          전문지식이 전문 학자들에만 머문다면 그 분야는 그렇게 쇠퇴할 수 있다.
+          전문지식이 전문가들에게만 머문다면 그 분야는 그렇게 쇠퇴할 수 있다.
           저변이 좁아지고 깊은 공부를 달성하는 인구는 그만큼 쪼그라들 수 있다.
         </p>
         <p className="text-foreground leading-7">
