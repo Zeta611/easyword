@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import GitHub from "@/components/icons/git-hub";
 
 export const metadata = {
-  title: "제작기 | 쉬운 전문용어",
+  title: "제작 이야기 | 쉬운 전문용어",
   description: "쉬운 전문용어 사이트 제작 배경과 기술 선택에 대해 소개합니다.",
 };
 
@@ -11,7 +11,7 @@ export default function ColophonPage() {
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold">제작기</h1>
+        <h1 className="text-3xl font-bold">제작 이야기</h1>
       </header>
 
       <div className="text-right text-sm">

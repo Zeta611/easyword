@@ -39,7 +39,7 @@ const docs = [
     icon: Lightbulb,
   },
   {
-    title: "제작기",
+    title: "제작 이야기",
     url: "/colophon",
     icon: Rocket,
   },
