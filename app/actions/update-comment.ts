@@ -4,14 +4,8 @@ import { MUTATIONS } from "@/lib/supabase/repository";
 import { createClient } from "@/lib/supabase/server";
 
 export type UpdateCommentState =
-  | {
-      ok: false;
-      error: string;
-    }
-  | {
-      ok: true;
-      error: null;
-    };
+  | { ok: false; error: string }
+  | { ok: true; error: null };
 
 export type UpdateCommentAction = (
   prevState: UpdateCommentState,

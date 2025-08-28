@@ -5,15 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { eulLeul } from "@/lib/utils";
 
 export type SuggestJargonState =
-  | {
-      ok: false;
-      error: string;
-    }
-  | {
-      ok: true;
-      error: null;
-      jargonSlug: string;
-    };
+  | { ok: false; error: string }
+  | { ok: true; error: null; jargonSlug: string };
 
 export type SuggestJargonAction = (
   prevState: SuggestJargonState,

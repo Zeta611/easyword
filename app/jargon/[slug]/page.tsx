@@ -5,6 +5,7 @@ import CommentThread from "@/components/comment/comment-thread";
 import SuggestTranslationDialog from "@/components/dialogs/suggest-translation-dialog";
 import ShareButton from "@/components/share-button";
 import { Comment } from "@/types/comment";
+import JargonActions from "@/components/jargon/jargon-actions";
 
 export default async function JargonDetailPage({
   params,
@@ -52,7 +53,14 @@ export default async function JargonDetailPage({
             </div>
           ) : null}
           <div className="flex items-center justify-between gap-2">
-            <h1 className="text-2xl font-bold">{jargon.name}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold">{jargon.name}</h1>
+              <JargonActions
+                jargonId={jargon.id}
+                authorId={jargon.author_id}
+                name={jargon.name}
+              />
+            </div>
             <ShareButton label="공유" />
           </div>
           {jargon.translations.length > 0 ? (

@@ -7,10 +7,30 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -386,46 +406,50 @@ export type Database = {
       }
     }
     Functions: {
-      armor: {
-        Args: { "": string }
-        Returns: string
-      }
       count_search_jargons: {
         Args: { search_query?: string }
         Returns: number
       }
       create_comment: {
-        Args: { p_jargon_id: string; p_content: string; p_parent_id?: string }
+        Args: { p_content: string; p_jargon_id: string; p_parent_id?: string }
         Returns: string
       }
       create_comment_as_admin: {
         Args: {
           p_author_id: string
-          p_jargon_id: string
           p_content: string
+          p_jargon_id: string
           p_parent_id?: string
         }
         Returns: string
       }
-      dearmor: {
-        Args: { "": string }
-        Returns: string
-      }
-      gen_random_bytes: {
-        Args: { "": number }
-        Returns: string
-      }
-      gen_random_uuid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      gen_salt: {
-        Args: { "": string }
+      delete_claim: {
+        Args: { claim: string; uid: string }
         Returns: string
       }
       generate_slug: {
         Args: { input_text: string }
         Returns: string
+      }
+      get_claim: {
+        Args: { claim: string; uid: string }
+        Returns: Json
+      }
+      get_claims: {
+        Args: { uid: string }
+        Returns: Json
+      }
+      get_my_claim: {
+        Args: { claim: string }
+        Returns: Json
+      }
+      get_my_claims: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      is_claims_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       list_jargon_random: {
         Args: { seed?: unknown }
@@ -438,82 +462,82 @@ export type Database = {
           updated_at: string
         }[]
       }
-      pgp_armor_headers: {
-        Args: { "": string }
-        Returns: Record<string, unknown>[]
-      }
-      pgp_key_id: {
-        Args: { "": string }
-        Returns: string
-      }
       remove_comment: {
         Args: { p_comment_id: string }
         Returns: boolean
       }
+      remove_jargon: {
+        Args: { p_jargon_id: string }
+        Returns: boolean
+      }
       search_jargons: {
         Args: {
-          search_query?: string
-          sort_option?: string
+          category_acronyms?: string[]
           limit_count?: number
           offset_count?: number
-          category_acronyms?: string[]
+          search_query?: string
+          sort_option?: string
         }
         Returns: {
+          categories: Json
+          comments: Json
           id: string
           name: string
           slug: string
-          updated_at: string
           translations: Json
-          categories: Json
-          comments: Json
+          updated_at: string
         }[]
+      }
+      set_claim: {
+        Args: { claim: string; uid: string; value: Json }
+        Returns: string
       }
       suggest_jargon: {
         Args: {
+          p_category_ids: number[]
+          p_comment: string
           p_name: string
           p_translation: string
-          p_comment: string
-          p_category_ids: number[]
         }
         Returns: {
+          comment_id: string
           jargon_id: string
           jargon_slug: string
-          comment_id: string
           translation_id: string
         }[]
       }
       suggest_jargon_as_admin: {
         Args: {
           p_author_id: string
+          p_category_ids: number[]
+          p_comment: string
           p_name: string
           p_translation: string
-          p_comment: string
-          p_category_ids: number[]
         }
         Returns: {
+          comment_id: string
           jargon_id: string
           jargon_slug: string
-          comment_id: string
           translation_id: string
         }[]
       }
       suggest_translation: {
-        Args: { p_jargon_id: string; p_translation: string; p_comment: string }
+        Args: { p_comment: string; p_jargon_id: string; p_translation: string }
         Returns: {
-          translation_id: string
           comment_id: string
+          translation_id: string
         }[]
       }
       suggest_translation_as_admin: {
         Args: {
           p_author_id: string
+          p_comment: string
           p_jargon_id: string
           p_translation: string
-          p_comment: string
         }
         Returns: {
-          translation_id: string
           comment_id: string
+          translation_id: string
         }[]
       }
       to_lowercase: {
@@ -533,6 +557,13 @@ export type Database = {
       update_comment: {
         Args: { p_comment_id: string; p_content: string }
         Returns: boolean
+      }
+      update_jargon: {
+        Args: { p_jargon_id: string; p_name: string }
+        Returns: {
+          jargon_id: string
+          jargon_slug: string
+        }[]
       }
     }
     Enums: {
@@ -662,7 +693,11 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
 } as const
+
