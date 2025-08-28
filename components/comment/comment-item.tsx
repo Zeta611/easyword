@@ -47,6 +47,8 @@ export default function CommentItem({
   const { data: user } = useUserQuery();
   const { openLogin } = useLoginDialog();
 
+  const isAdmin = user?.app_metadata?.userrole === "admin";
+
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -227,55 +229,58 @@ export default function CommentItem({
                   <MessageCircle className="size-3" />
                   답글
                 </Button>
-                {user?.id === comment.author_id && !isEditing && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      className="h-6 px-2.5 text-xs"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      고치기
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          className="h-6 px-2.5 text-xs text-red-600 hover:text-red-700"
-                        >
-                          지우기
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            정말로 댓글을 지울까요?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            이 작업은 되돌릴 수 없어요. 이미 답글이 달린 댓글은
-                            {" '지워진 댓글'"}로 표시돼요.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        {removeState?.error && (
-                          <span className="text-xs text-red-600">
-                            {removeState.error}
-                          </span>
-                        )}
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>닫기</AlertDialogCancel>
-                          <Form action={removeAction}>
-                            <AlertDialogAction
-                              type="submit"
-                              className="bg-red-600 hover:bg-red-700"
-                            >
-                              지우기
-                            </AlertDialogAction>
-                          </Form>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </>
-                )}
+                {user &&
+                  (user.id === comment.author_id || isAdmin) &&
+                  !isEditing && (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="h-6 px-2.5 text-xs"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        고치기
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            className="h-6 px-2.5 text-xs text-red-600 hover:text-red-700"
+                          >
+                            지우기
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              정말로 댓글을 지울까요?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              이 작업은 되돌릴 수 없어요. 이미 답글이 달린
+                              댓글은
+                              {" '지워진 댓글'"}로 표시돼요.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          {removeState?.error && (
+                            <span className="text-xs text-red-600">
+                              {removeState.error}
+                            </span>
+                          )}
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>닫기</AlertDialogCancel>
+                            <Form action={removeAction}>
+                              <AlertDialogAction
+                                type="submit"
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                지우기
+                              </AlertDialogAction>
+                            </Form>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </>
+                  )}
               </div>
             )}
 
