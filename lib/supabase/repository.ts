@@ -233,7 +233,7 @@ export const MUTATIONS = {
     translationId: string,
     name: string,
   ) {
-    return (supabase as any).rpc("update_translation", {
+    return supabase.rpc("update_translation", {
       p_translation_id: translationId,
       p_name: name,
     });
@@ -243,7 +243,7 @@ export const MUTATIONS = {
     supabase: SupabaseClient<Database>,
     translationId: string,
   ) {
-    return (supabase as any).rpc("remove_translation", {
+    return supabase.rpc("remove_translation", {
       p_translation_id: translationId,
     });
   },

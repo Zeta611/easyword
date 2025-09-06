@@ -470,6 +470,10 @@ export type Database = {
         Args: { p_jargon_id: string }
         Returns: boolean
       }
+      remove_translation: {
+        Args: { p_translation_id: string }
+        Returns: boolean
+      }
       search_jargons: {
         Args: {
           category_acronyms?: string[]
@@ -564,6 +568,10 @@ export type Database = {
           jargon_id: string
           jargon_slug: string
         }[]
+      }
+      update_translation: {
+        Args: { p_name: string; p_translation_id: string }
+        Returns: boolean
       }
     }
     Enums: {
