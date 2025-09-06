@@ -35,7 +35,7 @@ export const QUERIES = {
     return supabase
       .from("jargon")
       .select(
-        "id, name, slug, created_at, author_id, translations:translation(name), categories:jargon_category(category:category(acronym))",
+        "id, name, slug, created_at, author_id, translations:translation(id, name, author_id), categories:jargon_category(category:category(acronym))",
       )
       .eq("slug", slug)
       .limit(1)
@@ -226,5 +226,25 @@ export const MUTATIONS = {
     jargonId: string,
   ) {
     return supabase.rpc("remove_jargon", { p_jargon_id: jargonId });
+  },
+
+  updateTranslation: function (
+    supabase: SupabaseClient<Database>,
+    translationId: string,
+    name: string,
+  ) {
+    return (supabase as any).rpc("update_translation", {
+      p_translation_id: translationId,
+      p_name: name,
+    });
+  },
+
+  removeTranslation: function (
+    supabase: SupabaseClient<Database>,
+    translationId: string,
+  ) {
+    return (supabase as any).rpc("remove_translation", {
+      p_translation_id: translationId,
+    });
   },
 };

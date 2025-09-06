@@ -6,6 +6,7 @@ import SuggestTranslationDialog from "@/components/dialogs/suggest-translation-d
 import ShareButton from "@/components/share-button";
 import { Comment } from "@/types/comment";
 import JargonActions from "@/components/jargon/jargon-actions";
+import TranslationActions from "@/components/jargon/translation-actions";
 
 export default async function JargonDetailPage({
   params,
@@ -67,8 +68,16 @@ export default async function JargonDetailPage({
             <div className="text-foreground text-base">
               <ul className="list-disc pl-5">
                 {jargon.translations.map((tran) => (
-                  <li key={tran.name} className="text-foreground">
-                    {tran.name}
+                  <li
+                    key={tran.id}
+                    className="text-foreground flex items-center gap-2"
+                  >
+                    <span>{tran.name}</span>
+                    <TranslationActions
+                      id={tran.id}
+                      authorId={tran.author_id}
+                      name={tran.name}
+                    />
                   </li>
                 ))}
               </ul>
