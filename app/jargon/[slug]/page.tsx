@@ -7,6 +7,7 @@ import ShareButton from "@/components/share-button";
 import { Comment } from "@/types/comment";
 import JargonActions from "@/components/jargon/jargon-actions";
 import TranslationActions from "@/components/jargon/translation-actions";
+import UpdateJargonCategoriesDialog from "@/components/jargon/update-jargon-categories-dialog";
 
 export default async function JargonDetailPage({
   params,
@@ -39,8 +40,8 @@ export default async function JargonDetailPage({
       <div className="bg-card rounded-lg p-3">
         <div className="flex flex-col gap-2">
           {/* categories */}
-          {jargon.categories.length > 0 ? (
-            <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between">
+            <div className="flex flex-wrap items-center gap-2">
               <div className="flex flex-wrap gap-2">
                 {jargon.categories.map((cat) => (
                   <span
@@ -51,18 +52,20 @@ export default async function JargonDetailPage({
                   </span>
                 ))}
               </div>
-            </div>
-          ) : null}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold">{jargon.name}</h1>
-              <JargonActions
+              <UpdateJargonCategoriesDialog
                 jargonId={jargon.id}
-                authorId={jargon.author_id}
-                name={jargon.name}
+                initialCategoryIds={jargon.categories.map((c) => c.category.id)}
               />
             </div>
             <ShareButton label="공유" />
+          </div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold">{jargon.name}</h1>
+            <JargonActions
+              jargonId={jargon.id}
+              authorId={jargon.author_id}
+              name={jargon.name}
+            />
           </div>
           {jargon.translations.length > 0 ? (
             <div className="text-foreground text-base">

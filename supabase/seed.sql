@@ -3,11 +3,29 @@ INSERT INTO "auth"."users" ("instance_id", "id", "aud", "role", "email", "encryp
 	('00000000-0000-0000-0000-000000000000', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', 'authenticated', 'authenticated', 'jaeho.lee@snu.ac.kr', NULL, '2025-08-28 04:27:30.258836+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-08-28 07:58:16.594996+00', '{"provider": "github", "userrole": "admin", "providers": ["github"]}', '{"iss": "https://api.github.com", "sub": "9553691", "name": "Jay Lee", "email": "jaeho.lee@snu.ac.kr", "full_name": "Jay Lee the Tester", "user_name": "Zeta611", "avatar_url": "https://avatars.githubusercontent.com/u/9553691?v=4", "provider_id": "9553691", "email_verified": true, "phone_verified": false, "preferred_username": "Zeta611"}', NULL, '2025-08-28 04:27:30.253169+00', '2025-08-28 07:58:16.597091+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false),
 	('00000000-0000-0000-0000-000000000000', '98e607fc-ef95-4272-9b66-62526b576c84', 'authenticated', 'authenticated', 'usera@example.com', NULL, '2025-08-28 04:27:30.258836+00', NULL, '', NULL, '', NULL, '', '', NULL, '2025-08-28 04:29:30.162166+00', '{"provider": "github", "providers": ["github"]}', '{"iss": "https://api.github.com", "sub": "1000000", "name": "User A", "email": "usera@example.com", "full_name": "User A", "user_name": "usera", "avatar_url": "", "provider_id": "1000000", "email_verified": true, "phone_verified": false, "preferred_username": "usera"}', NULL, '2025-08-28 04:27:30.253169+00', '2025-08-28 04:29:30.164132+00', NULL, NULL, '', '', NULL, '', 0, NULL, '', NULL, false, NULL, false);
 
+-- category
+INSERT INTO "public"."category" ("id", "name", "acronym") VALUES
+	(1, 'programming languages', 'PL'),
+	(2, 'artificial intelligence', 'AI'),
+	(3, 'algorithms', 'AL'),
+	(4, 'software engineering', 'SE'),
+	(5, 'databases', 'DB'),
+	(6, 'operating systems', 'OS'),
+	(7, 'network', 'NW'),
+	(8, 'graphics & HCI', 'GH'),
+	(9, 'architecture', 'AR'),
+	(10, 'security', 'SC');
+
 -- jargon
 INSERT INTO "public"."jargon" ("name", "author_id", "created_at", "updated_at", "id", "slug") VALUES
 	('user A test', '98e607fc-ef95-4272-9b66-62526b576c84', '2025-08-28 07:17:26.730353+00', '2025-08-28 07:17:26.730353+00', '6af4329d-49e6-4110-8938-f43f3cf30194', 'user-a-test'),
 	('test', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:17:26.730353+00', '2025-08-28 07:17:26.730353+00', 'd4ed1ffb-896f-47c5-a94e-0fc7cd7ec1f6', 'test'),
 	('test 2', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:17:41.53785+00', '2025-08-28 07:17:41.53785+00', 'fed56078-e4f7-41cf-b608-56fa173a82e6', 'test-2');
+
+-- jargon_category: set categories for "test" (PL, DB)
+INSERT INTO "public"."jargon_category" ("jargon_id", "category_id") VALUES
+	('d4ed1ffb-896f-47c5-a94e-0fc7cd7ec1f6', 1),
+	('d4ed1ffb-896f-47c5-a94e-0fc7cd7ec1f6', 5);
 
 -- translation
 INSERT INTO "public"."translation" ("name", "author_id", "created_at", "updated_at", "id", "jargon_id", "comment_id") VALUES

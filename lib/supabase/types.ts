@@ -569,6 +569,10 @@ export type Database = {
           jargon_slug: string
         }[]
       }
+      update_jargon_categories: {
+        Args: { p_category_ids: number[]; p_jargon_id: string }
+        Returns: boolean
+      }
       update_translation: {
         Args: { p_name: string; p_translation_id: string }
         Returns: boolean
