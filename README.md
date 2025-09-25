@@ -6,7 +6,7 @@
 - [ ] 용어 분류 필터를 고려한 단어 수 / 서버 렌더링
 - [x] 댓글 고치기 및 지우기
 - [x] 취지 / 제작기
-- [ ] 관리자 모드
+- [x] 관리자 모드
 - [ ] 프로필
 - [x] 링크 공유
 - [ ] 관리자 CSV 내보내기
@@ -28,5 +28,5 @@
 ## 2025-08-15
 
 - [ ] Typesafe URL params
-- [ ] DB branching & local dev
+- [x] DB branching & local dev
 - [ ] Commenting bug?
