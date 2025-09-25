@@ -5,8 +5,7 @@ import CommentThread from "@/components/comment/comment-thread";
 import SuggestTranslationDialog from "@/components/dialogs/suggest-translation-dialog";
 import ShareButton from "@/components/share-button";
 import { Comment } from "@/types/comment";
-import JargonActions from "@/components/jargon/jargon-actions";
-import TranslationActions from "@/components/jargon/translation-actions";
+import JargonTranslationsSection from "@/components/jargon/jargon-translations-section";
 import UpdateJargonCategoriesDialog from "@/components/jargon/update-jargon-categories-dialog";
 
 export default async function JargonDetailPage({
@@ -59,42 +58,18 @@ export default async function JargonDetailPage({
             </div>
             <ShareButton label="공유" />
           </div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">{jargon.name}</h1>
-            <JargonActions
-              jargonId={jargon.id}
-              authorId={jargon.author_id}
-              name={jargon.name}
-            />
-          </div>
-          {jargon.translations.length > 0 ? (
-            <div className="text-foreground text-base">
-              <ul className="list-disc pl-5">
-                {jargon.translations.map((tran) => (
-                  <li
-                    key={tran.id}
-                    className="text-foreground flex items-center gap-2"
-                  >
-                    <span>{tran.name}</span>
-                    <TranslationActions
-                      id={tran.id}
-                      authorId={tran.author_id}
-                      name={tran.name}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="text-muted-foreground text-lg">번역이 없습니다</p>
-          )}
-
-          {/* Suggest translation */}
+          {/* translations */}
+          <JargonTranslationsSection
+            jargonId={jargon.id}
+            authorId={jargon.author_id}
+            name={jargon.name}
+            translations={jargon.translations}
+          />
           <SuggestTranslationDialog jargonId={jargon.id} />
         </div>
       </div>
 
-      {/* Comments section */}
+      {/* comments */}
       <div className="bg-card rounded-lg p-3">
         <CommentThread
           jargonId={jargon.id}
