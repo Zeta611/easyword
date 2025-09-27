@@ -292,6 +292,7 @@ export type Database = {
           created_at: string
           id: string
           jargon_id: string
+          llm_rank: number | null
           name: string
           updated_at: string
         }
@@ -301,6 +302,7 @@ export type Database = {
           created_at?: string
           id?: string
           jargon_id: string
+          llm_rank?: number | null
           name: string
           updated_at?: string
         }
@@ -310,6 +312,7 @@ export type Database = {
           created_at?: string
           id?: string
           jargon_id?: string
+          llm_rank?: number | null
           name?: string
           updated_at?: string
         }

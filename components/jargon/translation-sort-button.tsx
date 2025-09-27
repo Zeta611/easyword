@@ -38,11 +38,12 @@ export default function TranslationSortButton({
           value={value}
           onValueChange={(val) => onChange(val as TranslationSortOption)}
         >
+          <DropdownMenuRadioItem value="llm">AI 추천순</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="recent">
             최근 활동순
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="abc">가나다순</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="zyx">하파카순</DropdownMenuRadioItem>
+          {/* <DropdownMenuRadioItem value="zyx">하파카순</DropdownMenuRadioItem> */}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>

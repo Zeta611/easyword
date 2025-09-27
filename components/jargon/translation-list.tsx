@@ -3,13 +3,14 @@
 import { useMemo } from "react";
 import TranslationActions from "@/components/jargon/translation-actions";
 
-export type TranslationSortOption = "recent" | "abc" | "zyx";
+export type TranslationSortOption = "recent" | "abc" | "zyx" | "llm";
 
 export interface TranslationListItem {
   id: string;
   name: string;
   author_id: string;
   updated_at?: string;
+  llm_rank?: number | null;
 }
 
 export default function TranslationList({
@@ -31,6 +32,14 @@ export default function TranslationList({
       copy.sort((a, b) => a.name.localeCompare(b.name, "ko"));
     } else if (sort === "zyx") {
       copy.sort((a, b) => b.name.localeCompare(a.name, "ko"));
+    } else if (sort === "llm") {
+      copy.sort((a, b) => {
+        const aRank = a.llm_rank ?? Number.POSITIVE_INFINITY;
+        const bRank = b.llm_rank ?? Number.POSITIVE_INFINITY;
+        if (aRank !== bRank) return aRank - bRank; // lower rank first; nulls last
+        // Stable fallback by name for ties
+        return a.name.localeCompare(b.name, "ko");
+      });
     }
     return copy;
   }, [translations, sort]);

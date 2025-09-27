@@ -19,7 +19,7 @@ export default function JargonTranslationsSection({
   name: string;
   translations: TranslationListItem[];
 }) {
-  const [sort, setSort] = useState<TranslationSortOption>("recent");
+  const [sort, setSort] = useState<TranslationSortOption>("llm");
 
   return (
     <div className="flex flex-col gap-2">
