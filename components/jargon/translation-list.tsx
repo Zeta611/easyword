@@ -9,7 +9,7 @@ export interface TranslationListItem {
   id: string;
   name: string;
   author_id: string;
-  updated_at?: string;
+  created_at?: string;
   llm_rank?: number | null;
 }
 
@@ -24,8 +24,8 @@ export default function TranslationList({
     const copy = [...translations];
     if (sort === "recent") {
       copy.sort((a, b) => {
-        const aTime = a.updated_at ?? "";
-        const bTime = b.updated_at ?? "";
+        const aTime = a.created_at ?? "";
+        const bTime = b.created_at ?? "";
         return bTime.localeCompare(aTime);
       });
     } else if (sort === "abc") {

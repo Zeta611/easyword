@@ -40,7 +40,7 @@ export default function TranslationSortButton({
         >
           <DropdownMenuRadioItem value="llm">AI 추천순</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="recent">
-            최근 활동순
+            최근 등록순
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="abc">가나다순</DropdownMenuRadioItem>
           {/* <DropdownMenuRadioItem value="zyx">하파카순</DropdownMenuRadioItem> */}
