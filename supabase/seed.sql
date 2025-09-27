@@ -28,12 +28,14 @@ INSERT INTO "public"."jargon_category" ("jargon_id", "category_id") VALUES
 	('d4ed1ffb-896f-47c5-a94e-0fc7cd7ec1f6', 5);
 
 -- translation
-INSERT INTO "public"."translation" ("name", "author_id", "created_at", "updated_at", "id", "jargon_id", "comment_id") VALUES
-	('테스트 2', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:19:24.414112+00', '2025-08-28 07:19:24.414112+00', '7b1c9053-d772-4e13-bf43-1940ec66534e', 'fed56078-e4f7-41cf-b608-56fa173a82e6', '02c0cd00-3ccc-444b-bdfb-c7c25b444f7e');
+INSERT INTO "public"."translation" ("name", "author_id", "created_at", "updated_at", "id", "jargon_id", "comment_id", "llm_rank") VALUES
+	('테스트 1', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-09-27 07:19:24.414112+00', '2025-09-27 07:19:24.414112+00', 'f46ea122-430a-48e1-a343-880af92916c8', 'fed56078-e4f7-41cf-b608-56fa173a82e6', 'ccab4d26-8641-415c-935b-b982e8968951', 1),
+	('테스트 2', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:19:24.414112+00', '2025-08-28 07:19:24.414112+00', '7b1c9053-d772-4e13-bf43-1940ec66534e', 'fed56078-e4f7-41cf-b608-56fa173a82e6', '02c0cd00-3ccc-444b-bdfb-c7c25b444f7e', 0);
 
 -- comment
 INSERT INTO "public"."comment" ("content", "author_id", "created_at", "updated_at", "removed", "id", "jargon_id", "translation_id", "parent_id") VALUES
 	('test의 번역이 필요해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:17:26.730353+00', '2025-08-28 07:17:26.730353+00', false, '31418f6a-fe63-49a8-a8eb-e6205171a4ac', 'd4ed1ffb-896f-47c5-a94e-0fc7cd7ec1f6', NULL, NULL),
 	('test 2의 번역이 필요해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:17:41.53785+00', '2025-08-28 07:17:41.53785+00', false, '205e4e38-5fb1-47e0-94b2-8ab2616fcc74', '6af4329d-49e6-4110-8938-f43f3cf30194', NULL, NULL),
     ('user a test의 번역이 필요해요.', '98e607fc-ef95-4272-9b66-62526b576c84', '2025-08-28 07:17:41.53785+00', '2025-08-28 07:17:41.53785+00', false, '14fe7f09-18d9-4194-a2e1-6ad7e0acea8b', '6af4329d-49e6-4110-8938-f43f3cf30194', NULL, NULL),
+	('테스트 1을 제안해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-09-27 07:19:24.414112+00', '2025-09-27 07:19:24.414112+00', false, 'ccab4d26-8641-415c-935b-b982e8968951', 'fed56078-e4f7-41cf-b608-56fa173a82e6', 'f46ea122-430a-48e1-a343-880af92916c8', NULL),
 	('테스트 2를 제안해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:19:24.414112+00', '2025-08-28 07:19:24.414112+00', false, '02c0cd00-3ccc-444b-bdfb-c7c25b444f7e', 'fed56078-e4f7-41cf-b608-56fa173a82e6', '7b1c9053-d772-4e13-bf43-1940ec66534e', NULL);
