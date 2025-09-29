@@ -59,15 +59,16 @@ K-언어권에서 말하고 글 쓸 때 사용한다.
   * 쉽게쉽게 도란도란, 통쾌하게 시끌벅적, 차근차근 왁자글, 신나게 재미있게.
 """
 
-def build_prompt(jargon_name: str, translations: List[str]) -> str:
+def build_prompt(jargon_name: str, translations: List[str], comments: List[str]) -> str:
     lines = [
-        "다음 용어의 쉬운 전문용어 번역 후보들을 취지에 맞게 좋은 것부터 순서를 정해봐. 순서는 첫 줄에 쉼표로 구분해서 0부터 시작해서 출력해. 용어들을 누락하면 안되고, 모든 단어들을 정렬해야 해.",
+        "너는 컴퓨터 분야의 모든 개념을 완벽하게 파악하고 있는 전문가야. 영문 전문용어를 한국어 쉬운전문용어로 제안한 것들이 다음과 같아. 해당 개념을 가장 잘 전달하는 쉽고 직관적인 순서대로 나열해줘. 기존의 일상적이지 않은 한문투 전문용어는 바람직하지 않아. 대신에 누구나 쉽게 그 개념을 직감할 수 있는 용어들이 바람직한 쉬운전문용어야. 한국어 특성(풍부한 의태어, 의성어, 형용사, 부사)을 활용한 용어나 시적인 표현도 해당 개념을 잘 전달한다면 아무 문제 없어","순서는 첫 줄에 쉼표로 구분해서 0부터 시작해서 출력해. 용어들을 누락하면 안되고, 모든 단어들을 정렬해야 해.",
         "- 예시 출력: 2,0,1",
         f"- 전문용어: {jargon_name}",
         "- 쉬운 전문용어 번역 목록:",
     ]
     for idx, t in enumerate(translations):
         lines.append(f"  {idx}. {t}")
+    lines.append("- 댓글 목록:")
     return "\n".join(lines)
 
 
@@ -98,6 +99,7 @@ def main():
     parser = argparse.ArgumentParser(description="Rank translations per jargon with OpenRouter")
     parser.add_argument("--jargon_csv", default=os.path.join("jargon.csv"))
     parser.add_argument("--translation_csv", default=os.path.join("translation.csv"))
+    parser.add_argument("--comment_csv", default=os.path.join("comment.csv"))
     parser.add_argument("--output_csv", default=os.path.join("llm_ranks.csv"))
     parser.add_argument("--rate_limit_sec", type=float, default=0.5, help="sleep between LLM calls")
     args = parser.parse_args()
@@ -113,6 +115,7 @@ def main():
     # Load CSVs
     jargons = pd.read_csv(args.jargon_csv)
     translations = pd.read_csv(args.translation_csv)
+    comments_df = pd.read_csv(args.comment_csv)
 
     # minimal columns validation
     for col in ["id", "name"]:
@@ -124,6 +127,8 @@ def main():
 
     # Group translations by jargon_id
     grouped = translations.groupby("jargon_id")
+
+    grouped_comments = comments_df.groupby("jargon_id") if "jargon_id" in comments_df.columns else None
 
     # Load existing progress if present
     existing_map: Dict[str, int] = {}
@@ -154,6 +159,12 @@ def main():
         names = group["name"].fillna("").astype(str).tolist()
         tids = group["id"].astype(str).tolist()
 
+        comments_list: List[str] = []
+        if grouped_comments is not None and "content" in comments_df.columns:
+            if jargon_id in grouped_comments.groups:
+                comment_rows = grouped_comments.get_group(jargon_id)
+                comments_list = comment_rows["content"].fillna("").astype(str).tolist()
+
         # Skip GPT if every translation in this group already ranked
         if all(tid in existing_map for tid in tids):
             continue
@@ -169,9 +180,9 @@ def main():
             continue
 
         jargon_name = jargon_name_by_id.get(jargon_id, "")
-        prompt = build_prompt(jargon_name, names)
+        prompt = build_prompt(jargon_name, names, comments_list)
 
-        tqdm.write(f"Jargon: {jargon_name}, Translations: {names}")
+        tqdm.write(f"Jargon: {jargon_name}, Translations: {names}, Comments: {comments_list}")
         try:
             response = chat.invoke([SystemMessage(content=SYSTEM_PROMPT), HumanMessage(content=prompt)])
             text = getattr(response, "content", "") or str(response)
