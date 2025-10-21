@@ -1,4 +1,4 @@
-import { Home, Lightbulb, RadioTower, Rocket, Swords } from "lucide-react";
+import { Home, Lightbulb, RadioTower, Rocket } from "lucide-react";
 import Link from "next/link";
 import GitHub from "@/components/icons/git-hub";
 import {
