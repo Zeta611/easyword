@@ -20,11 +20,6 @@ const features = [
     url: "/",
     icon: Home,
   },
-  {
-    title: "용어 vs 용어",
-    url: "/arena",
-    icon: Swords,
-  },
 ];
 
 const docs = [
