@@ -34,10 +34,13 @@ export default function TranslationList({
       copy.sort((a, b) => b.name.localeCompare(a.name, "ko"));
     } else if (sort === "llm") {
       copy.sort((a, b) => {
-        const aRank = a.llm_rank ?? Number.POSITIVE_INFINITY;
-        const bRank = b.llm_rank ?? Number.POSITIVE_INFINITY;
-        if (aRank !== bRank) return aRank - bRank; // lower rank first; nulls last
+        const aRank = a.llm_rank ?? Number.NEGATIVE_INFINITY;
+        const bRank = b.llm_rank ?? Number.NEGATIVE_INFINITY;
+        if (aRank !== bRank) return aRank - bRank; // lower rank first; nulls first
         // Stable fallback by name for ties
+        const aTime = a.created_at ?? "";
+        const bTime = b.created_at ?? "";
+        if (aTime !== bTime) return aTime.localeCompare(bTime);
         return a.name.localeCompare(b.name, "ko");
       });
     }
