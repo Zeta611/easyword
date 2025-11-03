@@ -1,3 +1,5 @@
+"use client";
+
 import { Home, Lightbulb, RadioTower, Rocket } from "lucide-react";
 import Link from "next/link";
 import GitHub from "@/components/icons/git-hub";
@@ -11,6 +13,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 
@@ -41,6 +44,7 @@ const docs = [
 ];
 
 export function SideBar() {
+  const { setOpenMobile } = useSidebar();
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-background">
@@ -51,7 +55,7 @@ export function SideBar() {
               {features.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
@@ -68,7 +72,7 @@ export function SideBar() {
               {docs.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
@@ -88,6 +92,7 @@ export function SideBar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub Repository"
+                onClick={() => setOpenMobile(false)}
               >
                 <GitHub className="size-4" />
                 <span>깃헙 저장소</span>
