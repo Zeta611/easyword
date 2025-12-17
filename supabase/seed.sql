@@ -41,7 +41,7 @@ INSERT INTO "public"."comment" ("content", "author_id", "created_at", "updated_a
 	('테스트 2를 제안해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', '2025-08-28 07:19:24.414112+00', '2025-08-28 07:19:24.414112+00', false, '02c0cd00-3ccc-444b-bdfb-c7c25b444f7e', 'fed56078-e4f7-41cf-b608-56fa173a82e6', '7b1c9053-d772-4e13-bf43-1940ec66534e', NULL);
 
 -- mock data (collected from easyword.kr home list)
--- jargon (keep `featured` nullable; we set it later via UPDATE)
+-- jargon
 INSERT INTO "public"."jargon" ("name", "author_id", "created_at", "updated_at", "id", "slug") VALUES
 	('calculus of construction', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', now(), now(), '42e6fb03-582b-4d97-92bc-5b7571ee1e05', 'calculus-of-construction'),
 	('just-in-time compiler', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', now(), now(), '67d5b8cf-5313-4657-ba21-3d3b06358c9c', 'just-in-time-compiler'),
@@ -173,12 +173,12 @@ INSERT INTO "public"."comment" ("content", "author_id", "created_at", "updated_a
 	('이고가기 변환을 제안해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', now(), now(), false, '0074109c-3540-4b06-bb2f-437c0ad159ee', '41502bc5-a99b-433b-a2e7-333b71f5549a', 'a27f7e5c-f424-4827-8ef2-1c0dc2da309e', NULL),
 	('겉보기 증명을 제안해요.', 'faa73ac2-bbed-40ea-a392-53baf1a946fe', now(), now(), false, '3e6655d9-e867-4da3-9643-b1b3dbfd0dd4', '286f8076-0899-4dc1-914c-d2c385ac3618', '07e1f9d0-5456-4350-b711-6772c83aa3d8', NULL);
 
--- featured ranking (1 is top)
-UPDATE public.jargon SET featured = 1 WHERE id = '67d5b8cf-5313-4657-ba21-3d3b06358c9c'; -- just-in-time compiler
-UPDATE public.jargon SET featured = 2 WHERE id = '173b24ca-abb2-4491-89fe-13974e57d9a2'; -- retrieval augmented generation
-UPDATE public.jargon SET featured = 3 WHERE id = '662f0219-a948-4c81-bad6-65389642bfbf'; -- normalization
-UPDATE public.jargon SET featured = 4 WHERE id = 'bb632397-6c50-4c67-b9c9-5b66d88b3b8d'; -- macro
-UPDATE public.jargon SET featured = 5 WHERE id = '5bdac616-283a-46e7-afcc-6eb66427b820'; -- out-of-order execution
-UPDATE public.jargon SET featured = 6 WHERE id = '3f7f6810-d8ed-4c3d-95e5-df2eedcd6c2e'; -- proof assistant
-UPDATE public.jargon SET featured = 7 WHERE id = 'd2eaef5d-9b78-4ec4-b33b-593a1991a319'; -- top-down program synthesis
-UPDATE public.jargon SET featured = 8 WHERE id = '72c35ef9-f4a5-43c9-88fc-6122f9702282'; -- over-approximation
+-- featured ranking (1 is top) - set on translation instead of jargon
+UPDATE public.translation SET featured = 1 WHERE id = '4c60d40f-8104-4bc9-9e0f-bde682b5249e'; -- 실행때 번역기 (just-in-time compiler)
+UPDATE public.translation SET featured = 2 WHERE id = '8d1985f7-6ad1-48e9-b6de-61408f75d5eb'; -- 검색 생성 (retrieval augmented generation)
+UPDATE public.translation SET featured = 3 WHERE id = 'a53bf791-746f-4762-8352-77e1b87a30f8'; -- 표준화 (normalization)
+UPDATE public.translation SET featured = 4 WHERE id = '28b7d3e3-e76d-4981-b08d-e919ca42dc21'; -- 코드펼치기 (macro)
+UPDATE public.translation SET featured = 5 WHERE id = 'c8afd2df-5afa-49d3-b98b-d1aa0e060c59'; -- 새치기 실행 (out-of-order execution)
+UPDATE public.translation SET featured = 6 WHERE id = '49dad4b7-b607-42ed-b3cf-3b477884ec39'; -- 증명도우미 (proof assistant)
+UPDATE public.translation SET featured = 7 WHERE id = '14785290-a8ed-450e-a985-921d6cd49fba'; -- 위에서부터 프로그램 합성해하기 (top-down program synthesis)
+UPDATE public.translation SET featured = 8 WHERE id = '7eaa3733-1c18-47f3-a8fc-5da15350b4c2'; -- 넉넉잡기 (over-approximation)

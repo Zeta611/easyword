@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       category: {
@@ -124,7 +149,6 @@ export type Database = {
         Row: {
           author_id: string
           created_at: string
-          featured: number | null
           id: string
           name: string
           slug: string
@@ -133,7 +157,6 @@ export type Database = {
         Insert: {
           author_id: string
           created_at?: string
-          featured?: number | null
           id?: string
           name: string
           slug: string
@@ -142,7 +165,6 @@ export type Database = {
         Update: {
           author_id?: string
           created_at?: string
-          featured?: number | null
           id?: string
           name?: string
           slug?: string
@@ -268,6 +290,7 @@ export type Database = {
           author_id: string
           comment_id: string
           created_at: string
+          featured: number | null
           id: string
           jargon_id: string
           llm_rank: number | null
@@ -278,6 +301,7 @@ export type Database = {
           author_id: string
           comment_id: string
           created_at?: string
+          featured?: number | null
           id?: string
           jargon_id: string
           llm_rank?: number | null
@@ -288,6 +312,7 @@ export type Database = {
           author_id?: string
           comment_id?: string
           created_at?: string
+          featured?: number | null
           id?: string
           jargon_id?: string
           llm_rank?: number | null
@@ -435,12 +460,12 @@ export type Database = {
       list_featured_jargons: {
         Args: { limit_count?: number }
         Returns: {
-          translations: Json
-          categories: Json
-          comments: Json
-          id: string
-          name: string
           slug: string
+          name: string
+          id: string
+          comments: Json
+          categories: Json
+          translation: string
           updated_at: string
         }[]
       }
@@ -449,7 +474,6 @@ export type Database = {
         Returns: {
           author_id: string
           created_at: string
-          featured: number | null
           id: string
           name: string
           slug: string
@@ -477,13 +501,13 @@ export type Database = {
           sort_option?: string
         }
         Returns: {
+          id: string
+          name: string
           slug: string
           updated_at: string
           translations: Json
-          id: string
-          comments: Json
-          name: string
           categories: Json
+          comments: Json
         }[]
       }
       set_claim: {
@@ -498,10 +522,10 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          jargon_id: string
-          jargon_slug: string
-          comment_id: string
           translation_id: string
+          jargon_slug: string
+          jargon_id: string
+          comment_id: string
         }[]
       }
       suggest_jargon_as_admin: {
@@ -513,10 +537,10 @@ export type Database = {
           p_translation: string
         }
         Returns: {
+          jargon_id: string
           jargon_slug: string
           comment_id: string
           translation_id: string
-          jargon_id: string
         }[]
       }
       suggest_translation: {
@@ -534,8 +558,8 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          translation_id: string
           comment_id: string
+          translation_id: string
         }[]
       }
       to_lowercase: {
@@ -559,8 +583,8 @@ export type Database = {
       update_jargon: {
         Args: { p_jargon_id: string; p_name: string }
         Returns: {
-          jargon_slug: string
           jargon_id: string
+          jargon_slug: string
         }[]
       }
       update_jargon_categories: {
@@ -699,6 +723,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },

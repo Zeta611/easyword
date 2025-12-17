@@ -19,7 +19,7 @@ export type FeaturedJargonCarouselItem = {
   name: string;
   slug: string;
   updated_at: string;
-  translations: string[];
+  translation: string;
   categories: string[];
   comment_count: number;
 };
@@ -56,7 +56,7 @@ export default function FeaturedJargonCarousel({
     <div className="flex flex-col gap-3">
       <h2 className="flex items-center gap-2 text-lg font-bold">
         <Award className="h-5 w-5" />
-        편집자의 선택
+        하이라이트
       </h2>
       <Carousel
         setApi={setApi}
@@ -77,7 +77,9 @@ export default function FeaturedJargonCarousel({
                       id: jargon.id,
                       name: jargon.name,
                       slug: jargon.slug,
-                      translations: jargon.translations,
+                      translations: jargon.translation
+                        ? [jargon.translation]
+                        : [],
                       categories: jargon.categories,
                       commentCount: jargon.comment_count,
                       updatedAt: jargon.updated_at,

@@ -80,7 +80,7 @@ export default async function Home({
     name: item.name,
     slug: item.slug,
     updated_at: item.updated_at,
-    translations: extractStringArray(item.translations, "name"),
+    translation: item.translation ?? "",
     categories: extractStringArray(item.categories, "acronym"),
     comment_count: extractCommentCount(item.comments),
   }));
