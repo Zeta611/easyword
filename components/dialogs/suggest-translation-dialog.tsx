@@ -32,6 +32,7 @@ import {
   suggestTranslation,
   type SuggestTranslationState,
 } from "@/app/actions/suggest-translation";
+import { AIReviewPanel } from "@/components/jargon/ai-review-panel";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();
@@ -44,8 +45,10 @@ function Submit({ label }: { label: string }) {
 
 export default function SuggestTranslationDialog({
   jargonId,
+  jargonName,
 }: {
   jargonId: string;
+  jargonName: string;
 }) {
   const router = useRouter();
   const supabase = getClient();
@@ -53,6 +56,7 @@ export default function SuggestTranslationDialog({
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
+  const [translation, setTranslation] = useState("");
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -66,7 +70,7 @@ export default function SuggestTranslationDialog({
 
   const handleOpenChange = useCallback(
     async (nextOpen: boolean) => {
-      if (nextOpen) {
+      if (nextOpen && supabase) {
         const {
           data: { user },
         } = await supabase.auth.getUser();
@@ -82,6 +86,7 @@ export default function SuggestTranslationDialog({
 
   const resetForm = () => {
     formRef.current?.reset();
+    setTranslation("");
   };
 
   useEffect(() => {
@@ -131,8 +136,12 @@ export default function SuggestTranslationDialog({
               name="translation"
               placeholder="덮이"
               required
+              value={translation}
+              onChange={(e) => setTranslation(e.target.value)}
             />
           </div>
+
+          <AIReviewPanel term={jargonName} translation={translation} />
 
           <div className="flex flex-col gap-1">
             <Label htmlFor="comment" className="text-sm font-medium">
