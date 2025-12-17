@@ -124,3 +124,40 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Flowing gradient animation for featured section */
+@keyframes gradient-flow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-flow {
+  background: linear-gradient(
+    135deg,
+    oklch(0.96 0.04 85) 0%,
+    oklch(0.98 0.025 70) 25%,
+    oklch(0.97 0.035 80) 50%,
+    oklch(0.99 0.015 95) 75%,
+    oklch(0.96 0.04 85) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-flow 8s ease infinite;
+}
+
+.dark .animate-gradient-flow {
+  background: linear-gradient(
+    135deg,
+    oklch(0.25 0.03 55) 0%,
+    oklch(0.22 0.02 45) 25%,
+    oklch(0.24 0.025 50) 50%,
+    oklch(0.21 0.015 40) 75%,
+    oklch(0.25 0.03 55) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradient-flow 8s ease infinite;
+}

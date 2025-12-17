@@ -58,16 +58,16 @@ export default function FeaturedJargonCarousel({
   return (
     <div
       className={cn(
-        "relative rounded-xl border border-stone-300/50 bg-stone-100/30 p-4 dark:border-stone-700/40 dark:bg-stone-800/20",
+        "animate-gradient-flow relative overflow-hidden rounded-xl p-4 shadow-sm",
         className,
       )}
     >
       <div className="flex flex-col gap-3">
         <h2 className="flex items-center gap-2 text-lg font-bold">
-          <span className="text-stone-500 dark:text-stone-400">
+          <span className="text-amber-500 dark:text-amber-400">
             <Sparkles className="h-4 w-4" />
           </span>
-          <span className="text-stone-800 dark:text-stone-100">하이라이트</span>
+          <span className="text-amber-800 dark:text-amber-100">하이라이트</span>
         </h2>
         <Carousel
           setApi={setApi}
@@ -78,11 +78,11 @@ export default function FeaturedJargonCarousel({
         >
           {/* Left fade overlay */}
           {canScrollPrev && (
-            <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 bg-gradient-to-r from-[#F6F1E9]/75 to-transparent dark:from-[#1E1B1A]" />
+            <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 bg-gradient-to-r from-amber-50/90 to-transparent dark:from-amber-950/60" />
           )}
           {/* Right fade overlay */}
           {canScrollNext && (
-            <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-16 bg-gradient-to-l from-[#F6F1E9]/75 to-transparent dark:from-[#1E1B1A]" />
+            <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-16 bg-gradient-to-l from-yellow-50/90 to-transparent dark:from-stone-900/60" />
           )}
           <CarouselContent className="-ml-3">
             {featuredJargons.length > 0
