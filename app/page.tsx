@@ -86,7 +86,7 @@ export default async function Home({
   }));
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-3">
+    <div className="mx-auto flex max-w-7xl flex-col gap-8">
       <FeaturedJargonCarousel featuredJargons={featuredJargons} />
       <HomePageClient
         searchQuery={searchQuery}

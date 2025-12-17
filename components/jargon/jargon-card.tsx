@@ -5,6 +5,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -21,14 +22,25 @@ export interface JargonData {
 
 interface JargonCardProps {
   jargon: JargonData;
+  className?: string;
+  compact?: boolean;
 }
 
-export default function JargonCard({ jargon }: JargonCardProps) {
+export default function JargonCard({
+  jargon,
+  className,
+  compact = false,
+}: JargonCardProps) {
   return (
     <Link href={`/jargon/${jargon.slug}`}>
-      <div className="hover:bg-accent bg-card text-card-foreground flex h-full cursor-pointer flex-col gap-1 rounded-md p-3 transition-all duration-200">
+      <div
+        className={cn(
+          "hover:bg-accent bg-card text-card-foreground flex h-full cursor-pointer flex-col gap-1 rounded-md p-3 transition-all duration-200",
+          className,
+        )}
+      >
         {/* categories */}
-        {jargon.categories.length > 0 ? (
+        {!compact && jargon.categories.length > 0 ? (
           <div className="flex flex-wrap gap-2">
             {jargon.categories.map((cat) => (
               <span
@@ -52,13 +64,15 @@ export default function JargonCard({ jargon }: JargonCardProps) {
         </p>
 
         {/* comment count · last updated */}
-        <div className="text-muted-foreground mt-auto flex gap-1 self-end text-sm">
-          <span className="flex items-center gap-0.5">
-            <MessageCircle className="mb-[-1.5] inline size-3.5" />
-            {jargon.commentCount}
-          </span>
-          ·<span>{dayjs(jargon.updatedAt).fromNow()}</span>
-        </div>
+        {!compact && (
+          <div className="text-muted-foreground mt-auto flex gap-1 self-end text-sm">
+            <span className="flex items-center gap-0.5">
+              <MessageCircle className="mb-[-1.5] inline size-3.5" />
+              {jargon.commentCount}
+            </span>
+            ·<span>{dayjs(jargon.updatedAt).fromNow()}</span>
+          </div>
+        )}
       </div>
     </Link>
   );
