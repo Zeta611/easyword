@@ -4,15 +4,18 @@ import {
   useActionState,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { nanoid } from "nanoid";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
+import type { UIMessage } from "ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,7 +35,10 @@ import {
   suggestTranslation,
   type SuggestTranslationState,
 } from "@/app/actions/suggest-translation";
-import { AIReviewPanel } from "@/components/jargon/ai-review-panel";
+import ChatAssistant, {
+  createInitialChatAssistantMessages,
+} from "@/components/dialogs/chat-assistant";
+import { cn } from "@/lib/utils";
 
 function Submit({ label }: { label: string }) {
   const { pending } = useFormStatus();
@@ -56,7 +62,38 @@ export default function SuggestTranslationDialog({
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
-  const [translation, setTranslation] = useState("");
+  const [showChat, setShowChat] = useState(true);
+
+  const initialChatMessages = useMemo(
+    () => createInitialChatAssistantMessages(),
+    [],
+  );
+  const [chatMessages, setChatMessages] = useState<UIMessage[]>(
+    () => initialChatMessages,
+  );
+
+  const resetChat = useCallback(() => {
+    setChatMessages(createInitialChatAssistantMessages());
+  }, []);
+
+  const handleSendChatText = useCallback((text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+
+    setChatMessages((prev) => [
+      ...prev,
+      {
+        id: nanoid(),
+        role: "user",
+        parts: [{ type: "text", text: trimmed }],
+      },
+      {
+        id: nanoid(),
+        role: "assistant",
+        parts: [{ type: "text", text: "TBD" }],
+      },
+    ]);
+  }, []);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -79,14 +116,22 @@ export default function SuggestTranslationDialog({
           return;
         }
       }
+      if (nextOpen) {
+        // Open chat by default each time the suggestion dialog opens.
+        // Chat message history itself is retained while the dialog stays open
+        // (we keep the component mounted when the pane is "closed").
+        setShowChat(true);
+      } else {
+        // Reset chat when the whole suggestion dialog closes.
+        resetChat();
+      }
       setOpen(nextOpen);
     },
-    [openLogin, supabase],
+    [openLogin, resetChat, supabase],
   );
 
   const resetForm = () => {
     formRef.current?.reset();
-    setTranslation("");
   };
 
   useEffect(() => {
@@ -94,10 +139,12 @@ export default function SuggestTranslationDialog({
       queryClient.invalidateQueries({ queryKey: ["comments", jargonId] });
       queryClient.invalidateQueries({ queryKey: ["jargons"] }); // To invalidate the jargon list
       setOpen(false);
+      setShowChat(false);
+      resetChat();
       resetForm();
       router.refresh();
     }
-  }, [result, router, queryClient, jargonId]);
+  }, [result, resetChat, router, queryClient, jargonId]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -111,7 +158,7 @@ export default function SuggestTranslationDialog({
           쉬운 번역 제안
         </Button>
       </DialogTrigger>
-      <DialogContent className="-translate-y-[calc(33dvh)]">
+      <DialogContent className="max-h-[85dvh] -translate-y-[calc(33dvh)] overflow-y-auto sm:max-w-3xl lg:max-w-5xl">
         <DialogHeader>
           <DialogTitle>쉬운 번역 제안하기</DialogTitle>
           <DialogDescription>
@@ -119,61 +166,88 @@ export default function SuggestTranslationDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Form
-          ref={formRef}
-          action={suggestTranslationAction}
-          className="flex flex-col gap-3"
+        <div className="flex items-center justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setShowChat((v) => !v)}
+          >
+            {showChat ? "채팅 닫기" : "채팅 열기"}
+          </Button>
+        </div>
+
+        <div
+          className={cn(
+            "grid gap-4",
+            showChat ? "lg:grid-cols-[minmax(0,1fr)_420px]" : "grid-cols-1",
+          )}
         >
-          <input type="hidden" name="jargonId" value={jargonId} />
+          <Form
+            ref={formRef}
+            action={suggestTranslationAction}
+            className="flex flex-col gap-3"
+          >
+            <input type="hidden" name="jargonId" value={jargonId} />
 
-          <div className="flex flex-col gap-1">
-            <Label htmlFor="translation" className="text-sm font-medium">
-              번역
-            </Label>
-            <Input
-              id="translation"
-              type="text"
-              name="translation"
-              placeholder="덮이"
-              required
-              value={translation}
-              onChange={(e) => setTranslation(e.target.value)}
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="translation" className="text-sm font-medium">
+                번역
+              </Label>
+              <Input
+                id="translation"
+                type="text"
+                name="translation"
+                placeholder="덮이"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="comment" className="text-sm font-medium">
+                설명
+              </Label>
+              <Textarea
+                id="comment"
+                name="comment"
+                placeholder="왜 이 번역이 좋은지 설명해주세요!"
+                rows={4}
+              />
+            </div>
+
+            {result && !result.ok ? (
+              <p className="text-sm text-red-600">{result.error}</p>
+            ) : null}
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setOpen(false);
+                  setShowChat(false);
+                  resetChat();
+                  resetForm();
+                }}
+              >
+                닫기
+              </Button>
+              {/* TODO: Client-side validation */}
+              <Submit label="제안하기" />
+            </DialogFooter>
+          </Form>
+
+          <div
+            className={cn("lg:border-l lg:pl-4", !showChat && "hidden")}
+            aria-hidden={!showChat}
+          >
+            <ChatAssistant
+              context="translation"
+              messages={chatMessages}
+              onSendText={handleSendChatText}
             />
           </div>
-
-          <AIReviewPanel term={jargonName} translation={translation} />
-
-          <div className="flex flex-col gap-1">
-            <Label htmlFor="comment" className="text-sm font-medium">
-              설명
-            </Label>
-            <Textarea
-              id="comment"
-              name="comment"
-              placeholder="왜 이 번역이 좋은지 설명해주세요!"
-              rows={4}
-            />
-          </div>
-
-          {result && !result.ok ? (
-            <p className="text-sm text-red-600">{result.error}</p>
-          ) : null}
-
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                setOpen(false);
-                resetForm();
-              }}
-            >
-              닫기
-            </Button>
-            {/* TODO: Client-side validation */}
-            <Submit label="제안하기" />
-          </DialogFooter>
-        </Form>
+        </div>
       </DialogContent>
     </Dialog>
   );
