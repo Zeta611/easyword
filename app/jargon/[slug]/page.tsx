@@ -65,7 +65,10 @@ export default async function JargonDetailPage({
             name={jargon.name}
             translations={jargon.translations}
           />
-          <SuggestTranslationDialog jargonId={jargon.id} jargonName={jargon.name} />
+          <SuggestTranslationDialog
+            jargonId={jargon.id}
+            jargonName={jargon.name}
+          />
         </div>
       </div>
 

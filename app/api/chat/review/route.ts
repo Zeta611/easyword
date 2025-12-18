@@ -1,14 +1,19 @@
-import { streamText, convertToModelMessages, stepCountIs, type UIMessage } from 'ai';
-import { createOpenAI } from '@ai-sdk/openai';
-import { lookupDefinition, checkInternalConsistency } from '@/lib/ai/tools';
+import {
+  streamText,
+  convertToModelMessages,
+  stepCountIs,
+  type UIMessage,
+} from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { lookupDefinition, checkInternalConsistency } from "@/lib/ai/tools";
 
 export const maxDuration = 30;
 
 const solar = createOpenAI({
-  apiKey: process.env.SOLAR_API_KEY || process.env.OPENAI_API_KEY || '',
-  baseURL: 'https://api.upstage.ai/v1',
+  apiKey: process.env.SOLAR_API_KEY || process.env.OPENAI_API_KEY || "",
+  baseURL: "https://api.upstage.ai/v1",
   fetch: async (input, init) => {
-    if (init?.body && typeof init.body === 'string') {
+    if (init?.body && typeof init.body === "string") {
       try {
         const payload = JSON.parse(init.body) as {
           messages?: Array<{ role?: string; content?: unknown }>;
@@ -16,7 +21,9 @@ const solar = createOpenAI({
 
         if (Array.isArray(payload.messages)) {
           payload.messages = payload.messages.map((message) =>
-            message.role === 'developer' ? { ...message, role: 'system' } : message,
+            message.role === "developer"
+              ? { ...message, role: "system" }
+              : message,
           );
           init.body = JSON.stringify(payload);
         }
@@ -49,13 +56,13 @@ export async function POST(req: Request) {
     const { messages } = (await req.json()) as { messages: UIMessage[] };
     if (!process.env.SOLAR_API_KEY && !process.env.OPENAI_API_KEY) {
       return new Response(
-        JSON.stringify({ error: 'Missing SOLAR_API_KEY or OPENAI_API_KEY' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } },
+        JSON.stringify({ error: "Missing SOLAR_API_KEY or OPENAI_API_KEY" }),
+        { status: 500, headers: { "Content-Type": "application/json" } },
       );
     }
 
     const result = streamText({
-      model: solar.chat('solar-1-mini-chat'),
+      model: solar.chat("solar-1-mini-chat"),
       system: systemPrompt,
       messages: convertToModelMessages(messages),
       tools: {
@@ -66,9 +73,14 @@ export async function POST(req: Request) {
     });
 
     return result.toUIMessageStreamResponse({ originalMessages: messages });
-
   } catch (error) {
-    console.error('Error in route handler:', error);
-    return new Response(JSON.stringify({ error: 'Internal Server Error', details: error instanceof Error ? error.message : String(error) }), { status: 500 });
+    console.error("Error in route handler:", error);
+    return new Response(
+      JSON.stringify({
+        error: "Internal Server Error",
+        details: error instanceof Error ? error.message : String(error),
+      }),
+      { status: 500 },
+    );
   }
 }

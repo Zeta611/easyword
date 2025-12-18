@@ -26,7 +26,9 @@ export function AIReviewPanel({ term, translation }: AIReviewPanelProps) {
     setError(null);
     setReview(null);
 
-    console.log(`[AIReviewPanel] Starting review for term: "${term}", translation: "${translation}"`);
+    console.log(
+      `[AIReviewPanel] Starting review for term: "${term}", translation: "${translation}"`,
+    );
 
     try {
       const response = await fetch("/api/chat/review", {
@@ -49,7 +51,9 @@ export function AIReviewPanel({ term, translation }: AIReviewPanelProps) {
       }
 
       const text = await response.text();
-      console.log(`[AIReviewPanel] Review received successfully. Length: ${text.length}`);
+      console.log(
+        `[AIReviewPanel] Review received successfully. Length: ${text.length}`,
+      );
       setReview(text);
     } catch (err) {
       console.error("[AIReviewPanel] Error during review:", err);
