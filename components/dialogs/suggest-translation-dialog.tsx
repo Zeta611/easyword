@@ -11,11 +11,11 @@ import {
 import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { nanoid } from "nanoid";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
 
-import type { UIMessage } from "ai";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -65,35 +65,50 @@ export default function SuggestTranslationDialog({
   const [showChat, setShowChat] = useState(true);
 
   const initialChatMessages = useMemo(
-    () => createInitialChatAssistantMessages(),
+    () =>
+      createInitialChatAssistantMessages({
+        context: "translation",
+      }),
     [],
   );
-  const [chatMessages, setChatMessages] = useState<UIMessage[]>(
-    () => initialChatMessages,
+
+  const transport = useMemo(
+    () => new DefaultChatTransport({ api: "/api/chat/review" }),
+    [],
   );
 
+  const {
+    messages: chatMessages,
+    status: chatStatus,
+    error: chatError,
+    sendMessage,
+    stop,
+    setMessages,
+  } = useChat({
+    messages: initialChatMessages,
+    transport,
+  });
+
   const resetChat = useCallback(() => {
-    setChatMessages(createInitialChatAssistantMessages());
-  }, []);
+    setMessages(
+      createInitialChatAssistantMessages({
+        context: "translation",
+      }),
+    );
+  }, [setMessages]);
 
-  const handleSendChatText = useCallback((text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
+  const handleSendChatText = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed) return;
 
-    setChatMessages((prev) => [
-      ...prev,
-      {
-        id: nanoid(),
-        role: "user",
-        parts: [{ type: "text", text: trimmed }],
-      },
-      {
-        id: nanoid(),
-        role: "assistant",
-        parts: [{ type: "text", text: "TBD" }],
-      },
-    ]);
-  }, []);
+      const instruction = `"${jargonName}" 용어에 대한 쉬운 한국어 번역과 설명 아이디어를 제안해줘. 번역 후보 2~3개와 각 후보의 한 줄 설명을 알려줘.`;
+      const message = `${instruction}\n\n사용자 입력: ${trimmed}`;
+
+      await sendMessage({ text: message });
+    },
+    [sendMessage, jargonName],
+  );
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -244,7 +259,10 @@ export default function SuggestTranslationDialog({
             <ChatAssistant
               context="translation"
               messages={chatMessages}
+              status={chatStatus}
+              error={chatError}
               onSendText={handleSendChatText}
+              onStop={stop}
             />
           </div>
         </div>

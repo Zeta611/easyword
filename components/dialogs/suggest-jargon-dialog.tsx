@@ -11,10 +11,10 @@ import {
 import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { nanoid } from "nanoid";
 import Form from "next/form";
 import { useFormStatus } from "react-dom";
-import type { UIMessage } from "ai";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { Textarea } from "@/components/ui/textarea";
 import { getClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -61,35 +61,50 @@ export default function SuggestJargonDialog() {
   const [showChat, setShowChat] = useState(true);
 
   const initialChatMessages = useMemo(
-    () => createInitialChatAssistantMessages(),
+    () =>
+      createInitialChatAssistantMessages({
+        context: "jargon",
+      }),
     [],
   );
-  const [chatMessages, setChatMessages] = useState<UIMessage[]>(
-    () => initialChatMessages,
+
+  const transport = useMemo(
+    () => new DefaultChatTransport({ api: "/api/chat/review" }),
+    [],
   );
 
+  const {
+    messages: chatMessages,
+    status: chatStatus,
+    error: chatError,
+    sendMessage,
+    stop,
+    setMessages,
+  } = useChat({
+    messages: initialChatMessages,
+    transport,
+  });
+
   const resetChat = useCallback(() => {
-    setChatMessages(createInitialChatAssistantMessages());
-  }, []);
+    setMessages(
+      createInitialChatAssistantMessages({
+        context: "jargon",
+      }),
+    );
+  }, [setMessages]);
 
-  const handleSendChatText = useCallback((text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
+  const handleSendChatText = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed) return;
 
-    setChatMessages((prev) => [
-      ...prev,
-      {
-        id: nanoid(),
-        role: "user",
-        parts: [{ type: "text", text: trimmed }],
-      },
-      {
-        id: nanoid(),
-        role: "assistant",
-        parts: [{ type: "text", text: "TBD" }],
-      },
-    ]);
-  }, []);
+      const instruction = `새로운 전문용어를 제안하려고 해. 원어(영문), 쉬운 한국어 번역, 설명 아이디어를 간단히 제시해줘. 형식은 짧은 불릿으로 써줘.`;
+      const message = `${instruction}\n\n사용자 입력: ${trimmed}`;
+
+      await sendMessage({ text: message });
+    },
+    [sendMessage],
+  );
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -315,7 +330,10 @@ export default function SuggestJargonDialog() {
             <ChatAssistant
               context="jargon"
               messages={chatMessages}
+              status={chatStatus}
+              error={chatError}
               onSendText={handleSendChatText}
+              onStop={stop}
             />
           </div>
         </div>
