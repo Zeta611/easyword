@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       category: {
@@ -428,6 +453,26 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      gtrgm_compress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: { "": unknown }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
       is_claims_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -435,12 +480,12 @@ export type Database = {
       list_featured_jargons: {
         Args: { limit_count?: number }
         Returns: {
-          translations: Json
           categories: Json
           comments: Json
           id: string
           name: string
           slug: string
+          translations: Json
           updated_at: string
         }[]
       }
@@ -477,18 +522,38 @@ export type Database = {
           sort_option?: string
         }
         Returns: {
-          slug: string
-          updated_at: string
-          translations: Json
-          id: string
-          comments: Json
-          name: string
           categories: Json
+          comments: Json
+          id: string
+          name: string
+          slug: string
+          translations: Json
+          updated_at: string
+        }[]
+      }
+      search_similar_terms: {
+        Args: { query_text: string; threshold?: number }
+        Returns: {
+          id: string
+          name: string
+          similarity: number
         }[]
       }
       set_claim: {
         Args: { claim: string; uid: string; value: Json }
         Returns: string
+      }
+      set_limit: {
+        Args: { "": number }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: { "": string }
+        Returns: string[]
       }
       suggest_jargon: {
         Args: {
@@ -498,9 +563,9 @@ export type Database = {
           p_translation: string
         }
         Returns: {
+          comment_id: string
           jargon_id: string
           jargon_slug: string
-          comment_id: string
           translation_id: string
         }[]
       }
@@ -513,10 +578,10 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          jargon_slug: string
           comment_id: string
-          translation_id: string
           jargon_id: string
+          jargon_slug: string
+          translation_id: string
         }[]
       }
       suggest_translation: {
@@ -534,8 +599,8 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          translation_id: string
           comment_id: string
+          translation_id: string
         }[]
       }
       to_lowercase: {
@@ -559,8 +624,8 @@ export type Database = {
       update_jargon: {
         Args: { p_jargon_id: string; p_name: string }
         Returns: {
-          jargon_slug: string
           jargon_id: string
+          jargon_slug: string
         }[]
       }
       update_jargon_categories: {
@@ -699,6 +764,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },

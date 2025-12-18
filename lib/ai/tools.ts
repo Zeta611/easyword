@@ -2,13 +2,28 @@ import { z } from 'zod';
 import { tool } from 'ai';
 import { createClient } from '@/lib/supabase/server';
 
+const lookupDefinitionInputSchema = z.object({
+  term: z.string().describe('The technical term to look up'),
+  context: z.string().optional().describe('The context or domain of the term (e.g. "software engineering", "mathematics")'),
+});
+
+type LookupDefinitionInput = z.infer<typeof lookupDefinitionInputSchema>;
+
+type GoogleSearchItem = {
+  title?: string;
+  snippet?: string;
+  link?: string;
+};
+
+type GoogleSearchResponse = {
+  error?: { message?: string };
+  items?: GoogleSearchItem[];
+};
+
 export const lookupDefinition = tool({
   description: 'Search Google for definitions of technical terms. Use this when the source term is ambiguous or highly specialized.',
-  parameters: z.object({
-    term: z.string().describe('The technical term to look up'),
-    context: z.string().optional().describe('The context or domain of the term (e.g. "software engineering", "mathematics")'),
-  }),
-  execute: async ({ term, context }: { term: string; context?: string }) => {
+  inputSchema: lookupDefinitionInputSchema,
+  execute: async ({ term, context }: LookupDefinitionInput) => {
     const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
     const cx = process.env.GOOGLE_SEARCH_ENGINE_ID;
     
@@ -23,7 +38,7 @@ export const lookupDefinition = tool({
 
     try {
       const response = await fetch(url);
-      const data = await response.json();
+      const data = (await response.json()) as GoogleSearchResponse;
 
       if (data.error) {
         console.error('Google Search API error:', data.error);
@@ -34,7 +49,7 @@ export const lookupDefinition = tool({
         return { results: [] };
       }
 
-      const results = data.items.map((item: any) => ({
+      const results = data.items.map((item) => ({
         title: item.title,
         snippet: item.snippet,
         link: item.link,
@@ -51,7 +66,7 @@ export const lookupDefinition = tool({
 
 export const checkInternalConsistency = tool({
   description: 'Check if the term or similar terms exist in the project glossary to ensure consistency.',
-  parameters: z.object({
+  inputSchema: z.object({
     term: z.string().describe('The term to check against the glossary'),
   }),
   execute: async ({ term }: { term: string }) => {
@@ -69,7 +84,8 @@ export const checkInternalConsistency = tool({
       return { error: error.message };
     }
 
-    console.log(`[Tool: checkInternalConsistency] Found ${data?.length || 0} similar terms.`);
-    return { similarTerms: data };
+    const similarTerms = data ?? [];
+    console.log(`[Tool: checkInternalConsistency] Found ${similarTerms.length} similar terms.`);
+    return { similarTerms };
   },
 });

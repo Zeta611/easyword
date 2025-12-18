@@ -1,20 +1,38 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport, getToolOrDynamicToolName, isToolOrDynamicToolUIPart } from 'ai';
+import { useMemo, useState, type FormEvent } from 'react';
 
 export default function TestAgentPage() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    api: '/api/chat/review',
-    onResponse: (response) => {
-      console.log('Server response started:', response);
-    },
-    onFinish: (message) => {
+  const [input, setInput] = useState('');
+  const transport = useMemo(() => new DefaultChatTransport({ api: '/api/chat/review' }), []);
+  const { messages, sendMessage } = useChat({
+    transport,
+    onFinish: ({ message }) => {
       console.log('Stream finished:', message);
-      if (message.toolInvocations) {
-        console.log('Tool invocations:', message.toolInvocations);
+      const toolParts = message.parts.filter(isToolOrDynamicToolUIPart);
+      if (toolParts.length > 0) {
+        console.log(
+          'Tool parts:',
+          toolParts.map((part) => ({
+            name: getToolOrDynamicToolName(part),
+            state: part.state,
+          }))
+        );
       }
     },
   });
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const trimmed = input.trim();
+    if (!trimmed) {
+      return;
+    }
+    await sendMessage({ text: trimmed });
+    setInput('');
+  };
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
@@ -40,7 +58,7 @@ export default function TestAgentPage() {
         <input
           className="flex-1 border p-2 rounded text-black"
           value={input}
-          onChange={handleInputChange}
+          onChange={(event) => setInput(event.target.value)}
           placeholder="Type a message..."
         />
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
