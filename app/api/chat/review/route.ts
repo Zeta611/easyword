@@ -1,15 +1,59 @@
-import { createOpenAI } from '@ai-sdk/openai';
-import { generateText } from 'ai';
+import type { UIMessage } from 'ai';
 import { lookupDefinition, checkInternalConsistency } from '@/lib/ai/tools';
 
 export const maxDuration = 30;
 
-const solar = createOpenAI({
-  apiKey: process.env.SOLAR_API_KEY || process.env.OPENAI_API_KEY,
-  baseURL: 'https://api.upstage.ai/v1/solar',
-});
+type SolarToolDefinition = {
+  type: 'function';
+  function: {
+    name: string;
+    description?: string;
+    parameters: {
+      type: 'object';
+      properties: Record<string, unknown>;
+      required?: string[];
+    };
+  };
+};
 
-async function callSolar(messages: any[], tools: any[]) {
+type SolarChatMessage = {
+  role: 'system' | 'user' | 'assistant' | 'tool';
+  content: string;
+  tool_call_id?: string;
+};
+
+type SolarToolCall = {
+  id: string;
+  type: 'function';
+  function: {
+    name: string;
+    arguments: string;
+  };
+};
+
+type SolarChatCompletionMessage = SolarChatMessage & {
+  tool_calls?: SolarToolCall[];
+};
+
+type SolarChatCompletionResponse = {
+  choices: Array<{
+    message: SolarChatCompletionMessage;
+  }>;
+};
+
+const buildSolarMessage = (message: UIMessage): SolarChatMessage => {
+  const text = message.parts
+    .filter((part) => part.type === 'text')
+    .map((part) => part.text)
+    .join('');
+
+  return {
+    role: message.role,
+    content: text,
+  };
+};
+
+async function callSolar(messages: SolarChatMessage[], tools: SolarToolDefinition[]) {
   console.log('[LLM] Sending request to Solar API...');
   const response = await fetch('https://api.upstage.ai/v1/solar/chat/completions', {
     method: 'POST',
@@ -31,17 +75,17 @@ async function callSolar(messages: any[], tools: any[]) {
     throw new Error(`Solar API error: ${response.status} ${text}`);
   }
 
-  const data = await response.json();
+  const data = (await response.json()) as SolarChatCompletionResponse;
   console.log('[LLM] Received response from Solar API.');
   return data;
 }
 
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
+    const { messages } = (await req.json()) as { messages: UIMessage[] };
     
     // Define tools schema for Solar (OpenAI compatible)
-    const tools = [
+    const tools: SolarToolDefinition[] = [
       {
         type: 'function',
         function: {
@@ -73,9 +117,9 @@ export async function POST(req: Request) {
       },
     ];
 
-    let currentMessages = [...messages];
+    let currentMessages = messages.map(buildSolarMessage);
     // Add system message if not present
-    if (currentMessages[0].role !== 'system') {
+    if (currentMessages[0]?.role !== 'system') {
       currentMessages.unshift({
         role: 'system',
         content: `You are a Senior Terminologist reviewing technical translations.
@@ -100,6 +144,9 @@ export async function POST(req: Request) {
       steps++;
       const data = await callSolar(currentMessages, tools);
       const choice = data.choices[0];
+      if (!choice?.message) {
+        return new Response('No response from model.', { status: 502 });
+      }
       const message = choice.message;
 
       currentMessages.push(message);
@@ -121,12 +168,12 @@ export async function POST(req: Request) {
           currentMessages.push({
             role: 'tool',
             tool_call_id: toolCall.id,
-            content: JSON.stringify(result),
+            content: JSON.stringify(result ?? {}),
           });
         }
       } else {
         // Final response
-        return new Response(message.content);
+        return new Response(message.content || '');
       }
     }
 
