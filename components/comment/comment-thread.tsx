@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { MessagesSquareIcon } from "lucide-react";
 import { getClient } from "@/lib/supabase/client";
 import { QUERIES } from "@/lib/supabase/repository";
 import { Comment, CommentTree } from "@/types/comment";
@@ -11,7 +12,6 @@ import { useUserQuery } from "@/hooks/use-user-query";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLoginDialog } from "@/components/auth/login-dialog-provider";
-import { MessagesSquareIcon } from "lucide-react";
 
 function buildCommentTree(comments: Omit<Comment, "replies">[]): CommentTree[] {
   const commentMap = new Map<string, CommentTree>();

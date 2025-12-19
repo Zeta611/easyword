@@ -4,6 +4,7 @@ import { useActionState, useEffect } from "react";
 import { redirect, RedirectType } from "next/navigation";
 import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
+import { EraserIcon, PencilIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useUserQuery } from "@/hooks/use-user-query";
@@ -30,7 +31,6 @@ import {
 } from "@/components/ui/dialog";
 import { updateJargon } from "@/app/actions/update-jargon";
 import { removeJargon } from "@/app/actions/remove-jargon";
-import { EraserIcon, PencilIcon } from "lucide-react";
 
 export default function JargonActions({
   jargonId,

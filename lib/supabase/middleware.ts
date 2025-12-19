@@ -47,6 +47,18 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Admin route protection
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    const isAdmin =
+      user?.app_metadata && user.app_metadata.userrole === "admin";
+    if (!user || !isAdmin) {
+      // Redirect non-admin users to home page
+      const url = request.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.redirect(url);
+    }
+  }
+
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:

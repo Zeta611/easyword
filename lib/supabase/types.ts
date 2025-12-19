@@ -412,6 +412,14 @@ export type Database = {
       }
     }
     Functions: {
+      admin_remove_featured: {
+        Args: { p_translation_id: string }
+        Returns: boolean
+      }
+      admin_update_featured_order: {
+        Args: { p_featured_rank: number; p_translation_id: string }
+        Returns: boolean
+      }
       count_search_jargons: {
         Args: { search_query?: string }
         Returns: number
@@ -460,13 +468,13 @@ export type Database = {
       list_featured_jargons: {
         Args: { limit_count?: number }
         Returns: {
-          slug: string
-          name: string
-          id: string
           comments: Json
-          categories: Json
-          translation: string
           updated_at: string
+          translation: string
+          categories: Json
+          id: string
+          name: string
+          slug: string
         }[]
       }
       list_jargon_random: {
@@ -501,13 +509,13 @@ export type Database = {
           sort_option?: string
         }
         Returns: {
-          id: string
+          comments: Json
           name: string
+          categories: Json
+          translations: Json
+          id: string
           slug: string
           updated_at: string
-          translations: Json
-          categories: Json
-          comments: Json
         }[]
       }
       set_claim: {
@@ -522,10 +530,10 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          translation_id: string
-          jargon_slug: string
-          jargon_id: string
           comment_id: string
+          jargon_id: string
+          jargon_slug: string
+          translation_id: string
         }[]
       }
       suggest_jargon_as_admin: {
@@ -537,9 +545,9 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          jargon_id: string
-          jargon_slug: string
           comment_id: string
+          jargon_slug: string
+          jargon_id: string
           translation_id: string
         }[]
       }
@@ -558,8 +566,8 @@ export type Database = {
           p_translation: string
         }
         Returns: {
-          comment_id: string
           translation_id: string
+          comment_id: string
         }[]
       }
       to_lowercase: {
@@ -583,8 +591,8 @@ export type Database = {
       update_jargon: {
         Args: { p_jargon_id: string; p_name: string }
         Returns: {
-          jargon_id: string
           jargon_slug: string
+          jargon_id: string
         }[]
       }
       update_jargon_categories: {

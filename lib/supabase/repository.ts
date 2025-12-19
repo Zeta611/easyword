@@ -153,6 +153,21 @@ export const QUERIES = {
     if (options?.signal) query = query.abortSignal(options.signal);
     return query.maybeSingle();
   },
+
+  listAllFeaturedTranslations: function (supabase: SupabaseClient<Database>) {
+    return supabase
+      .from("translation")
+      .select(
+        `
+          id,
+          name,
+          featured,
+          jargon:jargon_id(id, name, slug)
+        `,
+      )
+      .not("featured", "is", null)
+      .order("featured", { ascending: true });
+  },
 };
 
 export const MUTATIONS = {
@@ -268,6 +283,26 @@ export const MUTATIONS = {
     return supabase.rpc("update_jargon_categories", {
       p_jargon_id: jargonId,
       p_category_ids: categoryIds,
+    });
+  },
+
+  updateFeaturedOrder: function (
+    supabase: SupabaseClient<Database>,
+    translationId: string,
+    featuredRank: number,
+  ) {
+    return supabase.rpc("admin_update_featured_order", {
+      p_translation_id: translationId,
+      p_featured_rank: featuredRank,
+    });
+  },
+
+  removeFeatured: function (
+    supabase: SupabaseClient<Database>,
+    translationId: string,
+  ) {
+    return supabase.rpc("admin_remove_featured", {
+      p_translation_id: translationId,
     });
   },
 };

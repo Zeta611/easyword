@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
+import { EraserIcon, PencilIcon } from "lucide-react";
 import { useUserQuery } from "@/hooks/use-user-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,7 +36,6 @@ import {
   removeTranslation,
   type RemoveTranslationAction,
 } from "@/app/actions/remove-translation";
-import { EraserIcon, PencilIcon } from "lucide-react";
 
 export default function TranslationActions({
   id,

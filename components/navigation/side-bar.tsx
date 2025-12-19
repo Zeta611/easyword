@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Lightbulb, RadioTower, Rocket } from "lucide-react";
+import { Home, Lightbulb, RadioTower, Rocket, Sparkles } from "lucide-react";
 import Link from "next/link";
 import GitHub from "@/components/icons/git-hub";
 import {
@@ -16,6 +16,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/theme/mode-toggle";
+import { useUserQuery } from "@/hooks/use-user-query";
 
 const features = [
   {
@@ -43,8 +44,18 @@ const docs = [
   },
 ];
 
+const adminItems = [
+  {
+    title: "하이라이트 관리",
+    url: "/admin/highlights",
+    icon: Sparkles,
+  },
+];
+
 export function SideBar() {
   const { setOpenMobile } = useSidebar();
+  const { data: user } = useUserQuery();
+  const isAdmin = user?.app_metadata?.userrole === "admin";
   return (
     <Sidebar collapsible="icon">
       <SidebarContent className="bg-background">
@@ -82,6 +93,28 @@ export function SideBar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        {isAdmin && (
+          <SidebarGroup>
+            <SidebarGroupLabel>관리자</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {adminItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link
+                        href={item.url}
+                        onClick={() => setOpenMobile(false)}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>

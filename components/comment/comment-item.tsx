@@ -10,7 +10,6 @@ import {
   Minus,
   PencilIcon,
   Plus,
-  TrashIcon,
 } from "lucide-react";
 import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
