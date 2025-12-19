@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { SlidersHorizontal, X, Filter } from "lucide-react";
+import {
+  SlidersHorizontal,
+  X,
+  Filter,
+  BookAIcon,
+  FileSearchIcon,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import equal from "fast-deep-equal";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
@@ -162,7 +168,12 @@ export default function JargonInfiniteList({
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-2.5">
-          <span className="text-lg font-bold">
+          <span className="flex items-center gap-2 text-lg font-bold">
+            {searchQuery ? (
+              <FileSearchIcon className="size-5" />
+            ) : (
+              <BookAIcon className="size-5" />
+            )}
             {searchQuery
               ? totalCount > 0
                 ? `찾은 전문용어 ${totalCount}개`
