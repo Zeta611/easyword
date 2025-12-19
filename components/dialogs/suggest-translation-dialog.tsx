@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
   useState,
+  startTransition,
 } from "react";
 import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
@@ -88,7 +89,9 @@ export default function SuggestTranslationDialog({
     if (result && result.ok) {
       queryClient.invalidateQueries({ queryKey: ["comments", jargonId] });
       queryClient.invalidateQueries({ queryKey: ["jargons"] }); // To invalidate the jargon list
-      setOpen(false);
+      startTransition(() => {
+        setOpen(false);
+      });
       resetForm();
       router.refresh();
     }

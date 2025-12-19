@@ -7,6 +7,7 @@ import {
   useEffect,
   useMemo,
   useState,
+  startTransition,
 } from "react";
 import {
   Dialog,
@@ -44,7 +45,11 @@ export function LoginDialogProvider({
 
   // Close dialog automatically when user becomes authenticated
   useEffect(() => {
-    if (user && open) setOpen(false);
+    if (user && open) {
+      startTransition(() => {
+        setOpen(false);
+      });
+    }
   }, [user, open]);
 
   const openLogin = useCallback((next?: string) => {

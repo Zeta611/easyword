@@ -6,6 +6,7 @@ import {
   useEffect,
   useRef,
   useState,
+  startTransition,
 } from "react";
 import { useRouter } from "next/navigation";
 import { SquarePlus } from "lucide-react";
@@ -91,8 +92,6 @@ export default function SuggestJargonDialog() {
   });
 
   const resetForm = () => {
-    setNoTranslation(false);
-    setCategoryIds([]);
     formRef.current?.reset();
   };
 
@@ -100,7 +99,9 @@ export default function SuggestJargonDialog() {
     if (result && result.ok && "jargonSlug" in result) {
       queryClient.invalidateQueries({ queryKey: ["jargons"] });
       queryClient.invalidateQueries({ queryKey: ["jargons-count"] });
-      setOpen(false);
+      startTransition(() => {
+        setOpen(false);
+      });
       resetForm();
       router.push(`/jargon/${result.jargonSlug}`);
     }

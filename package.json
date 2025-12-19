@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "next lint --fix",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "check": "bun run format && bun run lint && bun run typecheck"
   },

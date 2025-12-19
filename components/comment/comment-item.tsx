@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useActionState } from "react";
+import { useState, useEffect, useActionState, startTransition } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
@@ -72,12 +72,16 @@ export default function CommentItem({
   );
 
   useEffect(() => {
-    setEditContent(comment.content ?? "");
+    startTransition(() => {
+      setEditContent(comment.content ?? "");
+    });
   }, [comment.content]);
 
   useEffect(() => {
     if (updateState?.ok) {
-      setIsEditing(false);
+      startTransition(() => {
+        setIsEditing(false);
+      });
       queryClient.invalidateQueries({
         queryKey: ["comments", comment.jargon_id],
       });

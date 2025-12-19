@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { SlidersHorizontal, X, Filter } from "lucide-react";
-import { useMemo, useRef } from "react";
+import { useMemo, useState } from "react";
 import equal from "fast-deep-equal";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getClient } from "@/lib/supabase/client";
@@ -56,13 +56,14 @@ export default function JargonInfiniteList({
 }: JargonInfiniteListProps) {
   const supabase = getClient();
 
-  const initialQueryKeyRef = useRef([
+  const [initialQueryKey] = useState(() => [
     "jargons",
     {
       q: searchQuery,
       ...sortCategories,
     },
   ]);
+
   const queryKey = [
     "jargons",
     {
@@ -110,7 +111,7 @@ export default function JargonInfiniteList({
     },
     initialData:
       // NOTE: Initial data should not be used when the query changes
-      initialData && equal(queryKey, initialQueryKeyRef.current)
+      initialData && equal(queryKey, initialQueryKey)
         ? {
             pages: [initialData],
             pageParams: [0],

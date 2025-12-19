@@ -80,9 +80,8 @@ export default function UpdateJargonCategoriesDialog({
   );
 
   const resetForm = useCallback(() => {
-    setSelected(initialCategoryIds.map((id) => String(id)));
     formRef.current?.reset();
-  }, [initialCategoryIds]);
+  }, []);
 
   const [state, action] = useActionState(
     updateJargonCategories.bind(null, jargonId),
@@ -112,7 +111,6 @@ export default function UpdateJargonCategoriesDialog({
 
   useEffect(() => {
     if (state && state.ok) {
-      setOpen(false);
       resetForm();
       // Refresh the page to reflect updated categories on SSR
       window.location.reload();
