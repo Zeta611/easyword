@@ -149,6 +149,7 @@ export type Database = {
         Row: {
           author_id: string
           created_at: string
+          featured: number | null
           id: string
           name: string
           slug: string
@@ -157,6 +158,7 @@ export type Database = {
         Insert: {
           author_id: string
           created_at?: string
+          featured?: number | null
           id?: string
           name: string
           slug: string
@@ -165,6 +167,7 @@ export type Database = {
         Update: {
           author_id?: string
           created_at?: string
+          featured?: number | null
           id?: string
           name?: string
           slug?: string
@@ -450,15 +453,48 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
+      gtrgm_compress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: { "": unknown }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
       is_claims_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      list_featured_jargons: {
+        Args: { limit_count?: number }
+        Returns: {
+          categories: Json
+          comments: Json
+          id: string
+          name: string
+          slug: string
+          translations: Json
+          updated_at: string
+        }[]
       }
       list_jargon_random: {
         Args: { seed?: unknown }
         Returns: {
           author_id: string
           created_at: string
+          featured: number | null
           id: string
           name: string
           slug: string
@@ -495,9 +531,29 @@ export type Database = {
           updated_at: string
         }[]
       }
+      search_similar_terms: {
+        Args: { query_text: string; threshold?: number }
+        Returns: {
+          id: string
+          name: string
+          similarity: number
+        }[]
+      }
       set_claim: {
         Args: { claim: string; uid: string; value: Json }
         Returns: string
+      }
+      set_limit: {
+        Args: { "": number }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: { "": string }
+        Returns: string[]
       }
       suggest_jargon: {
         Args: {

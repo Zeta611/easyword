@@ -19,6 +19,18 @@ export const QUERIES = {
     });
   },
 
+  listFeaturedJargons: function (
+    supabase: SupabaseClient<Database>,
+    limitCount: number,
+    options?: { signal?: AbortSignal },
+  ) {
+    let query = supabase.rpc("list_featured_jargons", {
+      limit_count: limitCount,
+    });
+    if (options?.signal) query = query.abortSignal(options.signal);
+    return query;
+  },
+
   countJargons: function (
     supabase: SupabaseClient<Database>,
     searchQuery: string,
