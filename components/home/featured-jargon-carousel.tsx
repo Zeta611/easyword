@@ -58,16 +58,16 @@ export default function FeaturedJargonCarousel({
   return (
     <div
       className={cn(
-        "animate-gradient-flow relative overflow-hidden rounded-xl p-4 shadow-sm",
+        "relative overflow-hidden rounded-xl bg-[#fab1a0] p-4 shadow-sm dark:bg-[#3e2620]",
         className,
       )}
     >
       <div className="flex flex-col gap-3">
         <h2 className="flex items-center gap-2 text-lg font-bold">
-          <span className="text-amber-500 dark:text-amber-400">
+          <span className="text-amber-900 dark:text-amber-100">
             <Sparkles className="h-4 w-4" />
           </span>
-          <span className="text-amber-800 dark:text-amber-100">하이라이트</span>
+          <span className="text-amber-900 dark:text-amber-100">하이라이트</span>
         </h2>
         <Carousel
           setApi={setApi}
@@ -78,18 +78,18 @@ export default function FeaturedJargonCarousel({
         >
           {/* Left fade overlay */}
           {canScrollPrev && (
-            <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 bg-gradient-to-r from-amber-50/90 to-transparent dark:from-amber-950/60" />
+            <div className="pointer-events-none absolute top-0 left-0 z-10 h-full w-16 bg-gradient-to-r from-[#fab1a0] to-transparent dark:from-[#3e2620]" />
           )}
           {/* Right fade overlay */}
           {canScrollNext && (
-            <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-16 bg-gradient-to-l from-yellow-50/90 to-transparent dark:from-stone-900/60" />
+            <div className="pointer-events-none absolute top-0 right-0 z-10 h-full w-16 bg-gradient-to-l from-[#fab1a0] to-transparent dark:from-[#3e2620]" />
           )}
           <CarouselContent className="-ml-3">
             {featuredJargons.length > 0
               ? featuredJargons.map((jargon) => (
                   <CarouselItem
                     key={jargon.id}
-                    className="basis-full pl-3 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                    className="basis-1/2 pl-3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                   >
                     <JargonCard
                       jargon={{
@@ -110,7 +110,7 @@ export default function FeaturedJargonCarousel({
               : Array.from({ length: 8 }).map((_, index) => (
                   <CarouselItem
                     key={index}
-                    className="basis-full pl-3 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                    className="basis-1/2 pl-3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                   >
                     <div className="bg-card text-card-foreground flex h-full flex-col gap-1 rounded-md p-3">
                       {/* Name skeleton */}
