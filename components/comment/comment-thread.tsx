@@ -11,6 +11,7 @@ import { useUserQuery } from "@/hooks/use-user-query";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLoginDialog } from "@/components/auth/login-dialog-provider";
+import { MessagesSquareIcon } from "lucide-react";
 
 function buildCommentTree(comments: Omit<Comment, "replies">[]): CommentTree[] {
   const commentMap = new Map<string, CommentTree>();
@@ -85,7 +86,8 @@ export default function CommentThread({
     <div className="flex flex-col gap-1">
       {/* New comment form */}
       <div className="flex flex-col gap-2">
-        <span className="text-base font-semibold">
+        <span className="flex items-center gap-2 text-base font-semibold">
+          <MessagesSquareIcon className="size-4" />
           댓글 {comments.filter((c) => !c.removed).length}개
         </span>
         {isUserLoading ? (

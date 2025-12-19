@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { updateJargon } from "@/app/actions/update-jargon";
 import { removeJargon } from "@/app/actions/remove-jargon";
+import { EraserIcon, PencilIcon } from "lucide-react";
 
 export default function JargonActions({
   jargonId,
@@ -72,11 +73,11 @@ export default function JargonActions({
   if (!canManage) return null;
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="ml-1 flex items-center gap-1">
       <Dialog>
         <DialogTrigger asChild>
-          <Button type="button" variant="ghost" className="h-7 px-2.5 text-xs">
-            고치기
+          <Button type="button" variant="ghost">
+            <PencilIcon />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[420px]">
@@ -109,9 +110,9 @@ export default function JargonActions({
           <Button
             type="button"
             variant="ghost"
-            className="h-7 px-2.5 text-xs text-red-600 hover:text-red-700"
+            className="text-red-600 hover:text-red-700"
           >
-            지우기
+            <EraserIcon />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

@@ -35,6 +35,7 @@ import {
   removeTranslation,
   type RemoveTranslationAction,
 } from "@/app/actions/remove-translation";
+import { EraserIcon, PencilIcon } from "lucide-react";
 
 export default function TranslationActions({
   id,
@@ -70,11 +71,11 @@ export default function TranslationActions({
   if (!canManage) return null;
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="ml-1 flex items-center gap-1">
       <Dialog>
         <DialogTrigger asChild>
-          <Button type="button" variant="ghost" className="h-6 px-2.5 text-xs">
-            고치기
+          <Button type="button" variant="ghost" size="sm">
+            <PencilIcon className="size-3.5" />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[420px]">
@@ -103,10 +104,11 @@ export default function TranslationActions({
         <AlertDialogTrigger asChild>
           <Button
             type="button"
+            size="sm"
             variant="ghost"
-            className="h-6 px-2.5 text-xs text-red-600 hover:text-red-700"
+            className="text-red-600 hover:text-red-700"
           >
-            지우기
+            <EraserIcon className="size-3.5" />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

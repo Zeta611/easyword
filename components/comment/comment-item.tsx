@@ -4,7 +4,14 @@ import { useState, useEffect, useActionState, startTransition } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
-import { MessageCircle, Minus, Plus } from "lucide-react";
+import {
+  EraserIcon,
+  MessageCircle,
+  Minus,
+  PencilIcon,
+  Plus,
+  TrashIcon,
+} from "lucide-react";
 import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -228,7 +235,7 @@ export default function CommentItem({
                       setShowReplyForm(!showReplyForm);
                     }
                   }}
-                  className="flex h-6 w-15 items-center gap-1 text-xs"
+                  className="flex h-6 w-15 items-center gap-1.5 text-xs"
                 >
                   <MessageCircle className="size-3" />
                   답글
@@ -239,9 +246,10 @@ export default function CommentItem({
                     <>
                       <Button
                         variant="ghost"
-                        className="h-6 px-2.5 text-xs"
+                        className="h-6 gap-1.5 px-2.5 text-xs"
                         onClick={() => setIsEditing(true)}
                       >
+                        <PencilIcon className="size-3" />
                         고치기
                       </Button>
                       <AlertDialog>
@@ -249,8 +257,9 @@ export default function CommentItem({
                           <Button
                             type="button"
                             variant="ghost"
-                            className="h-6 px-2.5 text-xs text-red-600 hover:text-red-700"
+                            className="h-6 gap-1.5 px-2.5 text-xs text-red-600 hover:text-red-700"
                           >
+                            <EraserIcon className="size-3" />
                             지우기
                           </Button>
                         </AlertDialogTrigger>
