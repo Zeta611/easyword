@@ -88,7 +88,7 @@ export default function FeaturedJargonCarousel({
             {featuredJargons.length > 0
               ? featuredJargons.map((jargon) => (
                   <CarouselItem
-                    key={jargon.id}
+                    key={jargon.id + "-" + jargon.translation}
                     className="basis-1/2 pl-3 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
                   >
                     <JargonCard

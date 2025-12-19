@@ -11,6 +11,7 @@ export interface TranslationListItem {
   author_id: string;
   created_at?: string;
   llm_rank?: number | null;
+  featured?: number | null;
 }
 
 export default function TranslationList({
@@ -56,6 +57,7 @@ export default function TranslationList({
             id={tran.id}
             authorId={tran.author_id}
             name={tran.name}
+            isFeatured={!!tran.featured}
           />
         </li>
       ))}

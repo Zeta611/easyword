@@ -3,8 +3,9 @@
 import { useActionState, useEffect } from "react";
 import Form from "next/form";
 import { useQueryClient } from "@tanstack/react-query";
-import { EraserIcon, PencilIcon } from "lucide-react";
+import { EraserIcon, PencilIcon, Sparkles } from "lucide-react";
 import { useUserQuery } from "@/hooks/use-user-query";
+import { toggleFeatured } from "@/app/actions/toggle-featured";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -41,10 +42,12 @@ export default function TranslationActions({
   id,
   authorId,
   name,
+  isFeatured = false,
 }: {
   id: string;
   authorId: string;
   name: string;
+  isFeatured?: boolean;
 }) {
   const queryClient = useQueryClient();
 
@@ -60,6 +63,15 @@ export default function TranslationActions({
     removeTranslation.bind(null, id) satisfies RemoveTranslationAction,
     { ok: false, error: "" },
   );
+  const [toggleFeaturedState, toggleFeaturedAction] = useActionState(
+    toggleFeatured.bind(null, id),
+    { ok: false, error: "", isFeatured: false },
+  );
+
+  // Use the state's isFeatured if available, otherwise fall back to prop
+  const currentIsFeatured = toggleFeaturedState.ok
+    ? toggleFeaturedState.isFeatured
+    : isFeatured;
 
   useEffect(() => {
     if (updateState.ok || removeState.ok) {
@@ -68,13 +80,41 @@ export default function TranslationActions({
     }
   }, [updateState.ok, removeState.ok, queryClient]);
 
-  if (!canManage) return null;
+  useEffect(() => {
+    if (toggleFeaturedState.ok) {
+      window.location.reload();
+    }
+  }, [toggleFeaturedState.ok, queryClient]);
+
+  if (!canManage && !isAdmin) return null;
 
   return (
     <div className="ml-1 flex items-center gap-1">
+      {isAdmin && (
+        <Form action={toggleFeaturedAction}>
+          <Button
+            type="submit"
+            variant="ghost"
+            size="sm"
+            className={
+              currentIsFeatured
+                ? "text-amber-600 hover:text-amber-700"
+                : "text-muted-foreground hover:text-foreground"
+            }
+            title={
+              currentIsFeatured ? "하이라이트에서 제거" : "하이라이트로 추가"
+            }
+            disabled={toggleFeaturedState.ok}
+          >
+            <Sparkles
+              className={`size-3.5 ${currentIsFeatured ? "fill-current" : ""}`}
+            />
+          </Button>
+        </Form>
+      )}
       <Dialog>
         <DialogTrigger asChild>
-          <Button type="button" variant="ghost" size="sm">
+          <Button type="button" variant="ghost" size="sm" title="고치기">
             <PencilIcon className="size-3.5" />
           </Button>
         </DialogTrigger>
@@ -107,6 +147,7 @@ export default function TranslationActions({
             size="sm"
             variant="ghost"
             className="text-red-600 hover:text-red-700"
+            title="지우기"
           >
             <EraserIcon className="size-3.5" />
           </Button>

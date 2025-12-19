@@ -76,7 +76,7 @@ export default function JargonActions({
     <div className="ml-1 flex items-center gap-1">
       <Dialog>
         <DialogTrigger asChild>
-          <Button type="button" variant="ghost">
+          <Button type="button" variant="ghost" title="고치기">
             <PencilIcon />
           </Button>
         </DialogTrigger>
@@ -111,6 +111,7 @@ export default function JargonActions({
             type="button"
             variant="ghost"
             className="text-red-600 hover:text-red-700"
+            title="지우기"
           >
             <EraserIcon />
           </Button>

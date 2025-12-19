@@ -5,7 +5,7 @@ import { QUERIES } from "@/lib/supabase/repository";
 import type { Json } from "@/lib/supabase/types";
 
 const INITIAL_LOAD_SIZE = 32;
-const FEATURED_LOAD_SIZE = 8;
+const FEATURED_LOAD_SIZE = 100;
 
 function isJsonObject(value: Json): value is Record<string, Json> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
