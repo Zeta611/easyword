@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Sparkles } from "lucide-react";
 import {
@@ -36,6 +36,60 @@ export default function FeaturedJargonCarousel({
   const [api, setApi] = useState<CarouselApi>();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const scrollbarRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+
+  const onScroll = useCallback(() => {
+    if (!api) return;
+    const progress = Math.max(0, Math.min(1, api.scrollProgress()));
+    setScrollProgress(progress);
+  }, [api]);
+
+  // Calculate scroll position from mouse X and scroll to that slide
+  const scrollToPosition = useCallback(
+    (clientX: number) => {
+      if (!api || !scrollbarRef.current) return;
+      const rect = scrollbarRef.current.getBoundingClientRect();
+      const percentage = Math.max(
+        0,
+        Math.min(1, (clientX - rect.left) / rect.width),
+      );
+      const scrollSnapList = api.scrollSnapList();
+      const targetIndex = Math.round(percentage * (scrollSnapList.length - 1));
+      api.scrollTo(targetIndex);
+    },
+    [api],
+  );
+
+  // Handle mouse down on scrollbar (start drag)
+  const handleScrollbarMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      isDraggingRef.current = true;
+      scrollToPosition(e.clientX);
+    },
+    [scrollToPosition],
+  );
+
+  // Handle mouse move (drag) and mouse up (end drag)
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDraggingRef.current) return;
+      scrollToPosition(e.clientX);
+    };
+
+    const handleMouseUp = () => {
+      isDraggingRef.current = false;
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [scrollToPosition]);
 
   useEffect(() => {
     if (!api) {
@@ -44,16 +98,21 @@ export default function FeaturedJargonCarousel({
 
     setCanScrollPrev(api.canScrollPrev());
     setCanScrollNext(api.canScrollNext());
+    onScroll();
 
     const onSelect = () => {
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
     };
     api.on("select", onSelect);
+    api.on("scroll", onScroll);
+    api.on("reInit", onScroll);
     return () => {
       api.off("select", onSelect);
+      api.off("scroll", onScroll);
+      api.off("reInit", onScroll);
     };
-  }, [api]);
+  }, [api, onScroll]);
 
   return (
     <div
@@ -135,6 +194,20 @@ export default function FeaturedJargonCarousel({
             <CarouselNext className="right-2 z-20 border-stone-200 bg-white hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900 dark:hover:bg-stone-800" />
           )}
         </Carousel>
+        {/* Horizontal scroll progress bar - visible on desktop only */}
+        <div
+          ref={scrollbarRef}
+          onMouseDown={handleScrollbarMouseDown}
+          className="mt-3 hidden h-2 w-full cursor-pointer rounded-full bg-amber-200/50 md:block dark:bg-amber-900/30"
+        >
+          <div
+            className="pointer-events-none h-full rounded-full bg-amber-900 transition-transform duration-75 ease-out dark:bg-amber-50"
+            style={{
+              width: "20%",
+              transform: `translateX(${scrollProgress * 400}%)`,
+            }}
+          />
+        </div>
       </div>
     </div>
   );
