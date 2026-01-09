@@ -37,18 +37,36 @@ export default function FeaturedJargonCarousel({
   className?: string;
 }) {
   const [api, setApi] = useState<CarouselApi>();
+
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const scrollbarRef = useRef<HTMLDivElement>(null);
-  const isDraggingRef = useRef(false);
 
-  const onScroll = useCallback(() => {
+  // Accept api so that it can be called while setting api
+  const updateCanScroll = useCallback((api: CarouselApi) => {
+    if (!api) return;
+    setCanScrollPrev(api.canScrollPrev());
+    setCanScrollNext(api.canScrollNext());
+  }, []);
+
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Accept api so that it can be called while setting api
+  const updateScrollProgress = useCallback((api: CarouselApi) => {
     if (!api) return;
     const progress = Math.max(0, Math.min(1, api.scrollProgress()));
     setScrollProgress(progress);
-  }, [api]);
+  }, []);
 
+  const handleSetApi = useCallback(
+    (api: CarouselApi) => {
+      setApi(api);
+      updateCanScroll(api);
+      updateScrollProgress(api);
+    },
+    [updateCanScroll, updateScrollProgress],
+  );
+
+  const scrollbarRef = useRef<HTMLDivElement>(null);
   // Calculate scroll position from mouse X and scroll to that slide
   const scrollToPosition = useCallback(
     (clientX: number) => {
@@ -65,6 +83,7 @@ export default function FeaturedJargonCarousel({
     [api],
   );
 
+  const isDraggingRef = useRef(false);
   // Handle mouse down on scrollbar (start drag)
   const handleScrollbarMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -99,14 +118,9 @@ export default function FeaturedJargonCarousel({
       return;
     }
 
-    setCanScrollPrev(api.canScrollPrev());
-    setCanScrollNext(api.canScrollNext());
-    onScroll();
+    const onSelect = () => updateCanScroll(api);
+    const onScroll = () => updateScrollProgress(api);
 
-    const onSelect = () => {
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
-    };
     api.on("select", onSelect);
     api.on("scroll", onScroll);
     api.on("reInit", onScroll);
@@ -115,7 +129,7 @@ export default function FeaturedJargonCarousel({
       api.off("scroll", onScroll);
       api.off("reInit", onScroll);
     };
-  }, [api, onScroll]);
+  }, [api, updateCanScroll, updateScrollProgress]);
 
   return (
     <div
@@ -132,7 +146,7 @@ export default function FeaturedJargonCarousel({
           <span className="text-amber-900 dark:text-amber-100">하이라이트</span>
         </h2>
         <Carousel
-          setApi={setApi}
+          setApi={handleSetApi}
           plugins={[autoplayPlugin, wheelGesturesPlugin]}
           className="relative w-full"
           onMouseEnter={autoplayPlugin.stop}
