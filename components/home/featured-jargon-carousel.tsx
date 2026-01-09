@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Autoplay from "embla-carousel-autoplay";
+import WheelGestures from "embla-carousel-wheel-gestures";
 import { Sparkles } from "lucide-react";
 import {
   Carousel,
@@ -25,6 +26,9 @@ export type FeaturedJargonCarouselItem = {
   comment_count: number;
 };
 
+const autoplayPlugin = Autoplay({ delay: 2000, stopOnInteraction: true });
+const wheelGesturesPlugin = WheelGestures({ forceWheelAxis: "x" });
+
 export default function FeaturedJargonCarousel({
   featuredJargons,
   className,
@@ -32,7 +36,6 @@ export default function FeaturedJargonCarousel({
   featuredJargons: FeaturedJargonCarouselItem[];
   className?: string;
 }) {
-  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
   const [api, setApi] = useState<CarouselApi>();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
@@ -130,10 +133,10 @@ export default function FeaturedJargonCarousel({
         </h2>
         <Carousel
           setApi={setApi}
-          plugins={[plugin.current]}
+          plugins={[autoplayPlugin, wheelGesturesPlugin]}
           className="relative w-full"
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
+          onMouseEnter={autoplayPlugin.stop}
+          onMouseLeave={autoplayPlugin.reset}
         >
           {/* Left fade overlay */}
           {canScrollPrev && (
